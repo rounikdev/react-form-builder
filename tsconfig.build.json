@@ -1,0 +1,24 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "dist/dts",
+    "lib": ["DOM", "ESNext"],
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "rootDir": "src",
+    "sourceMap": false,
+    "target": "ES6"
+  },
+  "exclude": [
+    "dist",
+    "node_modules",
+    "src/**/*.stories.tsx",
+    "src/**/tests/**/*",
+    "src/pages/**/*",
+    "src/stories/**/*",
+    "src/**/stories/**/*",
+    "src/styles/**/*",
+    ".storybook"
+  ]
+}

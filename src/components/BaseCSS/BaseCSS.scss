@@ -1,0 +1,26 @@
+@import "../../styles/index.scss";
+
+.Container {
+  display: none;
+}
+
+:root {
+  --baseFontSize: #{$baseFontSize};
+
+  font-size: var(--baseFontSize);
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  body {
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+  }
+}
