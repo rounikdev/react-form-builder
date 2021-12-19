@@ -1,21 +1,18 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-//import { BaseCSS } from './BaseCSS';
-
-const Cmp = () => <div>Hieefe</div>;
+import { BaseCSS } from './BaseCSS';
 
 export default {
-  component: Cmp,
+  component: BaseCSS,
   title: 'Components/BaseCSS'
-} as ComponentMeta<typeof Cmp>;
+} as ComponentMeta<typeof BaseCSS>;
 
-const Template: ComponentStory<typeof Cmp> = (): JSX.Element => {
+const Template: ComponentStory<typeof BaseCSS> = (): JSX.Element => {
   return (
-    <>
-      <h1>Hi</h1>
-      {/* <Cmp /> */}
-      {/* <BaseCSS /> */}
-    </>
+    <div>
+      <h1>BaseCSS</h1>
+      <BaseCSS />
+    </div>
   );
 };
 
