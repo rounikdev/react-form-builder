@@ -1,1 +1,1 @@
-export const A = 5;
+export * from './hooks';
