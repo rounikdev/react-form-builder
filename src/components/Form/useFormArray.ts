@@ -13,9 +13,9 @@ export const useFormArray = function <T>({ initialValue, factories }: UseFormArr
         const newState = [...currentState];
 
         const factoryKey = params.pop();
-        const factory: () => T = factories[factoryKey];
+        const factory = factories[factoryKey];
 
-        const target = GlobalModel.getNestedValue(newState, params) as T[];
+        const target = GlobalModel.getNestedValue(newState, params);
         target.push(factory());
 
         return newState;
@@ -30,16 +30,16 @@ export const useFormArray = function <T>({ initialValue, factories }: UseFormArr
 
   const remove = useCallback((...params) => {
     setState((currentState) => {
-      const newState = [...currentState];
+      const newData = [...currentState];
 
       const index = params.pop();
 
-      const target = GlobalModel.getNestedValue(newState, params);
+      const target = GlobalModel.getNestedValue(newData, params);
       target.splice(index, 1);
 
-      return newState;
+      return newData;
     });
   }, []);
 
-  return { add, onReset, state, remove };
+  return { state, add, onReset, remove };
 };

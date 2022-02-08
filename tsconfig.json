@@ -14,7 +14,7 @@
     "noImplicitReturns": true,
     "outDir": "./out/",
     "paths": {
-      "@root/*": ["../*"],
+      "@root/*": ["./*"],
       "@components": ["./components"],
       "@components/*": ["./components/*"],
       "@managers": ["./managers"],
