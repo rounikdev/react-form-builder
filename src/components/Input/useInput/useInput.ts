@@ -4,7 +4,7 @@ import { useField } from '@components/Form';
 
 import { UseInput, UseInputReturnType } from './types';
 
-export const useInput = ({
+export const useInput: (args: UseInput) => UseInputReturnType = ({
   dependencyExtractor,
   disabled,
   formatter,
@@ -13,13 +13,11 @@ export const useInput = ({
   onBlurSideEffect,
   sideEffect,
   validator
-}: UseInput<string>): UseInputReturnType<string> => {
+}) => {
   const props = useField<string>({
     dependencyExtractor,
     formatter,
-    initialValue: onBlurSideEffect
-      ? onBlurSideEffect({ value: initialValue ?? '' })
-      : initialValue ?? '',
+    initialValue: initialValue ?? '',
     name,
     sideEffect,
     validator

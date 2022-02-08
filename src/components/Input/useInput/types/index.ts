@@ -8,10 +8,10 @@ export type InputOnBlurSideEffect = ({
   setValue?: (value: string) => void;
 }) => string;
 
-export interface UseInput<T> extends UseFieldConfig<T>, Omit<Field, 'dataTest' | 'id'> {
+export interface UseInput extends UseFieldConfig<string>, Omit<Field, 'dataTest' | 'id'> {
   onBlurSideEffect?: InputOnBlurSideEffect;
 }
 
-export interface UseInputReturnType<T> extends UseFieldReturnType<T> {
+export interface UseInputReturnType extends UseFieldReturnType<string> {
   disabled?: boolean;
 }

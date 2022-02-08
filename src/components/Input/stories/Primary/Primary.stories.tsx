@@ -4,7 +4,8 @@ import { Primary as PrimaryInput } from '../Primary/Primary';
 
 export default {
   component: PrimaryInput,
-  title: 'Components/Input/Primary'
+  title: 'Components/Input/Primary',
+  parameters: { actions: { argTypesRegex: null } }
 } as ComponentMeta<typeof PrimaryInput>;
 
 const Template: ComponentStory<typeof PrimaryInput> = (args): JSX.Element => (
