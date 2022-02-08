@@ -1,0 +1,94 @@
+.Container {
+  display: flex;
+  width: 100%;
+  max-height: 100vh;
+  padding: 2rem;
+  overflow-y: scroll;
+}
+
+.FormContainer {
+  width: 50rem;
+}
+
+.Form {
+  padding-bottom: 4rem;
+}
+
+.AddUserButton {
+  margin-bottom: 1rem;
+}
+
+.RemoveUserButton {
+  align-self: flex-end;
+}
+
+.Group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  border: 1px solid #757c84;
+  border-radius: 0.3rem;
+}
+
+.Input {
+  flex: 1;
+  margin-bottom: 1rem;
+  margin-right: 1rem;
+}
+
+.User {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.Phones {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1rem;
+  background-color: lighten(#91979d, 30%);
+  border-radius: 0.3rem;
+
+  .PhonesList {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .Phone {
+    display: flex;
+    margin-bottom: 1rem;
+  }
+}
+
+.Passwords {
+  width: 1005;
+  display: flex;
+  margin-top: 1rem;
+}
+
+.PasswordInput {
+  width: 50%;
+  margin-bottom: 2rem;
+
+  &:first-child {
+    margin-right: 1rem;
+  }
+}
+
+.FormStateDisplay {
+  width: 50%;
+  margin-left: 2rem;
+  padding: 2rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
