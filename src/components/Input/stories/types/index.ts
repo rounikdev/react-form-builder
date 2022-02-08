@@ -10,7 +10,7 @@ export type InputOnBlurSideEffect = ({
 
 export interface InputBasicProps
   extends Omit<UseFieldConfig<string>, 'initialValue'>,
-    Omit<Field<string>, 'initialValue'> {
+    Omit<Field, 'initialValue'> {
   autoComplete?: string;
   expandError?: boolean;
   initialValue?: string;
@@ -21,8 +21,7 @@ export interface InputBasicProps
 
 export interface InputPrimaryProps
   extends Omit<UseFieldConfig<string>, 'initialValue'>,
-    Omit<Field<string>, 'initialValue'>,
+    Omit<Field, 'initialValue'>,
     Omit<InputBasicProps, 'styles'> {
-  dataTest?: string;
   initialValue?: string;
 }

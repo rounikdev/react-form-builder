@@ -1,8 +1,14 @@
-import { FormActions, FormContext, FormRemoveAction, FormSetAction } from './types';
+import { FormContext, FormRemoveAction, FormSetStateAction, FormSetAction } from './types';
+
+export enum FormActions {
+  SET_IN_FORM = 'SET_IN_FORM',
+  REMOVE_FROM_FORM = 'REMOVE_FROM_FORM',
+  SET_FORM_STATE = 'SET_FORM_STATE'
+}
 
 export const reducer = (
   context: FormContext,
-  action: FormSetAction | FormRemoveAction
+  action: FormSetAction | FormRemoveAction | FormSetStateAction
 ): FormContext => {
   switch (action.type) {
     case FormActions.SET_IN_FORM:
@@ -22,18 +28,13 @@ export const reducer = (
       } else {
         return context;
       }
-
     case FormActions.REMOVE_FROM_FORM:
       const state = { ...context.state };
       delete state[action.payload.key];
 
-      // Shift `left` all the elements after
-      // the removed one in a form array:
       if (action.payload.type === 'array') {
         const stateLength = Object.keys(state).length;
-        const indexAfterRemovedOne = parseInt(action.payload.key, 10) + 1;
-
-        for (let i = indexAfterRemovedOne; i <= stateLength; i++) {
+        for (let i = parseInt(action.payload.key, 10) + 1; i <= stateLength; i++) {
           if (state[i]) {
             state[i - 1] = state[i];
             delete state[i];
@@ -45,6 +46,9 @@ export const reducer = (
         ...context,
         state
       };
+
+    case FormActions.SET_FORM_STATE:
+      return { ...context, state: action.payload };
 
     default:
       return context;

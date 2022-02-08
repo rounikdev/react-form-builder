@@ -12,6 +12,7 @@
   },
   "exclude": [
     "dist",
+    "jest-setup.ts",
     "node_modules",
     "src/**/*.stories.tsx",
     "src/**/tests/**/*",

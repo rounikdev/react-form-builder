@@ -13,3 +13,4 @@ export * from './useUnmount/useUnmount';
 export * from './useUpdate/useUpdate';
 export * from './useUpdatedRef/useUpdatedRef';
 export * from './useUpdateOnly/useUpdateOnly';
+export * from './useWindowResize/useWindowResize';

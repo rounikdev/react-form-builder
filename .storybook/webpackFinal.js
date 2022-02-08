@@ -6,7 +6,7 @@ const aliases = {
   '@managers': path.resolve(__dirname, '..', 'src', 'managers'),
   '@pages': path.resolve(__dirname, '..', 'src', 'pages'),
   '@providers': path.resolve(__dirname, '..', 'src', 'providers'),
-  '@root': path.resolve(__dirname, '..'),
+  '@root': path.resolve(__dirname, '..', 'src'),
   '@services': path.resolve(__dirname, '..', 'src', 'services')
 };
 

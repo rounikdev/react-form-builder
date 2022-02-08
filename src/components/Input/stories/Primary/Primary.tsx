@@ -1,4 +1,4 @@
-import { FC, FocusEvent, memo, MutableRefObject, useMemo } from 'react';
+import { FC, memo, MutableRefObject, useMemo } from 'react';
 
 import { useClass } from '@services';
 
@@ -46,9 +46,6 @@ export const Primary: FC<InputPrimaryProps> = memo(
     });
 
     const isError = useMemo(() => touched && !focused && !valid, [focused, touched, valid]);
-
-    console.log('focused: ', focused);
-    console.log('value: ', value);
 
     const inputClass = useClass(
       [styles.Input, focused && styles.Focus, isError && styles.Error, disabled && styles.Disabled],

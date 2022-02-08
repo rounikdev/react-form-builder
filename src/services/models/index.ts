@@ -1,1 +1,1 @@
-export * from './GlobalModel/GlobalModel';
+export * from './GlobalModel';
