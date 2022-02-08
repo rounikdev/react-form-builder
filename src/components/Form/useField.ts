@@ -1,4 +1,4 @@
-import { FocusEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { FocusEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import {
   useIsMounted,
@@ -36,6 +36,8 @@ export function useField<T>({
   const { formData } = useFormData();
 
   const isMounted = useIsMounted();
+
+  const fieldRef = useRef<HTMLElement | null>(null);
 
   const [state, setState] = useState<UseFieldState<T>>({
     errors: [],
@@ -240,6 +242,7 @@ export function useField<T>({
   );
 
   return {
+    fieldRef,
     onBlurHandler,
     onChangeHandler,
     onFocusHandler,

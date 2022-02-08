@@ -1,4 +1,4 @@
-import { FocusEventHandler, ReactNode } from 'react';
+import { FocusEventHandler, MutableRefObject, ReactNode } from 'react';
 
 import { Stylable, Testable } from '../../../types';
 
@@ -135,13 +135,16 @@ export interface UseFieldState<T> {
   value: T;
 }
 
+export type FieldRef = MutableRefObject<HTMLElement | HTMLInputElement | null>;
+
 export interface UseFieldReturnType<T> extends UseFieldState<T> {
+  fieldRef: FieldRef;
   onBlurHandler: FocusEventHandler<HTMLElement>;
   onChangeHandler: (value: T) => Promise<void>;
   onFocusHandler: FocusEventHandler<HTMLElement>;
 }
 
-export interface Field<T> extends Stylable, Testable, UseFieldConfig<T> {
+export interface Field<T> extends UseFieldConfig<T> {
   disabled?: boolean;
   hidden?: boolean;
   id: string;
