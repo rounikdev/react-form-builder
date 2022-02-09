@@ -1,1 +1,3 @@
-export * from './useInput/useInput';
+export * from './useTextInput/useTextInput';
+
+export * from './useTextInput/types';

@@ -4,7 +4,7 @@ import { useField } from '@components/Form';
 
 import { UseInput, UseInputReturnType } from './types';
 
-export const useInput: (args: UseInput) => UseInputReturnType = ({
+export const useTextInput: (args: UseInput) => UseInputReturnType = ({
   dependencyExtractor,
   disabled,
   formatter,

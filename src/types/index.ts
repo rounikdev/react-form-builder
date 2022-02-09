@@ -13,3 +13,11 @@ export interface Stylable {
 export interface Testable {
   dataTest: string;
 }
+
+export interface Hideable {
+  hidden?: boolean;
+}
+
+export interface Disableable {
+  disabled?: boolean;
+}

@@ -2,12 +2,12 @@ import { FC, memo, MutableRefObject, useMemo } from 'react';
 
 import { useClass } from '@services';
 
-import { useInput } from '../../useInput/useInput';
-import { InputPrimaryProps } from '../types';
+import { useTextInput } from '../../useTextInput/useTextInput';
+import { InputTextProps } from '../types';
 
-import styles from './Primary.scss';
+import styles from './Text.scss';
 
-export const Primary: FC<InputPrimaryProps> = memo(
+export const Text: FC<InputTextProps> = memo(
   ({
     autoComplete = 'off',
     dataTest,
@@ -34,7 +34,7 @@ export const Primary: FC<InputPrimaryProps> = memo(
       touched,
       valid,
       value
-    } = useInput({
+    } = useTextInput({
       dependencyExtractor,
       disabled,
       formatter,
