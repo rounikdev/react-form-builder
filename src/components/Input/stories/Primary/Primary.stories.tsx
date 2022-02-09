@@ -26,6 +26,11 @@ Primary.args = {
   initialValue: 'Primary',
   label: 'Primary Label',
   name: 'primary',
+  onBlurSideEffect: ({ value, setValue }) => {
+    setValue && setValue('90');
+
+    return '90';
+  },
   placeholder: 'primary',
   required: true,
   requiredLabel: 'requiredForHMRC'

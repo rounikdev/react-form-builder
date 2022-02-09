@@ -1,12 +1,6 @@
 import { Field, UseFieldConfig } from '../../../Form/types';
 
-export type InputOnBlurSideEffect = ({
-  value,
-  setValue
-}: {
-  value: string;
-  setValue?: (value: string) => void;
-}) => string;
+import { InputOnBlurSideEffect } from '../../useInput/types';
 
 export interface InputBasicProps
   extends Omit<UseFieldConfig<string>, 'initialValue'>,

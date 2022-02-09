@@ -17,7 +17,9 @@ export const useInput: (args: UseInput) => UseInputReturnType = ({
   const props = useField<string>({
     dependencyExtractor,
     formatter,
-    initialValue: initialValue ?? '',
+    initialValue: onBlurSideEffect
+      ? onBlurSideEffect({ value: initialValue ?? '' })
+      : initialValue ?? '',
     name,
     sideEffect,
     validator
