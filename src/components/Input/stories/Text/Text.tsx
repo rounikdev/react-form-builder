@@ -3,7 +3,7 @@ import { FC, memo, MutableRefObject, useMemo } from 'react';
 import { useClass } from '@services';
 
 import { useTextInput } from '../../useTextInput/useTextInput';
-import { InputTextProps } from '../types';
+import { InputTextProps } from './types';
 
 import styles from './Text.scss';
 
@@ -15,7 +15,7 @@ export const Text: FC<InputTextProps> = memo(
     disabled,
     formatter,
     id,
-    initialValue = '',
+    initialValue,
     name,
     onBlurSideEffect,
     placeholder,
@@ -25,7 +25,6 @@ export const Text: FC<InputTextProps> = memo(
     validator
   }) => {
     const {
-      errors,
       fieldRef,
       focused,
       onBlurHandler,
