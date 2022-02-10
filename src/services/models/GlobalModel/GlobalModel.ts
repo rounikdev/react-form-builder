@@ -51,6 +51,12 @@ export class GlobalModel {
     };
   };
 
+  static hasValue = (value: unknown) => value !== undefined && value !== null && value !== '';
+
+  static isNotEmptyArray = <T>(value: T): boolean => !!(Array.isArray(value) && value.length);
+
+  static isString = <T>(value: T): boolean => typeof value === 'string' || value instanceof String;
+
   static setRAFTimeout = (callback: () => void, timeout: number) => {
     const rafIdInfo: RAFIdInfo = {
       id: null
