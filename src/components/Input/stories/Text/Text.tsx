@@ -35,7 +35,6 @@ export const Text: FC<InputTextProps> = memo(
       value
     } = useTextInput({
       dependencyExtractor,
-      disabled,
       formatter,
       initialValue,
       name,

@@ -1,5 +1,4 @@
-import { Disableable } from '../../../../types';
-import { UseFieldConfig, UseFieldReturnType } from '../../../Form';
+import { UseFieldConfig } from '../../../Form';
 
 export type InputOnBlurSideEffect = ({
   value,
@@ -9,9 +8,7 @@ export type InputOnBlurSideEffect = ({
   setValue?: (value: string) => void;
 }) => string;
 
-export interface UseTextInput extends Omit<UseFieldConfig<string>, 'initialValue'>, Disableable {
+export interface UseTextInput extends Omit<UseFieldConfig<string>, 'initialValue'> {
   initialValue?: string;
   onBlurSideEffect?: InputOnBlurSideEffect;
 }
-
-export interface UseTextInputReturn extends UseFieldReturnType<string>, Disableable {}

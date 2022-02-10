@@ -1,22 +1,20 @@
 import { useField } from '@components/Form';
+import { UseFieldReturnType } from '@components/Form/types';
 
-import { UseCheckboxInput, UseCheckboxInputReturn } from './types';
+import { UseCheckboxInput } from './types';
 
-export const useCheckboxInput: (args: UseCheckboxInput) => UseCheckboxInputReturn = ({
+export const useCheckboxInput: (args: UseCheckboxInput) => UseFieldReturnType<boolean> = ({
   dependencyExtractor,
-  disabled,
   initialValue,
   name,
   sideEffect,
   validator
 }) => {
-  const props = useField<boolean>({
+  return useField<boolean>({
     dependencyExtractor,
     initialValue: !!initialValue,
     name,
     sideEffect,
     validator
   });
-
-  return { ...props, disabled };
 };

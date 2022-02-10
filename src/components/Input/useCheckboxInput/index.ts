@@ -1,2 +1,3 @@
 export * from './useCheckboxInput';
-export * from './useTextInput';
+
+export * from './types';

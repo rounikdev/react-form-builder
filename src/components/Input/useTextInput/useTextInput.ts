@@ -1,12 +1,12 @@
 import { FocusEvent, useCallback } from 'react';
 
 import { useField } from '@components/Form';
+import { UseFieldReturnType } from '@components/Form/types';
 
-import { UseTextInput, UseTextInputReturn } from './types';
+import { UseTextInput } from './types';
 
-export const useTextInput: (args: UseTextInput) => UseTextInputReturn = ({
+export const useTextInput: (args: UseTextInput) => UseFieldReturnType<string> = ({
   dependencyExtractor,
-  disabled,
   formatter,
   initialValue,
   name,
@@ -34,5 +34,5 @@ export const useTextInput: (args: UseTextInput) => UseTextInputReturn = ({
     [onBlurSideEffect, props.onBlurHandler, props.onChangeHandler, props.value]
   );
 
-  return { ...props, disabled, onBlurHandler };
+  return { ...props, onBlurHandler };
 };

@@ -1,5 +1,5 @@
-import { Field, UseFieldConfig } from '../../../../Form/types';
+import { Field } from '../../../../Form/types';
 
-export interface InputCheckboxProps extends Omit<UseFieldConfig<boolean>, 'initialValue'>, Field {
+export interface InputCheckboxProps extends Omit<Field<boolean>, 'initialValue'> {
   initialValue?: boolean;
 }

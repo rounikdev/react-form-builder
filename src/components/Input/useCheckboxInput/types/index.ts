@@ -1,10 +1,5 @@
-import { Disableable } from '../../../../types';
-import { UseFieldConfig, UseFieldReturnType } from '../../../Form';
+import { UseFieldConfig } from '../../../Form';
 
-export interface UseCheckboxInput
-  extends Omit<UseFieldConfig<boolean>, 'initialValue'>,
-    Disableable {
+export interface UseCheckboxInput extends Omit<UseFieldConfig<boolean>, 'initialValue'> {
   initialValue?: boolean;
 }
-
-export interface UseCheckboxInputReturn extends UseFieldReturnType<boolean>, Disableable {}

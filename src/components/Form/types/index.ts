@@ -1,11 +1,10 @@
 import { FocusEventHandler, MutableRefObject, ReactNode } from 'react';
 
-import { Animatable, Stylable, Testable } from '../../../types';
+import { Animatable, Disableable, Stylable, Testable } from '../../../types';
 
 import { TranslationSubstitute } from '../../Translation/types';
 
-export interface Field extends Stylable, Testable {
-  disabled?: boolean;
+export interface Field<T> extends UseFieldConfig<T>, Disableable, Stylable, Testable {
   expandError?: boolean;
   hidden?: boolean;
   hideRequiredLabel?: boolean;
