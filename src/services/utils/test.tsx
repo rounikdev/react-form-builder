@@ -1,4 +1,4 @@
-import { JSXElementConstructor, ReactElement } from 'react';
+import { FC, JSXElementConstructor, MutableRefObject, ReactElement } from 'react';
 
 import {
   buildQueries,
@@ -10,6 +10,10 @@ import {
   render,
   RenderOptions
 } from '@testing-library/react';
+
+import { useField } from '@components';
+
+import { ShowHideProps, TestButtonProps, TestInputProps } from './types';
 
 const queryAllByDataTest = (
   container: HTMLElement,
@@ -57,4 +61,60 @@ export const appendModalToRoot = () => {
   afterAll(() => {
     body?.removeChild(modalRoot);
   });
+};
+
+export const ShowHide: FC<ShowHideProps> = ({ children, data, show }) => {
+  return children(show, data);
+};
+
+export const TestTextInput: FC<TestInputProps<string>> = ({
+  dataTestInput = 'input',
+  dataTestState = 'state',
+  dependencyExtractor,
+  formatter,
+  initialValue,
+  name,
+  onBlur,
+  onFocus,
+  sideEffect,
+  validator
+}) => {
+  const { fieldRef, ...state } = useField<string>({
+    dependencyExtractor,
+    formatter,
+    initialValue: initialValue || '',
+    name,
+    onBlur,
+    onFocus,
+    sideEffect,
+    validator
+  });
+  return (
+    <>
+      <input
+        aria-invalid={!state.valid}
+        data-test={dataTestInput}
+        onBlur={state.onBlurHandler}
+        onChange={(event) => state.onChangeHandler(event.target.value)}
+        onFocus={state.onFocusHandler}
+        ref={fieldRef as MutableRefObject<HTMLInputElement>}
+        value={state.value}
+      />
+      <div data-test={dataTestState}>{JSON.stringify(state)}</div>
+    </>
+  );
+};
+
+export const TestButton: FC<TestButtonProps> = ({
+  dataTest,
+  disabled,
+  onClick,
+  text,
+  type = 'button'
+}) => {
+  return (
+    <button data-test={`${dataTest}-button`} disabled={disabled} onClick={onClick} type={type}>
+      {text}
+    </button>
+  );
 };

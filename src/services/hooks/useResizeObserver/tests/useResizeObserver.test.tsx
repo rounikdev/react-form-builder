@@ -1,0 +1,3 @@
+describe('useResizeObserver', () => {
+  it('TODO', () => {});
+});
