@@ -1,7 +1,7 @@
 export type DefaultSingleOption = { label: string; value: string };
 
-export type LabelExtractor<P, T> = (option: P) => T;
+export type LabelExtractor<T, R> = (option: T) => R;
 
-export type ValueExtractor<P, T> = (option: P) => T;
+export type ValueExtractor<T, R> = (option: T) => R;
 
-export type ValueBuilder<P, T> = ({ options, value }: { options: P[]; value: T }) => P | null;
+export type ValueBuilder<T, R> = ({ options, value }: { options: T[]; value: R }) => T | null;

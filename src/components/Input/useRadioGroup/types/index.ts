@@ -17,11 +17,11 @@ export interface UseRadioGroup extends Omit<UseFieldConfig<RadioGroupValue>, 'in
   valueExtractor?: RadioGroupValueExtractor;
 }
 
-export interface UseRadioGroupReturnType extends UseFieldReturnType<RadioGroupValue> {
+export interface UseRadioGroupReturnType<T, R> extends UseFieldReturnType<RadioGroupValue> {
   wrappedOptions: {
     checked: boolean;
-    label: RadioGroupLabel;
+    label: R;
     onChangeHandler: () => void;
-    value: RadioGroupValue;
+    value: T;
   }[];
 }

@@ -12,7 +12,7 @@ const defaultLabelExtractor: LabelExtractor<DefaultSingleOption, string> = (
 const defaultValueExtractor: ValueExtractor<DefaultSingleOption, string> = (option): string =>
   option.value;
 
-export const useRadioGroup: (args: UseRadioGroup) => UseRadioGroupReturnType = ({
+export const useRadioGroup = <T, R>({
   dependencyExtractor,
   initialValue,
   labelExtractor = defaultLabelExtractor,
@@ -21,8 +21,8 @@ export const useRadioGroup: (args: UseRadioGroup) => UseRadioGroupReturnType = (
   sideEffect,
   validator,
   valueExtractor = defaultValueExtractor
-}) => {
-  const props = useField<string>({
+}: UseRadioGroup): UseRadioGroupReturnType<T, R> => {
+  const props = useField<T>({
     dependencyExtractor,
     initialValue,
     name,
