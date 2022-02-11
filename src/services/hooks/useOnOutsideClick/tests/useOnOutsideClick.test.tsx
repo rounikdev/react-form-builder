@@ -1,4 +1,5 @@
 import { FC, useRef } from 'react';
+import userEvent from '@testing-library/user-event';
 
 import { testRender } from '@services/utils';
 
@@ -6,17 +7,12 @@ import { useOnOutsideClick } from '../useOnOutsideClick';
 
 describe('useOnOutsideClick', () => {
   it('Calls a callback only if click is outside of a specified target', () => {
-    const map: { [key: string]: EventListenerOrEventListenerObject } = {};
-
-    document.addEventListener = jest.fn((e, cb) => {
-      map[e] = cb;
-    });
-
     const mockCallback = jest.fn();
 
     const TestComponent: FC<{ callback: () => void }> = ({ callback }) => {
       const element = useRef(null);
       useOnOutsideClick({ callback, element });
+
       return (
         <div ref={element}>
           <button data-test="inside-element">Click</button>
@@ -31,25 +27,20 @@ describe('useOnOutsideClick', () => {
       </div>
     );
 
-    (map.click as EventListener)({ target: getByDataTest('inside-element') } as unknown as Event);
+    userEvent.click(getByDataTest('inside-element'));
     expect(mockCallback).toHaveBeenCalledTimes(0);
 
-    (map.click as EventListener)({ target: getByDataTest('outside-element') } as unknown as Event);
+    userEvent.click(getByDataTest('outside-element'));
     expect(mockCallback).toHaveBeenCalledTimes(1);
   });
 
   it("Doesn't calls a callback if no current element", () => {
-    const map: { [key: string]: EventListenerOrEventListenerObject } = {};
-
-    document.addEventListener = jest.fn((e, cb) => {
-      map[e] = cb;
-    });
-
     const mockCallback = jest.fn();
 
     const TestComponent: FC<{ callback: () => void }> = ({ callback }) => {
       const element = useRef(null);
       useOnOutsideClick({ callback, element });
+
       return (
         <div>
           <button data-test="inside-element">Click</button>
@@ -64,10 +55,10 @@ describe('useOnOutsideClick', () => {
       </div>
     );
 
-    (map.click as EventListener)({ target: getByDataTest('inside-element') } as unknown as Event);
+    userEvent.click(getByDataTest('inside-element'));
     expect(mockCallback).toHaveBeenCalledTimes(0);
 
-    (map.click as EventListener)({ target: getByDataTest('outside-element') } as unknown as Event);
+    userEvent.click(getByDataTest('outside-element'));
     expect(mockCallback).toHaveBeenCalledTimes(0);
   });
 });

@@ -138,13 +138,11 @@ describe('FormatterModel', () => {
       { input: '1.20', expect: '', expectSetValue: 1, setValue: mockSetValue }
     ];
 
-    const defaultSetValue = () => {};
-
     tests.forEach((item) => {
       expect(
         FormatterModel.formatNumberToAmount({
           value: item.input,
-          setValue: item.setValue || defaultSetValue
+          setValue: item.setValue
         })
       ).toEqual(item.expect);
 
@@ -195,13 +193,13 @@ describe('FormatterModel', () => {
 
   it('removeNonDigitFromString', () => {
     const tests = [
-      { input: 'f', expect: '0' },
+      { input: 'f', expect: '' },
       { input: 'f0', expect: '0' }
     ];
 
     tests.forEach((item) =>
       // only number digits or empty string
-      expect(FormatterModel.formatIntegerString({ rawValue: item.input })).toBe(item.expect)
+      expect(FormatterModel.removeNonDigitFromString(item.input)).toBe(item.expect)
     );
   });
 

@@ -53,7 +53,7 @@ export class FormatterModel {
     setValue
   }: {
     value: string;
-    setValue: (newValue: string) => void;
+    setValue?: (newValue: string) => void;
   }) => {
     let newValue = value;
 

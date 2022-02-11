@@ -1,11 +1,10 @@
 import { FocusEvent, useCallback } from 'react';
 
 import { useField } from '@components/Form';
-import { UseFieldReturnType } from '@components/Form/types';
 
-import { UseTextInput } from './types';
+import { UseTextInput, UseTextInputReturnType } from './types';
 
-export const useTextInput: (args: UseTextInput) => UseFieldReturnType<string> = ({
+export const useTextInput: (args: UseTextInput) => UseTextInputReturnType = ({
   dependencyExtractor,
   formatter,
   initialValue,

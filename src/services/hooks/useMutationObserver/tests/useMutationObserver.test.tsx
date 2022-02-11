@@ -1,4 +1,6 @@
-import { FC, useRef } from 'react';
+import { FC, useRef, useState } from 'react';
+import { waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { ShowHide, testRender } from '@services/utils';
 
@@ -15,8 +17,9 @@ describe('useMutationObserver', () => {
   it("Calls callback on target's update", async () => {
     const mockObserverCallback = jest.fn();
 
-    const TestComponent: FC<{ show: boolean }> = ({ show }) => {
+    const TestComponent: FC = () => {
       const ref = useRef<HTMLDivElement>(null);
+      const [show, setShow] = useState(true);
 
       useMutationObserver({
         callback: mockObserverCallback,
@@ -26,40 +29,20 @@ describe('useMutationObserver', () => {
 
       return (
         <div data-test="parent" ref={ref}>
+          <button data-test="button" onClick={() => setShow((current) => !current)}></button>
           {show ? <div data-test="child">Some new content</div> : null}
         </div>
       );
     };
 
-    const { findByDataTest, rerender } = testRender(
-      <ShowHide data={false} show={true}>
-        {(show, showNestedContent) => {
-          return show ? <TestComponent show={showNestedContent} /> : null;
-        }}
-      </ShowHide>
-    );
+    const { getByDataTest } = testRender(<TestComponent />);
 
     expect(mockObserverCallback).toHaveBeenCalledTimes(0);
 
-    rerender(
-      <ShowHide data={true} show={true}>
-        {(show, showNestedContent) => {
-          return show ? <TestComponent show={showNestedContent} /> : null;
-        }}
-      </ShowHide>
-    );
-
-    await findByDataTest('child');
-
-    expect(mockObserverCallback).toHaveBeenCalledTimes(1);
-
-    rerender(
-      <ShowHide data={true} show={false}>
-        {(show, showNestedContent) => {
-          return show ? <TestComponent show={showNestedContent} /> : null;
-        }}
-      </ShowHide>
-    );
+    await waitFor(() => {
+      // eslint-disable-next-line testing-library/no-wait-for-side-effects
+      userEvent.click(getByDataTest('button'));
+    });
 
     expect(mockObserverCallback).toHaveBeenCalledTimes(1);
   });

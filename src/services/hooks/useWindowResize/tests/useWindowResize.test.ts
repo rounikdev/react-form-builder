@@ -1,0 +1,3 @@
+describe('useWindowResize', () => {
+  it('TODO', () => {});
+});
