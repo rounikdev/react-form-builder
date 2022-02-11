@@ -1,27 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { UseFieldConfig, UseFieldReturnType } from '../../../Form';
 
-import { LabelExtractor, ValueExtractor } from '../../types';
+import { ExtractFromSingleOption } from '../../types';
 
 export type RadioGroupLabel = any;
 export type RadioGroupOption = any;
 export type RadioGroupValue = any;
 
-export type RadioGroupLabelExtractor = LabelExtractor<RadioGroupOption, RadioGroupLabel>;
-export type RadioGroupValueExtractor = ValueExtractor<RadioGroupOption, RadioGroupValue>;
-
 export interface UseRadioGroup extends Omit<UseFieldConfig<RadioGroupValue>, 'initialValue'> {
   initialValue?: RadioGroupValue;
-  labelExtractor?: RadioGroupLabelExtractor;
+  inputValueExtractor?: ExtractFromSingleOption<RadioGroupOption, string>;
+  labelExtractor?: ExtractFromSingleOption<RadioGroupOption, RadioGroupLabel>;
   options: RadioGroupValue[];
-  valueExtractor?: RadioGroupValueExtractor;
+  titleExtractor?: ExtractFromSingleOption<RadioGroupOption, string>;
+  valueExtractor?: ExtractFromSingleOption<RadioGroupOption, RadioGroupValue>;
 }
 
 export interface UseRadioGroupReturnType<T, R> extends UseFieldReturnType<RadioGroupValue> {
   wrappedOptions: {
     checked: boolean;
+    inputValue: string;
     label: R;
     onChangeHandler: () => void;
+    title: string;
     value: T;
   }[];
 }

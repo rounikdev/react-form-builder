@@ -3,6 +3,7 @@ import { FC, memo, MutableRefObject, useMemo } from 'react';
 import { useClass } from '@services';
 
 import { useRadioGroup } from '../../useRadioGroup/useRadioGroup';
+import { RadioGroupLabel, RadioGroupValue } from '../../useRadioGroup/types';
 import { RadioGroupProps } from './types';
 
 import styles from './RadioGroup.scss';
@@ -16,22 +17,26 @@ export const RadioGroup: FC<RadioGroupProps> = memo(
     groupLabel,
     id,
     initialValue,
+    inputValueExtractor,
     labelExtractor,
     name,
     options,
     required,
     sideEffect,
+    titleExtractor,
     validator,
     valueExtractor
   }) => {
     const { fieldRef, focused, onBlurHandler, onFocusHandler, touched, valid, wrappedOptions } =
-      useRadioGroup<string, string>({
+      useRadioGroup<RadioGroupValue, RadioGroupLabel>({
         dependencyExtractor,
         initialValue,
+        inputValueExtractor,
         labelExtractor,
         name,
         options,
         sideEffect,
+        titleExtractor,
         validator,
         valueExtractor
       });
@@ -68,13 +73,13 @@ export const RadioGroup: FC<RadioGroupProps> = memo(
                   onFocus={onFocusHandler}
                   ref={index === 0 ? (fieldRef as MutableRefObject<HTMLInputElement>) : null}
                   type="radio"
-                  value={option.value}
+                  value={option.inputValue}
                 />
                 <label
                   className={radioLabelClasses}
                   data-test={`${dataTest}-${index}-radio-option-label`}
                   htmlFor={`${id}-radio-option-${index}`}
-                  title={option.label}
+                  title={option.title}
                 >
                   {option.label}
                 </label>
