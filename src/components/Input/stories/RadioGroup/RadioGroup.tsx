@@ -27,7 +27,7 @@ export const RadioGroup: FC<RadioGroupProps> = memo(
     validator,
     valueExtractor
   }) => {
-    const { fieldRef, focused, onBlurHandler, onFocusHandler, touched, valid, wrappedOptions } =
+    const { fieldRef, focused, onBlurHandler, onFocusHandler, touched, valid, enhancedOptions } =
       useRadioGroup<RadioGroupValue, RadioGroupLabel>({
         dependencyExtractor,
         initialValue,
@@ -56,7 +56,7 @@ export const RadioGroup: FC<RadioGroupProps> = memo(
       <div className={containerClassName} data-test={`${dataTest}-radio-group`} role="radiogroup">
         {groupLabel ? <h3>{groupLabel}</h3> : null}
         <div className={styles.InnerContainer}>
-          {wrappedOptions.map((option, index) => {
+          {enhancedOptions.map((option, index) => {
             return (
               <div className={styles.RadioContainer} key={index}>
                 <input

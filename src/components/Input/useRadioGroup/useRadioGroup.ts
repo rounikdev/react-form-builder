@@ -2,22 +2,22 @@ import { useMemo } from 'react';
 
 import { useField } from '@components/Form';
 
-import { DefaultSingleOption, ExtractFromSingleOption } from '../types';
+import { DefaultSingleOption, ExtractorFromSingleOption } from '../types';
 import { UseRadioGroup, UseRadioGroupReturnType } from './types';
 
-const defaultInputValueExtractor: ExtractFromSingleOption<DefaultSingleOption, string> = (
+const defaultInputValueExtractor: ExtractorFromSingleOption<DefaultSingleOption, string> = (
   option
 ): string => option.value;
 
-const defaultLabelExtractor: ExtractFromSingleOption<DefaultSingleOption, string> = (
+const defaultLabelExtractor: ExtractorFromSingleOption<DefaultSingleOption, string> = (
   option: DefaultSingleOption
 ) => option.label;
 
-const defaultTitleExtractor: ExtractFromSingleOption<DefaultSingleOption, string> = (
+const defaultTitleExtractor: ExtractorFromSingleOption<DefaultSingleOption, string> = (
   option: DefaultSingleOption
 ) => option.label;
 
-const defaultValueExtractor: ExtractFromSingleOption<DefaultSingleOption, string> = (
+const defaultValueExtractor: ExtractorFromSingleOption<DefaultSingleOption, string> = (
   option
 ): string => option.value;
 
@@ -41,7 +41,7 @@ export const useRadioGroup = <T, R>({
     validator
   });
 
-  const wrappedOptions = useMemo(() => {
+  const enhancedOptions = useMemo(() => {
     return options.map((option) => ({
       checked: valueExtractor(option) === props.value,
       inputValue: inputValueExtractor(option),
@@ -54,5 +54,5 @@ export const useRadioGroup = <T, R>({
     }));
   }, [inputValueExtractor, labelExtractor, options, props, titleExtractor, valueExtractor]);
 
-  return { ...props, wrappedOptions };
+  return { ...props, enhancedOptions };
 };
