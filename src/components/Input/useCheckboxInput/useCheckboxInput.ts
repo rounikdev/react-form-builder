@@ -1,9 +1,8 @@
 import { useField } from '@components/Form';
-import { UseFieldReturnType } from '@components/Form/types';
 
-import { UseCheckboxInput } from './types';
+import { UseCheckboxInput, UseCheckboxReturnType } from './types';
 
-export const useCheckboxInput: (args: UseCheckboxInput) => UseFieldReturnType<boolean> = ({
+export const useCheckboxInput: (args: UseCheckboxInput) => UseCheckboxReturnType = ({
   dependencyExtractor,
   initialValue,
   name,
