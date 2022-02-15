@@ -1,4 +1,4 @@
-import { FormContext, FormRemoveAction, FormSetStateAction, FormSetAction } from './types';
+import { FormContext, FormRemoveAction, FormSetStateAction, FormSetAction } from '../types';
 
 export enum FormActions {
   SET_IN_FORM = 'SET_IN_FORM',

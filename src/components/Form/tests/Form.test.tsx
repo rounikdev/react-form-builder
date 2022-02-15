@@ -5,10 +5,11 @@ import userEvent from '@testing-library/user-event';
 import { useUpdateOnly } from '@services';
 import { ShowHide, testRender } from '@services/utils';
 
-import { Form, initialFormContextState, useForm } from '../Form';
-import { reducer } from '../reducer';
+import { initialFormContext } from '../context';
+import { Form } from '../Form';
+import { useField, useForm } from '../hooks';
+import { reducer } from '../reducers';
 import { Validator } from '../types';
-import { useField } from '../useField';
 
 interface FormTestComponent {
   name: string;
@@ -606,23 +607,23 @@ describe('Form and useForm', () => {
   });
 
   it('Form reducer returns state as default', () => {
-    const newState = reducer(initialFormContextState, {
+    const newState = reducer(initialFormContext, {
       payload: { key: '', type: '' },
       type: 'SOME_UNEXPECTED_TYPE' as 'REMOVE_FROM_FORM'
     });
 
-    expect(newState).toEqual(initialFormContextState);
+    expect(newState).toEqual(initialFormContext);
   });
 
   // eslint-disable-next-line max-len
   it('Form reducer returns state without modifying it if no change in value or valid when setting field data', () => {
-    const newState = reducer(initialFormContextState, {
+    const newState = reducer(initialFormContext, {
       payload: { key: 'firstName', valid: true, value: 'Ivan' },
       type: 'SET_IN_FORM'
     });
 
     expect(newState).toEqual({
-      ...initialFormContextState,
+      ...initialFormContext,
       state: {
         firstName: {
           valid: true,

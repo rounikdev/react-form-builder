@@ -2,10 +2,10 @@ import { FC, memo, useEffect, useMemo, useRef } from 'react';
 
 import { GlobalModel, RAFIdInfo } from '@services';
 
-import { HeightTransitionBoxAuto, HeightTransitionProvider } from '../HeightTransitionBox';
+import { HeightTransitionBoxAuto, HeightTransitionProvider } from '../../../HeightTransitionBox';
 
-import { useFormData } from './FormDataProvider';
-import { ConditionalFieldsProps } from './types';
+import { useFormData } from '../../providers';
+import { ConditionalFieldsProps } from '../../types';
 
 const ENABLE_SCROLL_SCROLL_RAF_TIMEOUT = 600; // ms
 const SCROLL_RAF_TIMEOUT = 300; // ms

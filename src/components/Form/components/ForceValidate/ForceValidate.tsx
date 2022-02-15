@@ -2,8 +2,8 @@ import { FC, memo } from 'react';
 
 import { useUpdate } from '@services';
 
-import { useForm } from './Form';
-import { ForceValidateFlag } from './types';
+import { useForm } from '../../hooks';
+import { ForceValidateFlag } from '../../types';
 
 export const ForceValidate: FC<{
   shouldForceValidate: ForceValidateFlag | undefined;

@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import { useForm } from '@components';
+import { useForm } from '@components/Form/hooks';
 
 import styles from './SubmitButton.scss';
 

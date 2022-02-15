@@ -5,8 +5,10 @@ import userEvent from '@testing-library/user-event';
 
 import { ShowHide, testRender } from '@services/utils';
 
-import { Form, useForm } from '../Form';
-import { Formatter, DependencyExtractor, Validator } from '../types';
+import { Form } from '../../../Form';
+import { Formatter, DependencyExtractor, Validator } from '../../../types';
+import { useForm } from '../../useForm/useForm';
+
 import { useField } from '../useField';
 
 interface TestInputProps<T> {

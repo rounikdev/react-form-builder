@@ -2,10 +2,11 @@ import { FC, FocusEventHandler, MutableRefObject, useEffect } from 'react';
 
 import { ShowHide, testRender } from '@services/utils';
 
-import { Form, useForm } from '../Form';
+import { Form } from '../../../Form';
+import { useField, useForm } from '../../../hooks';
+import { Formatter, DependencyExtractor, Validator } from '../../../types';
+
 import { FormDataProvider, useFormData } from '../FormDataProvider';
-import { Formatter, DependencyExtractor, Validator } from '../types';
-import { useField } from '../useField';
 
 interface TestInputProps<T> {
   dataTestInput?: string;

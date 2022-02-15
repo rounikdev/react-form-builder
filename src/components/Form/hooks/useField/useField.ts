@@ -19,15 +19,16 @@ import {
   useUnmount
 } from '@services';
 
-import { useForm } from './Form';
-import { useFormData } from './FormDataProvider';
+import { useFormData } from '../../providers';
 import {
   FormStateEntryValue,
   UseFieldConfig,
   UseFieldState,
   UseFieldReturnType,
   ValidityCheck
-} from './types';
+} from '../../types';
+
+import { useForm } from '../useForm/useForm';
 
 export const useField = <T>({
   dependencyExtractor,

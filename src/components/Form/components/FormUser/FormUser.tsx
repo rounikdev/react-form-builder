@@ -1,10 +1,10 @@
 import { FC, memo } from 'react';
 
-import { HeightTransitionBoxAuto, HeightTransitionProvider } from '../../HeightTransitionBox';
+import { HeightTransitionBoxAuto, HeightTransitionProvider } from '../../../HeightTransitionBox';
 
-import { useForm } from '../Form';
-import { useFormData } from '../FormDataProvider';
-import { FormUserProps } from '../types';
+import { useForm } from '../../hooks';
+import { useFormData } from '../../providers';
+import { FormUserProps } from '../../types';
 
 import styles from './FormUser.scss';
 

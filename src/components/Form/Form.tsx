@@ -1,20 +1,13 @@
-import {
-  createContext,
-  FC,
-  memo,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useReducer,
-  useState
-} from 'react';
+import { FC, memo, useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 
 import { GlobalModel, useUpdate, useUpdateOnly, useUpdatedRef, useClass } from '@services';
 
+import { FormContextInstance, initialFormContext } from './context';
 import { FormArrayWrapper } from './FormArrayWrapper';
-import { FormDataProvider, useFormData } from './FormDataProvider';
-import { FormActions, reducer } from './reducer';
+import { FormDataProvider, useFormData } from './providers';
+import { useForm } from './hooks';
+import { FormActions, reducer } from './reducers';
+import { buildInitialFormState, flattenFormState } from './services';
 import {
   FieldErrors,
   FieldErrorsPayload,
@@ -23,81 +16,12 @@ import {
   FormProps,
   FormRemoveArguments,
   FormSetPayload,
-  FormState,
   FormStateEntry,
-  FormStateEntryValue,
   ResetFlag,
   SetFieldValuePayload
 } from './types';
 
 import styles from './Form.scss';
-
-const initialContextState: FormContext = {
-  fieldToBeSet: {
-    id: '',
-    value: undefined
-  },
-  focusedField: '',
-  forceValidateFlag: {},
-  methods: {
-    focusField: () => {
-      // default function
-    },
-    forceValidate: () => {
-      // default function
-    },
-    getFieldId: () => '',
-    registerFieldErrors: undefined,
-    removeFromForm: () => {
-      // default function
-    },
-    reset: () => {
-      // default function
-    },
-    scrollFieldIntoView: () => {
-      // default function
-    },
-    setFieldValue: () => {
-      // default function
-    },
-    setInForm: () => {
-      // default function
-    }
-  },
-  resetFlag: {},
-  scrolledField: '',
-  state: {},
-  valid: false
-};
-
-export const initialFormContextState = initialContextState;
-
-const Context = createContext<FormContext>(initialContextState);
-
-export const useForm = (): FormContext => {
-  return useContext(Context);
-};
-
-const buildInitialState = (initialData: FormStateEntryValue): FormState => {
-  return initialData
-    ? Object.entries(initialData).reduce((currentInitialState, [key, value]) => {
-        return {
-          ...currentInitialState,
-          [key]: {
-            valid: false,
-            value
-          }
-        };
-      }, {})
-    : {};
-};
-
-const flattenFormState = (obj: FormStateEntry, [k, v]: [string, FormStateEntry]) => {
-  return {
-    valid: obj.valid && v.valid,
-    value: { ...obj.value, [k]: v.value }
-  };
-};
 
 export const Form: FC<FormProps> = memo(
   ({
@@ -115,8 +39,8 @@ export const Form: FC<FormProps> = memo(
     type = 'object'
   }) => {
     const [context, dispatch] = useReducer(reducer, {
-      ...initialContextState,
-      state: buildInitialState(initialData)
+      ...initialFormContext,
+      state: buildInitialFormState(initialData)
     });
 
     const { formData: providedFormData } = useFormData();
@@ -147,7 +71,7 @@ export const Form: FC<FormProps> = memo(
 
       if (formTag) {
         dispatch({
-          payload: buildInitialState(initialData),
+          payload: buildInitialFormState(initialData),
           type: FormActions.SET_FORM_STATE
         });
       }
@@ -348,7 +272,7 @@ export const Form: FC<FormProps> = memo(
 
     if (formTag) {
       return (
-        <Context.Provider value={formContext}>
+        <FormContextInstance.Provider value={formContext}>
           <FormDataProvider value={formDataContext}>
             <form
               className={formClassNames}
@@ -359,13 +283,13 @@ export const Form: FC<FormProps> = memo(
               {children}
             </form>
           </FormDataProvider>
-        </Context.Provider>
+        </FormContextInstance.Provider>
       );
     }
 
     if (type === 'array') {
       return (
-        <Context.Provider value={formContext}>
+        <FormContextInstance.Provider value={formContext}>
           <FormArrayWrapper
             factory={factory}
             initialValue={GlobalModel.getNestedValue(providedFormData, getFieldId().split('.'))}
@@ -373,11 +297,13 @@ export const Form: FC<FormProps> = memo(
           >
             {children}
           </FormArrayWrapper>
-        </Context.Provider>
+        </FormContextInstance.Provider>
       );
     }
 
-    return <Context.Provider value={formContext}>{children}</Context.Provider>;
+    return (
+      <FormContextInstance.Provider value={formContext}>{children}</FormContextInstance.Provider>
+    );
   }
 );
 

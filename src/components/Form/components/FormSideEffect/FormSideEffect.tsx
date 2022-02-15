@@ -2,10 +2,9 @@ import { FC, useEffect } from 'react';
 
 import { useUpdatedRef } from '@services';
 
-import { useForm } from './Form';
-import { useFormData } from './FormDataProvider';
-
-import { FormSideEffectProps } from './types';
+import { useForm } from '../../hooks';
+import { useFormData } from '../../providers';
+import { FormSideEffectProps } from '../../types';
 
 export const FormSideEffect: FC<FormSideEffectProps> = ({ dependencyExtractor, effect }) => {
   const { methods } = useForm();

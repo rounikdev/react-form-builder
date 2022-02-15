@@ -1,7 +1,8 @@
 import { memo, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { useForm, useFormData } from '@components';
+import { useForm } from '@components/Form/hooks';
+import { useFormData } from '@components/Form/providers';
 
 const FormStateDisplay = () => {
   const [inputValue, setInputValue] = useState('');
