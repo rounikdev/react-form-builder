@@ -18,7 +18,7 @@ jest.mock('@components/Form/useField', () => {
 });
 
 describe('useCheckboxInput', () => {
-  afterAll(() => {
+  afterEach(() => {
     jest.clearAllMocks();
   });
 
