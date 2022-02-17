@@ -1,18 +1,18 @@
 import { createContext, FC, memo, useContext } from 'react';
 
-import { FormDataProviderContext, FormDataProviderProps } from '../../types';
+import { FormDataProviderContext, FormRootProviderProps } from '../../types';
 
 const FormDataContext = createContext<FormDataProviderContext>({
   errors: {},
   formData: { valid: false, value: {} }
 });
 
-export const useFormData = (): FormDataProviderContext => {
+export const useFormRoot = (): FormDataProviderContext => {
   return useContext(FormDataContext);
 };
 
-export const FormDataProvider: FC<FormDataProviderProps> = memo(({ children, value }) => {
+export const FormRootProvider: FC<FormRootProviderProps> = memo(({ children, value }) => {
   return <FormDataContext.Provider value={value}>{children}</FormDataContext.Provider>;
 });
 
-FormDataProvider.displayName = 'FormDataProvider';
+FormRootProvider.displayName = 'FormRootProvider';

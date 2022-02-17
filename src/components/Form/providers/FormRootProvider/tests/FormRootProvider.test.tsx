@@ -6,7 +6,7 @@ import { Form } from '../../../Form';
 import { useField, useForm } from '../../../hooks';
 import { Formatter, DependencyExtractor, Validator } from '../../../types';
 
-import { FormDataProvider, useFormData } from '../FormDataProvider';
+import { FormRootProvider, useFormRoot } from '../FormRootProvider';
 
 interface TestInputProps<T> {
   dataTestInput?: string;
@@ -77,7 +77,7 @@ const TestComponent: FC<FormTestComponent> = ({ name, valid, value }) => {
 };
 
 const StateReader = () => {
-  const { errors, formData } = useFormData();
+  const { errors, formData } = useFormRoot();
   return (
     <div>
       <div data-test="formData">{JSON.stringify(formData)}</div>
@@ -98,9 +98,9 @@ const requiredValidator: Validator<unknown> = (value: unknown) => {
       };
 };
 
-describe('FormDataProvider and useFormData', () => {
+describe('FormRootProvider and useFormRoot', () => {
   it('Has display name', () => {
-    expect(FormDataProvider.displayName).toBe('FormDataProvider');
+    expect(FormRootProvider.displayName).toBe('FormRootProvider');
   });
 
   it('Provides the right form state', () => {

@@ -51,6 +51,11 @@ export interface FormSetStateAction {
   type: 'SET_FORM_STATE';
 }
 
+export type FormContextReducer = (
+  context: FormContext,
+  action: FormSetAction | FormRemoveAction | FormSetStateAction
+) => FormContext;
+
 export interface FormStateEntry {
   valid: boolean;
   value: FormStateEntryValue;
@@ -117,6 +122,30 @@ export interface FormProps {
   type?: FormType;
 }
 
+export interface FormRootProps extends Testable {
+  className?: string;
+  initialData?: FormStateEntryValue;
+  noValidate?: boolean;
+  onChange?: (formState: {
+    errors: FieldErrors;
+    valid: boolean;
+    value: FormStateEntryValue;
+  }) => void;
+  onReset?: () => void;
+  onSubmit?: (formState: FormStateEntry) => void;
+}
+
+export interface FormObjectProps {
+  name: string;
+  onReset?: () => void;
+}
+
+export interface FormArrayProps {
+  factory: () => FormStateEntryValue;
+  name: string;
+  onReset?: () => void;
+}
+
 export interface ValidationError {
   substitutes?: TranslationSubstitute[];
   text: string;
@@ -174,7 +203,7 @@ export interface FormDataProviderContext {
   initialData?: FormStateEntry;
 }
 
-export interface FormDataProviderProps {
+export interface FormRootProviderProps {
   value: {
     errors: FieldErrors;
     formData: FormStateEntry;

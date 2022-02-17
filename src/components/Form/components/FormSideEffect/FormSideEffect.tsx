@@ -3,12 +3,12 @@ import { FC, useEffect } from 'react';
 import { useUpdatedRef } from '@services';
 
 import { useForm } from '../../hooks';
-import { useFormData } from '../../providers';
+import { useFormRoot } from '../../providers';
 import { FormSideEffectProps } from '../../types';
 
 export const FormSideEffect: FC<FormSideEffectProps> = ({ dependencyExtractor, effect }) => {
   const { methods } = useForm();
-  const { formData } = useFormData();
+  const { formData } = useFormRoot();
 
   const dependencies = dependencyExtractor(formData);
 

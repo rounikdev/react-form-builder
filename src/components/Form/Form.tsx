@@ -4,7 +4,7 @@ import { GlobalModel, useUpdate, useUpdateOnly, useUpdatedRef, useClass } from '
 
 import { FormContextInstance, initialFormContext } from './context';
 import { FormArrayWrapper } from './FormArrayWrapper';
-import { FormDataProvider, useFormData } from './providers';
+import { FormRootProvider, useFormRoot } from './providers';
 import { useForm } from './hooks';
 import { FormActions, reducer } from './reducers';
 import { buildInitialFormState, flattenFormState } from './services';
@@ -43,7 +43,7 @@ export const Form: FC<FormProps> = memo(
       state: buildInitialFormState(initialData)
     });
 
-    const { formData: providedFormData } = useFormData();
+    const { formData: providedFormData } = useFormRoot();
 
     const [errors, setErrors] = useState<FieldErrors>({});
 
@@ -273,7 +273,7 @@ export const Form: FC<FormProps> = memo(
     if (formTag) {
       return (
         <FormContextInstance.Provider value={formContext}>
-          <FormDataProvider value={formDataContext}>
+          <FormRootProvider value={formDataContext}>
             <form
               className={formClassNames}
               data-test={`${dataTest}-form`}
@@ -282,7 +282,7 @@ export const Form: FC<FormProps> = memo(
             >
               {children}
             </form>
-          </FormDataProvider>
+          </FormRootProvider>
         </FormContextInstance.Provider>
       );
     }

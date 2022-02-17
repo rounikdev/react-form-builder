@@ -19,7 +19,7 @@ import {
   useUnmount
 } from '@services';
 
-import { useFormData } from '../../providers';
+import { useFormRoot } from '../../providers';
 import {
   FormStateEntryValue,
   UseFieldConfig,
@@ -42,7 +42,7 @@ export const useField = <T>({
 }: UseFieldConfig<T>): UseFieldReturnType<T> => {
   const context = useForm();
 
-  const { formData, initialData } = useFormData();
+  const { formData, initialData } = useFormRoot();
 
   const isMounted = useIsMounted();
 
@@ -196,6 +196,17 @@ export const useField = <T>({
     context.methods.removeFromForm({ key: name });
   });
 
+  // Update form errors state on errors update:
+  useEffect(() => {
+    if (context.methods.registerFieldErrors) {
+      const parentId = context.methods.getFieldId();
+      const fieldId = parentId ? `${parentId}.${name}` : name;
+
+      context.methods.registerFieldErrors({ fieldErrors: state.errors, fieldId });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [context.methods.getFieldId, name, state.errors]);
+
   // Remove from form errors state on unmount:
   useEffect(() => {
     return () => {
@@ -207,7 +218,7 @@ export const useField = <T>({
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [context.methods.getFieldId]);
+  }, [context.methods.getFieldId, name]);
 
   useMount(() => {
     validateField(getInitialValue({ getFromFormData: true }), dependencyRef.current);
@@ -233,16 +244,6 @@ export const useField = <T>({
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, state.valid, state.value]);
-
-  // Update form errors state on errors update:
-  useEffect(() => {
-    if (context.methods.registerFieldErrors) {
-      const parentId = context.methods.getFieldId();
-      const fieldId = parentId ? `${parentId}.${name}` : name;
-
-      context.methods.registerFieldErrors({ fieldErrors: state.errors, fieldId });
-    }
-  }, [context.methods, name, state.errors]);
 
   const sideEffectRef = useUpdatedRef(sideEffect);
 

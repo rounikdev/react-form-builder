@@ -3,7 +3,7 @@ import { FC, memo } from 'react';
 import { HeightTransitionBoxAuto, HeightTransitionProvider } from '../../../HeightTransitionBox';
 
 import { useForm } from '../../hooks';
-import { useFormData } from '../../providers';
+import { useFormRoot } from '../../providers';
 import { FormUserProps } from '../../types';
 
 import styles from './FormUser.scss';
@@ -19,7 +19,7 @@ export const FormUser: FC<FormUserProps> = memo(
     contentClassName
   }) => {
     const { methods } = useForm();
-    const { formData } = useFormData();
+    const { formData } = useFormRoot();
 
     return animate ? (
       <HeightTransitionProvider>

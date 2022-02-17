@@ -4,7 +4,7 @@ import { GlobalModel, RAFIdInfo } from '@services';
 
 import { HeightTransitionBoxAuto, HeightTransitionProvider } from '../../../HeightTransitionBox';
 
-import { useFormData } from '../../providers';
+import { useFormRoot } from '../../providers';
 import { ConditionalFieldsProps } from '../../types';
 
 const ENABLE_SCROLL_SCROLL_RAF_TIMEOUT = 600; // ms
@@ -23,7 +23,7 @@ export const ConditionalFields: FC<ConditionalFieldsProps> = memo(
     noScroll,
     scrollTimeout
   }) => {
-    const { formData } = useFormData();
+    const { formData } = useFormRoot();
 
     const ref = useRef<null | HTMLDivElement>(null);
     const enableScrollRef = useRef(false);
