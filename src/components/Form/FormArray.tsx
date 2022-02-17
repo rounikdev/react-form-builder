@@ -65,7 +65,7 @@ export const FormArray: FC<FormArrayProps> = memo(({ children, factory, name, on
 
   return (
     <FormContextInstance.Provider value={formContext}>
-      {typeof children === 'function' ? children([list, add, remove]) : children}
+      {children([list, add, remove])}
     </FormContextInstance.Provider>
   );
 });

@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { TestButton, testRender, TestTextInput } from '@services/utils';
 
 import { Form } from '../Form';
-import { FormArrayFunctionArguments, FormStateEntryValue } from '../types';
+import { FormArrayChildrenArguments, FormStateEntryValue } from '../types';
 
 export const testData = {
   users: [
@@ -41,7 +41,7 @@ const Component = ({
 }) => (
   <Form dataTest="users-form" formTag initialData={initialData} onSubmit={console.log}>
     <Form factory={factory} name="users" type="array">
-      {([usersArray, addUser, removeUser]: FormArrayFunctionArguments) => {
+      {([usersArray, addUser, removeUser]: FormArrayChildrenArguments) => {
         return (
           <>
             <TestButton dataTest="add-user" onClick={() => addUser()} text="Add user" />

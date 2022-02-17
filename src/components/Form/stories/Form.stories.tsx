@@ -3,7 +3,6 @@ import { FC } from 'react';
 import { FormArray } from '../FormArray';
 import { FormObject } from '../FormObject';
 import { FormRoot } from '../FormRoot';
-import { FormArrayFunctionArguments, FormStateEntryValue } from '../types';
 
 import { FormStateDisplay, SubmitButton, TextInput } from './components';
 import {
@@ -34,14 +33,12 @@ export const FormDemo: FC = () => {
         <FormRoot
           className={styles.Form}
           dataTest="users-form"
-          initialData={
-            { users: initialUsers, password: 'a', repeatPassword: 'af' } as FormStateEntryValue
-          }
+          initialData={{ users: initialUsers, password: 'a', repeatPassword: 'af' }}
           onSubmit={console.log}
         >
           <FormStateDisplay />
           <FormArray factory={createUser} name="users">
-            {([usersArray, addUser, removeUser]: FormArrayFunctionArguments) => {
+            {([usersArray, addUser, removeUser]) => {
               return (
                 <>
                   <button className={styles.AddUserButton} onClick={addUser} type="button">
@@ -68,11 +65,7 @@ export const FormDemo: FC = () => {
                             />
 
                             <FormArray factory={createPhone} name="phones">
-                              {([
-                                phonesArray,
-                                addPhone,
-                                removePhone
-                              ]: FormArrayFunctionArguments) => {
+                              {([phonesArray, addPhone, removePhone]) => {
                                 return (
                                   <>
                                     <button

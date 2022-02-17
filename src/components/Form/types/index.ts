@@ -140,7 +140,14 @@ export interface FormObjectProps {
   onReset?: () => void;
 }
 
+export type FormArrayChildrenArguments = [
+  FormStateEntryValue[],
+  () => void,
+  (index: number) => void
+];
+
 export interface FormArrayProps {
+  children: (items: FormArrayChildrenArguments) => ReactNode;
   factory: () => FormStateEntryValue;
   name: string;
   onReset?: () => void;
@@ -241,13 +248,11 @@ export interface ConditionalFieldsProps extends Animatable, Stylable {
   scrollTimeout?: number;
 }
 
-export type FormArrayFunctionArguments = [FormStateEntryValue, () => void, (index: number) => void];
-
 export interface FormArrayWrapperProps {
   children:
     | ReactNode
     | ReactNode[]
-    | ((data: FormArrayFunctionArguments) => ReactNode | ReactNode[]);
+    | ((data: FormArrayChildrenArguments) => ReactNode | ReactNode[]);
   factory?: () => FormStateEntryValue;
   initialValue?: FormStateEntryValue[];
   resetFlag: ResetFlag;
