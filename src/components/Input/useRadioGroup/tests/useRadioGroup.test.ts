@@ -51,6 +51,54 @@ describe('useRadioGroup', () => {
     expect(mockUseField.mock.calls[0][0]).toEqual(useFieldArgs);
   });
 
+  it('Returns correct props', async () => {
+    mockUseField.mockImplementation(originalUseField);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const returnPropTypes: { [key: string]: any } = {
+      fieldRef: 'object',
+      onBlurHandler: 'function',
+      onChangeHandler: 'function',
+      onFocusHandler: 'function',
+      enhancedOptions: 'object',
+      errors: 'object',
+      focused: 'boolean',
+      touched: 'boolean',
+      valid: 'boolean',
+      validating: 'boolean',
+      value: 'string'
+    };
+
+    const useRadioGroupArgs = {
+      dependencyExtractor: jest.fn(),
+      initialValue: 'vanilla',
+      name: 'test',
+      options: [
+        {
+          value: 'chocolate',
+          label: 'Chocolate'
+        },
+        { value: 'strawberry', label: 'Strawberry' },
+        { value: 'vanilla', label: 'Vanilla' }
+      ],
+      sideEffect: jest.fn(),
+      validator: jest.fn()
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { result }: { result: { [key: string]: any } } = renderHook(() =>
+      useRadioGroup(useRadioGroupArgs)
+    );
+
+    await act(() => Promise.resolve());
+
+    expect(Object.keys(returnPropTypes).length === Object.keys(result.current).length).toBeTruthy();
+
+    Object.keys(returnPropTypes).forEach((key) =>
+      expect(typeof result.current[key]).toBe(returnPropTypes[key])
+    );
+  });
+
   it('Creates correct `enhancedOptions`', async () => {
     mockUseField.mockImplementation(originalUseField);
 

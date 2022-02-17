@@ -1,4 +1,4 @@
-import { ChangeEvent, FocusEvent } from 'react';
+import { FocusEvent } from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
 
 import { InputOnBlurSideEffect } from '../types';
@@ -23,6 +23,10 @@ jest.mock('@components/Form/useField', () => {
 });
 
 describe('useTextInput', () => {
+  beforeEach(() => {
+    mockUseField.mockImplementation(jest.fn((...args) => args));
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -41,6 +45,45 @@ describe('useTextInput', () => {
 
     expect(mockUseField).toBeCalledTimes(1);
     expect(mockUseField.mock.calls[0][0]).toEqual(useFieldArgs);
+  });
+
+  it('Returns correct props', async () => {
+    mockUseField.mockImplementation(originalUseField);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const returnPropTypes: { [key: string]: any } = {
+      fieldRef: 'object',
+      onBlurHandler: 'function',
+      onChangeHandler: 'function',
+      onFocusHandler: 'function',
+      errors: 'object',
+      focused: 'boolean',
+      touched: 'boolean',
+      valid: 'boolean',
+      validating: 'boolean',
+      value: 'string'
+    };
+
+    const useTextInputArgs = {
+      dependencyExtractor: jest.fn(),
+      initialValue: '',
+      name: 'test',
+      sideEffect: jest.fn(),
+      validator: jest.fn()
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { result }: { result: { [key: string]: any } } = renderHook(() =>
+      useTextInput(useTextInputArgs)
+    );
+
+    await act(() => Promise.resolve());
+
+    expect(Object.keys(returnPropTypes).length === Object.keys(result.current).length).toBeTruthy();
+
+    Object.keys(returnPropTypes).forEach((key) =>
+      expect(typeof result.current[key]).toBe(returnPropTypes[key])
+    );
   });
 
   it('Calls `useField` with undefined `initialValue`', () => {
