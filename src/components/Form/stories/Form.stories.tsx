@@ -1,8 +1,6 @@
 import { FC } from 'react';
 
-import { FormArray } from '../FormArray';
-import { FormObject } from '../FormObject';
-import { FormRoot } from '../FormRoot';
+import { FormArray, FormObject, FormRoot } from '../components';
 
 import { FormStateDisplay, SubmitButton, TextInput } from './components';
 import {

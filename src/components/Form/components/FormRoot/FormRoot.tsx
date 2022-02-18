@@ -2,19 +2,19 @@ import { FC, memo, useCallback, useMemo } from 'react';
 
 import { useUpdate, useClass } from '@services';
 
-import { FormContextInstance } from './context';
+import { FormContextInstance } from '../../context';
 import {
   useFormErrors,
   useFormFieldInteraction,
   useFormInteraction,
   useFormReducer
-} from './hooks';
-import { FormRootProvider } from './providers';
-import { FormActions, formObjectReducer } from './reducers';
-import { buildInitialFormState, flattenFormObjectState } from './services';
-import { FormContext, FormRootProps } from './types';
+} from '../../hooks';
+import { FormRootProvider } from '../../providers';
+import { FormActions, formObjectReducer } from '../../reducers';
+import { buildInitialFormState, flattenFormObjectState } from '../../services';
+import { FormContext, FormRootProps } from '../../types';
 
-import styles from './Form.scss';
+import styles from './FormRoot.scss';
 
 export const FormRoot: FC<FormRootProps> = memo(
   ({
@@ -132,7 +132,7 @@ export const FormRoot: FC<FormRootProps> = memo(
       <FormContextInstance.Provider value={formContext}>
         <FormRootProvider value={formRootContext}>
           <form
-            className={useClass([styles.Form, className], [className])}
+            className={useClass([styles.FormRoot, className], [className])}
             data-test={`${dataTest}-form`}
             noValidate={noValidate}
             onSubmit={onSubmitHandler}

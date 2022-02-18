@@ -1,10 +1,10 @@
 import { FC, memo, useMemo } from 'react';
 
-import { FormContextInstance } from './context';
-import { useFormInteraction, useFormParent, useFormReducer } from './hooks';
-import { formObjectReducer } from './reducers';
-import { flattenFormObjectState } from './services';
-import { FormContext, FormObjectProps } from './types';
+import { FormContextInstance } from '../../context';
+import { useFormInteraction, useFormParent, useFormReducer } from '../../hooks';
+import { formObjectReducer } from '../../reducers';
+import { flattenFormObjectState } from '../../services';
+import { FormContext, FormObjectProps } from '../../types';
 
 export const FormObject: FC<FormObjectProps> = memo(({ children, name, onReset }) => {
   const { context, removeFromForm, setInForm, valid, value } = useFormReducer({
