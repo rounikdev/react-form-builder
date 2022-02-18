@@ -15,7 +15,7 @@ export const FormArray: FC<FormArrayProps> = memo(({ children, factory, name, on
 
   const { forceValidate, forceValidateFlag, reset, resetFlag } = useFormInteraction({ onReset });
 
-  const { getFieldId, parentContext } = useFormParent({
+  const { getFieldId } = useFormParent({
     forceValidate,
     name,
     reset,
@@ -25,14 +25,10 @@ export const FormArray: FC<FormArrayProps> = memo(({ children, factory, name, on
 
   const methods = useMemo(
     () => ({
-      focusField: parentContext.methods.focusField,
       forceValidate,
       getFieldId,
-      registerFieldErrors: parentContext.methods.registerFieldErrors,
       removeFromForm,
       reset,
-      scrollFieldIntoView: parentContext.methods.scrollFieldIntoView,
-      setFieldValue: parentContext.methods.setFieldValue,
       setInForm
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -42,24 +38,12 @@ export const FormArray: FC<FormArrayProps> = memo(({ children, factory, name, on
   const formContext = useMemo<FormContext>(() => {
     return {
       ...context,
-      fieldToBeSet: parentContext.fieldToBeSet,
-      focusedField: parentContext.focusedField,
       forceValidateFlag,
       methods,
       resetFlag,
-      scrolledField: parentContext.scrolledField,
       valid
     };
-  }, [
-    context,
-    forceValidateFlag,
-    methods,
-    parentContext.fieldToBeSet,
-    parentContext.focusedField,
-    parentContext.scrolledField,
-    resetFlag,
-    valid
-  ]);
+  }, [context, forceValidateFlag, methods, resetFlag, valid]);
 
   const { add, list, remove } = useFormArray({ factory, fieldId: getFieldId(), resetFlag });
 

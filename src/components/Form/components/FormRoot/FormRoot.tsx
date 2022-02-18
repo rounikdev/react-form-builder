@@ -118,15 +118,29 @@ export const FormRoot: FC<FormRootProps> = memo(
       valid
     ]);
 
-    const formRootContext = useMemo(
+    const rootProviderMethods = useMemo(
       () => ({
-        errors,
-        formData: value,
-        initialData
+        focusField,
+        registerFieldErrors,
+        scrollFieldIntoView,
+        setFieldValue
       }),
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      [errors, value]
+      []
     );
+
+    const formRootContext = useMemo(() => {
+      return {
+        errors,
+        fieldToBeSet,
+        focusedField,
+        formData: value,
+        initialData,
+        methods: rootProviderMethods,
+        scrolledField
+      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [errors, fieldToBeSet, focusedField, rootProviderMethods, scrolledField, value]);
 
     return (
       <FormContextInstance.Provider value={formContext}>

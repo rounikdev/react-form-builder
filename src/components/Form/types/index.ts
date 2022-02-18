@@ -80,22 +80,15 @@ export interface SetFieldValuePayload {
 }
 
 export interface FormContext {
-  fieldToBeSet: SetFieldValuePayload;
-  focusedField: string;
   forceValidateFlag: ForceValidateFlag;
   methods: {
-    focusField: (fieldId: string) => void;
     forceValidate: () => void;
     getFieldId: () => string;
-    registerFieldErrors?: (payload: FieldErrorsPayload) => void;
     removeFromForm: (payload: FormRemoveArguments) => void;
     reset: () => void;
-    scrollFieldIntoView: (fieldId: string) => void;
-    setFieldValue: (payload: SetFieldValuePayload) => void;
     setInForm: (payload: FormSetPayload) => void;
   };
   resetFlag: ResetFlag;
-  scrolledField: string;
   state: FormState;
   valid: boolean;
 }
@@ -204,17 +197,23 @@ export interface UseFieldReturnType<T> {
   value: T;
 }
 
-export interface FormDataProviderContext {
+export interface FormRootProviderContext {
   errors: FieldErrors;
+  fieldToBeSet: SetFieldValuePayload;
+  focusedField: string;
   formData: FormStateEntry;
   initialData?: FormStateEntry;
+  methods: {
+    focusField: (fieldId: string) => void;
+    registerFieldErrors?: (payload: FieldErrorsPayload) => void;
+    scrollFieldIntoView: (fieldId: string) => void;
+    setFieldValue: (payload: SetFieldValuePayload) => void;
+  };
+  scrolledField: string;
 }
 
 export interface FormRootProviderProps {
-  value: {
-    errors: FieldErrors;
-    formData: FormStateEntry;
-  };
+  value: FormRootProviderContext;
 }
 
 export interface FormSideEffectProps {

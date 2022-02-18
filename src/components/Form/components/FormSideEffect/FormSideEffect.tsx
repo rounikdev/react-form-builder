@@ -8,14 +8,14 @@ import { FormSideEffectProps } from '../../types';
 
 export const FormSideEffect: FC<FormSideEffectProps> = ({ dependencyExtractor, effect }) => {
   const { methods } = useForm();
-  const { formData } = useFormRoot();
+  const { formData, methods: formRootMethods } = useFormRoot();
 
   const dependencies = dependencyExtractor(formData);
 
   const effectRef = useUpdatedRef(effect);
 
   useEffect(() => {
-    effectRef.current(dependencies, { methods });
+    effectRef.current(dependencies, { methods: { ...methods, ...formRootMethods } });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, dependencies);

@@ -42,7 +42,14 @@ export const useField = <T>({
 }: UseFieldConfig<T>): UseFieldReturnType<T> => {
   const context = useForm();
 
-  const { formData, initialData } = useFormRoot();
+  const {
+    fieldToBeSet,
+    focusedField,
+    formData,
+    initialData,
+    methods: { focusField, registerFieldErrors, scrollFieldIntoView, setFieldValue },
+    scrolledField
+  } = useFormRoot();
 
   const isMounted = useIsMounted();
 
@@ -198,11 +205,11 @@ export const useField = <T>({
 
   // Update form errors state on errors update:
   useEffect(() => {
-    if (context.methods.registerFieldErrors) {
+    if (registerFieldErrors) {
       const parentId = context.methods.getFieldId();
       const fieldId = parentId ? `${parentId}.${name}` : name;
 
-      context.methods.registerFieldErrors({ fieldErrors: state.errors, fieldId });
+      registerFieldErrors({ fieldErrors: state.errors, fieldId });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context.methods.getFieldId, name, state.errors]);
@@ -210,11 +217,11 @@ export const useField = <T>({
   // Remove from form errors state on unmount:
   useEffect(() => {
     return () => {
-      if (context.methods.registerFieldErrors) {
+      if (registerFieldErrors) {
         const parentId = context.methods.getFieldId();
         const fieldId = parentId ? `${parentId}.${name}` : name;
 
-        context.methods.registerFieldErrors({ fieldErrors: [], fieldId });
+        registerFieldErrors({ fieldErrors: [], fieldId });
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -260,40 +267,40 @@ export const useField = <T>({
     const parentId = context.methods.getFieldId();
     const fieldId = parentId ? `${parentId}.${name}` : name;
 
-    if (context.focusedField === fieldId && fieldRef.current) {
+    if (focusedField === fieldId && fieldRef.current) {
       fieldRef.current.focus();
 
-      context.methods.focusField('');
+      focusField('');
     }
-  }, [context.focusedField]);
+  }, [focusedField]);
 
   // Scroll element into view from the root form:
   useUpdate(() => {
     const parentId = context.methods.getFieldId();
     const fieldId = parentId ? `${parentId}.${name}` : name;
 
-    if (context.scrolledField === fieldId && fieldRef.current) {
+    if (scrolledField === fieldId && fieldRef.current) {
       fieldRef.current.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
         inline: 'nearest'
       });
 
-      context.methods.scrollFieldIntoView('');
+      scrollFieldIntoView('');
     }
-  }, [context.scrolledField]);
+  }, [scrolledField]);
 
   // Set value from the root form:
   useUpdate(() => {
     const parentId = context.methods.getFieldId();
     const fieldId = parentId ? `${parentId}.${name}` : name;
 
-    if (context.fieldToBeSet.id === fieldId) {
-      validateField(context.fieldToBeSet.value, dependencyRef.current);
+    if (fieldToBeSet.id === fieldId) {
+      validateField(fieldToBeSet.value, dependencyRef.current);
 
-      context.methods.setFieldValue({ id: '', value: undefined });
+      setFieldValue({ id: '', value: undefined });
     }
-  }, [context.fieldToBeSet]);
+  }, [fieldToBeSet]);
 
   const onBlurHandler = useCallback(
     (event: FocusEvent) => {

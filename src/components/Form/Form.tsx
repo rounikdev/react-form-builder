@@ -43,7 +43,7 @@ export const Form: FC<FormProps> = memo(
       state: buildInitialFormState(initialData)
     });
 
-    const { formData: providedFormData } = useFormRoot();
+    const { formData: providedFormData, methods: parentRootProviderMethods } = useFormRoot();
 
     const [errors, setErrors] = useState<FieldErrors>({});
 
@@ -196,71 +196,60 @@ export const Form: FC<FormProps> = memo(
 
     const methods = useMemo(
       () => ({
-        focusField: formTag ? focusField : parentContext.methods.focusField,
         forceValidate,
         getFieldId,
-        registerFieldErrors: formTag
-          ? registerFieldErrors
-          : parentContext.methods.registerFieldErrors,
         removeFromForm,
         reset,
-        scrollFieldIntoView: formTag
-          ? scrollFieldIntoView
-          : parentContext.methods.scrollFieldIntoView,
-        setFieldValue: formTag ? setFieldValue : parentContext.methods.setFieldValue,
         setInForm
       }),
-      [
-        focusField,
-        forceValidate,
-        formTag,
-        getFieldId,
-        parentContext.methods.focusField,
-        parentContext.methods.registerFieldErrors,
-        parentContext.methods.scrollFieldIntoView,
-        parentContext.methods.setFieldValue,
-        registerFieldErrors,
-        removeFromForm,
-        reset,
-        scrollFieldIntoView,
-        setInForm
-      ]
+      [forceValidate, getFieldId, removeFromForm, reset, setInForm]
     );
 
     const formContext = useMemo<FormContext>(() => {
       return {
         ...context,
-        fieldToBeSet: formTag ? fieldToBeSet : parentContext.fieldToBeSet,
-        focusedField: formTag ? focusedField : parentContext.focusedField,
         forceValidateFlag,
         methods,
         resetFlag,
-        scrolledField: formTag ? scrolledField : parentContext.scrolledField,
         valid
       };
-    }, [
-      context,
-      fieldToBeSet,
-      focusedField,
-      forceValidateFlag,
-      formTag,
-      methods,
-      parentContext.fieldToBeSet,
-      parentContext.focusedField,
-      parentContext.scrolledField,
-      resetFlag,
-      scrolledField,
-      valid
-    ]);
+    }, [context, forceValidateFlag, methods, resetFlag, valid]);
 
-    const formDataContext = useMemo(() => {
+    const rootProviderMethods = useMemo(
+      () => ({
+        focusField: formTag ? focusField : parentRootProviderMethods.focusField,
+        registerFieldErrors: formTag
+          ? registerFieldErrors
+          : parentRootProviderMethods.registerFieldErrors,
+        scrollFieldIntoView: formTag
+          ? scrollFieldIntoView
+          : parentRootProviderMethods.scrollFieldIntoView,
+        setFieldValue: formTag ? setFieldValue : parentRootProviderMethods.setFieldValue
+      }),
+      [
+        focusField,
+        formTag,
+        parentRootProviderMethods.focusField,
+        parentRootProviderMethods.registerFieldErrors,
+        parentRootProviderMethods.scrollFieldIntoView,
+        parentRootProviderMethods.setFieldValue,
+        registerFieldErrors,
+        scrollFieldIntoView
+      ]
+    );
+
+    const formRootContext = useMemo(() => {
       return {
         errors,
+        fieldToBeSet,
+        focusedField,
         formData,
-        initialData
+        initialData,
+        methods: rootProviderMethods,
+        scrolledField
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [errors, formData]);
+    }, [errors, fieldToBeSet, focusedField, formData, rootProviderMethods, scrolledField]);
 
     useUpdate(() => {
       if (onChange) {
@@ -273,7 +262,7 @@ export const Form: FC<FormProps> = memo(
     if (formTag) {
       return (
         <FormContextInstance.Provider value={formContext}>
-          <FormRootProvider value={formDataContext}>
+          <FormRootProvider value={formRootContext}>
             <form
               className={formClassNames}
               data-test={`${dataTest}-form`}

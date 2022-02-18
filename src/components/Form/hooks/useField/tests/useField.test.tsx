@@ -6,6 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { ShowHide, testRender } from '@services/utils';
 
 import { Form } from '../../../Form';
+import { useFormRoot } from '../../../providers';
 import { Formatter, DependencyExtractor, Validator } from '../../../types';
 import { useForm } from '../../useForm/useForm';
 
@@ -698,14 +699,10 @@ describe('useField', () => {
 
     const firstCall = sideEffectMock.mock.calls[0];
     expect(typeof firstCall[0].methods).toBe('object');
-    expect(typeof firstCall[0].methods.focusField).toBe('function');
     expect(typeof firstCall[0].methods.forceValidate).toBe('function');
     expect(typeof firstCall[0].methods.getFieldId).toBe('function');
-    expect(typeof firstCall[0].methods.registerFieldErrors).toBe('function');
     expect(typeof firstCall[0].methods.removeFromForm).toBe('function');
     expect(typeof firstCall[0].methods.reset).toBe('function');
-    expect(typeof firstCall[0].methods.scrollFieldIntoView).toBe('function');
-    expect(typeof firstCall[0].methods.setFieldValue).toBe('function');
     expect(typeof firstCall[0].methods.setInForm).toBe('function');
     expect(firstCall[0].value).toEqual(initialValue);
 
@@ -718,7 +715,7 @@ describe('useField', () => {
     const name = 'firstName';
 
     const FocusButton = () => {
-      const { methods } = useForm();
+      const { methods } = useFormRoot();
 
       return <button data-test="focus" onClick={() => methods.focusField(name)}></button>;
     };
@@ -746,7 +743,7 @@ describe('useField', () => {
     const name = 'firstName';
 
     const ScrollButton = () => {
-      const { methods } = useForm();
+      const { methods } = useFormRoot();
 
       return (
         <button
@@ -782,7 +779,7 @@ describe('useField', () => {
     const error = 'Error';
 
     const SetValueButton = () => {
-      const { methods } = useForm();
+      const { methods } = useFormRoot();
 
       return (
         <button

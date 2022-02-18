@@ -1,13 +1,31 @@
 import { createContext, FC, memo, useContext } from 'react';
 
-import { FormDataProviderContext, FormRootProviderProps } from '../../types';
+import { FormRootProviderContext, FormRootProviderProps } from '../../types';
 
-const FormDataContext = createContext<FormDataProviderContext>({
+const FormDataContext = createContext<FormRootProviderContext>({
   errors: {},
-  formData: { valid: false, value: {} }
+  fieldToBeSet: {
+    id: '',
+    value: undefined
+  },
+  focusedField: '',
+  formData: { valid: false, value: {} },
+  methods: {
+    focusField: () => {
+      // default function
+    },
+    registerFieldErrors: undefined,
+    scrollFieldIntoView: () => {
+      // default function
+    },
+    setFieldValue: () => {
+      // default function
+    }
+  },
+  scrolledField: ''
 });
 
-export const useFormRoot = (): FormDataProviderContext => {
+export const useFormRoot = (): FormRootProviderContext => {
   return useContext(FormDataContext);
 };
 
