@@ -30,8 +30,7 @@ export const FormRoot: FC<FormRootProps> = memo(
     const { context, dispatch, removeFromForm, setInForm, valid, value } = useFormReducer({
       flattenState: flattenFormObjectState,
       initialData,
-      reducer: formObjectReducer,
-      type: 'object'
+      reducer: formObjectReducer
     });
 
     const { errors, registerFieldErrors } = useFormErrors();
@@ -48,8 +47,8 @@ export const FormRoot: FC<FormRootProps> = memo(
     const { forceValidate, forceValidateFlag, reset, resetFlag } = useFormInteraction({
       // TODO: this new instance leads to new instance of `reset` method,
       // which cal lead to infinite loop when using `parentContext.methods`
-      // as dependency
-      onReset: () => {
+      // as dependency. Without useCallback the @testing-library/react tests hang
+      onReset: useCallback(() => {
         dispatch({
           payload: buildInitialFormState(initialData),
           type: FormActions.SET_FORM_STATE
@@ -58,7 +57,8 @@ export const FormRoot: FC<FormRootProps> = memo(
         if (onReset) {
           onReset();
         }
-      }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, [onReset])
     });
 
     const getFieldId = useCallback(() => '', []);

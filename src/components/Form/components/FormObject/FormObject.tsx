@@ -9,8 +9,7 @@ import { FormContext, FormObjectProps } from '../../types';
 export const FormObject: FC<FormObjectProps> = memo(({ children, name, onReset }) => {
   const { context, removeFromForm, setInForm, valid, value } = useFormReducer({
     flattenState: flattenFormObjectState,
-    reducer: formObjectReducer,
-    type: 'object'
+    reducer: formObjectReducer
   });
 
   const { forceValidate, forceValidateFlag, reset, resetFlag } = useFormInteraction({ onReset });

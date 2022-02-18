@@ -17,8 +17,6 @@ export interface Field<T> extends UseFieldConfig<T>, Disableable, Stylable, Test
   showOptionalLabel?: boolean;
 }
 
-export type FormType = 'array' | 'object';
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type FormStateEntryValue = any | any[];
 
@@ -33,12 +31,8 @@ export interface FormSetAction {
   type: 'SET_IN_FORM';
 }
 
-export interface FormRemoveArguments {
+export interface FormRemovePayload {
   key: string;
-}
-
-export interface FormRemovePayload extends FormRemoveArguments {
-  type: string;
 }
 
 export interface FormRemoveAction {
@@ -84,7 +78,7 @@ export interface FormContext {
   methods: {
     forceValidate: () => void;
     getFieldId: () => string;
-    removeFromForm: (payload: FormRemoveArguments) => void;
+    removeFromForm: (payload: FormRemovePayload) => void;
     reset: () => void;
     setInForm: (payload: FormSetPayload) => void;
   };
@@ -95,24 +89,6 @@ export interface FormContext {
 
 export interface FieldErrors {
   [key: string]: ValidationError[];
-}
-
-export interface FormProps {
-  className?: string;
-  dataTest?: string;
-  factory?: () => FormStateEntryValue;
-  formTag?: boolean;
-  initialData?: FormStateEntryValue;
-  name?: string;
-  noValidate?: boolean;
-  onChange?: (formState: {
-    errors: FieldErrors;
-    valid: boolean;
-    value: FormStateEntryValue;
-  }) => void;
-  onReset?: () => void;
-  onSubmit?: (formState: FormStateEntry) => void;
-  type?: FormType;
 }
 
 export interface FormRootProps extends Testable {
@@ -245,16 +221,6 @@ export interface ConditionalFieldsProps extends Animatable, Stylable {
   condition: FieldRenderCondition;
   noScroll?: boolean;
   scrollTimeout?: number;
-}
-
-export interface FormArrayWrapperProps {
-  children:
-    | ReactNode
-    | ReactNode[]
-    | ((data: FormArrayChildrenArguments) => ReactNode | ReactNode[]);
-  factory?: () => FormStateEntryValue;
-  initialValue?: FormStateEntryValue[];
-  resetFlag: ResetFlag;
 }
 
 export interface FormUserProps extends Animatable, Stylable {

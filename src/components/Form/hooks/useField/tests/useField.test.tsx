@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 
 import { ShowHide, testRender } from '@services/utils';
 
-import { Form } from '../../../Form';
+import { FormObject, FormRoot } from '../../../components';
 import { useFormRoot } from '../../../providers';
 import { Formatter, DependencyExtractor, Validator } from '../../../types';
 import { useForm } from '../../useForm/useForm';
@@ -112,9 +112,9 @@ describe('useField', () => {
     const name = 'firstName';
 
     const Wrapper: FC = ({ children }) => (
-      <Form formTag initialData={{ [name]: initialValue }} onSubmit={jest.fn()}>
+      <FormRoot dataTest="root-form" initialData={{ [name]: initialValue }} onSubmit={jest.fn()}>
         {children}
-      </Form>
+      </FormRoot>
     );
 
     const { result } = renderHook(() => useField({ initialValue: undefined, name }), {
@@ -130,9 +130,13 @@ describe('useField', () => {
     const parentFormName = 'user';
 
     const Wrapper: FC = ({ children }) => (
-      <Form formTag initialData={{ user: { [name]: initialValue } }} onSubmit={jest.fn()}>
-        <Form name={parentFormName}>{children}</Form>
-      </Form>
+      <FormRoot
+        dataTest="root-form"
+        initialData={{ user: { [name]: initialValue } }}
+        onSubmit={jest.fn()}
+      >
+        <FormObject name={parentFormName}>{children}</FormObject>
+      </FormRoot>
     );
 
     const { result } = renderHook(() => useField({ initialValue: undefined, name }), {
@@ -226,10 +230,10 @@ describe('useField', () => {
     };
 
     const Wrapper: FC = ({ children }) => (
-      <Form>
+      <FormRoot dataTest="root-form">
         <ForceValidateTrigger />
         {children}
-      </Form>
+      </FormRoot>
     );
 
     const { result } = renderHook(() => useField({ initialValue, name }), { wrapper: Wrapper });
@@ -250,10 +254,10 @@ describe('useField', () => {
     };
 
     const { findByDataTest, getByDataTest } = testRender(
-      <Form>
+      <FormRoot dataTest="root-form">
         <TestInput initialValue={initialValue} name={name} />
         <ResetButton />
-      </Form>
+      </FormRoot>
     );
 
     const stateA = JSON.parse(getByDataTest('state').textContent || '');
@@ -284,10 +288,10 @@ describe('useField', () => {
     };
 
     const { findByDataTest, getByDataTest } = testRender(
-      <Form formTag initialData={{ [name]: initialValue }} onSubmit={jest.fn()}>
+      <FormRoot dataTest="root-form" initialData={{ [name]: initialValue }} onSubmit={jest.fn()}>
         <TestInput name={name} />
         <ResetButton />
-      </Form>
+      </FormRoot>
     );
 
     const stateA = JSON.parse(getByDataTest('state').textContent || '');
@@ -378,7 +382,7 @@ describe('useField', () => {
     const dependencyExtractor: DependencyExtractor = (formData) => formData[fieldNameA];
 
     const { findByDataTest, getByDataTest } = testRender(
-      <Form formTag onSubmit={jest.fn()}>
+      <FormRoot dataTest="root-form" onSubmit={jest.fn()}>
         <TestInput dataTestState="stateA" initialValue={initialValueA} name={fieldNameA} />
         <TestInput
           dataTestInput="inputB"
@@ -388,7 +392,7 @@ describe('useField', () => {
           name={fieldNameB}
           validator={validator}
         />
-      </Form>
+      </FormRoot>
     );
 
     const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
@@ -431,7 +435,7 @@ describe('useField', () => {
     const dependencyExtractor: DependencyExtractor = (formData) => ({ name: formData[fieldNameA] });
 
     const { findByDataTest, getByDataTest } = testRender(
-      <Form formTag onSubmit={jest.fn()}>
+      <FormRoot dataTest="root-form" onSubmit={jest.fn()}>
         <TestInput dataTestState="stateA" initialValue={initialValueA} name={fieldNameA} />
         <TestInput
           dataTestInput="inputB"
@@ -441,7 +445,7 @@ describe('useField', () => {
           name={fieldNameB}
           validator={validator}
         />
-      </Form>
+      </FormRoot>
     );
 
     const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
@@ -484,7 +488,7 @@ describe('useField', () => {
     const dependencyExtractor: DependencyExtractor = (formData) => [formData[fieldNameA]];
 
     const { findByDataTest, getByDataTest } = testRender(
-      <Form formTag onSubmit={jest.fn()}>
+      <FormRoot dataTest="root-form" onSubmit={jest.fn()}>
         <TestInput dataTestState="stateA" initialValue={initialValueA} name={fieldNameA} />
         <TestInput
           dataTestInput="inputB"
@@ -494,7 +498,7 @@ describe('useField', () => {
           name={fieldNameB}
           validator={validator}
         />
-      </Form>
+      </FormRoot>
     );
 
     const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
@@ -537,7 +541,7 @@ describe('useField', () => {
     const dependencyExtractor: DependencyExtractor = (formData) => formData[fieldNameA];
 
     const { findByDataTest, getByDataTest } = testRender(
-      <Form formTag onSubmit={jest.fn()}>
+      <FormRoot dataTest="root-form" onSubmit={jest.fn()}>
         <BigIntTestInput dataTestState="stateA" name={fieldNameA} />
         <TestInput
           dataTestInput="inputB"
@@ -547,7 +551,7 @@ describe('useField', () => {
           name={fieldNameB}
           validator={validator}
         />
-      </Form>
+      </FormRoot>
     );
 
     const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
@@ -583,10 +587,10 @@ describe('useField', () => {
       <ShowHide show={show}>
         {(shouldShow) => {
           return (
-            <Form>
+            <FormRoot dataTest="root-form">
               <StateReader />
               {shouldShow ? <TestInput initialValue={initialValue} name={fieldName} /> : null}
-            </Form>
+            </FormRoot>
           );
         }}
       </ShowHide>
@@ -637,10 +641,10 @@ describe('useField', () => {
     };
 
     const { findByDataTest, getByDataTest } = testRender(
-      <Form>
+      <FormRoot dataTest="root-form">
         <TestInput formatter={formatter} initialValue={initialValue} name={fieldName} />
         <ResetButton />
-      </Form>
+      </FormRoot>
     );
 
     const stateA = JSON.parse(getByDataTest('state').textContent || '');
@@ -686,9 +690,9 @@ describe('useField', () => {
     const sideEffectMock = jest.fn();
 
     const { getByDataTest } = testRender(
-      <Form formTag>
+      <FormRoot dataTest="root-form">
         <TestInput initialValue={initialValue} name={fieldName} sideEffect={sideEffectMock} />
-      </Form>
+      </FormRoot>
     );
 
     const stateA = JSON.parse(getByDataTest('state').textContent || '');
@@ -721,10 +725,10 @@ describe('useField', () => {
     };
 
     const { getByDataTest } = testRender(
-      <Form formTag onSubmit={jest.fn()}>
+      <FormRoot dataTest="root-form" onSubmit={jest.fn()}>
         <TestInput initialValue={initialValue} name={name} />
         <FocusButton />
-      </Form>
+      </FormRoot>
     );
 
     const input = getByDataTest('focus');
@@ -754,10 +758,10 @@ describe('useField', () => {
     };
 
     const { getByDataTest } = testRender(
-      <Form formTag onSubmit={jest.fn()}>
+      <FormRoot dataTest="root-form" onSubmit={jest.fn()}>
         <TestInput initialValue={initialValue} name={name} />
         <ScrollButton />
-      </Form>
+      </FormRoot>
     );
 
     const input = getByDataTest('input');
@@ -790,7 +794,7 @@ describe('useField', () => {
     };
 
     const { findByDataTest, getByDataTest } = testRender(
-      <Form formTag onSubmit={jest.fn()}>
+      <FormRoot dataTest="root-form" onSubmit={jest.fn()}>
         <TestInput
           initialValue={initialValue}
           name={name}
@@ -812,7 +816,7 @@ describe('useField', () => {
           name={dependencyName}
         />
         <SetValueButton />
-      </Form>
+      </FormRoot>
     );
 
     expect(await findByDataTest('input')).toHaveValue(initialValue);

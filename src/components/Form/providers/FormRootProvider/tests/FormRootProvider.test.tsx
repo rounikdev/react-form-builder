@@ -2,7 +2,7 @@ import { FC, FocusEventHandler, MutableRefObject, useEffect } from 'react';
 
 import { ShowHide, testRender } from '@services/utils';
 
-import { Form } from '../../../Form';
+import { FormObject, FormRoot } from '../../../components';
 import { useField, useForm } from '../../../hooks';
 import { Formatter, DependencyExtractor, Validator } from '../../../types';
 
@@ -112,11 +112,11 @@ describe('FormRootProvider and useFormRoot', () => {
     const valueB = 'Ivan';
 
     const { getByDataTest } = testRender(
-      <Form formTag>
+      <FormRoot dataTest="root-form">
         <StateReader />
         <TestComponent name={fieldNameA} valid={validA} value={valueA} />
         <TestComponent name={fieldNameB} valid={validB} value={valueB} />
-      </Form>
+      </FormRoot>
     );
 
     const formData = JSON.parse(getByDataTest('formData').textContent || '');
@@ -128,11 +128,11 @@ describe('FormRootProvider and useFormRoot', () => {
     const fieldNameB = 'lastName';
 
     const { getByDataTest } = testRender(
-      <Form formTag>
+      <FormRoot dataTest="root-form">
         <StateReader />
         <TestInput name={fieldNameA} />
         <TestInput name={fieldNameB} />
-      </Form>
+      </FormRoot>
     );
 
     const errors = JSON.parse(getByDataTest('errors').textContent || '');
@@ -145,15 +145,15 @@ describe('FormRootProvider and useFormRoot', () => {
       <ShowHide show={true}>
         {(show) => {
           return (
-            <Form formTag>
+            <FormRoot dataTest="root-form">
               <StateReader />
               {show ? <TestInput name="name" validator={requiredValidator} /> : null}
-              <Form name="address">
-                <Form name="street">
+              <FormObject name="address">
+                <FormObject name="street">
                   <TestInput name="name" validator={requiredValidator} />
-                </Form>
-              </Form>
-            </Form>
+                </FormObject>
+              </FormObject>
+            </FormRoot>
           );
         }}
       </ShowHide>
@@ -172,15 +172,15 @@ describe('FormRootProvider and useFormRoot', () => {
       <ShowHide show={show}>
         {(shouldShow) => {
           return (
-            <Form formTag>
+            <FormRoot dataTest="root-form">
               <StateReader />
               {shouldShow ? <TestInput name="name" validator={requiredValidator} /> : null}
-              <Form name="address">
-                <Form name="street">
+              <FormObject name="address">
+                <FormObject name="street">
                   <TestInput name="name" validator={requiredValidator} />
-                </Form>
-              </Form>
-            </Form>
+                </FormObject>
+              </FormObject>
+            </FormRoot>
           );
         }}
       </ShowHide>
@@ -209,17 +209,17 @@ describe('FormRootProvider and useFormRoot', () => {
       <ShowHide show={show}>
         {(shouldShow) => {
           return (
-            <Form formTag>
+            <FormRoot dataTest="root-form">
               <StateReader />
               <TestInput name="name" validator={requiredValidator} />
               {shouldShow ? (
-                <Form name="address">
-                  <Form name="street">
+                <FormObject name="address">
+                  <FormObject name="street">
                     <TestInput name="name" validator={requiredValidator} />
-                  </Form>
-                </Form>
+                  </FormObject>
+                </FormObject>
               ) : null}
-            </Form>
+            </FormRoot>
           );
         }}
       </ShowHide>

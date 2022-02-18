@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 
 import { TestTextInput, testRender } from '@services/utils';
 
-import { Form } from '../../../Form';
+import { FormRoot } from '../../../components';
 import { FormSideEffect } from '../FormSideEffect';
 
 interface TestFormWithFormSideEffectProps {
@@ -12,7 +12,7 @@ interface TestFormWithFormSideEffectProps {
 
 const TestFormWithFormSideEffect: FC<TestFormWithFormSideEffectProps> = ({ effect }) => {
   return (
-    <Form dataTest="sideEffectForm" formTag>
+    <FormRoot dataTest="sideEffectForm">
       <FormSideEffect
         dependencyExtractor={(formData) => {
           return [formData.fieldA];
@@ -20,7 +20,7 @@ const TestFormWithFormSideEffect: FC<TestFormWithFormSideEffectProps> = ({ effec
         effect={effect}
       />
       <TestTextInput dataTestInput="fieldA" initialValue="John" name="fieldA" />
-    </Form>
+    </FormRoot>
   );
 };
 

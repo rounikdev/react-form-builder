@@ -5,23 +5,20 @@ import { FormActions } from '../../reducers';
 import { buildInitialFormState } from '../../services';
 import {
   FormContextReducer,
-  FormRemoveArguments,
+  FormRemovePayload,
   FormSetPayload,
   FormState,
-  FormStateEntry,
-  FormType
+  FormStateEntry
 } from '../../types';
 
 export const useFormReducer = ({
   flattenState,
   initialData,
-  reducer,
-  type
+  reducer
 }: {
   flattenState: (state: FormState) => FormStateEntry;
   initialData?: FormStateEntry;
   reducer: FormContextReducer;
-  type: FormType;
 }) => {
   const [context, dispatch] = useReducer(reducer, {
     ...initialFormContext,
@@ -33,12 +30,9 @@ export const useFormReducer = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context.state]);
 
-  const removeFromForm = useCallback((payload: FormRemoveArguments) => {
+  const removeFromForm = useCallback((payload: FormRemovePayload) => {
     dispatch({
-      payload: {
-        ...payload,
-        type
-      },
+      payload,
       type: FormActions.REMOVE_FROM_FORM
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
