@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Form, FormUser } from '@components';
+import { FormRoot, FormUser } from '@components';
 
 import { RadioGroup as RadioGroupInput } from './RadioGroup';
 
@@ -12,15 +12,13 @@ export default {
 
 const Template: ComponentStory<typeof RadioGroupInput> = (args): JSX.Element => (
   <div style={{ width: '40rem' }}>
-    <Form formTag>
+    <FormRoot dataTest="root-form">
       <FormUser>
-        {({ formData }) => {
-          console.log('formData: ', formData);
-
+        {() => {
           return <RadioGroupInput {...args} />;
         }}
       </FormUser>
-    </Form>
+    </FormRoot>
   </div>
 );
 

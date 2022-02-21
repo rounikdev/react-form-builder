@@ -17,8 +17,6 @@ export interface Field<T> extends UseFieldConfig<T>, Disableable, Stylable, Test
   showOptionalLabel?: boolean;
 }
 
-export type FormType = 'array' | 'object';
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type FormStateEntryValue = any | any[];
 
@@ -33,12 +31,8 @@ export interface FormSetAction {
   type: 'SET_IN_FORM';
 }
 
-export interface FormRemoveArguments {
+export interface FormRemovePayload {
   key: string;
-}
-
-export interface FormRemovePayload extends FormRemoveArguments {
-  type: string;
 }
 
 export interface FormRemoveAction {
@@ -50,6 +44,11 @@ export interface FormSetStateAction {
   payload: FormState;
   type: 'SET_FORM_STATE';
 }
+
+export type FormContextReducer = (
+  context: FormContext,
+  action: FormSetAction | FormRemoveAction | FormSetStateAction
+) => FormContext;
 
 export interface FormStateEntry {
   valid: boolean;
@@ -75,22 +74,15 @@ export interface SetFieldValuePayload {
 }
 
 export interface FormContext {
-  fieldToBeSet: SetFieldValuePayload;
-  focusedField: string;
   forceValidateFlag: ForceValidateFlag;
   methods: {
-    focusField: (fieldId: string) => void;
     forceValidate: () => void;
     getFieldId: () => string;
-    registerFieldErrors?: (payload: FieldErrorsPayload) => void;
-    removeFromForm: (payload: FormRemoveArguments) => void;
+    removeFromForm: (payload: FormRemovePayload) => void;
     reset: () => void;
-    scrollFieldIntoView: (fieldId: string) => void;
-    setFieldValue: (payload: SetFieldValuePayload) => void;
     setInForm: (payload: FormSetPayload) => void;
   };
   resetFlag: ResetFlag;
-  scrolledField: string;
   state: FormState;
   valid: boolean;
 }
@@ -99,13 +91,9 @@ export interface FieldErrors {
   [key: string]: ValidationError[];
 }
 
-export interface FormProps {
+export interface FormRootProps extends Testable {
   className?: string;
-  dataTest?: string;
-  factory?: () => FormStateEntryValue;
-  formTag?: boolean;
   initialData?: FormStateEntryValue;
-  name?: string;
   noValidate?: boolean;
   onChange?: (formState: {
     errors: FieldErrors;
@@ -114,7 +102,24 @@ export interface FormProps {
   }) => void;
   onReset?: () => void;
   onSubmit?: (formState: FormStateEntry) => void;
-  type?: FormType;
+}
+
+export interface FormObjectProps {
+  name: string;
+  onReset?: () => void;
+}
+
+export type FormArrayChildrenArguments = [
+  FormStateEntryValue[],
+  () => void,
+  (index: number) => void
+];
+
+export interface FormArrayProps {
+  children: (items: FormArrayChildrenArguments) => ReactNode;
+  factory: () => FormStateEntryValue;
+  name: string;
+  onReset?: () => void;
 }
 
 export interface ValidationError {
@@ -168,17 +173,23 @@ export interface UseFieldReturnType<T> {
   value: T;
 }
 
-export interface FormDataProviderContext {
+export interface FormRootProviderContext {
   errors: FieldErrors;
+  fieldToBeSet: SetFieldValuePayload;
+  focusedField: string;
   formData: FormStateEntry;
   initialData?: FormStateEntry;
+  methods: {
+    focusField: (fieldId: string) => void;
+    registerFieldErrors?: (payload: FieldErrorsPayload) => void;
+    scrollFieldIntoView: (fieldId: string) => void;
+    setFieldValue: (payload: SetFieldValuePayload) => void;
+  };
+  scrolledField: string;
 }
 
-export interface FormDataProviderProps {
-  value: {
-    errors: FieldErrors;
-    formData: FormStateEntry;
-  };
+export interface FormRootProviderProps {
+  value: FormRootProviderContext;
 }
 
 export interface FormSideEffectProps {
@@ -210,18 +221,6 @@ export interface ConditionalFieldsProps extends Animatable, Stylable {
   condition: FieldRenderCondition;
   noScroll?: boolean;
   scrollTimeout?: number;
-}
-
-export type FormArrayFunctionArguments = [FormStateEntryValue, () => void, (index: number) => void];
-
-export interface FormArrayWrapperProps {
-  children:
-    | ReactNode
-    | ReactNode[]
-    | ((data: FormArrayFunctionArguments) => ReactNode | ReactNode[]);
-  factory?: () => FormStateEntryValue;
-  initialValue?: FormStateEntryValue[];
-  resetFlag: ResetFlag;
 }
 
 export interface FormUserProps extends Animatable, Stylable {

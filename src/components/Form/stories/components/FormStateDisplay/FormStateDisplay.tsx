@@ -1,12 +1,13 @@
 import { memo, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { useForm, useFormData } from '@components';
+import { useForm } from '@components/Form/hooks';
+import { useFormRoot } from '@components/Form/providers';
 
 const FormStateDisplay = () => {
   const [inputValue, setInputValue] = useState('');
   const [fieldIdInput, setFieldIdInput] = useState('');
-  const { errors, formData } = useFormData();
+  const { errors, formData } = useFormRoot();
   const {
     methods: { focusField, scrollFieldIntoView, setFieldValue }
   } = useForm();

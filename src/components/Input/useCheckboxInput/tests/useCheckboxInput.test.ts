@@ -7,8 +7,8 @@ let mockUseField: jest.Mock;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let originalUseField: any;
 
-jest.mock('@components/Form/useField', () => {
-  const originalModule = jest.requireActual('@components/Form/useField');
+jest.mock('@components/Form/hooks/useField/useField', () => {
+  const originalModule = jest.requireActual('@components/Form/hooks/useField/useField');
 
   originalUseField = originalModule.useField;
   mockUseField = jest.fn((...args) => args);

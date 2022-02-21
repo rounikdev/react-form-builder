@@ -1,7 +1,6 @@
 import { FC } from 'react';
 
-import { Form } from '../Form';
-import { FormArrayFunctionArguments, FormStateEntryValue } from '../types';
+import { FormArray, FormObject, FormRoot } from '../components';
 
 import { FormStateDisplay, SubmitButton, TextInput } from './components';
 import {
@@ -29,28 +28,25 @@ export const FormDemo: FC = () => {
   return (
     <section className={styles.Container}>
       <div className={styles.FormContainer}>
-        <Form
+        <FormRoot
           className={styles.Form}
           dataTest="users-form"
-          formTag
-          initialData={
-            { users: initialUsers, password: 'a', repeatPassword: 'af' } as FormStateEntryValue
-          }
+          initialData={{ users: initialUsers, password: 'a', repeatPassword: 'af' }}
           onSubmit={console.log}
         >
           <FormStateDisplay />
-          <Form factory={createUser} name="users" type="array">
-            {([usersArray, addUser, removeUser]: FormArrayFunctionArguments) => {
+          <FormArray factory={createUser} name="users">
+            {([usersArray, addUser, removeUser]) => {
               return (
                 <>
-                  <button className={styles.AddUserButton} onClick={() => addUser()}>
+                  <button className={styles.AddUserButton} onClick={addUser} type="button">
                     Add User
                   </button>
                   {(usersArray as Users).map((user, userIndex) => {
                     return (
                       <div className={styles.Group} key={user.id}>
                         <div className={styles.User}>
-                          <Form name={`${userIndex}`}>
+                          <FormObject name={`${userIndex}`}>
                             <TextInput
                               className={styles.Input}
                               id={`first-name-${userIndex}`}
@@ -66,17 +62,14 @@ export const FormDemo: FC = () => {
                               validator={nameValidator}
                             />
 
-                            <Form factory={createPhone} name="phones" type="array">
-                              {([
-                                phonesArray,
-                                addPhone,
-                                removePhone
-                              ]: FormArrayFunctionArguments) => {
+                            <FormArray factory={createPhone} name="phones">
+                              {([phonesArray, addPhone, removePhone]) => {
                                 return (
                                   <>
                                     <button
                                       className={styles.AddPhoneButton}
-                                      onClick={() => addPhone()}
+                                      onClick={addPhone}
+                                      type="button"
                                     >
                                       Add Phone
                                     </button>
@@ -85,14 +78,14 @@ export const FormDemo: FC = () => {
                                         {(phonesArray as Phone[]).map((phone, phoneIndex) => {
                                           return (
                                             <div className={styles.Phone} key={phone.id}>
-                                              <Form name={`${phoneIndex}`}>
+                                              <FormObject name={`${phoneIndex}`}>
                                                 <TextInput
                                                   id={`phone-value-${userIndex}-${phoneIndex}`}
                                                   label="Phone Number"
                                                   name="value"
                                                   validator={phoneValidator}
                                                 />
-                                              </Form>
+                                              </FormObject>
                                               <button
                                                 onClick={() => removePhone(phoneIndex)}
                                                 type="button"
@@ -107,8 +100,8 @@ export const FormDemo: FC = () => {
                                   </>
                                 );
                               }}
-                            </Form>
-                          </Form>
+                            </FormArray>
+                          </FormObject>
                         </div>
                         <button
                           className={styles.RemoveUserButton}
@@ -123,7 +116,7 @@ export const FormDemo: FC = () => {
                 </>
               );
             }}
-          </Form>
+          </FormArray>
           <div className={styles.Passwords}>
             <TextInput
               className={styles.PasswordInput}
@@ -143,7 +136,7 @@ export const FormDemo: FC = () => {
             />
           </div>
           <SubmitButton />
-        </Form>
+        </FormRoot>
       </div>
       <div className={styles.FormStateDisplay} id="form-state-display"></div>
     </section>
