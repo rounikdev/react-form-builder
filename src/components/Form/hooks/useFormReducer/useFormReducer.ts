@@ -20,9 +20,15 @@ export const useFormReducer = ({
   initialData?: FormStateEntry;
   reducer: FormContextReducer;
 }) => {
+  const state = useMemo(
+    () => (initialData ? buildInitialFormState(initialData) : initialFormContext.state),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
   const [context, dispatch] = useReducer(reducer, {
     ...initialFormContext,
-    state: initialData ? buildInitialFormState(initialData) : initialFormContext.state
+    state
   });
 
   const { value, valid } = useMemo(() => {
