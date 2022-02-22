@@ -1,0 +1,88 @@
+@import "../../../../../styles/index.scss";
+
+.Container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba($colorDarkBgk, 0.4);
+  transition: opacity $transitionNormal;
+  animation: growOpacity $transitionNormal;
+
+  &.Close {
+    animation: shrinkOpacity $transitionNormal;
+  }
+
+  &.Hide {
+    background-color: transparent;
+  }
+
+  &,
+  * {
+    box-sizing: border-box;
+    user-select: none;
+  }
+}
+
+.Content {
+  position: relative;
+  overflow: hidden;
+  background-color: $colorWhite;
+  border-radius: $borderRadiusLarge;
+  box-shadow: $boxShadowModal;
+  animation: growBox $transitionNormal;
+
+  &.Close {
+    animation: shrinkBox $transitionNormal;
+  }
+
+  .CloseIconWrap {
+    position: absolute;
+    top: $offsetMedium;
+    right: $offsetMedium;
+  }
+}
+
+@keyframes growOpacity {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes shrinkOpacity {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes growBox {
+  from {
+    transform: translateY(100vh);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes shrinkBox {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(100vh);
+  }
+}
