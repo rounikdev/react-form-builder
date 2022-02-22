@@ -14,7 +14,7 @@ export const useFormArray = ({
   fieldId: string;
   resetFlag: ResetFlag;
 }) => {
-  const { formData: providedFormData } = useFormRoot();
+  const { formData: providedFormData, resetRecords } = useFormRoot();
 
   const [list, setList] = useState<FormStateEntryValue[]>(
     GlobalModel.getNestedValue(providedFormData, fieldId.split('.')) || []
@@ -30,10 +30,16 @@ export const useFormArray = ({
     []
   );
 
-  useUpdate(
-    () => setList(GlobalModel.getNestedValue(providedFormData, fieldId.split('.')) || []),
-    [resetFlag]
-  );
+  useUpdate(() => {
+    const resetRecordsKeys = Object.keys(resetRecords);
+
+    const resetRecordsKey = resetRecordsKeys.find((key) => fieldId.indexOf(key) === 0);
+
+    const currentInitialData =
+      (resetRecords && resetRecordsKey && resetRecords[resetRecordsKey]) || providedFormData;
+
+    setList(GlobalModel.getNestedValue(currentInitialData, fieldId.split('.')) || []);
+  }, [resetFlag]);
 
   return { add, list, remove };
 };

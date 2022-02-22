@@ -1,7 +1,13 @@
 import { FC, memo, useMemo } from 'react';
 
 import { FormContextInstance } from '../../context';
-import { useFormArray, useFormInteraction, useFormParent, useFormReducer } from '../../hooks';
+import {
+  useFormArray,
+  useFormInteraction,
+  useFormParent,
+  useFormReducer,
+  useFormReset
+} from '../../hooks';
 import { formArrayReducer } from '../../reducers';
 import { flattenFormArrayState } from '../../services';
 import { FormContext, FormArrayProps } from '../../types';
@@ -22,27 +28,33 @@ export const FormArray: FC<FormArrayProps> = memo(({ children, factory, name, on
     value
   });
 
+  const { cancel, edit, isEdit, save } = useFormReset({ fieldId: getFieldId(), reset });
+
   const methods = useMemo(
     () => ({
+      cancel,
+      edit,
       forceValidate,
       getFieldId,
       removeFromForm,
       reset,
+      save,
       setInForm
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [getFieldId, reset]
+    [cancel, edit, getFieldId, reset, save]
   );
 
   const formContext = useMemo<FormContext>(() => {
     return {
       ...context,
       forceValidateFlag,
+      isEdit,
       methods,
       resetFlag,
       valid
     };
-  }, [context, forceValidateFlag, methods, resetFlag, valid]);
+  }, [context, forceValidateFlag, isEdit, methods, resetFlag, valid]);
 
   const { add, list, remove } = useFormArray({ factory, fieldId: getFieldId(), resetFlag });
 
