@@ -48,6 +48,7 @@ export const useField = <T>({
     formData,
     initialData,
     methods: { focusField, registerFieldErrors, scrollFieldIntoView, setFieldValue },
+    resetRecords,
     scrolledField
   } = useFormRoot();
 
@@ -60,14 +61,16 @@ export const useField = <T>({
       const parentId = context.methods.getFieldId();
       const fieldId = parentId ? `${parentId}.${name}` : name;
 
+      const currentInitialData = (resetRecords && resetRecords[parentId]) || initialData;
+
       const valueFromRootForm = GlobalModel.getNestedValue(
-        getFromFormData ? formData : initialData,
+        getFromFormData ? formData : currentInitialData,
         fieldId.split('.')
       );
 
       return valueFromRootForm !== undefined ? valueFromRootForm : initialValue;
     },
-    [context.methods, formData, initialData, initialValue, name]
+    [context.methods, formData, initialData, initialValue, name, resetRecords]
   );
 
   const isRenderedRef = useRef(false);

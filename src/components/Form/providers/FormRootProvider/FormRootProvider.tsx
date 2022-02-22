@@ -2,7 +2,7 @@ import { createContext, FC, memo, useContext } from 'react';
 
 import { FormRootProviderContext, FormRootProviderProps } from '../../types';
 
-const FormDataContext = createContext<FormRootProviderContext>({
+const FormRootContext = createContext<FormRootProviderContext>({
   errors: {},
   fieldToBeSet: {
     id: '',
@@ -20,17 +20,23 @@ const FormDataContext = createContext<FormRootProviderContext>({
     },
     setFieldValue: () => {
       // default function
+    },
+    setResetRecords: () => {
+      // default function
     }
   },
+  resetRecords: {},
   scrolledField: ''
 });
 
 export const useFormRoot = (): FormRootProviderContext => {
-  return useContext(FormDataContext);
+  return useContext(FormRootContext);
 };
 
 export const FormRootProvider: FC<FormRootProviderProps> = memo(({ children, value }) => {
-  return <FormDataContext.Provider value={value}>{children}</FormDataContext.Provider>;
+  return <FormRootContext.Provider value={value}>{children}</FormRootContext.Provider>;
 });
+
+FormRootContext.displayName = 'FormRootContext';
 
 FormRootProvider.displayName = 'FormRootProvider';

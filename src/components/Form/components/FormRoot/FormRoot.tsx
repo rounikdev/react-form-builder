@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useMemo } from 'react';
+import { FC, memo, useCallback, useMemo, useState } from 'react';
 
 import { useUpdate, useClass } from '@services';
 
@@ -7,12 +7,13 @@ import {
   useFormErrors,
   useFormFieldInteraction,
   useFormInteraction,
-  useFormReducer
+  useFormReducer,
+  useFormReset
 } from '../../hooks';
 import { FormRootProvider } from '../../providers';
 import { FormActions, formObjectReducer } from '../../reducers';
 import { buildInitialFormState, flattenFormObjectState } from '../../services';
-import { FormContext, FormRootProps } from '../../types';
+import { FormContext, FormRootProps, FormStateEntry } from '../../types';
 
 import styles from './FormRoot.scss';
 
@@ -32,6 +33,8 @@ export const FormRoot: FC<FormRootProps> = memo(
       initialData,
       reducer: formObjectReducer
     });
+
+    const [resetRecords, setResetRecords] = useState<Record<string, FormStateEntry>>({});
 
     const { errors, registerFieldErrors } = useFormErrors();
 
@@ -63,6 +66,8 @@ export const FormRoot: FC<FormRootProps> = memo(
 
     const getFieldId = useCallback(() => '', []);
 
+    const { cancel, edit, isEdit, save } = useFormReset({ fieldId: getFieldId(), reset });
+
     useUpdate(() => {
       if (onChange) {
         onChange({ errors, valid, value });
@@ -82,18 +87,21 @@ export const FormRoot: FC<FormRootProps> = memo(
 
     const methods = useMemo(
       () => ({
+        cancel,
+        edit,
         focusField,
         forceValidate,
         getFieldId,
         registerFieldErrors,
         removeFromForm,
         reset,
+        save,
         scrollFieldIntoView,
         setFieldValue,
         setInForm
       }),
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      [reset]
+      [cancel, edit, save, reset]
     );
 
     const formContext = useMemo<FormContext>(() => {
@@ -102,6 +110,7 @@ export const FormRoot: FC<FormRootProps> = memo(
         fieldToBeSet,
         focusedField,
         forceValidateFlag,
+        isEdit,
         methods,
         resetFlag,
         scrolledField,
@@ -112,6 +121,7 @@ export const FormRoot: FC<FormRootProps> = memo(
       fieldToBeSet,
       focusedField,
       forceValidateFlag,
+      isEdit,
       methods,
       resetFlag,
       scrolledField,
@@ -123,7 +133,8 @@ export const FormRoot: FC<FormRootProps> = memo(
         focusField,
         registerFieldErrors,
         scrollFieldIntoView,
-        setFieldValue
+        setFieldValue,
+        setResetRecords
       }),
       // eslint-disable-next-line react-hooks/exhaustive-deps
       []
@@ -137,10 +148,19 @@ export const FormRoot: FC<FormRootProps> = memo(
         formData: value,
         initialData,
         methods: rootProviderMethods,
+        resetRecords,
         scrolledField
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [errors, fieldToBeSet, focusedField, rootProviderMethods, scrolledField, value]);
+    }, [
+      errors,
+      fieldToBeSet,
+      focusedField,
+      resetRecords,
+      rootProviderMethods,
+      scrolledField,
+      value
+    ]);
 
     return (
       <FormContextInstance.Provider value={formContext}>

@@ -5,9 +5,10 @@ import { useClass } from '@services';
 
 export interface TextInputProps
   extends Omit<UseFieldConfig<string>, 'initialValue'>,
-    Omit<Field, 'dataTest'> {
+    Omit<Field<string>, 'dataTest'> {
   autoComplete?: string;
   className?: string;
+  hidden?: boolean;
   initialValue?: string;
   type?: string;
 }
@@ -18,8 +19,9 @@ export const TextInput: FC<TextInputProps> = memo(
     dependencyExtractor,
     disabled,
     formatter,
+    hidden,
     id,
-    initialValue,
+    initialValue = '',
     label,
     name,
     placeholder,
@@ -52,9 +54,13 @@ export const TextInput: FC<TextInputProps> = memo(
     const isError = useMemo(() => touched && !focused && !valid, [focused, touched, valid]);
 
     return (
-      <div className={useClass([className], [className])}>
+      <div
+        className={useClass([className], [className])}
+        style={{ display: hidden ? 'none' : 'initial' }}
+      >
         <label htmlFor={id}>{label}</label>
         <input
+          aria-hidden={hidden}
           aria-invalid={!valid}
           aria-required={required}
           autoComplete={autoComplete}

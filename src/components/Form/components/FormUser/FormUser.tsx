@@ -18,7 +18,7 @@ export const FormUser: FC<FormUserProps> = memo(
     className,
     contentClassName
   }) => {
-    const { methods } = useForm();
+    const { isEdit, methods } = useForm();
     const { formData } = useFormRoot();
 
     return animate ? (
@@ -30,11 +30,11 @@ export const FormUser: FC<FormUserProps> = memo(
           memoizeChildren={animateMemoizeChildren}
           transitionDuration={animateDuration}
         >
-          {children({ formData, hideClassName: styles.Hide, methods })}
+          {children({ formData, hideClassName: styles.Hide, isEdit, methods })}
         </HeightTransitionBoxAuto>
       </HeightTransitionProvider>
     ) : (
-      children({ formData, hideClassName: styles.Hide, methods })
+      children({ formData, hideClassName: styles.Hide, isEdit, methods })
     );
   }
 );
