@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { useUpdateOnly } from '@services';
 
-import { ModalInlineProps } from './type-definitions';
+import { ModalInlineProps } from './types';
 
 import { useModal } from './context';
 import { Container } from './components';

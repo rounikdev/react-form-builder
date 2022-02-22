@@ -1,3 +1,3 @@
 export * from './components';
-export * from './hooks/useField/useField';
+export * from './hooks';
 export * from './types';

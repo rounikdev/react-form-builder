@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-import { ModalContext } from './type-definitions';
+import { ModalContext } from './types';
 
 const initialState: ModalContext = {
   actions: {},

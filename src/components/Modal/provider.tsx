@@ -4,7 +4,7 @@ import { useModalContextValue } from './hooks';
 import { Context } from './context';
 import ModalArena from './ModalArena';
 
-import { ModalContext } from './type-definitions';
+import { ModalContext } from './types';
 
 const initialState: ModalContext = {
   actions: {},

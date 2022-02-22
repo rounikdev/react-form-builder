@@ -1,10 +1,11 @@
 import { FC } from 'react';
-import { mount } from 'enzyme';
+import { fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
-import { Modal } from '@components/UI';
-import { waitForComponentToUpdate } from '@services';
+import { Modal } from '@components';
+import { appendModalToRoot, testRender } from '@services/utils';
 
-import { ModalElement, ModalTemplateProps } from '../../../type-definitions';
+import { ModalElement, ModalTemplateProps } from '../../../types';
 
 import { Container } from '../Container';
 
@@ -18,7 +19,7 @@ const TestActionButton: FC<TestActionButtonProps> = ({ action }) => {
   return (
     <button
       data-test={`test-button-${action}`}
-      onClick={(e) => actions[action](e.target as unknown as ModalElement)}
+      onClick={(e) => actions[action](e.target as HTMLButtonElement as unknown as ModalElement)}
     ></button>
   );
 };
@@ -28,238 +29,209 @@ const TestModalContent: FC<ModalElement> = ({ id }) => (
 );
 
 describe('Modal actions', () => {
-  const modalRoot = global.document.createElement('div');
-  modalRoot.setAttribute('id', 'modal');
-  const body = global.document.querySelector('body');
-  body?.appendChild(modalRoot);
-
-  afterAll(() => {
-    body?.removeChild(modalRoot);
-  });
+  appendModalToRoot();
 
   it('Has display name', () => {
     expect(Container.displayName).toBe('ModalContainer');
   });
 
-  it('Mount Container with backdrop and content section', () => {
-    const wrapper = mount(
+  it('Mounts Container with backdrop and content section', () => {
+    const { getByDataTest } = testRender(
       <Modal.Provider>
         <TestActionButton action="showModalById" />
       </Modal.Provider>
     );
 
-    const buttonShowModalById = wrapper.find('[data-test="test-button-showModalById"]');
-    buttonShowModalById.simulate('click', { target: { id: 'test' } });
+    const buttonShowModalById = getByDataTest('test-button-showModalById');
 
-    const modalBackdrop = wrapper.find('[data-test="test-container-modal"]');
-    const modalSectionContent = wrapper.find('[data-test="test-content-modal"]');
+    fireEvent.click(buttonShowModalById, {
+      target: {
+        id: 'test'
+      }
+    });
 
-    expect(modalBackdrop).toHaveLength(1);
-    expect(modalSectionContent).toHaveLength(1);
+    expect(getByDataTest('test-container-modal')).toBeInTheDocument();
+    expect(getByDataTest('test-content-modal')).toBeInTheDocument();
   });
 
-  it('Close on backdrop click, no close on section click', async () => {
-    const wrapper = mount(
+  it('Closes on backdrop click, does not close on section click', async () => {
+    const { findByDataTest, getByDataTest, queryByDataTest } = testRender(
       <Modal.Provider>
         <TestActionButton action="showModalById" />
       </Modal.Provider>
     );
 
-    const buttonShowModalById = wrapper.find('[data-test="test-button-showModalById"]');
-    buttonShowModalById.simulate('click', { target: { id: 'test' } });
+    const buttonShowModalById = getByDataTest('test-button-showModalById');
 
-    let modalBackdrop = wrapper.find('[data-test="test-container-modal"]');
-    let modalSectionContent = wrapper.find('[data-test="test-content-modal"]');
+    fireEvent.click(buttonShowModalById, {
+      target: {
+        id: 'test'
+      }
+    });
 
-    modalSectionContent.simulate('click');
-    modalSectionContent.simulate('animationend');
+    let modalBackdrop = getByDataTest('test-container-modal');
+    let modalSectionContent = getByDataTest('test-content-modal');
 
-    modalBackdrop = wrapper.find('[data-test="test-container-modal"]');
-    modalSectionContent = wrapper.find('[data-test="test-content-modal"]');
+    userEvent.click(modalSectionContent);
+    fireEvent.animationEnd(modalBackdrop);
 
-    expect(modalBackdrop).toHaveLength(1);
-    expect(modalSectionContent).toHaveLength(1);
+    modalBackdrop = await findByDataTest('test-container-modal');
+    modalSectionContent = getByDataTest('test-content-modal');
 
-    modalBackdrop.simulate('click');
-    modalBackdrop.simulate('animationend');
+    expect(modalBackdrop).toBeInTheDocument();
+    expect(modalSectionContent).toBeInTheDocument();
 
-    await waitForComponentToUpdate(wrapper);
+    userEvent.click(modalBackdrop);
+    fireEvent.animationEnd(modalBackdrop);
 
-    modalBackdrop = wrapper.find('[data-test="test-container-modal"]');
-    modalSectionContent = wrapper.find('[data-test="test-content-modal"]');
-
-    expect(modalBackdrop).toHaveLength(0);
-    expect(modalSectionContent).toHaveLength(0);
+    expect(await findByDataTest('test-container-modal')).not.toBeInTheDocument();
+    expect(queryByDataTest('test-content-modal')).not.toBeInTheDocument();
   });
 
   it('onClose callback fired', async () => {
     const mockOnClose = jest.fn();
 
-    const wrapper = mount(
+    const { findByDataTest, getByDataTest } = testRender(
       <Modal.Provider>
         <TestActionButton action="showModalById" />
       </Modal.Provider>
     );
 
-    const buttonShowModalById = wrapper.find('[data-test="test-button-showModalById"]');
-    buttonShowModalById.simulate('click', {
+    const buttonShowModalById = getByDataTest('test-button-showModalById');
+
+    fireEvent.click(buttonShowModalById, {
       target: {
         id: 'test',
         onClose: mockOnClose
       }
     });
 
-    let modalBackdrop = wrapper.find('[data-test="test-container-modal"]');
+    const modalBackdrop = getByDataTest('test-container-modal');
 
-    modalBackdrop.simulate('click');
-    modalBackdrop.simulate('animationend');
+    userEvent.click(modalBackdrop);
+    fireEvent.animationEnd(modalBackdrop);
 
-    await waitForComponentToUpdate(wrapper);
-
-    modalBackdrop = wrapper.find('[data-test="test-container-modal"]');
-
-    expect(modalBackdrop).toHaveLength(0);
+    expect(await findByDataTest('test-container-modal')).not.toBeInTheDocument();
     expect(mockOnClose).toBeCalledTimes(1);
   });
 
-  it('Close on close button click', async () => {
-    const wrapper = mount(
+  it('Closes on close button click', async () => {
+    const { findByDataTest, getByDataTest } = testRender(
       <Modal.Provider>
         <TestActionButton action="showModalById" />
       </Modal.Provider>
     );
 
-    const buttonShowModalById = wrapper.find('[data-test="test-button-showModalById"]');
-    buttonShowModalById.simulate('click', {
+    const buttonShowModalById = getByDataTest('test-button-showModalById');
+
+    fireEvent.click(buttonShowModalById, {
       target: {
         id: 'test',
         hasCloseIcon: true
       }
     });
 
-    let modalBackdrop = wrapper.find('[data-test="test-container-modal"]');
-    const closeButton = wrapper.find('[data-test="test-close-modal-button"]');
+    const modalBackdrop = getByDataTest('test-container-modal');
+    const closeButton = getByDataTest('test-close-modal');
 
-    expect(closeButton).toHaveLength(1);
+    expect(closeButton).toBeInTheDocument();
 
-    closeButton.simulate('click');
-    modalBackdrop.simulate('animationend');
+    userEvent.click(closeButton);
+    fireEvent.animationEnd(modalBackdrop);
 
-    await waitForComponentToUpdate(wrapper);
-
-    modalBackdrop = wrapper.find('[data-test="test-container-modal"]');
-    expect(modalBackdrop).toHaveLength(0);
+    expect(await findByDataTest('test-container-modal')).not.toBeInTheDocument();
   });
 
   it('Pass function as content', () => {
-    const wrapper = mount(
+    const { getByDataTest } = testRender(
       <Modal.Provider>
         <TestActionButton action="showModalById" />
       </Modal.Provider>
     );
 
-    const buttonShowModalById = wrapper.find('[data-test="test-button-showModalById"]');
-    buttonShowModalById.simulate('click', {
+    const buttonShowModalById = getByDataTest('test-button-showModalById');
+
+    fireEvent.click(buttonShowModalById, {
       target: {
         id: 'test',
         content: (props: ModalTemplateProps) => <TestModalContent {...props} />
       }
     });
 
-    const modalContent = wrapper.find('[data-test="test-tmpl-content-modal"]');
-
-    expect(modalContent).toHaveLength(1);
+    expect(getByDataTest('test-tmpl-content-modal')).toBeInTheDocument();
   });
 
   it('Update backdrop `overflow`', async () => {
-    const wrapper = mount(
+    const { findByDataTest, getByDataTest } = testRender(
       <Modal.Provider>
         <TestActionButton action="showModalById" />
       </Modal.Provider>
     );
 
-    const buttonShowModalById = wrapper.find('[data-test="test-button-showModalById"]');
-    buttonShowModalById.simulate('click', {
+    const buttonShowModalById = getByDataTest('test-button-showModalById');
+
+    fireEvent.click(buttonShowModalById, {
       target: {
         id: 'test'
       }
     });
 
-    let modalBackdrop = wrapper.find('[data-test="test-container-modal"]');
+    fireEvent.animationStart(getByDataTest('test-container-modal'));
 
-    modalBackdrop.simulate('animationStart');
-
-    await waitForComponentToUpdate(wrapper);
-
-    modalBackdrop = wrapper.find('[data-test="test-container-modal"]');
-    expect(modalBackdrop.props().style).toEqual({ overflow: 'hidden' });
+    expect(getComputedStyle(await findByDataTest('test-container-modal')).overflow).toBe('hidden');
   });
 
   it('Pass `hideBackdrop`', async () => {
-    const wrapper = mount(
+    const { getByDataTest } = testRender(
       <Modal.Provider>
         <TestActionButton action="showModalById" />
       </Modal.Provider>
     );
 
-    const buttonShowModalById = wrapper.find('[data-test="test-button-showModalById"]');
-    buttonShowModalById.simulate('click', {
+    const buttonShowModalById = getByDataTest('test-button-showModalById');
+
+    fireEvent.click(buttonShowModalById, {
       target: {
         id: 'test',
         hideBackdrop: true
       }
     });
 
-    let modalBackdrop = wrapper.find('[data-test="test-container-modal"]');
-
-    modalBackdrop.simulate('animationStart');
-
-    await waitForComponentToUpdate(wrapper);
-
-    modalBackdrop = wrapper.find('[data-test="test-container-modal"]');
-    expect(modalBackdrop.props().className).toBe('Container Hide');
+    expect(getByDataTest('test-container-modal')).toHaveClass('Hide');
   });
 
   it('Trigger `closeAutomatically`', async () => {
-    const wrapper = mount(
+    const { findByDataTest, getByDataTest } = testRender(
       <Modal.Provider>
         <TestActionButton action="showModalById" />
         <TestActionButton action="hideModalById" />
       </Modal.Provider>
     );
 
-    const buttonShowModalById = wrapper.find('[data-test="test-button-showModalById"]');
-    buttonShowModalById.simulate('click', {
+    const buttonShowModalById = getByDataTest('test-button-showModalById');
+    const buttonHideModalById = getByDataTest('test-button-hideModalById');
+
+    fireEvent.click(buttonShowModalById, {
       target: {
         id: 'test',
         closeAutomatically: true
       }
     });
 
-    let modalBackdrop = wrapper.find('[data-test="test-container-modal"]');
-    modalBackdrop.simulate('animationStart');
-
-    await waitForComponentToUpdate(wrapper);
-
-    const buttonHideModalById = wrapper.find('[data-test="test-button-hideModalById"]');
-    buttonHideModalById.simulate('click', {
+    fireEvent.click(buttonHideModalById, {
       target: {
         id: 'test'
       }
     });
 
-    modalBackdrop = wrapper.find('[data-test="test-container-modal"]');
-    modalBackdrop.simulate('animationStart');
-
-    await waitForComponentToUpdate(wrapper);
-
-    modalBackdrop = wrapper.find('[data-test="test-container-modal"]');
-    expect(modalBackdrop.props().className).toBe('Container Close');
+    expect(await findByDataTest('test-container-modal')).toHaveClass('Close');
   });
 
   describe('Modal Inline', () => {
     it('With `alwaysRender`', async () => {
-      const wrapper = mount(
+      const mockOnOpen = jest.fn();
+
+      const { findByDataTest, getByDataTest } = testRender(
         <Modal.Provider>
           <TestActionButton action="showModalById" />
           <Modal.Inline alwaysRender id="modal-1">
@@ -268,29 +240,42 @@ describe('Modal actions', () => {
         </Modal.Provider>
       );
 
-      const buttonHideModalById = wrapper.find('[data-test="test-button-hideModalById"]');
-      expect(buttonHideModalById).toHaveLength(1);
+      const buttonShowModalById = getByDataTest('test-button-showModalById');
+      const buttonHideModalById = getByDataTest('test-button-hideModalById');
 
-      const buttonShowModalById = wrapper.find('[data-test="test-button-showModalById"]');
-      buttonShowModalById.simulate('click', {
+      expect(buttonHideModalById).toBeInTheDocument();
+
+      fireEvent.click(buttonShowModalById, {
         target: {
           id: 'modal-1',
           inline: true,
-          closeAutomatically: true
+          onOpen: mockOnOpen
         }
       });
 
-      const modalBackdrop = wrapper.find('[data-test="modal-1-container-modal"]').hostNodes();
-      modalBackdrop.simulate('animationStart');
+      expect(mockOnOpen).toBeCalledTimes(1);
 
-      await waitForComponentToUpdate(wrapper);
+      expect(getComputedStyle(await findByDataTest('modal-1-container-modal')).visibility).toBe(
+        'visible'
+      );
 
-      const container = wrapper.find(Container);
-      expect(container.props().visible).toBe(true);
+      fireEvent.click(buttonHideModalById, {
+        target: {
+          id: 'modal-1'
+        }
+      });
+
+      fireEvent.animationEnd(getByDataTest('modal-1-container-modal'));
+
+      expect(getComputedStyle(await findByDataTest('modal-1-container-modal')).visibility).toBe(
+        'hidden'
+      );
     });
 
     it('With no `alwaysRender`', async () => {
-      const wrapper = mount(
+      const mockOnOpen = jest.fn();
+
+      const { findByDataTest, getByDataTest, queryByDataTest } = testRender(
         <Modal.Provider>
           <TestActionButton action="showModalById" />
           <Modal.Inline id="modal-1">
@@ -299,28 +284,20 @@ describe('Modal actions', () => {
         </Modal.Provider>
       );
 
-      let buttonHideModalById = wrapper.find('[data-test="test-button-hideModalById"]');
-      expect(buttonHideModalById).toHaveLength(0);
+      const buttonShowModalById = getByDataTest('test-button-showModalById');
 
-      const buttonShowModalById = wrapper.find('[data-test="test-button-showModalById"]');
-      buttonShowModalById.simulate('click', {
+      expect(queryByDataTest('test-button-hideModalById')).not.toBeInTheDocument();
+
+      fireEvent.click(buttonShowModalById, {
         target: {
           id: 'modal-1',
           inline: true,
-          closeAutomatically: true
+          onOpen: mockOnOpen
         }
       });
 
-      const modalBackdrop = wrapper.find('[data-test="modal-1-container-modal"]').hostNodes();
-      modalBackdrop.simulate('animationStart');
-
-      await waitForComponentToUpdate(wrapper);
-
-      buttonHideModalById = wrapper.find('[data-test="test-button-hideModalById"]');
-      expect(buttonHideModalById).toHaveLength(1);
-
-      const container = wrapper.find(Container);
-      expect(container.props().visible).toBe(true);
+      expect(mockOnOpen).toBeCalledTimes(1);
+      expect(await findByDataTest('test-button-hideModalById')).toBeInTheDocument();
     });
   });
 });

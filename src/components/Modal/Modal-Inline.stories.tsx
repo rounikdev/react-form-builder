@@ -1,6 +1,8 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Button, Form, Input, useForm } from '@components/UI';
+import { FormObject, FormRoot, useForm } from '@components/Form';
+
+import { Text as Input } from '@components/Input/stories/Text/Text';
 
 import { useModal } from './context';
 import Modal from './Inline';
@@ -17,7 +19,7 @@ const Step_3_FormFields = () => {
 
   return (
     <>
-      <Input.Primary
+      <Input
         dataTest={`firstName-modal-3`}
         id={`first-name-modal-3`}
         initialValue=""
@@ -26,7 +28,7 @@ const Step_3_FormFields = () => {
       />
       <br />
       <br />
-      <Input.Primary
+      <Input
         dataTest={`lastName-modal-3`}
         id={`last-name-modal-3`}
         initialValue=""
@@ -36,7 +38,7 @@ const Step_3_FormFields = () => {
       <br />
       <br />
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <Button.Secondary dataTest="reset" onClick={methods.reset} size="Medium" text="reset" />
+        <button onClick={methods.reset}>reset</button>
       </div>
     </>
   );
@@ -49,41 +51,29 @@ const Playground = (): JSX.Element => {
 
   return (
     <div id="modal">
-      <Form
+      <FormRoot
         dataTest="users-form"
-        formTag
         onChange={(value) => {
           console.log(value);
         }}
       >
-        <Input.Primary
-          dataTest={`firstName-modal-1`}
-          id={`first-name-modal-1`}
-          initialValue=""
-          label="First Name"
-          name="firstName"
-        />
-        <br />
-        <br />
-        <Button.Primary
-          dataTest="show-modal-1"
+        <button
           onClick={() => {
             showModalById({
               id: 'modal-1',
               inline: true
             });
           }}
-          size="Medium"
-          text="Show Modal 1"
-        />
+        >
+          Show Modal 1
+        </button>
 
         <Modal id="modal-1" alwaysRender>
           <div style={{ padding: '4rem', textAlign: 'center' }}>
             <span style={{ fontSize: '2rem', fontWeight: 'bold' }}> Modal 1</span>
             <br />
             <br />
-            <Button.Primary
-              dataTest="show-modal-2"
+            <button
               onClick={() => {
                 showModalById({
                   id: 'modal-2',
@@ -91,33 +81,31 @@ const Playground = (): JSX.Element => {
                   inline: true
                 });
               }}
-              size="Medium"
-              text="Force Show Modal 2"
-            />
+            >
+              Force Show Modal 2
+            </button>
           </div>
         </Modal>
 
         <br />
         <br />
-        <Button.Primary
-          dataTest="show-modal-2"
+        <button
           onClick={() => {
             showModalById({
               id: 'modal-2',
               inline: true
             });
           }}
-          size="Medium"
-          text="Show Modal 2"
-        />
+        >
+          Show Modal 2
+        </button>
 
         <Modal id="modal-2" alwaysRender>
           <div style={{ padding: '4rem', textAlign: 'center' }}>
             <span style={{ fontSize: '2rem', fontWeight: 'bold' }}> Modal 2</span>
             <br />
             <br />
-            <Button.Primary
-              dataTest="show-modal-3"
+            <button
               onClick={() => {
                 showModalById({
                   id: 'modal-3',
@@ -125,35 +113,34 @@ const Playground = (): JSX.Element => {
                   inline: true
                 });
               }}
-              size="Medium"
-              text="Clear Preceding Show Modal 3"
-            />
+            >
+              Clear Preceding Show Modal 3
+            </button>
           </div>
         </Modal>
 
         <br />
         <br />
-        <Button.Primary
-          dataTest="show-modal-3"
+        <button
           onClick={() => {
             showModalById({
               id: 'modal-3',
               inline: true
             });
           }}
-          size="Medium"
-          text="Show Modal 3"
-        />
+        >
+          Show Modal 3
+        </button>
 
         <Modal id="modal-3" alwaysRender>
           <div style={{ padding: '4rem', textAlign: 'center' }}>
             <span style={{ fontSize: '2rem', fontWeight: 'bold' }}>Modal 3</span>
-            <Form name="modal 3 form">
+            <FormObject name="modal 3 form">
               <Step_3_FormFields />
-            </Form>
+            </FormObject>
           </div>
         </Modal>
-      </Form>
+      </FormRoot>
     </div>
   );
 };

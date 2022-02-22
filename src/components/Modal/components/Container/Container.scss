@@ -1,5 +1,3 @@
-@import "../../../../../styles/index.scss";
-
 .Container {
   position: fixed;
   top: 0;
@@ -9,12 +7,12 @@
   align-items: center;
   width: 100vw;
   height: 100vh;
-  background-color: rgba($colorDarkBgk, 0.4);
-  transition: opacity $transitionNormal;
-  animation: growOpacity $transitionNormal;
+  background-color: rgba(black, 0.4);
+  transition: opacity 300ms;
+  animation: growOpacity 300ms;
 
   &.Close {
-    animation: shrinkOpacity $transitionNormal;
+    animation: shrinkOpacity 300ms;
   }
 
   &.Hide {
@@ -31,19 +29,19 @@
 .Content {
   position: relative;
   overflow: hidden;
-  background-color: $colorWhite;
-  border-radius: $borderRadiusLarge;
-  box-shadow: $boxShadowModal;
-  animation: growBox $transitionNormal;
+  background-color: white;
+  border-radius: 0.8rem;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  animation: growBox 300ms;
 
   &.Close {
-    animation: shrinkBox $transitionNormal;
+    animation: shrinkBox 300ms;
   }
 
   .CloseIconWrap {
     position: absolute;
-    top: $offsetMedium;
-    right: $offsetMedium;
+    top: 1.6rem;
+    right: 1.6rem;
   }
 }
 

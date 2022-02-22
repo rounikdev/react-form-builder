@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 
-import { ModalElement, ModalContext, ModalAction } from '../type-definitions';
+import { ModalElement, ModalContext, ModalAction } from '../types';
 
 import * as actions from '../actions';
 

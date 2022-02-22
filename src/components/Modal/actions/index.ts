@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 
-import { ModalElement, ModalContext } from '../type-definitions';
+import { ModalElement, ModalContext } from '../types';
 
 // Dispatch and SetStateAction not recognized when
 // import('react').Dispatch and import('react').SetStateAction

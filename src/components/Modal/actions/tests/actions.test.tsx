@@ -1,11 +1,12 @@
+/* eslint-disable testing-library/prefer-screen-queries */
 import { FC } from 'react';
-import { act, fireEvent, screen, waitFor } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { Modal } from '@components';
 import { appendModalToRoot, testRender } from '@services/utils';
 
-import { ModalElement } from '../../type-definitions';
+import { ModalElement } from '../../types';
 
 const StateReader: FC = () => {
   const { modalsToShow, orderList } = Modal.useModal();
@@ -41,7 +42,7 @@ describe('Modal actions', () => {
   appendModalToRoot();
 
   it('Multiple modal show, forceShow, clearPreceding, hideModalById', () => {
-    const { getByDataTest } = testRender(
+    const { getByDataTest, getByText } = testRender(
       <Modal.Provider>
         <TestActionButton action="showModalById" />
         <TestActionButton action="hideModalById" />
@@ -57,7 +58,7 @@ describe('Modal actions', () => {
         value: JSON.stringify({ id: 'test' })
       }
     });
-    expect(screen.getByText(JSON.stringify({ test: { id: 'test' } }))).toBeInTheDocument();
+    expect(getByText(JSON.stringify({ test: { id: 'test' } }))).toBeInTheDocument();
 
     fireEvent.click(buttonShowModalById, {
       target: {
@@ -65,7 +66,7 @@ describe('Modal actions', () => {
       }
     });
     expect(
-      screen.getByText(JSON.stringify({ test_1: { id: 'test_1', forceShow: true } }))
+      getByText(JSON.stringify({ test_1: { id: 'test_1', forceShow: true } }))
     ).toBeInTheDocument();
 
     fireEvent.click(buttonHideModalById, {
@@ -73,7 +74,7 @@ describe('Modal actions', () => {
         value: JSON.stringify({ id: 'test_1' })
       }
     });
-    expect(screen.getByText(JSON.stringify({ test: { id: 'test' } }))).toBeInTheDocument();
+    expect(getByText(JSON.stringify({ test: { id: 'test' } }))).toBeInTheDocument();
 
     fireEvent.click(buttonShowModalById, {
       target: {
@@ -81,12 +82,12 @@ describe('Modal actions', () => {
       }
     });
     expect(
-      screen.getByText(JSON.stringify({ test_2: { id: 'test_2', clearPreceding: true } }))
+      getByText(JSON.stringify({ test_2: { id: 'test_2', clearPreceding: true } }))
     ).toBeInTheDocument();
   });
 
   it('hideModalById of a non existing modal', () => {
-    const { getByDataTest } = testRender(
+    const { getByDataTest, getByText } = testRender(
       <Modal.Provider>
         <TestActionButton action="showModalById" />
         <TestActionButton action="hideModalById" />
@@ -102,18 +103,18 @@ describe('Modal actions', () => {
         value: JSON.stringify({ id: 'test' })
       }
     });
-    expect(screen.getByText(JSON.stringify({ test: { id: 'test' } }))).toBeInTheDocument();
+    expect(getByText(JSON.stringify({ test: { id: 'test' } }))).toBeInTheDocument();
 
     fireEvent.click(buttonHideModalById, {
       target: {
         value: JSON.stringify({ id: 'test_1' })
       }
     });
-    expect(screen.getByText(JSON.stringify({ test: { id: 'test' } }))).toBeInTheDocument();
+    expect(getByText(JSON.stringify({ test: { id: 'test' } }))).toBeInTheDocument();
   });
 
   it('showModalById of an existing modal', () => {
-    const { getByDataTest } = testRender(
+    const { getByDataTest, getByText } = testRender(
       <Modal.Provider>
         <TestActionButton action="showModalById" />
 
@@ -128,18 +129,18 @@ describe('Modal actions', () => {
         value: JSON.stringify({ id: 'test' })
       }
     });
-    expect(screen.getByText(JSON.stringify({ test: { id: 'test' } }))).toBeInTheDocument();
+    expect(getByText(JSON.stringify({ test: { id: 'test' } }))).toBeInTheDocument();
 
     fireEvent.click(buttonShowModalById, {
       target: {
         value: JSON.stringify({ id: 'test' })
       }
     });
-    expect(screen.getByText(JSON.stringify({ test: { id: 'test' } }))).toBeInTheDocument();
+    expect(getByText(JSON.stringify({ test: { id: 'test' } }))).toBeInTheDocument();
   });
 
   it('Clear modal on backdrop click', async () => {
-    const { getByDataTest } = testRender(
+    const { getByDataTest, getByText } = testRender(
       <Modal.Provider>
         <TestActionButton action="showModalById" />
 
@@ -166,6 +167,6 @@ describe('Modal actions', () => {
       fireEvent.animationEnd(modalBackdrop);
     });
 
-    expect(screen.getByText(JSON.stringify({}))).toBeInTheDocument();
+    expect(getByText(JSON.stringify({}))).toBeInTheDocument();
   });
 });

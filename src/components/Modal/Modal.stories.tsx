@@ -1,26 +1,23 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Button } from '@components/UI';
-
 import { useModal } from './context';
 import { Provider } from './provider';
 import { Container } from './components/Container/Container';
-import { ModalTemplateProps } from './type-definitions';
+import { ModalElement } from './types';
 
 export default {
   component: Container,
   title: 'Components/Modal/Basic'
 } as ComponentMeta<typeof Container>;
 
-const Playground = (args: ModalTemplateProps): JSX.Element => {
+const Playground = (args: ModalElement): JSX.Element => {
   const {
     actions: { showModalById }
   } = useModal();
 
   return (
     <div id="modal">
-      <Button.Primary
-        dataTest="show-modal-1"
+      <button
         onClick={() => {
           showModalById({
             ...args,
@@ -30,8 +27,7 @@ const Playground = (args: ModalTemplateProps): JSX.Element => {
                 <span style={{ fontSize: '2rem', fontWeight: 'bold' }}> Modal 1</span>
                 <br />
                 <br />
-                <Button.Primary
-                  dataTest="show-modal-2"
+                <button
                   onClick={() => {
                     showModalById({
                       ...args,
@@ -41,8 +37,7 @@ const Playground = (args: ModalTemplateProps): JSX.Element => {
                           <span style={{ fontSize: '2rem', fontWeight: 'bold' }}> Modal 2</span>
                           <br />
                           <br />
-                          <Button.Primary
-                            dataTest="show-modal-3"
+                          <button
                             onClick={() => {
                               showModalById({
                                 ...args,
@@ -57,24 +52,24 @@ const Playground = (args: ModalTemplateProps): JSX.Element => {
                                 clearPreceding: true
                               });
                             }}
-                            size="Medium"
-                            text="Clear Preceding Show Modal 3"
-                          />
+                          >
+                            Clear Preceding Show Modal 3
+                          </button>
                         </p>
                       ),
                       forceShow: true
                     });
                   }}
-                  size="Medium"
-                  text="Force Show Modal 2"
-                />
+                >
+                  Force Show Modal 2
+                </button>
               </p>
             )
           });
         }}
-        size="Medium"
-        text="Show Modal 1"
-      />
+      >
+        Show Modal 1
+      </button>
     </div>
   );
 };

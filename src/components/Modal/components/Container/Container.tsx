@@ -3,7 +3,7 @@ import { FC, memo, useCallback, useMemo, useState } from 'react';
 import { useClass, useMount, useUpdate } from '@services';
 
 import { useModal } from '../../context';
-import { ModalContainer } from '../../type-definitions';
+import { ModalContainer } from '../../types';
 
 import styles from './Container.scss';
 
