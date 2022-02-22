@@ -1,4 +1,4 @@
-import { FocusEventHandler, MutableRefObject, ReactNode } from 'react';
+import { Dispatch, FocusEventHandler, MutableRefObject, ReactNode, SetStateAction } from 'react';
 
 import { Animatable, Disableable, Stylable, Testable } from '../../../types';
 
@@ -75,11 +75,15 @@ export interface SetFieldValuePayload {
 
 export interface FormContext {
   forceValidateFlag: ForceValidateFlag;
+  isEdit: boolean;
   methods: {
+    cancel: () => void;
+    edit: () => void;
     forceValidate: () => void;
     getFieldId: () => string;
     removeFromForm: (payload: FormRemovePayload) => void;
     reset: () => void;
+    save: () => void;
     setInForm: (payload: FormSetPayload) => void;
   };
   resetFlag: ResetFlag;
@@ -184,7 +188,9 @@ export interface FormRootProviderContext {
     registerFieldErrors?: (payload: FieldErrorsPayload) => void;
     scrollFieldIntoView: (fieldId: string) => void;
     setFieldValue: (payload: SetFieldValuePayload) => void;
+    setResetRecords: Dispatch<SetStateAction<Record<string, FormStateEntry>>>;
   };
+  resetRecords: Record<string, FormStateEntry>;
   scrolledField: string;
 }
 
@@ -231,6 +237,7 @@ export interface FormUserProps extends Animatable, Stylable {
   }: {
     formData: FormStateEntryValue;
     hideClassName: string;
+    isEdit: boolean;
     methods: FormContext['methods'];
   }) => JSX.Element;
 }

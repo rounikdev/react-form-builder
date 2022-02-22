@@ -4,7 +4,14 @@ import { FormContext } from '../types';
 
 export const initialFormContext: FormContext = {
   forceValidateFlag: {},
+  isEdit: false,
   methods: {
+    cancel: () => {
+      // default function
+    },
+    edit: () => {
+      // default function
+    },
     forceValidate: () => {
       // default function
     },
@@ -13,6 +20,9 @@ export const initialFormContext: FormContext = {
       // default function
     },
     reset: () => {
+      // default function
+    },
+    save: () => {
       // default function
     },
     setInForm: () => {
@@ -25,3 +35,5 @@ export const initialFormContext: FormContext = {
 };
 
 export const FormContextInstance = createContext<FormContext>(initialFormContext);
+
+FormContextInstance.displayName = 'FormContext';
