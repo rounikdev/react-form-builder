@@ -2,7 +2,6 @@ import { useCallback, useMemo, useReducer } from 'react';
 
 import { initialFormContext } from '../../context';
 import { FormActions } from '../../reducers';
-import { buildInitialFormState } from '../../services';
 import {
   FormContextReducer,
   FormRemovePayload,
@@ -13,23 +12,12 @@ import {
 
 export const useFormReducer = ({
   flattenState,
-  initialData,
   reducer
 }: {
   flattenState: (state: FormState) => FormStateEntry;
-  initialData?: FormStateEntry;
   reducer: FormContextReducer;
 }) => {
-  const state = useMemo(
-    () => (initialData ? buildInitialFormState(initialData) : initialFormContext.state),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
-
-  const [context, dispatch] = useReducer(reducer, {
-    ...initialFormContext,
-    state
-  });
+  const [context, dispatch] = useReducer(reducer, initialFormContext);
 
   const { value, valid } = useMemo(() => {
     return flattenState(context.state);

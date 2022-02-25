@@ -17,7 +17,18 @@ export const formRemoveFromArrayActionReducer = (
   action: FormRemoveAction
 ) => {
   const state = { ...context.state };
-  delete state[action.payload.key];
+
+  if (state[action.payload.key] !== undefined) {
+    delete state[action.payload.key];
+  } else {
+    // Resetting the state may lead to consecutive
+    // removals of indexes that don't exist
+    // (because the index normalization
+    //  and the indexes coming in the following
+    //  order 2... 3... 4... 5 etc.).
+    // So if such index, remove the last element:
+    delete state[Object.keys(state).length - 1];
+  }
 
   const stateLength = Object.keys(state).length;
 

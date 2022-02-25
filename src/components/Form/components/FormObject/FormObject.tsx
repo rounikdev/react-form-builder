@@ -2,6 +2,7 @@ import { FC, memo, useMemo } from 'react';
 
 import { FormContextInstance } from '../../context';
 import { useFormInteraction, useFormParent, useFormReducer, useFormReset } from '../../hooks';
+import { FormEditProvider, useFormEditContext } from '../../providers';
 import { formObjectReducer } from '../../reducers';
 import { flattenFormObjectState } from '../../services';
 import { FormContext, FormObjectProps } from '../../types';
@@ -13,6 +14,8 @@ export const FormObject: FC<FormObjectProps> = memo(({ children, name, onReset }
   });
 
   const { forceValidate, forceValidateFlag, reset, resetFlag } = useFormInteraction({ onReset });
+
+  const { isEdit: isParentEdit } = useFormEditContext();
 
   const { getFieldId } = useFormParent({
     forceValidate,
@@ -51,7 +54,9 @@ export const FormObject: FC<FormObjectProps> = memo(({ children, name, onReset }
   }, [context, forceValidateFlag, isEdit, methods, resetFlag, valid]);
 
   return (
-    <FormContextInstance.Provider value={formContext}>{children}</FormContextInstance.Provider>
+    <FormEditProvider isEdit={isEdit || isParentEdit}>
+      <FormContextInstance.Provider value={formContext}>{children}</FormContextInstance.Provider>
+    </FormEditProvider>
   );
 });
 

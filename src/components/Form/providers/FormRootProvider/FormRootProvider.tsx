@@ -18,6 +18,9 @@ const FormRootContext = createContext<FormRootProviderContext>({
     scrollFieldIntoView: () => {
       // default function
     },
+    setDirty: () => {
+      // default function
+    },
     setFieldValue: () => {
       // default function
     },
@@ -25,6 +28,7 @@ const FormRootContext = createContext<FormRootProviderContext>({
       // default function
     }
   },
+  pristine: true,
   resetRecords: {},
   scrolledField: ''
 });

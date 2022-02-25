@@ -1,7 +1,8 @@
 import { FC, memo, useCallback, useMemo, useState } from 'react';
 
-import { useUpdate, useClass } from '@services';
+import { useClass, useUpdate, useUpdatedRef } from '@services';
 
+import { INITIAL_RESET_RECORD_KEY } from '../../constants';
 import { FormContextInstance } from '../../context';
 import {
   useFormErrors,
@@ -30,11 +31,14 @@ export const FormRoot: FC<FormRootProps> = memo(
   }) => {
     const { context, dispatch, removeFromForm, setInForm, valid, value } = useFormReducer({
       flattenState: flattenFormObjectState,
-      initialData,
       reducer: formObjectReducer
     });
 
     const [resetRecords, setResetRecords] = useState<Record<string, FormStateEntry>>({});
+
+    const [pristine, setPristine] = useState<boolean>(true);
+
+    const setDirty = useCallback(() => setPristine(false), []);
 
     const { errors, registerFieldErrors } = useFormErrors();
 
@@ -47,15 +51,19 @@ export const FormRoot: FC<FormRootProps> = memo(
       setFieldValue
     } = useFormFieldInteraction();
 
+    const initialResetRecordRef = useUpdatedRef(resetRecords[INITIAL_RESET_RECORD_KEY]);
+
     const { forceValidate, forceValidateFlag, reset, resetFlag } = useFormInteraction({
       // TODO: this new instance leads to new instance of `reset` method,
-      // which cal lead to infinite loop when using `parentContext.methods`
+      // which leads to infinite loop when using `parentContext.methods`
       // as dependency. Without useCallback the @testing-library/react tests hang
       onReset: useCallback(() => {
         dispatch({
-          payload: buildInitialFormState(initialData),
+          payload: buildInitialFormState(initialResetRecordRef.current),
           type: FormActions.SET_FORM_STATE
         });
+
+        setPristine(true);
 
         if (onReset) {
           onReset();
@@ -63,6 +71,16 @@ export const FormRoot: FC<FormRootProps> = memo(
         // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [onReset])
     });
+
+    // Gather the initial state:
+    useUpdate(() => {
+      if (pristine) {
+        setResetRecords((currentResetRecords) => ({
+          ...currentResetRecords,
+          [INITIAL_RESET_RECORD_KEY]: value
+        }));
+      }
+    }, [value]);
 
     const getFieldId = useCallback(() => '', []);
 
@@ -133,6 +151,7 @@ export const FormRoot: FC<FormRootProps> = memo(
         focusField,
         registerFieldErrors,
         scrollFieldIntoView,
+        setDirty,
         setFieldValue,
         setResetRecords
       }),
@@ -148,6 +167,7 @@ export const FormRoot: FC<FormRootProps> = memo(
         formData: value,
         initialData,
         methods: rootProviderMethods,
+        pristine,
         resetRecords,
         scrolledField
       };
@@ -156,6 +176,7 @@ export const FormRoot: FC<FormRootProps> = memo(
       errors,
       fieldToBeSet,
       focusedField,
+      pristine,
       resetRecords,
       rootProviderMethods,
       scrolledField,
