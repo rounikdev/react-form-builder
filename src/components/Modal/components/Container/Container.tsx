@@ -1,9 +1,10 @@
-import { FC, memo, useCallback, useMemo, useState } from 'react';
+import { CSSProperties, FC, memo, useCallback, useMemo, useRef, useState } from 'react';
 
 import { useClass, useMount, useUpdate } from '@services';
 
 import { useModal } from '../../context';
 import { ModalContainer } from '../../types';
+import { CloseIcon } from './components';
 
 import styles from './Container.scss';
 
@@ -12,10 +13,19 @@ export const Container: FC<ModalContainer> = memo((props) => {
     alwaysRender,
     children,
     closeAutomatically,
-    containerClass,
+    backdrop,
+    backdropAttributes,
+    backdropClass,
+    backdropEnterAnimation = styles.EnterAnimation,
+    backdropExitAnimation = styles.ExitAnimation,
+    closeIcon,
+    closeIconClass,
     content,
-    contentClass,
-    hasCloseIcon,
+    containerAttributes,
+    containerClass,
+    containerEnterAnimation = styles.ContainerEnterAnimation,
+    containerExitAnimation = styles.ContainerExitAnimation,
+    hasDefaultClose,
     hideBackdrop,
     id,
     onClose,
@@ -29,6 +39,8 @@ export const Container: FC<ModalContainer> = memo((props) => {
     orderList
   } = useModal();
 
+  const backdropRef = useRef<HTMLDivElement | null>(null);
+
   const [isClosed, setIsClosed] = useState(false);
   const [overflow, setOverflow] = useState('hidden');
 
@@ -40,10 +52,7 @@ export const Container: FC<ModalContainer> = memo((props) => {
 
   const onBackdropCloseHandler = useCallback(
     (event) => {
-      if (
-        typeof event.target.className?.indexOf === 'function' &&
-        event.target.className.indexOf(styles.Container) !== -1
-      ) {
+      if (backdropRef.current === event.target) {
         onCloseHandler();
       }
     },
@@ -62,6 +71,13 @@ export const Container: FC<ModalContainer> = memo((props) => {
     }
   }, [id, orderList.length, setModal]);
 
+  const onBackdropClick = useCallback(
+    (event) => {
+      !preventModalBackdropClick && onBackdropCloseHandler(event);
+    },
+    [onBackdropCloseHandler, preventModalBackdropClick]
+  );
+
   const renderChildrenContent = useMemo(() => {
     const output = children || content || null;
 
@@ -70,6 +86,55 @@ export const Container: FC<ModalContainer> = memo((props) => {
 
     return renderOutput;
   }, [children, content, props, onCloseHandler]);
+
+  const backdropClasses = useClass(
+    [backdropEnterAnimation, isClosed && backdropExitAnimation, hideBackdrop && styles.Hide],
+    [backdropEnterAnimation, backdropExitAnimation, hideBackdrop, isClosed]
+  );
+
+  const backdropStyle: CSSProperties = useMemo(
+    () => ({
+      overflow,
+      ...(alwaysRender
+        ? { visibility: visible ? 'visible' : 'hidden', opacity: visible ? 1 : 0 }
+        : {})
+    }),
+    [alwaysRender, overflow, visible]
+  );
+
+  const containerClasses = useClass(
+    [containerEnterAnimation, isClosed && containerExitAnimation],
+    [containerEnterAnimation, containerExitAnimation, isClosed]
+  );
+
+  const contentStyle: CSSProperties = useMemo(
+    () => ({
+      ...(alwaysRender
+        ? { visibility: visible ? 'visible' : 'hidden', opacity: visible ? 1 : 0 }
+        : {})
+    }),
+    [alwaysRender, visible]
+  );
+
+  const closeIconClasses = useClass([styles.CloseBtn, closeIconClass], [closeIconClass]);
+
+  const backdropProps = useMemo(
+    () => ({
+      onClick: onBackdropClick,
+      onAnimationStart: onAnimationStartHandler,
+      onAnimationEnd: onAnimationEndHandler,
+      ref: backdropRef,
+      style: backdropStyle
+    }),
+    [backdropStyle, onAnimationEndHandler, onAnimationStartHandler, onBackdropClick]
+  );
+
+  const containerProps = useMemo(
+    () => ({
+      style: contentStyle
+    }),
+    [contentStyle]
+  );
 
   useMount(() => {
     if (!alwaysRender && onOpen) {
@@ -95,41 +160,32 @@ export const Container: FC<ModalContainer> = memo((props) => {
 
   return (
     <div
-      data-test={`${id}-container-modal`}
+      {...backdropProps}
       className={useClass(
-        [styles.Container, containerClass, hideBackdrop && styles.Hide, isClosed && styles.Close],
-        [containerClass, hideBackdrop, isClosed]
+        [styles.Backdrop, backdropClass, backdropClasses],
+        [backdropClass, backdropClasses]
       )}
-      onClick={(event) => {
-        !preventModalBackdropClick && onBackdropCloseHandler(event);
-      }}
-      onAnimationStart={onAnimationStartHandler}
-      onAnimationEnd={onAnimationEndHandler}
-      style={{
-        overflow,
-        ...(alwaysRender
-          ? { visibility: visible ? 'visible' : 'hidden', opacity: visible ? 1 : 0 }
-          : {})
-      }}
+      data-test={`${id}-backdrop-modal`}
+      {...backdropAttributes}
     >
       <section
-        data-test={`${id}-content-modal`}
+        {...containerProps}
         className={useClass(
-          [styles.Content, contentClass, isClosed && styles.Close],
-          [contentClass, isClosed]
+          [styles.Container, containerClass, containerClasses],
+          [containerClass, containerClasses]
         )}
-        style={{
-          ...(alwaysRender
-            ? { visibility: visible ? 'visible' : 'hidden', opacity: visible ? 1 : 0 }
-            : {})
-        }}
+        data-test={`${id}-container-modal`}
+        {...containerAttributes}
       >
-        {hasCloseIcon ? (
-          <div className={styles.CloseIconWrap}>
-            <button data-test={`${id}-close-modal`} onClick={onCloseHandler} type="button">
-              X
-            </button>
-          </div>
+        {hasDefaultClose || closeIcon ? (
+          <button
+            className={closeIconClasses}
+            data-test={`${id}-close-modal`}
+            onClick={onCloseHandler}
+            type="button"
+          >
+            {hasDefaultClose ? <CloseIcon /> : closeIcon}
+          </button>
         ) : null}
         {renderChildrenContent}
       </section>

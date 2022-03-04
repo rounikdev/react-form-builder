@@ -82,9 +82,9 @@ const Template: ComponentStory<typeof Container> = (args): JSX.Element => (
 
 export const Basic = Template.bind({});
 Basic.args = {
-  containerClass: '',
+  backdropClass: '',
   content: '',
-  contentClass: '',
+  containerClass: '',
   id: 'modal-1',
   onClose: () => void 0,
   preventModalBackdropClick: false

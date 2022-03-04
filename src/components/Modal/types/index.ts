@@ -22,11 +22,21 @@ export type ModalIds = {
 export interface ModalElement {
   clearPreceding?: boolean;
   closeAutomatically?: boolean;
+  backdrop?: ReactNode;
+  backdropAttributes?: Record<string, string>;
+  backdropClass?: string;
+  backdropEnterAnimation?: string;
+  backdropExitAnimation?: string;
+  closeIcon?: ReactNode;
+  closeIconClass?: string;
+  container?: ReactNode;
+  containerAttributes?: Record<string, string>;
   containerClass?: string;
+  containerEnterAnimation?: string;
+  containerExitAnimation?: string;
   content?: ReactNode;
-  contentClass?: string;
   forceShow?: boolean;
-  hasCloseIcon?: boolean;
+  hasDefaultClose?: boolean;
   hideBackdrop?: boolean;
   id: keyof ModalIds;
   inline?: boolean;

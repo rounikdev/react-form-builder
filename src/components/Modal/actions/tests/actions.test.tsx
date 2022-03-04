@@ -159,7 +159,7 @@ describe('Modal actions', () => {
       }
     });
 
-    const modalBackdrop = getByDataTest('test-container-modal');
+    const modalBackdrop = getByDataTest('test-backdrop-modal');
     userEvent.click(modalBackdrop);
 
     await waitFor(() => {

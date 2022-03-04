@@ -25,7 +25,7 @@ const TestActionButton: FC<TestActionButtonProps> = ({ action }) => {
 };
 
 const TestModalContent: FC<ModalElement> = ({ id }) => (
-  <div data-test={`${id}-tmpl-content-modal`} />
+  <div data-test={`${id}-tmpl-container-modal`} />
 );
 
 describe('Modal actions', () => {
@@ -50,8 +50,8 @@ describe('Modal actions', () => {
       }
     });
 
+    expect(getByDataTest('test-backdrop-modal')).toBeInTheDocument();
     expect(getByDataTest('test-container-modal')).toBeInTheDocument();
-    expect(getByDataTest('test-content-modal')).toBeInTheDocument();
   });
 
   it('Closes on backdrop click, does not close on section click', async () => {
@@ -69,14 +69,14 @@ describe('Modal actions', () => {
       }
     });
 
-    let modalBackdrop = getByDataTest('test-container-modal');
-    let modalSectionContent = getByDataTest('test-content-modal');
+    let modalBackdrop = getByDataTest('test-backdrop-modal');
+    let modalSectionContent = getByDataTest('test-container-modal');
 
     userEvent.click(modalSectionContent);
     fireEvent.animationEnd(modalBackdrop);
 
-    modalBackdrop = await findByDataTest('test-container-modal');
-    modalSectionContent = getByDataTest('test-content-modal');
+    modalBackdrop = await findByDataTest('test-backdrop-modal');
+    modalSectionContent = getByDataTest('test-container-modal');
 
     expect(modalBackdrop).toBeInTheDocument();
     expect(modalSectionContent).toBeInTheDocument();
@@ -84,8 +84,8 @@ describe('Modal actions', () => {
     userEvent.click(modalBackdrop);
     fireEvent.animationEnd(modalBackdrop);
 
-    expect(await findByDataTest('test-container-modal')).not.toBeInTheDocument();
-    expect(queryByDataTest('test-content-modal')).not.toBeInTheDocument();
+    expect(await findByDataTest('test-backdrop-modal')).not.toBeInTheDocument();
+    expect(queryByDataTest('test-container-modal')).not.toBeInTheDocument();
   });
 
   it('onClose callback fired', async () => {
@@ -106,12 +106,12 @@ describe('Modal actions', () => {
       }
     });
 
-    const modalBackdrop = getByDataTest('test-container-modal');
+    const modalBackdrop = getByDataTest('test-backdrop-modal');
 
     userEvent.click(modalBackdrop);
     fireEvent.animationEnd(modalBackdrop);
 
-    expect(await findByDataTest('test-container-modal')).not.toBeInTheDocument();
+    expect(await findByDataTest('test-backdrop-modal')).not.toBeInTheDocument();
     expect(mockOnClose).toBeCalledTimes(1);
   });
 
@@ -127,11 +127,11 @@ describe('Modal actions', () => {
     fireEvent.click(buttonShowModalById, {
       target: {
         id: 'test',
-        hasCloseIcon: true
+        hasDefaultClose: true
       }
     });
 
-    const modalBackdrop = getByDataTest('test-container-modal');
+    const modalBackdrop = getByDataTest('test-backdrop-modal');
     const closeButton = getByDataTest('test-close-modal');
 
     expect(closeButton).toBeInTheDocument();
@@ -139,7 +139,7 @@ describe('Modal actions', () => {
     userEvent.click(closeButton);
     fireEvent.animationEnd(modalBackdrop);
 
-    expect(await findByDataTest('test-container-modal')).not.toBeInTheDocument();
+    expect(await findByDataTest('test-backdrop-modal')).not.toBeInTheDocument();
   });
 
   it('Pass function as content', () => {
@@ -158,7 +158,7 @@ describe('Modal actions', () => {
       }
     });
 
-    expect(getByDataTest('test-tmpl-content-modal')).toBeInTheDocument();
+    expect(getByDataTest('test-tmpl-container-modal')).toBeInTheDocument();
   });
 
   it('Update backdrop `overflow`', async () => {
@@ -176,9 +176,9 @@ describe('Modal actions', () => {
       }
     });
 
-    fireEvent.animationStart(getByDataTest('test-container-modal'));
+    fireEvent.animationStart(getByDataTest('test-backdrop-modal'));
 
-    expect(getComputedStyle(await findByDataTest('test-container-modal')).overflow).toBe('hidden');
+    expect(getComputedStyle(await findByDataTest('test-backdrop-modal')).overflow).toBe('hidden');
   });
 
   it('Pass `hideBackdrop`', async () => {
@@ -197,7 +197,7 @@ describe('Modal actions', () => {
       }
     });
 
-    expect(getByDataTest('test-container-modal')).toHaveClass('Hide');
+    expect(getByDataTest('test-backdrop-modal')).toHaveClass('Hide');
   });
 
   it('Trigger `closeAutomatically`', async () => {
@@ -224,7 +224,9 @@ describe('Modal actions', () => {
       }
     });
 
-    expect(await findByDataTest('test-container-modal')).toHaveClass('Close');
+    expect(await findByDataTest('test-backdrop-modal')).toHaveClass(
+      'Backdrop EnterAnimation ExitAnimation'
+    );
   });
 
   describe('Modal Inline', () => {
@@ -255,7 +257,7 @@ describe('Modal actions', () => {
 
       expect(mockOnOpen).toBeCalledTimes(1);
 
-      expect(getComputedStyle(await findByDataTest('modal-1-container-modal')).visibility).toBe(
+      expect(getComputedStyle(await findByDataTest('modal-1-backdrop-modal')).visibility).toBe(
         'visible'
       );
 
@@ -265,9 +267,9 @@ describe('Modal actions', () => {
         }
       });
 
-      fireEvent.animationEnd(getByDataTest('modal-1-container-modal'));
+      fireEvent.animationEnd(getByDataTest('modal-1-backdrop-modal'));
 
-      expect(getComputedStyle(await findByDataTest('modal-1-container-modal')).visibility).toBe(
+      expect(getComputedStyle(await findByDataTest('modal-1-backdrop-modal')).visibility).toBe(
         'hidden'
       );
     });

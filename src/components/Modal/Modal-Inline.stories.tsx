@@ -61,6 +61,8 @@ const Playground = (): JSX.Element => {
           onClick={() => {
             showModalById({
               id: 'modal-1',
+              backdropAttributes: { 'data-test': 'something' },
+              hasDefaultClose: true,
               inline: true
             });
           }}

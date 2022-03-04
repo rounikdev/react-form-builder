@@ -1,4 +1,4 @@
-.Container {
+.Backdrop {
   position: fixed;
   top: 0;
   left: 0;
@@ -8,12 +8,6 @@
   width: 100vw;
   height: 100vh;
   background-color: rgba(black, 0.4);
-  transition: opacity 300ms;
-  animation: growOpacity 300ms;
-
-  &.Close {
-    animation: shrinkOpacity 300ms;
-  }
 
   &.Hide {
     background-color: transparent;
@@ -26,23 +20,45 @@
   }
 }
 
-.Content {
+.EnterAnimation {
+  transition: opacity 300ms;
+  animation: growOpacity 300ms;
+}
+
+.ExitAnimation {
+  animation: shrinkOpacity 300ms;
+}
+
+.Container {
   position: relative;
   overflow: hidden;
   background-color: white;
   border-radius: 0.8rem;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  animation: growBox 300ms;
 
-  &.Close {
-    animation: shrinkBox 300ms;
-  }
-
-  .CloseIconWrap {
+  .CloseBtn {
     position: absolute;
-    top: 1.6rem;
-    right: 1.6rem;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    appearance: none;
+    user-select: none;
+    cursor: pointer;
   }
+}
+
+.ContainerEnterAnimation {
+  animation: growBox 300ms;
+}
+
+.ContainerExitAnimation {
+  animation: shrinkBox 300ms;
 }
 
 @keyframes growOpacity {
