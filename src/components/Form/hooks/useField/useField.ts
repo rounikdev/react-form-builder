@@ -19,7 +19,7 @@ import {
   useUnmount
 } from '@services';
 
-import { useFormRoot } from '../../providers';
+import { useFormEditContext, useFormRoot } from '../../providers';
 import {
   FormStateEntryValue,
   UseFieldConfig,
@@ -29,6 +29,7 @@ import {
 } from '../../types';
 
 import { useForm } from '../useForm/useForm';
+import { INITIAL_RESET_RECORD_KEY } from '../../constants';
 
 export const useField = <T>({
   dependencyExtractor,
@@ -41,6 +42,13 @@ export const useField = <T>({
   validator
 }: UseFieldConfig<T>): UseFieldReturnType<T> => {
   const context = useForm();
+
+  const {
+    methods: { setDirty },
+    pristine
+  } = useFormRoot();
+
+  const { isEdit } = useFormEditContext();
 
   const {
     fieldToBeSet,
@@ -56,22 +64,37 @@ export const useField = <T>({
 
   const fieldRef = useRef<HTMLElement | null>(null);
 
-  const getInitialValue = useCallback(
-    ({ getFromFormData }: { getFromFormData?: boolean } = {}) => {
-      const parentId = context.methods.getFieldId();
-      const fieldId = parentId ? `${parentId}.${name}` : name;
+  const getInitialValue = useCallback(() => {
+    const parentId = context.methods.getFieldId();
+    const fieldId = parentId ? `${parentId}.${name}` : name;
+    const fieldPath = fieldId.split('.');
 
-      const currentInitialData = (resetRecords && resetRecords[parentId]) || initialData;
+    const resetRecordsKey =
+      Object.keys(resetRecords).find((key) => fieldId.indexOf(key) === 0) ?? '';
 
-      const valueFromRootForm = GlobalModel.getNestedValue(
-        getFromFormData ? formData : currentInitialData,
-        fieldId.split('.')
-      );
+    const valueFromResetRecords =
+      GlobalModel.getNestedValue(resetRecords[resetRecordsKey], fieldPath) ??
+      (pristine
+        ? GlobalModel.getNestedValue(resetRecords[INITIAL_RESET_RECORD_KEY], fieldPath)
+        : undefined);
 
-      return valueFromRootForm !== undefined ? valueFromRootForm : initialValue;
-    },
-    [context.methods, formData, initialData, initialValue, name, resetRecords]
-  );
+    const valueFromFormData = GlobalModel.getNestedValue(formData, fieldPath);
+
+    const currentInitialValue = GlobalModel.getNestedValue(initialData, fieldPath) ?? initialValue;
+
+    const nonEditValue = pristine
+      ? currentInitialValue
+      : // TODO: think of providing defaultValue instead of initialValue:
+        valueFromResetRecords ?? valueFromFormData ?? initialValue;
+
+    // If editing nested form, read from form data
+    // (get blank instances when adding to arrays,
+    // clear nested conditional fields).
+    // If on root level form, if pristine, read initial state,
+    // else check if has reset data or fallback to the
+    // form data.
+    return isEdit ? valueFromFormData ?? initialValue : nonEditValue;
+  }, [context.methods, formData, initialData, initialValue, isEdit, name, pristine, resetRecords]);
 
   const isRenderedRef = useRef(false);
 
@@ -81,10 +104,10 @@ export const useField = <T>({
   if (!isRenderedRef.current) {
     if (formatter) {
       stateValue = formatter({
-        newValue: getInitialValue({ getFromFormData: true })
+        newValue: getInitialValue()
       });
     } else {
-      stateValue = getInitialValue({ getFromFormData: true });
+      stateValue = getInitialValue();
     }
 
     isRenderedRef.current = true;
@@ -203,6 +226,7 @@ export const useField = <T>({
   }, [context.resetFlag]);
 
   useUnmount(() => {
+    setDirty();
     context.methods.removeFromForm({ key: name });
   });
 
@@ -231,7 +255,7 @@ export const useField = <T>({
   }, [context.methods.getFieldId, name]);
 
   useMount(() => {
-    validateField(getInitialValue({ getFromFormData: true }), dependencyRef.current);
+    validateField(getInitialValue(), dependencyRef.current);
   });
 
   // Update on initialValue change:
@@ -299,6 +323,7 @@ export const useField = <T>({
     const fieldId = parentId ? `${parentId}.${name}` : name;
 
     if (fieldToBeSet.id === fieldId) {
+      setDirty();
       validateField(fieldToBeSet.value, dependencyRef.current);
 
       setFieldValue({ id: '', value: undefined });
@@ -318,7 +343,11 @@ export const useField = <T>({
   );
 
   const onChangeHandler = useCallback(
-    (val) => validateField(val, dependency, true),
+    (val) => {
+      setDirty();
+
+      return validateField(val, dependency, true);
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [typeof dependency === 'bigint' ? dependency : JSON.stringify(dependency), validateField]
   );

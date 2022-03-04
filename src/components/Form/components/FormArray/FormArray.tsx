@@ -8,6 +8,7 @@ import {
   useFormReducer,
   useFormReset
 } from '../../hooks';
+import { FormEditProvider, useFormEditContext } from '../../providers';
 import { formArrayReducer } from '../../reducers';
 import { flattenFormArrayState } from '../../services';
 import { FormContext, FormArrayProps } from '../../types';
@@ -17,6 +18,8 @@ export const FormArray: FC<FormArrayProps> = memo(({ children, factory, name, on
     flattenState: flattenFormArrayState,
     reducer: formArrayReducer
   });
+
+  const { isEdit: isParentEdit } = useFormEditContext();
 
   const { forceValidate, forceValidateFlag, reset, resetFlag } = useFormInteraction({ onReset });
 
@@ -59,9 +62,11 @@ export const FormArray: FC<FormArrayProps> = memo(({ children, factory, name, on
   const { add, list, remove } = useFormArray({ factory, fieldId: getFieldId(), resetFlag });
 
   return (
-    <FormContextInstance.Provider value={formContext}>
-      {children([list, add, remove])}
-    </FormContextInstance.Provider>
+    <FormEditProvider isEdit={isEdit || isParentEdit}>
+      <FormContextInstance.Provider value={formContext}>
+        {children([list, add, remove])}
+      </FormContextInstance.Provider>
+    </FormEditProvider>
   );
 });
 

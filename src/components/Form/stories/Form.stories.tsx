@@ -1,6 +1,6 @@
 import { FC, StrictMode } from 'react';
 
-import { FormArray, FormObject, FormRoot, FormUser } from '../components';
+import { ConditionalFields, FormArray, FormObject, FormRoot, FormUser } from '../components';
 
 import { FormStateDisplay, SubmitButton, TextInput } from './components';
 import {
@@ -118,6 +118,7 @@ export const FormDemo: FC = () => {
                                                   />
                                                   <TextInput
                                                     id={`phone-value-${userIndex}-${phoneIndex}`}
+                                                    initialValue={phone.value}
                                                     label="Phone Number"
                                                     name="value"
                                                     validator={phoneValidator}
@@ -154,24 +155,28 @@ export const FormDemo: FC = () => {
                 );
               }}
             </FormArray>
-            <div className={styles.Passwords}>
-              <TextInput
-                className={styles.PasswordInput}
-                id="password"
-                label="Password"
-                name="password"
-                validator={passwordValidator}
-              />
+            <ConditionalFields condition={(formData) => formData?.users?.length > 2}>
+              <div className={styles.Passwords}>
+                <TextInput
+                  className={styles.PasswordInput}
+                  id="password"
+                  initialValue="a"
+                  label="Password"
+                  name="password"
+                  validator={passwordValidator}
+                />
 
-              <TextInput
-                className={styles.PasswordInput}
-                dependencyExtractor={passwordDependencyExtractor}
-                id="repeat-password"
-                label="Repeat Password"
-                name="repeatPassword"
-                validator={repeatPasswordValidator}
-              />
-            </div>
+                <TextInput
+                  className={styles.PasswordInput}
+                  dependencyExtractor={passwordDependencyExtractor}
+                  id="repeat-password"
+                  initialValue="af"
+                  label="Repeat Password"
+                  name="repeatPassword"
+                  validator={repeatPasswordValidator}
+                />
+              </div>
+            </ConditionalFields>
             <SubmitButton />
           </FormRoot>
         </div>

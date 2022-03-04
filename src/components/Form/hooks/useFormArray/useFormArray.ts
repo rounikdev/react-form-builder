@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react';
 
-import { GlobalModel, useUpdate } from '@services';
+import { GlobalModel, useUpdateOnly } from '@services';
 
-import { useFormRoot } from '../../providers';
+import { useFormEditContext, useFormRoot } from '../../providers';
 import { FormStateEntryValue, ResetFlag } from '../../types';
 
 export const useFormArray = ({
@@ -14,32 +14,65 @@ export const useFormArray = ({
   fieldId: string;
   resetFlag: ResetFlag;
 }) => {
-  const { formData: providedFormData, resetRecords } = useFormRoot();
+  const {
+    formData: providedFormData,
+    initialData,
+    methods: { setDirty },
+    pristine,
+    resetRecords
+  } = useFormRoot();
 
-  const [list, setList] = useState<FormStateEntryValue[]>(
-    GlobalModel.getNestedValue(providedFormData, fieldId.split('.')) || []
-  );
+  const { isEdit } = useFormEditContext();
 
-  const add = useCallback(
-    () => setList((currentList) => (factory ? [...currentList, factory()] : currentList)),
-    [factory]
-  );
+  const getInitialValue = useCallback(() => {
+    const fieldPath = fieldId.split('.');
 
-  const remove = useCallback(
-    (index: number) => setList((currentState) => currentState.filter((_, i) => i !== index)),
-    []
-  );
+    const resetRecordsKey =
+      Object.keys(resetRecords).find((key) => fieldId.indexOf(key) === 0) || '';
 
-  useUpdate(() => {
-    const resetRecordsKeys = Object.keys(resetRecords);
+    const valueFromResetRecords = GlobalModel.getNestedValue(
+      resetRecords[resetRecordsKey],
+      fieldPath
+    );
+    const valueFromFormData = GlobalModel.getNestedValue(providedFormData, fieldPath);
+    const currentInitialValue = GlobalModel.getNestedValue(initialData, fieldPath);
 
-    const resetRecordsKey = resetRecordsKeys.find((key) => fieldId.indexOf(key) === 0);
+    const nonEditValue = pristine
+      ? currentInitialValue
+      : valueFromResetRecords ?? valueFromFormData;
 
-    const currentInitialData =
-      (resetRecords && resetRecordsKey && resetRecords[resetRecordsKey]) || providedFormData;
+    // If editing nested form, read from form data
+    // (get blank instances when adding to arrays,
+    // clear nested conditional fields).
+    // If on root level form, if pristine, read initial state,
+    // else check if has reset data or fallback to the
+    // form data.
+    return (isEdit ? valueFromFormData : nonEditValue) || [];
+  }, [fieldId, initialData, isEdit, pristine, providedFormData, resetRecords]);
 
-    setList(GlobalModel.getNestedValue(currentInitialData, fieldId.split('.')) || []);
+  const [list, setList] = useState<FormStateEntryValue[]>(getInitialValue());
+
+  const add = useCallback(() => {
+    setDirty();
+    setList((currentList) => (factory ? [...currentList, factory()] : currentList));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [factory]);
+
+  const remove = useCallback((index: number) => {
+    setDirty();
+    setList((currentState) => currentState.filter((_, i) => i !== index));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useUpdateOnly(() => {
+    setList(getInitialValue());
   }, [resetFlag]);
+
+  useUpdateOnly(() => {
+    if (!isEdit) {
+      setList(getInitialValue());
+    }
+  }, [isEdit]);
 
   return { add, list, remove };
 };

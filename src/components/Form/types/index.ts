@@ -187,9 +187,11 @@ export interface FormRootProviderContext {
     focusField: (fieldId: string) => void;
     registerFieldErrors?: (payload: FieldErrorsPayload) => void;
     scrollFieldIntoView: (fieldId: string) => void;
+    setDirty: () => void;
     setFieldValue: (payload: SetFieldValuePayload) => void;
     setResetRecords: Dispatch<SetStateAction<Record<string, FormStateEntry>>>;
   };
+  pristine: boolean;
   resetRecords: Record<string, FormStateEntry>;
   scrolledField: string;
 }
