@@ -1,10 +1,10 @@
-import { ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 
 import { useModalContextValue } from './hooks';
 import { Context } from './context';
 import ModalArena from './ModalArena';
 
-import { ModalContext } from './types';
+import { ModalBackdropProps, ModalContainerProps, ModalContext } from './types';
 
 const initialState: ModalContext = {
   actions: {},
@@ -12,8 +12,16 @@ const initialState: ModalContext = {
   orderList: []
 };
 
-export const Provider = ({ children }: { children: ReactNode }): JSX.Element => {
-  const { value } = useModalContextValue(initialState);
+export const Provider = ({
+  BaseBackdrop,
+  children,
+  BaseContainer
+}: {
+  BaseBackdrop?: FC<ModalBackdropProps>;
+  children: ReactNode;
+  BaseContainer?: FC<ModalContainerProps>;
+}): JSX.Element => {
+  const { value } = useModalContextValue({ ...initialState, BaseBackdrop, BaseContainer });
 
   return (
     <Context.Provider value={value}>

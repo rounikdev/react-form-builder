@@ -1,4 +1,12 @@
-import { Dispatch, ReactNode } from 'react';
+import {
+  AnimationEventHandler,
+  CSSProperties,
+  Dispatch,
+  FC,
+  MouseEventHandler,
+  ReactNode,
+  RefObject
+} from 'react';
 
 import { FormStateEntryValue } from '../../Form/types';
 
@@ -19,24 +27,34 @@ export type ModalIds = {
   warnPrompt: 'warnPrompt';
 };
 
+export interface ModalBackdropProps {
+  children: ReactNode;
+  id: keyof ModalIds;
+  isClosed: boolean;
+  props: {
+    onClick: MouseEventHandler<HTMLDivElement>;
+    onAnimationStart: AnimationEventHandler<HTMLDivElement>;
+    onAnimationEnd: AnimationEventHandler<HTMLDivElement>;
+    ref: RefObject<HTMLDivElement>;
+    style: CSSProperties;
+  };
+}
+
+export interface ModalContainerProps {
+  children: ReactNode;
+  id: keyof ModalIds;
+  isClosed: boolean;
+  onCloseHandler: MouseEventHandler<HTMLButtonElement>;
+  props: { style: CSSProperties };
+}
+
 export interface ModalElement {
   clearPreceding?: boolean;
   closeAutomatically?: boolean;
-  backdrop?: ReactNode;
-  backdropAttributes?: Record<string, string>;
-  backdropClass?: string;
-  backdropEnterAnimation?: string;
-  backdropExitAnimation?: string;
-  closeIcon?: ReactNode;
-  closeIconClass?: string;
-  container?: ReactNode;
-  containerAttributes?: Record<string, string>;
-  containerClass?: string;
-  containerEnterAnimation?: string;
-  containerExitAnimation?: string;
+  Backdrop?: FC<ModalBackdropProps>;
+  Container?: FC<ModalContainerProps>;
   content?: ReactNode;
   forceShow?: boolean;
-  hasDefaultClose?: boolean;
   hideBackdrop?: boolean;
   id: keyof ModalIds;
   inline?: boolean;
@@ -66,6 +84,8 @@ export interface ModalContext {
   actions: {
     [key: string]: ModalAction;
   };
+  BaseBackdrop?: FC<ModalBackdropProps>;
+  BaseContainer?: FC<ModalContainerProps>;
   modalsToShow: { [key: string]: ModalElement };
   orderList: ModalElement[];
 }

@@ -1,14 +1,16 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { useModal } from './context';
-import { Provider } from './provider';
-import { Container } from './components/Container/Container';
-import { ModalElement } from './types';
+import { useModal } from '@components/Modal/context';
+import { Provider } from '@components/Modal/provider';
+import { Container as ModalContainer } from '@components/Modal/components';
+import { ModalElement } from '@components/Modal/types';
+
+import { Backdrop, Container } from './components';
 
 export default {
-  component: Container,
+  component: ModalContainer,
   title: 'Components/Modal/Basic'
-} as ComponentMeta<typeof Container>;
+} as ComponentMeta<typeof ModalContainer>;
 
 const Playground = (args: ModalElement): JSX.Element => {
   const {
@@ -74,17 +76,15 @@ const Playground = (args: ModalElement): JSX.Element => {
   );
 };
 
-const Template: ComponentStory<typeof Container> = (args): JSX.Element => (
-  <Provider>
+const Template: ComponentStory<typeof ModalContainer> = (args): JSX.Element => (
+  <Provider BaseBackdrop={Backdrop} BaseContainer={Container}>
     <Playground {...args} />
   </Provider>
 );
 
 export const Basic = Template.bind({});
 Basic.args = {
-  backdropClass: '',
   content: '',
-  containerClass: '',
   id: 'modal-1',
   onClose: () => void 0,
   preventModalBackdropClick: false

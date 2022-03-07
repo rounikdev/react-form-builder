@@ -4,15 +4,17 @@ import { FormObject, FormRoot, useForm } from '@components/Form';
 
 import { Text as Input } from '@components/Input/stories/Text/Text';
 
-import { useModal } from './context';
-import Modal from './Inline';
-import { Provider } from './provider';
-import { Container } from './components/Container/Container';
+import { useModal } from '@components/Modal/context';
+import Modal from '@components/Modal/Inline';
+import { Provider } from '@components/Modal/provider';
+import { Container as ModalContainer } from '@components/Modal/components';
+
+import { Backdrop, Container } from './components';
 
 export default {
-  component: Container,
+  component: ModalContainer,
   title: 'Components/Modal-Inline/Basic'
-} as ComponentMeta<typeof Container>;
+} as ComponentMeta<typeof ModalContainer>;
 
 const Step_3_FormFields = () => {
   const { methods } = useForm();
@@ -61,8 +63,6 @@ const Playground = (): JSX.Element => {
           onClick={() => {
             showModalById({
               id: 'modal-1',
-              backdropAttributes: { 'data-test': 'something' },
-              hasDefaultClose: true,
               inline: true
             });
           }}
@@ -147,8 +147,8 @@ const Playground = (): JSX.Element => {
   );
 };
 
-const Template: ComponentStory<typeof Container> = (): JSX.Element => (
-  <Provider>
+const Template: ComponentStory<typeof ModalContainer> = (): JSX.Element => (
+  <Provider BaseBackdrop={Backdrop} BaseContainer={Container}>
     <Playground />
   </Provider>
 );

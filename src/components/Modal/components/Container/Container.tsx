@@ -1,31 +1,18 @@
 import { CSSProperties, FC, memo, useCallback, useMemo, useRef, useState } from 'react';
 
-import { useClass, useMount, useUpdate } from '@services';
+import { useMount, useUpdate } from '@services';
 
-import { useModal } from '../../context';
-import { ModalContainer } from '../../types';
-import { CloseIcon } from './components';
-
-import styles from './Container.scss';
+import { useModal } from '@components/Modal/context';
+import { ModalContainer } from '@components/Modal/types';
 
 export const Container: FC<ModalContainer> = memo((props) => {
   const {
     alwaysRender,
     children,
     closeAutomatically,
-    backdrop,
-    backdropAttributes,
-    backdropClass,
-    backdropEnterAnimation = styles.EnterAnimation,
-    backdropExitAnimation = styles.ExitAnimation,
-    closeIcon,
-    closeIconClass,
+    Backdrop,
+    Container,
     content,
-    containerAttributes,
-    containerClass,
-    containerEnterAnimation = styles.ContainerEnterAnimation,
-    containerExitAnimation = styles.ContainerExitAnimation,
-    hasDefaultClose,
     hideBackdrop,
     id,
     onClose,
@@ -36,8 +23,13 @@ export const Container: FC<ModalContainer> = memo((props) => {
 
   const {
     actions: { hideModalById, setModal },
+    BaseBackdrop,
+    BaseContainer,
     orderList
   } = useModal();
+
+  const BackdropTag = useMemo(() => Backdrop || BaseBackdrop, [Backdrop, BaseBackdrop]);
+  const ContainerTag = useMemo(() => Container || BaseContainer, [BaseContainer, Container]);
 
   const backdropRef = useRef<HTMLDivElement | null>(null);
 
@@ -87,24 +79,15 @@ export const Container: FC<ModalContainer> = memo((props) => {
     return renderOutput;
   }, [children, content, props, onCloseHandler]);
 
-  const backdropClasses = useClass(
-    [backdropEnterAnimation, isClosed && backdropExitAnimation, hideBackdrop && styles.Hide],
-    [backdropEnterAnimation, backdropExitAnimation, hideBackdrop, isClosed]
-  );
-
   const backdropStyle: CSSProperties = useMemo(
     () => ({
       overflow,
       ...(alwaysRender
         ? { visibility: visible ? 'visible' : 'hidden', opacity: visible ? 1 : 0 }
-        : {})
+        : {}),
+      ...(hideBackdrop ? { backgroundColor: 'transparent' } : {})
     }),
-    [alwaysRender, overflow, visible]
-  );
-
-  const containerClasses = useClass(
-    [containerEnterAnimation, isClosed && containerExitAnimation],
-    [containerEnterAnimation, containerExitAnimation, isClosed]
+    [alwaysRender, hideBackdrop, overflow, visible]
   );
 
   const contentStyle: CSSProperties = useMemo(
@@ -115,8 +98,6 @@ export const Container: FC<ModalContainer> = memo((props) => {
     }),
     [alwaysRender, visible]
   );
-
-  const closeIconClasses = useClass([styles.CloseBtn, closeIconClass], [closeIconClass]);
 
   const backdropProps = useMemo(
     () => ({
@@ -158,39 +139,20 @@ export const Container: FC<ModalContainer> = memo((props) => {
     }
   }, [visible]);
 
-  return (
-    <div
-      {...backdropProps}
-      className={useClass(
-        [styles.Backdrop, backdropClass, backdropClasses],
-        [backdropClass, backdropClasses]
-      )}
-      data-test={`${id}-backdrop-modal`}
-      {...backdropAttributes}
-    >
-      <section
-        {...containerProps}
-        className={useClass(
-          [styles.Container, containerClass, containerClasses],
-          [containerClass, containerClasses]
-        )}
-        data-test={`${id}-container-modal`}
-        {...containerAttributes}
-      >
-        {hasDefaultClose || closeIcon ? (
-          <button
-            className={closeIconClasses}
-            data-test={`${id}-close-modal`}
-            onClick={onCloseHandler}
-            type="button"
-          >
-            {hasDefaultClose ? <CloseIcon /> : closeIcon}
-          </button>
-        ) : null}
-        {renderChildrenContent}
-      </section>
-    </div>
-  );
+  return BackdropTag ? (
+    <BackdropTag id={id} isClosed={isClosed} props={backdropProps}>
+      {ContainerTag ? (
+        <ContainerTag
+          id={id}
+          isClosed={isClosed}
+          onCloseHandler={onCloseHandler}
+          props={containerProps}
+        >
+          {renderChildrenContent}
+        </ContainerTag>
+      ) : null}
+    </BackdropTag>
+  ) : null;
 });
 
 Container.displayName = 'ModalContainer';
