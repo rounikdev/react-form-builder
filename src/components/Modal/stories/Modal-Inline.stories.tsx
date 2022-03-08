@@ -7,14 +7,14 @@ import { Text as Input } from '@components/Input/stories/Text/Text';
 import { useModal } from '@components/Modal/context';
 import Modal from '@components/Modal/Inline';
 import { Provider } from '@components/Modal/provider';
-import { Container as ModalContainer } from '@components/Modal/components';
+import { ModalBuilder } from '@components/Modal/components';
 
 import { Backdrop, Container } from './components';
 
 export default {
-  component: ModalContainer,
+  component: ModalBuilder,
   title: 'Components/Modal-Inline/Basic'
-} as ComponentMeta<typeof ModalContainer>;
+} as ComponentMeta<typeof ModalBuilder>;
 
 const Step_3_FormFields = () => {
   const { methods } = useForm();
@@ -79,6 +79,7 @@ const Playground = (): JSX.Element => {
               onClick={() => {
                 showModalById({
                   id: 'modal-2',
+                  animate: 'on',
                   forceShow: true,
                   inline: true
                 });
@@ -95,6 +96,7 @@ const Playground = (): JSX.Element => {
           onClick={() => {
             showModalById({
               id: 'modal-2',
+              animate: 'on',
               inline: true
             });
           }}
@@ -111,7 +113,7 @@ const Playground = (): JSX.Element => {
               onClick={() => {
                 showModalById({
                   id: 'modal-3',
-                  clearPreceding: true,
+                  forceShow: true,
                   inline: true
                 });
               }}
@@ -147,7 +149,7 @@ const Playground = (): JSX.Element => {
   );
 };
 
-const Template: ComponentStory<typeof ModalContainer> = (): JSX.Element => (
+const Template: ComponentStory<typeof ModalBuilder> = (): JSX.Element => (
   <Provider BaseBackdrop={Backdrop} BaseContainer={Container}>
     <Playground />
   </Provider>

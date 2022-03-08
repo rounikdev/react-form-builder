@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { useUpdateOnly } from '@services';
 
 import { useModal } from './context';
-import { Container } from './components';
+import { ModalBuilder } from './components';
 
 const ModalArena: FC = () => {
   const {
@@ -29,7 +29,7 @@ const ModalArena: FC = () => {
         const { id, inline, ...otherProps } = modalsToShow[modalName];
 
         return modalEl && !inline
-          ? ReactDOM.createPortal(<Container {...otherProps} key={modalName} id={id} />, modalEl)
+          ? ReactDOM.createPortal(<ModalBuilder {...otherProps} key={modalName} id={id} />, modalEl)
           : null;
       })}
     </>

@@ -7,7 +7,7 @@ import { appendModalToRoot, testRender } from '@services/utils';
 
 import { ModalElement, ModalTemplateProps } from '../../../types';
 
-import { Container } from '../Container';
+import ModalBuilder from '../ModalBuilder';
 
 interface TestActionButtonProps {
   action: 'setModal' | 'showModalById' | 'hideModalById';
@@ -32,10 +32,10 @@ describe('Modal actions', () => {
   appendModalToRoot();
 
   it('Has display name', () => {
-    expect(Container.displayName).toBe('ModalContainer');
+    expect(ModalBuilder.displayName).toBe('ModalContainer');
   });
 
-  it('Mounts Container with backdrop and content section', () => {
+  it('Mounts ModalBuilder with backdrop and content section', () => {
     const { getByDataTest } = testRender(
       <Modal.Provider>
         <TestActionButton action="showModalById" />

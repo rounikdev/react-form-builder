@@ -10,26 +10,11 @@ import {
 
 import { FormStateEntryValue } from '../../Form/types';
 
-export type ModalIds = {
-  'modal-1': 'modal-1';
-  'modal-2': 'modal-2';
-  'modal-3': 'modal-3';
-  addBankDetails: 'addBankDetails';
-  addHolidayScheme: 'addHolidayScheme';
-  addPensionScheme: 'addPensionScheme';
-  addYearToDateFigures: 'addYearToDateFigures';
-  termsAndConditionsWarn: 'termsAndConditionsWarn';
-  signOutConfirmation: 'signOutConfirmation';
-  submitWizardProgress: 'submitWizardProgress';
-  submitRegisterLoading: 'submitRegisterLoading';
-  submitRegisterSuccess: 'submitRegisterSuccess';
-  submitRegisterWarn: 'submitRegisterWarn';
-  warnPrompt: 'warnPrompt';
-};
+export type ModalId = string;
 
 export interface ModalBackdropProps {
   children: ReactNode;
-  id: keyof ModalIds;
+  id: ModalId;
   isClosed: boolean;
   props: {
     onClick: MouseEventHandler<HTMLDivElement>;
@@ -42,13 +27,16 @@ export interface ModalBackdropProps {
 
 export interface ModalContainerProps {
   children: ReactNode;
-  id: keyof ModalIds;
+  id: ModalId;
   isClosed: boolean;
   onCloseHandler: MouseEventHandler<HTMLButtonElement>;
   props: { style: CSSProperties };
 }
 
+export type ModalAnimate = 'on' | 'off';
+
 export interface ModalElement {
+  animate?: ModalAnimate;
   clearPreceding?: boolean;
   closeAutomatically?: boolean;
   Backdrop?: FC<ModalBackdropProps>;
@@ -56,7 +44,7 @@ export interface ModalElement {
   content?: ReactNode;
   forceShow?: boolean;
   hideBackdrop?: boolean;
-  id: keyof ModalIds;
+  id: ModalId;
   inline?: boolean;
   onClose?: () => void;
   onOpen?: () => void;
@@ -67,10 +55,10 @@ export interface ModalElement {
 export interface ModalInlineProps {
   alwaysRender?: boolean;
   children?: ReactNode;
-  id: keyof ModalIds;
+  id: ModalId;
 }
 
-export interface ModalContainer extends Omit<ModalElement, 'inline'>, ModalInlineProps {
+export interface ModalBuilderProps extends Omit<ModalElement, 'inline'>, ModalInlineProps {
   visible?: boolean;
 }
 
@@ -84,6 +72,7 @@ export interface ModalContext {
   actions: {
     [key: string]: ModalAction;
   };
+  baseAnimate?: ModalAnimate;
   BaseBackdrop?: FC<ModalBackdropProps>;
   BaseContainer?: FC<ModalContainerProps>;
   modalsToShow: { [key: string]: ModalElement };
@@ -108,7 +97,7 @@ export interface ModalCustomActionProps {
   disableConfirm?: boolean;
   children: ReactNode;
   headerTxt?: string;
-  id: keyof ModalIds;
+  id: ModalId;
   onCancel?: () => void;
   onConfirm: () => void;
 }
@@ -134,7 +123,7 @@ export interface ModalSubFormEditChildrenProps {
 export interface ModalSubFormEditWrapProps {
   children: (props: ModalSubFormEditChildrenProps) => JSX.Element;
   editFormData: FormStateEntryValue;
-  modalId: keyof ModalIds;
+  modalId: ModalId;
   setEditFormData: Dispatch<FormStateEntryValue>;
   shouldRenderInitially?: boolean;
   subFormName: string;

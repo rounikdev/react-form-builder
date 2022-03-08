@@ -32,8 +32,10 @@ export const setModal: ModalStateAction = ({ id }, setState) => {
     if (orderList.length === 0) {
       modalsToShow = {};
     } else if (modal && modal.forceShow === true) {
+      const modalToSet = orderList[0];
+
       modalsToShow = {};
-      modalsToShow[id] = modal;
+      modalsToShow[modalToSet.id] = modalToSet;
     } else if (
       modalIndex === 0 ||
       (orderList[modalIndex - 1] && orderList[modalIndex - 1].overShow === true)

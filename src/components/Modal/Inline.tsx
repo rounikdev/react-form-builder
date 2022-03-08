@@ -6,7 +6,7 @@ import { useUpdateOnly } from '@services';
 import { ModalInlineProps } from './types';
 
 import { useModal } from './context';
-import { Container } from './components';
+import { ModalBuilder } from './components';
 
 export const Inline: FC<ModalInlineProps> = ({ alwaysRender, children, id }) => {
   const {
@@ -33,9 +33,9 @@ export const Inline: FC<ModalInlineProps> = ({ alwaysRender, children, id }) => 
     <>
       {modalEl && (alwaysRender || modal)
         ? ReactDOM.createPortal(
-            <Container {...modal} alwaysRender={alwaysRender} id={id} visible={!!modal}>
+            <ModalBuilder {...modal} alwaysRender={alwaysRender} id={id} visible={!!modal}>
               {children}
-            </Container>,
+            </ModalBuilder>,
             modalEl
           )
         : null}

@@ -2,15 +2,15 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { useModal } from '@components/Modal/context';
 import { Provider } from '@components/Modal/provider';
-import { Container as ModalContainer } from '@components/Modal/components';
+import { ModalBuilder } from '@components/Modal/components';
 import { ModalElement } from '@components/Modal/types';
 
 import { Backdrop, Container } from './components';
 
 export default {
-  component: ModalContainer,
+  component: ModalBuilder,
   title: 'Components/Modal/Basic'
-} as ComponentMeta<typeof ModalContainer>;
+} as ComponentMeta<typeof ModalBuilder>;
 
 const Playground = (args: ModalElement): JSX.Element => {
   const {
@@ -44,6 +44,7 @@ const Playground = (args: ModalElement): JSX.Element => {
                               showModalById({
                                 ...args,
                                 id: 'modal-3',
+                                animate: 'off',
                                 content: (
                                   <p style={{ padding: '4rem', textAlign: 'center' }}>
                                     <span style={{ fontSize: '2rem', fontWeight: 'bold' }}>
@@ -76,8 +77,8 @@ const Playground = (args: ModalElement): JSX.Element => {
   );
 };
 
-const Template: ComponentStory<typeof ModalContainer> = (args): JSX.Element => (
-  <Provider BaseBackdrop={Backdrop} BaseContainer={Container}>
+const Template: ComponentStory<typeof ModalBuilder> = (args): JSX.Element => (
+  <Provider baseAnimate="on" BaseBackdrop={Backdrop} BaseContainer={Container}>
     <Playground {...args} />
   </Provider>
 );

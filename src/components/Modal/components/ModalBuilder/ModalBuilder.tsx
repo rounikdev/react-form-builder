@@ -1,13 +1,14 @@
 import { CSSProperties, FC, memo, useCallback, useMemo, useRef, useState } from 'react';
 
-import { useMount, useUpdate } from '@services';
+import { useMount, useUpdate, useUpdateOnly } from '@services';
 
 import { useModal } from '@components/Modal/context';
-import { ModalContainer } from '@components/Modal/types';
+import { ModalBuilderProps } from '@components/Modal/types';
 
-export const Container: FC<ModalContainer> = memo((props) => {
+const ModalBuilder: FC<ModalBuilderProps> = (props) => {
   const {
     alwaysRender,
+    animate,
     children,
     closeAutomatically,
     Backdrop,
@@ -23,8 +24,10 @@ export const Container: FC<ModalContainer> = memo((props) => {
 
   const {
     actions: { hideModalById, setModal },
+    baseAnimate,
     BaseBackdrop,
     BaseContainer,
+    modalsToShow,
     orderList
   } = useModal();
 
@@ -35,6 +38,11 @@ export const Container: FC<ModalContainer> = memo((props) => {
 
   const [isClosed, setIsClosed] = useState(false);
   const [overflow, setOverflow] = useState('hidden');
+
+  const hasAnimation = useMemo(
+    () => animate === 'on' || (animate === undefined && baseAnimate === 'on'),
+    [animate, baseAnimate]
+  );
 
   const onCloseHandler = useCallback(() => {
     hideModalById({ id });
@@ -51,6 +59,12 @@ export const Container: FC<ModalContainer> = memo((props) => {
     [onCloseHandler]
   );
 
+  const clearModalsToShow = useCallback(() => {
+    if (orderList.length === 0) {
+      setModal({ id });
+    }
+  }, [id, orderList.length, setModal]);
+
   const onAnimationStartHandler = useCallback(async () => {
     await setOverflow('hidden');
   }, []);
@@ -58,10 +72,8 @@ export const Container: FC<ModalContainer> = memo((props) => {
   const onAnimationEndHandler = useCallback(async () => {
     await setOverflow('auto');
 
-    if (orderList.length === 0) {
-      setModal({ id });
-    }
-  }, [id, orderList.length, setModal]);
+    clearModalsToShow();
+  }, [clearModalsToShow]);
 
   const onBackdropClick = useCallback(
     (event) => {
@@ -85,18 +97,20 @@ export const Container: FC<ModalContainer> = memo((props) => {
       ...(alwaysRender
         ? { visibility: visible ? 'visible' : 'hidden', opacity: visible ? 1 : 0 }
         : {}),
-      ...(hideBackdrop ? { backgroundColor: 'transparent' } : {})
+      ...(hideBackdrop ? { backgroundColor: 'transparent' } : {}),
+      ...(!hasAnimation ? { animation: 'none' } : {})
     }),
-    [alwaysRender, hideBackdrop, overflow, visible]
+    [alwaysRender, hasAnimation, hideBackdrop, overflow, visible]
   );
 
   const contentStyle: CSSProperties = useMemo(
     () => ({
       ...(alwaysRender
         ? { visibility: visible ? 'visible' : 'hidden', opacity: visible ? 1 : 0 }
-        : {})
+        : {}),
+      ...(!hasAnimation ? { animation: 'none' } : {})
     }),
-    [alwaysRender, visible]
+    [alwaysRender, hasAnimation, visible]
   );
 
   const backdropProps = useMemo(
@@ -139,6 +153,12 @@ export const Container: FC<ModalContainer> = memo((props) => {
     }
   }, [visible]);
 
+  useUpdateOnly(() => {
+    if (modalsToShow[id] && !hasAnimation) {
+      clearModalsToShow();
+    }
+  }, [clearModalsToShow, hasAnimation]);
+
   return BackdropTag ? (
     <BackdropTag id={id} isClosed={isClosed} props={backdropProps}>
       {ContainerTag ? (
@@ -153,6 +173,8 @@ export const Container: FC<ModalContainer> = memo((props) => {
       ) : null}
     </BackdropTag>
   ) : null;
-});
+};
 
-Container.displayName = 'ModalContainer';
+ModalBuilder.displayName = 'ModalBuilder';
+
+export default memo(ModalBuilder);
