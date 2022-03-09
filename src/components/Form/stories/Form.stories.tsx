@@ -74,7 +74,7 @@ export const FormDemo: FC = () => {
                               </div>
                               <TextInput
                                 hidden
-                                id={`id-${userIndex}`}
+                                id={`id-user-${userIndex}`}
                                 initialValue={user.id}
                                 name="id"
                               />
@@ -112,7 +112,7 @@ export const FormDemo: FC = () => {
                                                 <FormObject name={`${phoneIndex}`}>
                                                   <TextInput
                                                     hidden
-                                                    id={`id-${phoneIndex}`}
+                                                    id={`id-phone-${userIndex}-${phoneIndex}`}
                                                     initialValue={phone.id}
                                                     name="id"
                                                   />
