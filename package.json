@@ -22,8 +22,12 @@
         "start": "start-storybook -p 3000",
         "build": "rollup -c",
         "build:storybook": "build-storybook",
+        "lint": "eslint \"**/*.{ts,tsx}\"",
         "test": "NODE_ENV=test jest",
-        "lint": "eslint \"**/*.{ts,tsx}\""
+        "cy:dev:ct": "cypress open-ct",
+        "cy:prod:ct": "cypress run-ct",
+        "instrument": "npx nyc instrument --compact=false src instrumented",
+        "report": "npx nyc report"
     },
     "sideEffects": false,
     "browserslist": [
@@ -47,6 +51,9 @@
         "@babel/preset-react": "7.16.7",
         "@babel/preset-typescript": "7.16.7",
         "@babel/runtime": "7.17.2",
+        "@cypress/code-coverage": "3.9.12",
+        "@cypress/react": "5.12.4",
+        "@cypress/webpack-dev-server": "1.8.2",
         "@rollup/plugin-commonjs": "21.0.2",
         "@rollup/plugin-json": "4.1.0",
         "@rollup/plugin-node-resolve": "13.1.3",
@@ -57,6 +64,7 @@
         "@storybook/builder-webpack5": "6.4.19",
         "@storybook/manager-webpack5": "6.4.19",
         "@storybook/react": "6.4.19",
+        "@storybook/testing-react":"1.2.3",
         "@testing-library/jest-dom": "5.16.2",
         "@testing-library/react": "12.1.3",
         "@testing-library/react-hooks": "7.0.2",
@@ -69,6 +77,7 @@
         "autoprefixer": "10.4.2",
         "babel-jest": "27.5.1",
         "css-loader": "6.7.1",
+        "cypress": "9.5.1",
         "enzyme": "3.11.0",
         "eslint": "8.10.0",
         "eslint-config-airbnb": "19.0.4",
@@ -82,6 +91,7 @@
         "eslint-plugin-react-hooks": "4.2.1-alpha-00ced1e2b-20211102",
         "eslint-plugin-storybook": "0.5.7",
         "eslint-plugin-testing-library": "5.0.6",
+        "html-webpack-plugin": "5.5.0",
         "identity-obj-proxy": "3.0.0",
         "jest": "27.5.1",
         "mini-css-extract-plugin": "2.6.0",
@@ -105,7 +115,8 @@
         "sass-loader": "12.6.0",
         "typescript-plugin-css-modules": "3.4.0",
         "typings-for-css-modules-loader": "1.7.0",
-        "webpack": "5.70.0"
+        "webpack": "5.70.0",
+        "webpack-dev-server": "4.7.4"
     },
     "peerDependencies": {
         "react": ">=17.0.2",

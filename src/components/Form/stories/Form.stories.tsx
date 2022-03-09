@@ -1,4 +1,5 @@
 import { FC, StrictMode } from 'react';
+import { Story, Meta } from '@storybook/react';
 
 import { ConditionalFields, FormArray, FormObject, FormRoot, FormUser } from '../components';
 
@@ -18,13 +19,13 @@ import styles from './FormStories.scss';
 
 export default {
   title: 'Demo/Form'
-};
+} as Meta;
 
 type Users = typeof initialUsers;
 
 type Phone = { id: string; value: string };
 
-export const FormDemo: FC = () => {
+const Template: Story<FC> = () => {
   return (
     <StrictMode>
       <section className={styles.Container}>
@@ -40,12 +41,17 @@ export const FormDemo: FC = () => {
               {([usersArray, addUser, removeUser]) => {
                 return (
                   <>
-                    <button className={styles.AddUserButton} onClick={addUser} type="button">
+                    <button
+                      className={styles.AddUserButton}
+                      data-test="add-user"
+                      onClick={addUser}
+                      type="button"
+                    >
                       Add User
                     </button>
                     {(usersArray as Users).map((user, userIndex) => {
                       return (
-                        <div className={styles.Group} key={user.id}>
+                        <div className={styles.Group} key={user.id} data-test={`user-${userIndex}`}>
                           <div className={styles.User}>
                             <FormObject name={`${userIndex}`}>
                               <div style={{ width: '100%', marginBottom: '1rem' }}>
@@ -143,6 +149,7 @@ export const FormDemo: FC = () => {
                           </div>
                           <button
                             className={styles.RemoveUserButton}
+                            data-test={`remove-user-${userIndex}`}
                             onClick={() => removeUser(userIndex)}
                             type="button"
                           >
@@ -185,3 +192,5 @@ export const FormDemo: FC = () => {
     </StrictMode>
   );
 };
+
+export const FormDemo = Template.bind({});

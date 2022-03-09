@@ -18,6 +18,7 @@ const PlaygroundSubmitButton = () => {
       >{`Submit ${context.valid ? '- Valid' : '- Not valid'}`}</button>
       <button
         className={styles.Reset}
+        data-test="reset"
         onClick={() => {
           context.methods.reset();
         }}
