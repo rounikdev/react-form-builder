@@ -1,20 +1,14 @@
 import { FC, memo } from 'react';
 
 import { ModalContainerProps } from '@components/Modal/types';
-import { useClass } from '@services';
 
-import { CloseIcon } from './components';
+import { CloseIcon } from '../components';
 
 import styles from './Container.scss';
 
-const Content: FC<ModalContainerProps> = ({ children, id, isClosed, onCloseHandler, props }) => {
-  const classes = useClass(
-    [styles.Container, styles.EnterAnimation, isClosed && styles.ExitAnimation],
-    [isClosed]
-  );
-
+const Container: FC<ModalContainerProps> = ({ children, id, onCloseHandler, props }) => {
   return (
-    <section {...props} className={classes} data-test={`${id}-container-modal`}>
+    <section {...props} className={styles.Container} data-test={`${id}-container-modal`}>
       <button
         className={styles.CloseBtn}
         data-test={`${id}-close-modal`}
@@ -28,6 +22,6 @@ const Content: FC<ModalContainerProps> = ({ children, id, isClosed, onCloseHandl
   );
 };
 
-Content.displayName = 'ModalContent';
+Container.displayName = 'ModalContainer';
 
-export default memo(Content);
+export default memo(Container);

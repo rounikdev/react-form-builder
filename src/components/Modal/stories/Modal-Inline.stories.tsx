@@ -9,7 +9,7 @@ import Modal from '@components/Modal/Inline';
 import { Provider } from '@components/Modal/provider';
 import { ModalBuilder } from '@components/Modal/components';
 
-import { Backdrop, Container } from './components';
+import { Backdrop, BackdropAnimate, Container, ContainerAnimate } from './components';
 
 export default {
   component: ModalBuilder,
@@ -80,6 +80,8 @@ const Playground = (): JSX.Element => {
                 showModalById({
                   id: 'modal-2',
                   animate: 'on',
+                  Backdrop: BackdropAnimate,
+                  Container: ContainerAnimate,
                   forceShow: true,
                   inline: true
                 });
@@ -97,6 +99,8 @@ const Playground = (): JSX.Element => {
             showModalById({
               id: 'modal-2',
               animate: 'on',
+              Backdrop: BackdropAnimate,
+              Container: ContainerAnimate,
               inline: true
             });
           }}

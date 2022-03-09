@@ -5,7 +5,7 @@ import { Provider } from '@components/Modal/provider';
 import { ModalBuilder } from '@components/Modal/components';
 import { ModalElement } from '@components/Modal/types';
 
-import { Backdrop, Container } from './components';
+import { BackdropAnimate, ContainerAnimate } from './components';
 
 export default {
   component: ModalBuilder,
@@ -34,6 +34,7 @@ const Playground = (args: ModalElement): JSX.Element => {
                     showModalById({
                       ...args,
                       id: 'modal-2',
+                      animate: 'off',
                       content: (
                         <p style={{ padding: '4rem', textAlign: 'center' }}>
                           <span style={{ fontSize: '2rem', fontWeight: 'bold' }}> Modal 2</span>
@@ -44,7 +45,6 @@ const Playground = (args: ModalElement): JSX.Element => {
                               showModalById({
                                 ...args,
                                 id: 'modal-3',
-                                animate: 'off',
                                 content: (
                                   <p style={{ padding: '4rem', textAlign: 'center' }}>
                                     <span style={{ fontSize: '2rem', fontWeight: 'bold' }}>
@@ -78,7 +78,7 @@ const Playground = (args: ModalElement): JSX.Element => {
 };
 
 const Template: ComponentStory<typeof ModalBuilder> = (args): JSX.Element => (
-  <Provider baseAnimate="on" BaseBackdrop={Backdrop} BaseContainer={Container}>
+  <Provider baseAnimate="on" BaseBackdrop={BackdropAnimate} BaseContainer={ContainerAnimate}>
     <Playground {...args} />
   </Provider>
 );
