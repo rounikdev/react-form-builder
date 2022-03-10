@@ -1,0 +1,41 @@
+.Container {
+  height: 3.8rem;
+  padding: 0 1rem;
+  color: #2e2e2e;
+  font-size: 1.2rem;
+  background-color: #a7d982;
+  border: none;
+  border-radius: 0.3rem;
+  outline: none;
+  cursor: pointer;
+  transition: all 250ms ease-in-out;
+
+  &:not(:last-of-type) {
+    margin-right: 1rem;
+  }
+
+  &:focus {
+    color: #2e2e2e !important;
+    background-color: #d9e3eb !important;
+  }
+
+  &:hover {
+    background-color: darken(#a7d982, 10%);
+  }
+
+  &.Edit {
+    background-color: #ef7c47;
+
+    &:hover {
+      background-color: darken(#ef7c47, 10%);
+    }
+  }
+
+  &.Warn {
+    background-color: #f37895;
+
+    &:hover {
+      background-color: darken(#f37895, 10%);
+    }
+  }
+}

@@ -8,7 +8,8 @@ const aliases = {
   '@pages': path.resolve(__dirname, '..', 'src', 'pages'),
   '@providers': path.resolve(__dirname, '..', 'src', 'providers'),
   '@root': path.resolve(__dirname, '..', 'src'),
-  '@services': path.resolve(__dirname, '..', 'src', 'services')
+  '@services': path.resolve(__dirname, '..', 'src', 'services'),
+  '@ui': path.resolve(__dirname, '..', 'src', 'ui')
 };
 
 const extensions = ['.ts', '.tsx'];

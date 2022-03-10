@@ -12,6 +12,7 @@
   },
   "exclude": [
     "dist",
+    "instrumented",
     "jest-setup.ts",
     "node_modules",
     "src/**/*.stories.tsx",

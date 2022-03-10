@@ -24,7 +24,9 @@
       "@providers": ["./providers"],
       "@providers/*": ["./providers/*"],
       "@services": ["./services"],
-      "@services/*": ["./services/*"]
+      "@services/*": ["./services/*"],
+      "@ui": ["./ui"],
+      "@ui/*": ["./ui/*"]
     },
     "plugins": [
       {

@@ -1,0 +1,38 @@
+.Container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.Label {
+  display: block;
+  padding: 0.3rem 0;
+  color: #686868;
+  font-size: 1.2rem;
+}
+
+.Input {
+  padding: 1rem;
+  color: #2e2e2e;
+  font-size: 1.6rem;
+  border: none;
+  border-radius: 0.3rem;
+  background-color: #efefef;
+  outline: none;
+  transition: all 250ms ease-in-out;
+
+  &:focus {
+    background-color: #d9e3eb;
+  }
+
+  &.InputError {
+    background-color: #ffa3af;
+  }
+}
+
+.Error {
+  position: absolute;
+  bottom: -1.6rem;
+  color: #c91931;
+  font-size: 1.2rem;
+}

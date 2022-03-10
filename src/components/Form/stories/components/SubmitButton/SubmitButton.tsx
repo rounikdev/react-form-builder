@@ -1,33 +1,25 @@
 import { memo } from 'react';
 
 import { useForm } from '@components/Form/hooks';
+import { Button } from '@ui';
 
 import styles from './SubmitButton.scss';
 
-const PlaygroundSubmitButton = () => {
+const SubmitButton = () => {
   const context = useForm();
 
   return (
     <div className={styles.Container}>
-      <button
-        className={styles.Submit}
-        onClick={() => {
-          context.methods.forceValidate();
-        }}
+      <Button
+        dataTest="submit"
+        onClick={context.methods.forceValidate}
         type="submit"
-      >{`Submit ${context.valid ? '- Valid' : '- Not valid'}`}</button>
-      <button
-        className={styles.Reset}
-        data-test="reset"
-        onClick={() => {
-          context.methods.reset();
-        }}
-        type="button"
-      >
-        Reset
-      </button>
+        text="Submit"
+        variant={context.valid ? undefined : 'Warn'}
+      />
+      <Button dataTest="reset" onClick={context.methods.reset} text="Reset" />
     </div>
   );
 };
 
-export default memo(PlaygroundSubmitButton);
+export default memo(SubmitButton);
