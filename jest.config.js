@@ -9,7 +9,8 @@ module.exports = {
     '!src/**/*.test.{ts,tsx}',
     '!src/index.ts',
     '!src/**/*.d.ts',
-    '!src/services/utils/**/*.*'
+    '!src/services/utils/**/*.*',
+    '!src/ui/**/*.*'
   ],
   coverageThreshold: {
     global: {
@@ -29,7 +30,8 @@ module.exports = {
     '^@pages(.*)$': '<rootDir>/src/pages$1',
     '^@providers(.*)$': '<rootDir>/src/providers$1',
     '^@root(.*)$': '<rootDir>/src$1',
-    '^@services(.*)$': '<rootDir>/src/services$1'
+    '^@services(.*)$': '<rootDir>/src/services$1',
+    '^@ui(.*)$': '<rootDir>/src/ui$1'
   },
   setupFilesAfterEnv: ['<rootDir>/enzyme-setup.js', '<rootDir>/jest-setup.ts'],
   testEnvironment: 'jsdom',

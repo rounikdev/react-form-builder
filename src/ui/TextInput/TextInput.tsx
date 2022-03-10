@@ -3,6 +3,8 @@ import { FC, FocusEvent, memo, MutableRefObject, useMemo } from 'react';
 import { Field, useField, UseFieldConfig, useTranslation } from '@components';
 import { useClass } from '@services';
 
+import styles from './TextInput.scss';
+
 export interface TextInputProps
   extends Omit<UseFieldConfig<string>, 'initialValue'>,
     Omit<Field<string>, 'dataTest'> {
@@ -55,15 +57,18 @@ export const TextInput: FC<TextInputProps> = memo(
 
     return (
       <div
-        className={useClass([className], [className])}
+        className={useClass([styles.Container, className], [className])}
         style={{ display: hidden ? 'none' : 'initial' }}
       >
-        <label htmlFor={id}>{label}</label>
+        <label className={styles.Label} htmlFor={id}>
+          {label}
+        </label>
         <input
           aria-hidden={hidden}
           aria-invalid={!valid}
           aria-required={required}
           autoComplete={autoComplete}
+          className={useClass([styles.Input, isError && styles.InputError], [isError])}
           disabled={disabled}
           id={id}
           name={name}
@@ -77,7 +82,7 @@ export const TextInput: FC<TextInputProps> = memo(
           type={type}
           value={value}
         />
-        {isError ? <div>{JSON.stringify(errors)}</div> : null}
+        {isError ? <div className={styles.Error}>{errors.map((e) => e.text).join(' ')}</div> : null}
       </div>
     );
   }
