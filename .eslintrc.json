@@ -31,7 +31,7 @@
     "react-hooks",
     "testing-library"
   ],
-  "ignorePatterns": ["dist"],
+  "ignorePatterns": ["dist", "instrumented"],
   "overrides": [
     {
       // Enable eslint-plugin-testing-library rules

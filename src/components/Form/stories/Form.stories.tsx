@@ -1,8 +1,12 @@
+/* eslint-disable max-len */
 import { FC, StrictMode } from 'react';
+import { Story, Meta } from '@storybook/react';
+
+import { Button, TextInput } from '@ui';
 
 import { ConditionalFields, FormArray, FormObject, FormRoot, FormUser } from '../components';
 
-import { FormStateDisplay, SubmitButton, TextInput } from './components';
+import { FormStateDisplay, SubmitButton } from './components';
 import {
   createPhone,
   createUser,
@@ -18,13 +22,13 @@ import styles from './FormStories.scss';
 
 export default {
   title: 'Demo/Form'
-};
+} as Meta;
 
 type Users = typeof initialUsers;
 
 type Phone = { id: string; value: string };
 
-export const FormDemo: FC = () => {
+const Template: Story<FC> = () => {
   return (
     <StrictMode>
       <section className={styles.Container}>
@@ -40,12 +44,12 @@ export const FormDemo: FC = () => {
               {([usersArray, addUser, removeUser]) => {
                 return (
                   <>
-                    <button className={styles.AddUserButton} onClick={addUser} type="button">
-                      Add User
-                    </button>
+                    <div className={styles.AddUserContainer}>
+                      <Button dataTest="add-user" onClick={addUser} text="Add User" />
+                    </div>
                     {(usersArray as Users).map((user, userIndex) => {
                       return (
-                        <div className={styles.Group} key={user.id}>
+                        <div className={styles.Group} key={user.id} data-test={`user-${userIndex}`}>
                           <div className={styles.User}>
                             <FormObject name={`${userIndex}`}>
                               <div style={{ width: '100%', marginBottom: '1rem' }}>
@@ -54,19 +58,32 @@ export const FormDemo: FC = () => {
                                     return (
                                       <div>
                                         {!isEdit ? (
-                                          <button onClick={methods.edit} type="button">
-                                            Edit
-                                          </button>
+                                          <Button
+                                            dataTest={`edit-user-${userIndex}`}
+                                            onClick={methods.edit}
+                                            text="Edit"
+                                            variant="Edit"
+                                          />
                                         ) : (
                                           <>
-                                            <button onClick={methods.cancel} type="button">
-                                              Cancel
-                                            </button>
-                                            <button onClick={methods.save} type="button">
-                                              Save
-                                            </button>
+                                            <Button
+                                              dataTest={`cancel-user-${userIndex}`}
+                                              onClick={methods.cancel}
+                                              text="Cancel"
+                                            />
+                                            <Button
+                                              dataTest={`save-user-${userIndex}`}
+                                              onClick={methods.save}
+                                              text="Save"
+                                            />
                                           </>
                                         )}
+                                        <Button
+                                          dataTest={`remove-user-${userIndex}`}
+                                          onClick={() => removeUser(userIndex)}
+                                          text="Remove"
+                                          variant="Warn"
+                                        />
                                       </div>
                                     );
                                   }}
@@ -74,7 +91,7 @@ export const FormDemo: FC = () => {
                               </div>
                               <TextInput
                                 hidden
-                                id={`id-${userIndex}`}
+                                id={`id-user-${userIndex}`}
                                 initialValue={user.id}
                                 name="id"
                               />
@@ -97,14 +114,13 @@ export const FormDemo: FC = () => {
                                 {([phonesArray, addPhone, removePhone]) => {
                                   return (
                                     <>
-                                      <button
-                                        className={styles.AddPhoneButton}
-                                        onClick={addPhone}
-                                        type="button"
-                                      >
-                                        Add Phone
-                                      </button>
                                       <div className={styles.Phones}>
+                                        <Button
+                                          className={styles.AddButton}
+                                          dataTest={`add-phone-user-${userIndex}`}
+                                          onClick={addPhone}
+                                          text="Add Phone"
+                                        />
                                         <div className={styles.PhonesList}>
                                           {(phonesArray as Phone[]).map((phone, phoneIndex) => {
                                             return (
@@ -112,11 +128,12 @@ export const FormDemo: FC = () => {
                                                 <FormObject name={`${phoneIndex}`}>
                                                   <TextInput
                                                     hidden
-                                                    id={`id-${phoneIndex}`}
+                                                    id={`id-phone-${userIndex}-${phoneIndex}`}
                                                     initialValue={phone.id}
                                                     name="id"
                                                   />
                                                   <TextInput
+                                                    className={styles.PhoneInput}
                                                     id={`phone-value-${userIndex}-${phoneIndex}`}
                                                     initialValue={phone.value}
                                                     label="Phone Number"
@@ -124,12 +141,12 @@ export const FormDemo: FC = () => {
                                                     validator={phoneValidator}
                                                   />
                                                 </FormObject>
-                                                <button
+                                                <Button
+                                                  dataTest={`remove-phone-${userIndex}-${phoneIndex}`}
                                                   onClick={() => removePhone(phoneIndex)}
-                                                  type="button"
-                                                >
-                                                  Remove Phone
-                                                </button>
+                                                  text="X"
+                                                  variant="Warn"
+                                                />
                                               </div>
                                             );
                                           })}
@@ -141,13 +158,6 @@ export const FormDemo: FC = () => {
                               </FormArray>
                             </FormObject>
                           </div>
-                          <button
-                            className={styles.RemoveUserButton}
-                            onClick={() => removeUser(userIndex)}
-                            type="button"
-                          >
-                            Remove user
-                          </button>
                         </div>
                       );
                     })}
@@ -165,7 +175,6 @@ export const FormDemo: FC = () => {
                   name="password"
                   validator={passwordValidator}
                 />
-
                 <TextInput
                   className={styles.PasswordInput}
                   dependencyExtractor={passwordDependencyExtractor}
@@ -185,3 +194,5 @@ export const FormDemo: FC = () => {
     </StrictMode>
   );
 };
+
+export const FormDemo = Template.bind({});
