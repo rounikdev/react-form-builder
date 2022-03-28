@@ -5,7 +5,7 @@ import { useMount, useUpdate, useUpdateOnly } from '@services';
 import { useModal } from '@components/Modal/context';
 import { ModalBuilderProps } from '@components/Modal/types';
 
-const ModalBuilder: FC<ModalBuilderProps> = (props) => {
+export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
   const {
     alwaysRender,
     animate,
@@ -40,7 +40,7 @@ const ModalBuilder: FC<ModalBuilderProps> = (props) => {
   const [overflow, setOverflow] = useState('hidden');
 
   const hasAnimation = useMemo(
-    () => animate === 'on' || (animate === undefined && baseAnimate === 'on'),
+    () => animate || (animate === undefined && baseAnimate),
     [animate, baseAnimate]
   );
 

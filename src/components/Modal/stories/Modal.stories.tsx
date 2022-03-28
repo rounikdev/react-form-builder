@@ -34,7 +34,7 @@ const Playground = (args: ModalElement): JSX.Element => {
                     showModalById({
                       ...args,
                       id: 'modal-2',
-                      animate: 'off',
+                      animate: false,
                       content: (
                         <p style={{ padding: '4rem', textAlign: 'center' }}>
                           <span style={{ fontSize: '2rem', fontWeight: 'bold' }}> Modal 2</span>
@@ -78,7 +78,7 @@ const Playground = (args: ModalElement): JSX.Element => {
 };
 
 const Template: ComponentStory<typeof ModalBuilder> = (args): JSX.Element => (
-  <Provider baseAnimate="on" BaseBackdrop={BackdropAnimate} BaseContainer={ContainerAnimate}>
+  <Provider baseAnimate BaseBackdrop={BackdropAnimate} BaseContainer={ContainerAnimate}>
     <Playground {...args} />
   </Provider>
 );

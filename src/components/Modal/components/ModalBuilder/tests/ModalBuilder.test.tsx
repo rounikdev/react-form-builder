@@ -5,9 +5,10 @@ import userEvent from '@testing-library/user-event';
 import { Modal } from '@components';
 import { appendModalToRoot, testRender } from '@services/utils';
 
-import { ModalElement, ModalTemplateProps } from '../../../types';
+import { ModalElement, ModalTemplateProps } from '@components/Modal/types';
 
-import ModalBuilder from '../ModalBuilder';
+import { Backdrop, Container } from '@components/Modal/stories/components';
+import { ModalBuilder } from '../ModalBuilder';
 
 interface TestActionButtonProps {
   action: 'setModal' | 'showModalById' | 'hideModalById';
@@ -32,12 +33,12 @@ describe('Modal actions', () => {
   appendModalToRoot();
 
   it('Has display name', () => {
-    expect(ModalBuilder.displayName).toBe('ModalContainer');
+    expect(ModalBuilder.displayName).toBe('ModalBuilder');
   });
 
   it('Mounts ModalBuilder with backdrop and content section', () => {
     const { getByDataTest } = testRender(
-      <Modal.Provider>
+      <Modal.Provider BaseBackdrop={Backdrop} BaseContainer={Container}>
         <TestActionButton action="showModalById" />
       </Modal.Provider>
     );
@@ -54,9 +55,47 @@ describe('Modal actions', () => {
     expect(getByDataTest('test-container-modal')).toBeInTheDocument();
   });
 
+  it('Mounts ModalBuilder without backdrop and without content section', () => {
+    const { getByDataTest, queryByDataTest } = testRender(
+      <Modal.Provider>
+        <TestActionButton action="showModalById" />
+      </Modal.Provider>
+    );
+
+    const buttonShowModalById = getByDataTest('test-button-showModalById');
+
+    fireEvent.click(buttonShowModalById, {
+      target: {
+        id: 'test'
+      }
+    });
+
+    expect(queryByDataTest('test-backdrop-modal')).not.toBeInTheDocument();
+    expect(queryByDataTest('test-container-modal')).not.toBeInTheDocument();
+  });
+
+  it('Mounts ModalBuilder with backdrop and without content section', () => {
+    const { getByDataTest, queryByDataTest } = testRender(
+      <Modal.Provider BaseBackdrop={Backdrop}>
+        <TestActionButton action="showModalById" />
+      </Modal.Provider>
+    );
+
+    const buttonShowModalById = getByDataTest('test-button-showModalById');
+
+    fireEvent.click(buttonShowModalById, {
+      target: {
+        id: 'test'
+      }
+    });
+
+    expect(getByDataTest('test-backdrop-modal')).toBeInTheDocument();
+    expect(queryByDataTest('test-container-modal')).not.toBeInTheDocument();
+  });
+
   it('Closes on backdrop click, does not close on section click', async () => {
     const { findByDataTest, getByDataTest, queryByDataTest } = testRender(
-      <Modal.Provider>
+      <Modal.Provider baseAnimate BaseBackdrop={Backdrop} BaseContainer={Container}>
         <TestActionButton action="showModalById" />
       </Modal.Provider>
     );
@@ -92,7 +131,7 @@ describe('Modal actions', () => {
     const mockOnClose = jest.fn();
 
     const { findByDataTest, getByDataTest } = testRender(
-      <Modal.Provider>
+      <Modal.Provider baseAnimate BaseBackdrop={Backdrop} BaseContainer={Container}>
         <TestActionButton action="showModalById" />
       </Modal.Provider>
     );
@@ -117,7 +156,7 @@ describe('Modal actions', () => {
 
   it('Closes on close button click', async () => {
     const { findByDataTest, getByDataTest } = testRender(
-      <Modal.Provider>
+      <Modal.Provider baseAnimate BaseBackdrop={Backdrop} BaseContainer={Container}>
         <TestActionButton action="showModalById" />
       </Modal.Provider>
     );
@@ -144,7 +183,7 @@ describe('Modal actions', () => {
 
   it('Pass function as content', () => {
     const { getByDataTest } = testRender(
-      <Modal.Provider>
+      <Modal.Provider baseAnimate BaseBackdrop={Backdrop} BaseContainer={Container}>
         <TestActionButton action="showModalById" />
       </Modal.Provider>
     );
@@ -163,7 +202,7 @@ describe('Modal actions', () => {
 
   it('Update backdrop `overflow`', async () => {
     const { findByDataTest, getByDataTest } = testRender(
-      <Modal.Provider>
+      <Modal.Provider baseAnimate BaseBackdrop={Backdrop} BaseContainer={Container}>
         <TestActionButton action="showModalById" />
       </Modal.Provider>
     );
@@ -183,7 +222,7 @@ describe('Modal actions', () => {
 
   it('Pass `hideBackdrop`', async () => {
     const { getByDataTest } = testRender(
-      <Modal.Provider>
+      <Modal.Provider baseAnimate BaseBackdrop={Backdrop} BaseContainer={Container}>
         <TestActionButton action="showModalById" />
       </Modal.Provider>
     );
@@ -197,12 +236,14 @@ describe('Modal actions', () => {
       }
     });
 
-    expect(getByDataTest('test-backdrop-modal')).toHaveClass('Hide');
+    expect(getComputedStyle(getByDataTest('test-backdrop-modal')).backgroundColor).toBe(
+      'transparent'
+    );
   });
 
   it('Trigger `closeAutomatically`', async () => {
-    const { findByDataTest, getByDataTest } = testRender(
-      <Modal.Provider>
+    const { getByDataTest, queryByDataTest } = testRender(
+      <Modal.Provider BaseBackdrop={Backdrop} BaseContainer={Container}>
         <TestActionButton action="showModalById" />
         <TestActionButton action="hideModalById" />
       </Modal.Provider>
@@ -224,9 +265,7 @@ describe('Modal actions', () => {
       }
     });
 
-    expect(await findByDataTest('test-backdrop-modal')).toHaveClass(
-      'Backdrop EnterAnimation ExitAnimation'
-    );
+    expect(queryByDataTest('test-backdrop-modal')).not.toBeInTheDocument();
   });
 
   describe('Modal Inline', () => {
@@ -234,7 +273,7 @@ describe('Modal actions', () => {
       const mockOnOpen = jest.fn();
 
       const { findByDataTest, getByDataTest } = testRender(
-        <Modal.Provider>
+        <Modal.Provider baseAnimate BaseBackdrop={Backdrop} BaseContainer={Container}>
           <TestActionButton action="showModalById" />
           <Modal.Inline alwaysRender id="modal-1">
             <TestActionButton action="hideModalById" />
@@ -278,7 +317,7 @@ describe('Modal actions', () => {
       const mockOnOpen = jest.fn();
 
       const { findByDataTest, getByDataTest, queryByDataTest } = testRender(
-        <Modal.Provider>
+        <Modal.Provider baseAnimate BaseBackdrop={Backdrop} BaseContainer={Container}>
           <TestActionButton action="showModalById" />
           <Modal.Inline id="modal-1">
             <TestActionButton action="hideModalById" />

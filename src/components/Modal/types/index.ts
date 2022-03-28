@@ -33,10 +33,8 @@ export interface ModalContainerProps {
   props: { style: CSSProperties };
 }
 
-export type ModalAnimate = 'on' | 'off';
-
 export interface ModalElement {
-  animate?: ModalAnimate;
+  animate?: boolean;
   clearPreceding?: boolean;
   closeAutomatically?: boolean;
   Backdrop?: FC<ModalBackdropProps>;
@@ -72,7 +70,7 @@ export interface ModalContext {
   actions: {
     [key: string]: ModalAction;
   };
-  baseAnimate?: ModalAnimate;
+  baseAnimate?: boolean;
   BaseBackdrop?: FC<ModalBackdropProps>;
   BaseContainer?: FC<ModalContainerProps>;
   modalsToShow: { [key: string]: ModalElement };
