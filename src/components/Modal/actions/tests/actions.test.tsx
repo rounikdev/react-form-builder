@@ -1,12 +1,13 @@
 /* eslint-disable testing-library/prefer-screen-queries */
 import { FC } from 'react';
-import { fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { Modal } from '@components';
 import { appendModalToRoot, testRender } from '@services/utils';
 
-import { ModalElement } from '../../types';
+import { ModalElement } from '@components/Modal/types';
+import { Backdrop, Container } from '@components/Modal/stories/components';
 
 const StateReader: FC = () => {
   const { modalsToShow, orderList } = Modal.useModal();
@@ -43,7 +44,7 @@ describe('Modal actions', () => {
 
   it('Multiple modal show, forceShow, clearPreceding, hideModalById', () => {
     const { getByDataTest, getByText } = testRender(
-      <Modal.Provider>
+      <Modal.Provider BaseBackdrop={Backdrop} BaseContainer={Container}>
         <TestActionButton action="showModalById" />
         <TestActionButton action="hideModalById" />
         <StateReader />
@@ -88,7 +89,7 @@ describe('Modal actions', () => {
 
   it('hideModalById of a non existing modal', () => {
     const { getByDataTest, getByText } = testRender(
-      <Modal.Provider>
+      <Modal.Provider BaseBackdrop={Backdrop} BaseContainer={Container}>
         <TestActionButton action="showModalById" />
         <TestActionButton action="hideModalById" />
         <StateReader />
@@ -115,7 +116,7 @@ describe('Modal actions', () => {
 
   it('showModalById of an existing modal', () => {
     const { getByDataTest, getByText } = testRender(
-      <Modal.Provider>
+      <Modal.Provider BaseBackdrop={Backdrop} BaseContainer={Container}>
         <TestActionButton action="showModalById" />
 
         <StateReader />
@@ -141,15 +142,12 @@ describe('Modal actions', () => {
 
   it('Clear modal on backdrop click', async () => {
     const { getByDataTest, getByText } = testRender(
-      <Modal.Provider>
+      <Modal.Provider BaseBackdrop={Backdrop} BaseContainer={Container}>
         <TestActionButton action="showModalById" />
 
         <StateReader />
       </Modal.Provider>
     );
-
-    // const buttonShowModalById = wrapper.find('[data-test="test-button-showModalById"]');
-    // buttonShowModalById.simulate('click', { target: { id: 'test' } });
 
     const buttonShowModalById = getByDataTest('test-button-showModalById');
 
@@ -161,11 +159,6 @@ describe('Modal actions', () => {
 
     const modalBackdrop = getByDataTest('test-backdrop-modal');
     userEvent.click(modalBackdrop);
-
-    await waitFor(() => {
-      // eslint-disable-next-line testing-library/no-wait-for-side-effects
-      fireEvent.animationEnd(modalBackdrop);
-    });
 
     expect(getByText(JSON.stringify({}))).toBeInTheDocument();
   });

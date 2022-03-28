@@ -6,8 +6,8 @@ import { Modal } from '@components';
 import { appendModalToRoot, testRender } from '@services/utils';
 
 import { ModalElement, ModalTemplateProps } from '@components/Modal/types';
-
 import { Backdrop, Container } from '@components/Modal/stories/components';
+
 import { ModalBuilder } from '../ModalBuilder';
 
 interface TestActionButtonProps {
