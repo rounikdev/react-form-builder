@@ -33,14 +33,9 @@ const Template: Story<FC> = () => {
     <StrictMode>
       <section className={styles.Container}>
         <div className={styles.FormContainer}>
-          <FormRoot
-            className={styles.Form}
-            dataTest="users-form"
-            initialData={{ users: initialUsers, password: 'a', repeatPassword: 'af' }}
-            onSubmit={console.log}
-          >
+          <FormRoot className={styles.Form} dataTest="users-form" onSubmit={console.log}>
             <FormStateDisplay />
-            <FormArray factory={createUser} name="users">
+            <FormArray factory={createUser} initialValue={initialUsers} name="users">
               {([usersArray, addUser, removeUser]) => {
                 return (
                   <>
@@ -98,6 +93,7 @@ const Template: Story<FC> = () => {
                               <TextInput
                                 className={styles.Input}
                                 id={`first-name-${userIndex}`}
+                                initialValue={user.firstName}
                                 label="First Name"
                                 name="firstName"
                                 validator={nameValidator}
@@ -105,12 +101,17 @@ const Template: Story<FC> = () => {
                               <TextInput
                                 className={styles.Input}
                                 id={`last-name-${userIndex}`}
+                                initialValue={user.lastName}
                                 label="Last Name"
                                 name="lastName"
                                 validator={nameValidator}
                               />
 
-                              <FormArray factory={createPhone} name="phones">
+                              <FormArray
+                                factory={createPhone}
+                                initialValue={user.phones}
+                                name="phones"
+                              >
                                 {([phonesArray, addPhone, removePhone]) => {
                                   return (
                                     <>

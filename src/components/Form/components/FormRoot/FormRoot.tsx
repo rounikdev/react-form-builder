@@ -19,16 +19,7 @@ import { FormContext, FormRootProps, FormStateEntry } from '../../types';
 import styles from './FormRoot.scss';
 
 export const FormRoot: FC<FormRootProps> = memo(
-  ({
-    children,
-    className,
-    dataTest,
-    initialData,
-    noValidate = true,
-    onChange,
-    onReset,
-    onSubmit
-  }) => {
+  ({ children, className, dataTest, noValidate = true, onChange, onReset, onSubmit }) => {
     const { context, dispatch, removeFromForm, setInForm, valid, value } = useFormReducer({
       flattenState: flattenFormObjectState,
       reducer: formObjectReducer
@@ -165,7 +156,6 @@ export const FormRoot: FC<FormRootProps> = memo(
         fieldToBeSet,
         focusedField,
         formData: value,
-        initialData,
         methods: rootProviderMethods,
         pristine,
         resetRecords,

@@ -77,24 +77,6 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
     expect(FormArray.displayName).toBe('FormArray');
   });
 
-  it('Form has the right initial state when initialData is provided', async () => {
-    const name = 'firstName';
-    const valid = false; // The initial state is being set on mount to be with valid=false
-    const value = 'Ivan';
-
-    const { getByDataTest } = testRender(
-      <FormRoot dataTest="form-root" initialData={{ [name]: value }} onSubmit={jest.fn()}>
-        <StateReader />
-      </FormRoot>
-    );
-
-    const state = JSON.parse(getByDataTest('state').textContent || '');
-    expect(state).toEqual({ [name]: { valid, value } });
-
-    const validity = getByDataTest('validity').textContent;
-    expect(validity).toBe(`${valid}`);
-  });
-
   it('methods.setInForm sets the right state in the Form', async () => {
     const fieldName = 'firstName';
     const valid = true;
@@ -118,37 +100,6 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
 
     const validity = getByDataTest('validity').textContent;
     expect(validity).toBe(`${valid}`);
-  });
-
-  it('reset sets the initialState in form if such has been provided', async () => {
-    const name = 'firstName';
-    const initialValid = false;
-    const initialValue = 'Maria';
-    const valid = true;
-    const value = 'Ivan';
-
-    const { getByDataTest } = testRender(
-      <FormRoot dataTest="form-root" initialData={{ [name]: initialValue }} onSubmit={jest.fn()}>
-        <StateReader />
-        <TestComponent name={name} valid={valid} value={value} />
-        <TestMethodButton method="reset" />
-      </FormRoot>
-    );
-
-    const state = JSON.parse(getByDataTest('state').textContent || '');
-    expect(state).toEqual({ [name]: { valid, value } });
-
-    const validity = getByDataTest('validity').textContent;
-    expect(validity).toBe(`${valid}`);
-
-    const button = getByDataTest('method-test-button');
-    userEvent.click(button);
-
-    const stateB = JSON.parse(getByDataTest('state').textContent || '');
-    expect(stateB).toEqual({ [name]: { valid: initialValid, value: initialValue } });
-
-    const validityB = getByDataTest('validity').textContent;
-    expect(validityB).toBe(`${initialValid}`);
   });
 
   it('onChange prop is called with the correct argument', async () => {
@@ -444,9 +395,9 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
       <ShowHide data={users} show={true}>
         {(_, userList: { id: string; name: string }[]) => {
           return (
-            <FormRoot dataTest="form-root" initialData={{ users: userList }}>
+            <FormRoot dataTest="form-root">
               <StateReader />
-              <FormArray factory={userFactory} name={arrayName}>
+              <FormArray factory={userFactory} initialValue={userList} name={arrayName}>
                 {([list]) => {
                   return list.map((user, index) => {
                     return (

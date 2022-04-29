@@ -97,7 +97,6 @@ export interface FieldErrors {
 
 export interface FormRootProps extends Testable {
   className?: string;
-  initialData?: FormStateEntryValue;
   noValidate?: boolean;
   onChange?: (formState: {
     errors: FieldErrors;
@@ -122,6 +121,7 @@ export type FormArrayChildrenArguments = [
 export interface FormArrayProps {
   children: (items: FormArrayChildrenArguments) => ReactNode;
   factory: () => FormStateEntryValue;
+  initialValue?: unknown[];
   name: string;
   onReset?: () => void;
 }
@@ -182,7 +182,6 @@ export interface FormRootProviderContext {
   fieldToBeSet: SetFieldValuePayload;
   focusedField: string;
   formData: FormStateEntry;
-  initialData?: FormStateEntry;
   methods: {
     focusField: (fieldId: string) => void;
     registerFieldErrors?: (payload: FieldErrorsPayload) => void;

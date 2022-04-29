@@ -54,7 +54,6 @@ export const useField = <T>({
     fieldToBeSet,
     focusedField,
     formData,
-    initialData,
     methods: { focusField, registerFieldErrors, scrollFieldIntoView, setFieldValue },
     resetRecords,
     scrolledField
@@ -80,7 +79,7 @@ export const useField = <T>({
 
     const valueFromFormData = GlobalModel.getNestedValue(formData, fieldPath);
 
-    const currentInitialValue = GlobalModel.getNestedValue(initialData, fieldPath) ?? initialValue;
+    const currentInitialValue = initialValue;
 
     const nonEditValue = pristine
       ? currentInitialValue
@@ -94,7 +93,7 @@ export const useField = <T>({
     // else check if has reset data or fallback to the
     // form data.
     return isEdit ? valueFromFormData ?? initialValue : nonEditValue;
-  }, [context.methods, formData, initialData, initialValue, isEdit, name, pristine, resetRecords]);
+  }, [context.methods, formData, initialValue, isEdit, name, pristine, resetRecords]);
 
   const isRenderedRef = useRef(false);
 

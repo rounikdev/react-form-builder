@@ -8,15 +8,16 @@ import { FormStateEntryValue, ResetFlag } from '../../types';
 export const useFormArray = ({
   factory,
   fieldId,
+  initialValue = [],
   resetFlag
 }: {
   factory: () => FormStateEntryValue;
   fieldId: string;
+  initialValue?: unknown[];
   resetFlag: ResetFlag;
 }) => {
   const {
     formData: providedFormData,
-    initialData,
     methods: { setDirty },
     pristine,
     resetRecords
@@ -35,7 +36,7 @@ export const useFormArray = ({
       fieldPath
     );
     const valueFromFormData = GlobalModel.getNestedValue(providedFormData, fieldPath);
-    const currentInitialValue = GlobalModel.getNestedValue(initialData, fieldPath);
+    const currentInitialValue = initialValue;
 
     const nonEditValue = pristine
       ? currentInitialValue
@@ -48,7 +49,7 @@ export const useFormArray = ({
     // else check if has reset data or fallback to the
     // form data.
     return (isEdit ? valueFromFormData : nonEditValue) || [];
-  }, [fieldId, initialData, isEdit, pristine, providedFormData, resetRecords]);
+  }, [fieldId, initialValue, isEdit, pristine, providedFormData, resetRecords]);
 
   const [list, setList] = useState<FormStateEntryValue[]>(getInitialValue());
 

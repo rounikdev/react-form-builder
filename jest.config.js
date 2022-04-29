@@ -6,6 +6,7 @@ module.exports = {
     '!src/**stories-components/**/*.*',
     '!src/**/*.stories.tsx',
     '!src/**/stories/**/*.*',
+    '!src/**/*.spec.{ts,tsx}',
     '!src/**/*.test.{ts,tsx}',
     '!src/index.ts',
     '!src/**/*.d.ts',
@@ -39,3 +40,4 @@ module.exports = {
   testRegex: 'tests/.*.test.(ts|tsx)$',
   testTimeout: 20000
 };
+
