@@ -1,4 +1,4 @@
-import { FC, memo, useMemo } from 'react';
+import { memo, PropsWithChildren, useMemo } from 'react';
 
 import { FormContextInstance } from '../../context';
 import {
@@ -13,68 +13,76 @@ import { formArrayReducer } from '../../reducers';
 import { flattenFormArrayState } from '../../services';
 import { FormContext, FormArrayProps } from '../../types';
 
-export const FormArray: FC<FormArrayProps> = memo(
-  ({ children, factory, initialValue, name, onReset }) => {
-    const { context, removeFromForm, setInForm, valid, value } = useFormReducer({
-      flattenState: flattenFormArrayState,
-      reducer: formArrayReducer
-    });
+const BaseFormArray = <T,>({
+  children,
+  factory,
+  initialValue,
+  name,
+  onReset
+}: PropsWithChildren<FormArrayProps<T>>) => {
+  const { context, removeFromForm, setInForm, valid, value } = useFormReducer({
+    flattenState: flattenFormArrayState,
+    reducer: formArrayReducer
+  });
 
-    const { isEdit: isParentEdit } = useFormEditContext();
+  const { isEdit: isParentEdit } = useFormEditContext();
 
-    const { forceValidate, forceValidateFlag, reset, resetFlag } = useFormInteraction({ onReset });
+  const { forceValidate, forceValidateFlag, reset, resetFlag } = useFormInteraction({ onReset });
 
-    const { getFieldId } = useFormParent({
+  const { getFieldId } = useFormParent({
+    forceValidate,
+    name,
+    reset,
+    valid,
+    value
+  });
+
+  const { cancel, edit, isEdit, save } = useFormReset({ fieldId: getFieldId(), reset });
+
+  const methods = useMemo(
+    () => ({
+      cancel,
+      edit,
       forceValidate,
-      name,
+      getFieldId,
+      removeFromForm,
       reset,
-      valid,
-      value
-    });
+      save,
+      setInForm
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [cancel, edit, getFieldId, reset, save]
+  );
 
-    const { cancel, edit, isEdit, save } = useFormReset({ fieldId: getFieldId(), reset });
+  const formContext = useMemo<FormContext>(() => {
+    return {
+      ...context,
+      forceValidateFlag,
+      isEdit,
+      methods,
+      resetFlag,
+      valid
+    };
+  }, [context, forceValidateFlag, isEdit, methods, resetFlag, valid]);
 
-    const methods = useMemo(
-      () => ({
-        cancel,
-        edit,
-        forceValidate,
-        getFieldId,
-        removeFromForm,
-        reset,
-        save,
-        setInForm
-      }),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [cancel, edit, getFieldId, reset, save]
-    );
+  const { add, list, remove } = useFormArray({
+    factory,
+    fieldId: getFieldId(),
+    initialValue,
+    resetFlag
+  });
 
-    const formContext = useMemo<FormContext>(() => {
-      return {
-        ...context,
-        forceValidateFlag,
-        isEdit,
-        methods,
-        resetFlag,
-        valid
-      };
-    }, [context, forceValidateFlag, isEdit, methods, resetFlag, valid]);
+  return (
+    <FormEditProvider isEdit={isEdit || isParentEdit}>
+      <FormContextInstance.Provider value={formContext}>
+        {children([list, add, remove])}
+      </FormContextInstance.Provider>
+    </FormEditProvider>
+  );
+};
 
-    const { add, list, remove } = useFormArray({
-      factory,
-      fieldId: getFieldId(),
-      initialValue,
-      resetFlag
-    });
+type FormArrayType = typeof BaseFormArray & { displayName: string };
 
-    return (
-      <FormEditProvider isEdit={isEdit || isParentEdit}>
-        <FormContextInstance.Provider value={formContext}>
-          {children([list, add, remove])}
-        </FormContextInstance.Provider>
-      </FormEditProvider>
-    );
-  }
-);
+export const FormArray = memo(BaseFormArray) as FormArrayType;
 
 FormArray.displayName = 'FormArray';

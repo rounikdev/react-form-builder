@@ -79,10 +79,8 @@ export const useField = <T>({
 
     const valueFromFormData = GlobalModel.getNestedValue(formData, fieldPath);
 
-    const currentInitialValue = initialValue;
-
     const nonEditValue = pristine
-      ? currentInitialValue
+      ? initialValue
       : // TODO: think of providing defaultValue instead of initialValue:
         valueFromResetRecords ?? valueFromFormData ?? initialValue;
 

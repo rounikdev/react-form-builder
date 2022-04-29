@@ -24,10 +24,6 @@ export default {
   title: 'Demo/Form'
 } as Meta;
 
-type Users = typeof initialUsers;
-
-type Phone = { id: string; value: string };
-
 const Template: Story<FC> = () => {
   return (
     <StrictMode>
@@ -36,13 +32,13 @@ const Template: Story<FC> = () => {
           <FormRoot className={styles.Form} dataTest="users-form" onSubmit={console.log}>
             <FormStateDisplay />
             <FormArray factory={createUser} initialValue={initialUsers} name="users">
-              {([usersArray, addUser, removeUser]) => {
+              {([users, addUser, removeUser]) => {
                 return (
                   <>
                     <div className={styles.AddUserContainer}>
                       <Button dataTest="add-user" onClick={addUser} text="Add User" />
                     </div>
-                    {(usersArray as Users).map((user, userIndex) => {
+                    {users.map((user, userIndex) => {
                       return (
                         <div className={styles.Group} key={user.id} data-test={`user-${userIndex}`}>
                           <div className={styles.User}>
@@ -112,7 +108,7 @@ const Template: Story<FC> = () => {
                                 initialValue={user.phones}
                                 name="phones"
                               >
-                                {([phonesArray, addPhone, removePhone]) => {
+                                {([phones, addPhone, removePhone]) => {
                                   return (
                                     <>
                                       <div className={styles.Phones}>
@@ -123,7 +119,7 @@ const Template: Story<FC> = () => {
                                           text="Add Phone"
                                         />
                                         <div className={styles.PhonesList}>
-                                          {(phonesArray as Phone[]).map((phone, phoneIndex) => {
+                                          {phones.map((phone, phoneIndex) => {
                                             return (
                                               <div className={styles.Phone} key={phone.id}>
                                                 <FormObject name={`${phoneIndex}`}>

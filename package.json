@@ -3,12 +3,13 @@
     "version": "0.0.1",
     "description": "React form builder",
     "keywords": [
+        "fields",
         "form",
+        "headless",
+        "management",
         "react",
-        "rollup",
-        "storybook",
-        "typescript",
-        "webpack"
+        "state",
+        "typescript"
     ],
     "license": "MIT",
     "author": {
@@ -21,7 +22,7 @@
     "scripts": {
         "start": "start-storybook -p 3000",
         "build": "rollup -c",
-        "build:storybook": "build-storybook",
+        "build:homepage": "build-storybook",
         "lint": "eslint \"**/*.{ts,tsx}\"",
         "test": "NODE_ENV=test jest",
         "cy:dev:ct": "cypress open-ct",

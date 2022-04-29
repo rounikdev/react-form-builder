@@ -36,11 +36,8 @@ export const useFormArray = ({
       fieldPath
     );
     const valueFromFormData = GlobalModel.getNestedValue(providedFormData, fieldPath);
-    const currentInitialValue = initialValue;
 
-    const nonEditValue = pristine
-      ? currentInitialValue
-      : valueFromResetRecords ?? valueFromFormData;
+    const nonEditValue = pristine ? initialValue : valueFromResetRecords ?? valueFromFormData;
 
     // If editing nested form, read from form data
     // (get blank instances when adding to arrays,

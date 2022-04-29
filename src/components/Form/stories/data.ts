@@ -1,6 +1,10 @@
 import { DependencyExtractor, ValidityCheck } from '../types';
 
-export const initialUsers = [
+type Phone = { id: string; value: string };
+
+type User = { firstName: string; id: string; lastName: string; phones: Phone[] };
+
+export const initialUsers: User[] = [
   {
     id: '1',
     firstName: 'Maria',
@@ -95,14 +99,14 @@ export const passwordDependencyExtractor: DependencyExtractor = (formData) => {
   return { password: formData.password, usersLength: formData.users.length };
 };
 
-export const createUser = () => ({
+export const createUser = (): User => ({
   firstName: '',
   id: `${new Date().getTime()}`,
   lastName: '',
   phones: []
 });
 
-export const createPhone = () => ({
+export const createPhone = (): Phone => ({
   id: `${new Date().getTime()}`,
   value: ''
 });
