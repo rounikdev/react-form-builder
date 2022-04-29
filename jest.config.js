@@ -34,10 +34,9 @@ module.exports = {
     '^@services(.*)$': '<rootDir>/src/services$1',
     '^@ui(.*)$': '<rootDir>/src/ui$1'
   },
-  setupFilesAfterEnv: ['<rootDir>/enzyme-setup.js', '<rootDir>/jest-setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
   testEnvironment: 'jsdom',
   testPathIgnorePatterns: [],
   testRegex: 'tests/.*.test.(ts|tsx)$',
   testTimeout: 20000
 };
-
