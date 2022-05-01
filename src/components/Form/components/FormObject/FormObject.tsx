@@ -46,12 +46,12 @@ export const FormObject: FC<FormObjectProps> = memo(({ children, name, onReset }
     return {
       ...context,
       forceValidateFlag,
-      isEdit,
+      isEdit: isEdit || isParentEdit,
       methods,
       resetFlag,
       valid
     };
-  }, [context, forceValidateFlag, isEdit, methods, resetFlag, valid]);
+  }, [context, forceValidateFlag, isEdit, isParentEdit, methods, resetFlag, valid]);
 
   return (
     <FormEditProvider isEdit={isEdit || isParentEdit}>

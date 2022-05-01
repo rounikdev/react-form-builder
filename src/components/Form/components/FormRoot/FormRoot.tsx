@@ -63,6 +63,18 @@ export const FormRoot: FC<FormRootProps> = memo(
       }, [onReset])
     });
 
+    // This is needed because while
+    // resetting fields they will
+    // call setDirty. So after all
+    // micro-task based updates
+    // we make sure to set the
+    // pristine state to true
+    useUpdate(() => {
+      setTimeout(() => {
+        setPristine(true);
+      }, 0);
+    }, [resetFlag]);
+
     // Gather the initial state:
     useUpdate(() => {
       if (pristine) {

@@ -1,8 +1,8 @@
 import { DependencyExtractor, ValidityCheck } from '../types';
 
-type Phone = { id: string; value: string };
+export type Phone = { id: string; value: string };
 
-type User = { firstName: string; id: string; lastName: string; phones: Phone[] };
+export type User = { firstName: string; id: string; lastName: string; phones: Phone[] };
 
 export const initialUsers: User[] = [
   {

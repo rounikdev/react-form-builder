@@ -4,7 +4,12 @@ import { Animatable, Disableable, Stylable, Testable } from '../../../types';
 
 import { TranslationSubstitute } from '../../Translation/types';
 
-export interface Field<T> extends UseFieldConfig<T>, Disableable, Stylable, Testable {
+export interface Field<T>
+  extends Omit<UseFieldConfig<T>, 'initialValue'>,
+    Disableable,
+    Stylable,
+    Testable {
+  autoComplete?: string;
   expandError?: boolean;
   hidden?: boolean;
   hideRequiredLabel?: boolean;
@@ -164,6 +169,7 @@ export interface UseFieldReturnType<T> {
   errors: ValidationError[];
   fieldRef: MutableRefObject<HTMLElement | HTMLInputElement | null>;
   focused: boolean;
+  isEdit: boolean;
   onBlurHandler: FocusEventHandler<HTMLElement>;
   onChangeHandler: (value: T) => Promise<void>;
   onFocusHandler: FocusEventHandler<HTMLElement>;
@@ -236,5 +242,5 @@ export interface FormUserProps extends Animatable, Stylable {
     hideClassName: string;
     isEdit: boolean;
     methods: FormContext['methods'];
-  }) => JSX.Element;
+  }) => JSX.Element | null;
 }

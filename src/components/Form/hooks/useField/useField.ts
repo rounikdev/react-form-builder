@@ -255,6 +255,20 @@ export const useField = <T>({
     validateField(getInitialValue(), dependencyRef.current);
   });
 
+  // This is needed, because while resetting their state the
+  // fields will call setDirty and some fields won't get the
+  // correct initial value because incorrect pristine state.
+  // But that's been handled in the FormRoot, where after all
+  // micro-task based updates the pristine state is set finally
+  // to true and we must ensure that these fields that didn't get
+  // the right reset state recalculate it with the correct
+  // pristine state
+  useUpdate(() => {
+    if (pristine) {
+      validateField(getInitialValue(), dependencyRef.current);
+    }
+  }, [pristine]);
+
   // Update on initialValue change:
   useUpdateOnly(() => {
     validateField(initialValue, dependencyRef.current);
@@ -363,6 +377,7 @@ export const useField = <T>({
 
   return {
     fieldRef,
+    isEdit,
     onBlurHandler,
     onChangeHandler,
     onFocusHandler,

@@ -1,41 +1,37 @@
 import { FC, FocusEvent, memo, MutableRefObject, useMemo } from 'react';
 
-import { Field, useField, UseFieldConfig, useTranslation } from '@components';
+import { Field, useField, useTranslation } from '@components';
 import { useClass } from '@services';
 
 import styles from './TextInput.scss';
 
-export interface TextInputProps
-  extends Omit<UseFieldConfig<string>, 'initialValue'>,
-    Omit<Field<string>, 'dataTest'> {
-  autoComplete?: string;
-  className?: string;
-  hidden?: boolean;
+export interface TextInputProps extends Field<string> {
   initialValue?: string;
-  type?: string;
 }
+
 export const TextInput: FC<TextInputProps> = memo(
   ({
     autoComplete = 'off',
     className,
+    dataTest,
     dependencyExtractor,
     disabled,
     formatter,
     hidden,
     id,
-    initialValue = '',
+    initialValue,
     label,
     name,
     placeholder,
     required,
     sideEffect,
-    type,
     validator
   }) => {
     const {
       errors,
       fieldRef,
       focused,
+      isEdit,
       onBlurHandler,
       onChangeHandler,
       onFocusHandler,
@@ -69,7 +65,8 @@ export const TextInput: FC<TextInputProps> = memo(
           aria-required={required}
           autoComplete={autoComplete}
           className={useClass([styles.Input, isError && styles.InputError], [isError])}
-          disabled={disabled}
+          data-test={dataTest}
+          disabled={typeof disabled === 'boolean' ? disabled : !isEdit}
           id={id}
           name={name}
           onBlur={(event: FocusEvent<HTMLElement, Element>) => {
@@ -79,7 +76,7 @@ export const TextInput: FC<TextInputProps> = memo(
           onFocus={onFocusHandler}
           placeholder={translate(placeholder || '') as string}
           ref={fieldRef as MutableRefObject<HTMLInputElement>}
-          type={type}
+          type="text"
           value={value}
         />
         {isError ? <div className={styles.Error}>{errors.map((e) => e.text).join(' ')}</div> : null}

@@ -58,12 +58,12 @@ const BaseFormArray = <T,>({
     return {
       ...context,
       forceValidateFlag,
-      isEdit,
+      isEdit: isEdit || isParentEdit,
       methods,
       resetFlag,
       valid
     };
-  }, [context, forceValidateFlag, isEdit, methods, resetFlag, valid]);
+  }, [context, forceValidateFlag, isEdit, isParentEdit, methods, resetFlag, valid]);
 
   const { add, list, remove } = useFormArray({
     factory,
