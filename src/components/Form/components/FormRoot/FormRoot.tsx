@@ -190,6 +190,7 @@ export const FormRoot: FC<FormRootProps> = memo(
         <FormRootProvider value={formRootContext}>
           <form
             className={useClass([styles.FormRoot, className], [className])}
+            data-pristine={pristine}
             data-test={`${dataTest}-form`}
             noValidate={noValidate}
             onSubmit={onSubmitHandler}

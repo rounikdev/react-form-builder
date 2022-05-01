@@ -25,7 +25,7 @@ const Template: Story<FC> = () => {
     <StrictMode>
       <section className={styles.Container}>
         <div className={styles.FormContainer}>
-          <FormRoot className={styles.Form} dataTest="users-form" onSubmit={console.log}>
+          <FormRoot className={styles.Form} dataTest="users" onSubmit={console.log}>
             <FormStateDisplay />
             <FormArray factory={createUser} initialValue={initialUsers} name="users">
               {([users, addUser, removeUser]) => {
