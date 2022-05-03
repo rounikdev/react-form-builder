@@ -79,7 +79,7 @@ const Playground = (): JSX.Element => {
               onClick={() => {
                 showModalById({
                   id: 'modal-2',
-                  animate: 'on',
+                  animate: true,
                   Backdrop: BackdropAnimate,
                   Container: ContainerAnimate,
                   forceShow: true,
@@ -98,7 +98,7 @@ const Playground = (): JSX.Element => {
           onClick={() => {
             showModalById({
               id: 'modal-2',
-              animate: 'on',
+              animate: true,
               Backdrop: BackdropAnimate,
               Container: ContainerAnimate,
               inline: true
