@@ -3,17 +3,17 @@ import { useCallback, useState } from 'react';
 import { GlobalModel, useUpdateOnly } from '@services';
 
 import { useFormEditContext, useFormRoot } from '../../providers';
-import { FormStateEntryValue, ResetFlag } from '../../types';
+import { ResetFlag } from '../../types';
 
-export const useFormArray = ({
+export const useFormArray = <T>({
   factory,
   fieldId,
   initialValue = [],
   resetFlag
 }: {
-  factory: () => FormStateEntryValue;
+  factory: () => T;
   fieldId: string;
-  initialValue?: unknown[];
+  initialValue?: T[];
   resetFlag: ResetFlag;
 }) => {
   const {
@@ -34,8 +34,9 @@ export const useFormArray = ({
     const valueFromResetRecords = GlobalModel.getNestedValue(
       resetRecords[resetRecordsKey],
       fieldPath
-    );
-    const valueFromFormData = GlobalModel.getNestedValue(providedFormData, fieldPath);
+    ) as T[];
+
+    const valueFromFormData = GlobalModel.getNestedValue(providedFormData, fieldPath) as T[];
 
     const nonEditValue = pristine ? initialValue : valueFromResetRecords ?? valueFromFormData;
 
@@ -48,7 +49,7 @@ export const useFormArray = ({
     return (isEdit ? valueFromFormData : nonEditValue) || [];
   }, [fieldId, initialValue, isEdit, pristine, providedFormData, resetRecords]);
 
-  const [list, setList] = useState<FormStateEntryValue[]>(getInitialValue());
+  const [list, setList] = useState<T[]>(getInitialValue());
 
   const add = useCallback(() => {
     setDirty();

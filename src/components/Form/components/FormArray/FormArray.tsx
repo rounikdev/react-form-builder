@@ -65,7 +65,7 @@ const BaseFormArray = <T,>({
     };
   }, [context, forceValidateFlag, isEdit, isParentEdit, methods, resetFlag, valid]);
 
-  const { add, list, remove } = useFormArray({
+  const { add, list, remove } = useFormArray<T>({
     factory,
     fieldId: getFieldId(),
     initialValue,
