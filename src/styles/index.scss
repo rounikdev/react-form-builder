@@ -1,4 +1,44 @@
+:root {
+  font-family: Roboto Condensed, sans-serif;
+  font-size: 10px;
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+// color:
+$colorBorder: #9b9b9b;
+$colorBorderActive: #1c1c1c;
+$colorFont: #363636;
+$colorLabel: #363636;
+$colorError: red;
+$colorSuccess: green;
+$colorBackgroundFocus: #f5f5f5;
+
+// border-radius:
+$borderRadiusSmall: 0.2rem;
+$borderRadiusMedium: 0.4rem;
+$borderRadiusLarge: 0.8rem;
+
+// font-size:
 $baseFontSize: 10px;
+$fontTiny: 1.2rem;
+$fontSmall: 1.4rem;
+$fontMedium: 2rem;
+
+// margin, padding:
+$offsetTiny: 0.4rem;
+$offsetSmall: 1rem;
+$offsetNormal: 1.6rem;
+$offsetMedium: 2rem;
+$offsetLarge: 3rem;
+
+// transition:
+$transitionFaster: 100ms;
+$transitionFast: 200ms;
+$transitionNormal: 300ms;
+$transitionSlow: 500ms;
 
 :export {
   baseFontSize: $baseFontSize;

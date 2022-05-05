@@ -2,7 +2,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { FormObject, FormRoot, useForm } from '@components/Form';
 
-import { Text as Input } from '@components/Input/stories/Text/Text';
+import { Text as Input } from '@ui';
 
 import { useModal } from '@components/Modal/context';
 import Modal from '@components/Modal/Inline';
@@ -79,7 +79,7 @@ const Playground = (): JSX.Element => {
               onClick={() => {
                 showModalById({
                   id: 'modal-2',
-                  animate: 'on',
+                  animate: true,
                   Backdrop: BackdropAnimate,
                   Container: ContainerAnimate,
                   forceShow: true,
@@ -98,7 +98,7 @@ const Playground = (): JSX.Element => {
           onClick={() => {
             showModalById({
               id: 'modal-2',
-              animate: 'on',
+              animate: true,
               Backdrop: BackdropAnimate,
               Container: ContainerAnimate,
               inline: true

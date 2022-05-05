@@ -1,0 +1,57 @@
+@import "../../../styles/index.scss";
+
+.Container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  .ErrorContainer {
+    position: absolute;
+    top: 8.4rem;
+    left: 0;
+    padding: 0 $offsetSmall;
+
+    .ErrorMsg {
+      margin: 0 0 $offsetTiny $offsetSmall;
+      font-size: $fontSmall;
+      color: $colorError;
+      list-style-type: square;
+    }
+  }
+}
+
+.Label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: calc($offsetSmall/ 2);
+  color: $colorLabel;
+  font-size: $fontSmall;
+
+  .Required {
+    color: $colorBorder;
+    font-size: $fontTiny;
+  }
+}
+
+.Input {
+  padding: $offsetNormal;
+  color: $colorFont;
+  font-size: $fontMedium;
+  border: 1px solid $colorBorder;
+  border-radius: $borderRadiusSmall;
+  transition: all $transitionNormal ease-in-out;
+
+  &:focus {
+    border: 1px solid $colorBorderActive;
+    background-color: $colorBackgroundFocus;
+
+    &.WithMask {
+      background-color: transparent;
+    }
+  }
+
+  &.Error {
+    background-color: rgba($color: lightcoral, $alpha: 0.3);
+    border-color: $colorError;
+  }
+}

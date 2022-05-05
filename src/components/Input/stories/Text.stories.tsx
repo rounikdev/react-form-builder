@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Text as TextInput } from './Text';
+import { Text as TextInput } from '@ui';
 
 export default {
   component: TextInput,

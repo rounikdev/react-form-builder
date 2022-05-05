@@ -4,7 +4,7 @@ import { useModalContextValue } from './hooks';
 import { Context } from './context';
 import ModalArena from './ModalArena';
 
-import { ModalAnimate, ModalBackdropProps, ModalContainerProps, ModalContext } from './types';
+import { ModalBackdropProps, ModalContainerProps, ModalContext } from './types';
 
 const initialState: ModalContext = {
   actions: {},
@@ -18,7 +18,7 @@ export const Provider = ({
   children,
   BaseContainer
 }: {
-  baseAnimate?: ModalAnimate;
+  baseAnimate?: boolean;
   BaseBackdrop?: FC<ModalBackdropProps>;
   children: ReactNode;
   BaseContainer?: FC<ModalContainerProps>;
