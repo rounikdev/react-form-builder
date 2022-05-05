@@ -1,31 +1,35 @@
 import { FC, memo, useCallback, useMemo, useState } from 'react';
 
-import { useClass, useUpdate, useUpdatedRef } from '@services';
+import { useClass, useUpdate, useUpdateOnly } from '@services';
 
 import { INITIAL_RESET_RECORD_KEY } from '../../constants';
 import { FormContextInstance } from '../../context';
 import {
+  useFormEdit,
   useFormErrors,
   useFormFieldInteraction,
   useFormInteraction,
-  useFormReducer,
-  useFormReset
+  useFormReducer
 } from '../../hooks';
-import { FormRootProvider } from '../../providers';
-import { FormActions, formObjectReducer } from '../../reducers';
-import { buildInitialFormState, flattenFormObjectState } from '../../services';
-import { FormContext, FormRootProps, FormStateEntry } from '../../types';
+import { FormEditProvider, FormRootProvider } from '../../providers';
+import { formObjectReducer } from '../../reducers';
+import { flattenFormObjectState } from '../../services';
+import { FormContext, FormRootProps, FormStateEntry, ResetFlag } from '../../types';
 
 import styles from './FormRoot.scss';
 
 export const FormRoot: FC<FormRootProps> = memo(
   ({ children, className, dataTest, noValidate = true, onChange, onReset, onSubmit }) => {
-    const { context, dispatch, removeFromForm, setInForm, valid, value } = useFormReducer({
+    const { context, removeFromForm, setInForm, valid, value } = useFormReducer({
       flattenState: flattenFormObjectState,
       reducer: formObjectReducer
     });
 
     const [resetRecords, setResetRecords] = useState<Record<string, FormStateEntry>>({});
+
+    const [rootResetFlag, setRootResetFlag] = useState<ResetFlag>({
+      resetKey: INITIAL_RESET_RECORD_KEY
+    });
 
     const [pristine, setPristine] = useState<boolean>(true);
 
@@ -42,38 +46,13 @@ export const FormRoot: FC<FormRootProps> = memo(
       setFieldValue
     } = useFormFieldInteraction();
 
-    const initialResetRecordRef = useUpdatedRef(resetRecords[INITIAL_RESET_RECORD_KEY]);
+    const reset = useCallback(() => {
+      setRootResetFlag({ resetKey: INITIAL_RESET_RECORD_KEY });
 
-    const { forceValidate, forceValidateFlag, reset, resetFlag } = useFormInteraction({
-      // TODO: this new instance leads to new instance of `reset` method,
-      // which leads to infinite loop when using `parentContext.methods`
-      // as dependency. Without useCallback the @testing-library/react tests hang
-      onReset: useCallback(() => {
-        dispatch({
-          payload: buildInitialFormState(initialResetRecordRef.current),
-          type: FormActions.SET_FORM_STATE
-        });
+      setPristine(true);
+    }, []);
 
-        setPristine(true);
-
-        if (onReset) {
-          onReset();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, [onReset])
-    });
-
-    // This is needed because while
-    // resetting fields they will
-    // call setDirty. So after all
-    // micro-task based updates
-    // we make sure to set the
-    // pristine state to true
-    useUpdate(() => {
-      setTimeout(() => {
-        setPristine(true);
-      }, 0);
-    }, [resetFlag]);
+    const { forceValidate, forceValidateFlag } = useFormInteraction();
 
     // Gather the initial state:
     useUpdate(() => {
@@ -87,7 +66,13 @@ export const FormRoot: FC<FormRootProps> = memo(
 
     const getFieldId = useCallback(() => '', []);
 
-    const { cancel, edit, isEdit, save } = useFormReset({ fieldId: getFieldId(), reset });
+    const { cancel, edit, isEdit, save } = useFormEdit({
+      fieldId: 'root',
+      formData: value,
+      pristine,
+      setResetFlag: setRootResetFlag,
+      setResetRecords
+    });
 
     useUpdate(() => {
       if (onChange) {
@@ -105,6 +90,12 @@ export const FormRoot: FC<FormRootProps> = memo(
       },
       [onSubmit, valid, value]
     );
+
+    useUpdateOnly(() => {
+      if (pristine && onReset) {
+        onReset();
+      }
+    }, [pristine]);
 
     const methods = useMemo(
       () => ({
@@ -133,7 +124,6 @@ export const FormRoot: FC<FormRootProps> = memo(
         forceValidateFlag,
         isEdit,
         methods,
-        resetFlag,
         scrolledField,
         valid
       };
@@ -144,7 +134,6 @@ export const FormRoot: FC<FormRootProps> = memo(
       forceValidateFlag,
       isEdit,
       methods,
-      resetFlag,
       scrolledField,
       valid
     ]);
@@ -156,7 +145,8 @@ export const FormRoot: FC<FormRootProps> = memo(
         scrollFieldIntoView,
         setDirty,
         setFieldValue,
-        setResetRecords
+        setResetRecords,
+        setResetFlag: setRootResetFlag
       }),
       // eslint-disable-next-line react-hooks/exhaustive-deps
       []
@@ -170,6 +160,7 @@ export const FormRoot: FC<FormRootProps> = memo(
         formData: value,
         methods: rootProviderMethods,
         pristine,
+        resetFlag: rootResetFlag,
         resetRecords,
         scrolledField
       };
@@ -181,24 +172,27 @@ export const FormRoot: FC<FormRootProps> = memo(
       pristine,
       resetRecords,
       rootProviderMethods,
+      rootResetFlag,
       scrolledField,
       value
     ]);
 
     return (
-      <FormContextInstance.Provider value={formContext}>
-        <FormRootProvider value={formRootContext}>
-          <form
-            className={useClass([styles.FormRoot, className], [className])}
-            data-pristine={pristine}
-            data-test={`${dataTest}-form`}
-            noValidate={noValidate}
-            onSubmit={onSubmitHandler}
-          >
-            {children}
-          </form>
-        </FormRootProvider>
-      </FormContextInstance.Provider>
+      <FormEditProvider isEdit={isEdit}>
+        <FormContextInstance.Provider value={formContext}>
+          <FormRootProvider value={formRootContext}>
+            <form
+              className={useClass([styles.FormRoot, className], [className])}
+              data-pristine={pristine}
+              data-test={`${dataTest}-form`}
+              noValidate={noValidate}
+              onSubmit={onSubmitHandler}
+            >
+              {children}
+            </form>
+          </FormRootProvider>
+        </FormContextInstance.Provider>
+      </FormEditProvider>
     );
   }
 );

@@ -53,7 +53,7 @@ const TestMethodButton: FC<TestMethodButtonProps> = ({ method }) => {
 
 interface EffectDetectorProps {
   callback: () => void;
-  flag: 'forceValidateFlag' | 'resetFlag' | 'state';
+  flag: 'forceValidateFlag' | 'state';
 }
 
 const EffectDetector: FC<EffectDetectorProps> = ({ callback, flag }) => {
@@ -393,7 +393,7 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
 
     const { getByDataTest } = testRender(
       <ShowHide data={users} show={true}>
-        {(_, userList: { id: string; name: string }[]) => {
+        {(_, userList: { id: number; name: string }[]) => {
           return (
             <FormRoot dataTest="form-root">
               <StateReader />
@@ -516,26 +516,6 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
     userEvent.click(button);
 
     expect(callback).toHaveBeenCalledTimes(1);
-  });
-
-  it('Reset flag updates and "onReset" is called', () => {
-    const callback = jest.fn();
-    const onResetMock = jest.fn();
-
-    const { getByDataTest } = testRender(
-      <FormRoot dataTest="root-form" onReset={onResetMock}>
-        <TestMethodButton method="reset" />
-        <FormObject name="nested-form">
-          <EffectDetector callback={callback} flag="resetFlag" />
-        </FormObject>
-      </FormRoot>
-    );
-
-    const button = getByDataTest('method-test-button');
-    userEvent.click(button);
-
-    expect(callback).toHaveBeenCalledTimes(1);
-    expect(onResetMock).toHaveBeenCalledTimes(1);
   });
 
   it('Form reducer returns state as default', () => {

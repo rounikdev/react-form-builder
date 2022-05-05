@@ -8,8 +8,13 @@
   border-radius: 0.3rem;
 }
 
-.AddButton {
+.AddButton,
+.CancelButton {
   margin-bottom: 1rem;
+}
+
+.CancelButton {
+  margin-left: 1rem;
 }
 
 .Input {

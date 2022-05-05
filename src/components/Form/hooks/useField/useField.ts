@@ -29,7 +29,6 @@ import {
 } from '../../types';
 
 import { useForm } from '../useForm/useForm';
-import { INITIAL_RESET_RECORD_KEY } from '../../constants';
 
 export const useField = <T>({
   dependencyExtractor,
@@ -43,18 +42,14 @@ export const useField = <T>({
 }: UseFieldConfig<T>): UseFieldReturnType<T> => {
   const context = useForm();
 
-  const {
-    methods: { setDirty },
-    pristine
-  } = useFormRoot();
-
   const { isEdit } = useFormEditContext();
 
   const {
     fieldToBeSet,
     focusedField,
     formData,
-    methods: { focusField, registerFieldErrors, scrollFieldIntoView, setFieldValue },
+    methods: { focusField, registerFieldErrors, scrollFieldIntoView, setDirty, setFieldValue },
+    resetFlag: rootResetFlag,
     resetRecords,
     scrolledField
   } = useFormRoot();
@@ -63,48 +58,17 @@ export const useField = <T>({
 
   const fieldRef = useRef<HTMLElement | null>(null);
 
-  const getInitialValue = useCallback(() => {
-    const parentId = context.methods.getFieldId();
-    const fieldId = parentId ? `${parentId}.${name}` : name;
-    const fieldPath = fieldId.split('.');
-
-    const resetRecordsKey =
-      Object.keys(resetRecords).find((key) => fieldId.indexOf(key) === 0) ?? '';
-
-    const valueFromResetRecords =
-      GlobalModel.getNestedValue(resetRecords[resetRecordsKey], fieldPath) ??
-      (pristine
-        ? GlobalModel.getNestedValue(resetRecords[INITIAL_RESET_RECORD_KEY], fieldPath)
-        : undefined);
-
-    const valueFromFormData = GlobalModel.getNestedValue(formData, fieldPath);
-
-    const nonEditValue = pristine
-      ? initialValue
-      : // TODO: think of providing defaultValue instead of initialValue:
-        valueFromResetRecords ?? valueFromFormData ?? initialValue;
-
-    // If editing nested form, read from form data
-    // (get blank instances when adding to arrays,
-    // clear nested conditional fields).
-    // If on root level form, if pristine, read initial state,
-    // else check if has reset data or fallback to the
-    // form data.
-    return isEdit ? valueFromFormData ?? initialValue : nonEditValue;
-  }, [context.methods, formData, initialValue, isEdit, name, pristine, resetRecords]);
-
   const isRenderedRef = useRef(false);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let stateValue = null;
+  let stateValue = initialValue;
 
   if (!isRenderedRef.current) {
     if (formatter) {
       stateValue = formatter({
-        newValue: getInitialValue()
+        newValue: initialValue
       });
     } else {
-      stateValue = getInitialValue();
+      stateValue = initialValue;
     }
 
     isRenderedRef.current = true;
@@ -207,9 +171,13 @@ export const useField = <T>({
   }, [typeof dependency === 'bigint' ? dependency : JSON.stringify(dependency)]);
 
   useUpdateOnly(async () => {
-    const initialVal = getInitialValue();
+    const parentId = context.methods.getFieldId();
+    const fieldId = parentId ? `${parentId}.${name}` : name;
+    const fieldPath = fieldId.split('.');
 
-    await validateField(initialVal, dependency);
+    const resetValue = GlobalModel.getNestedValue(resetRecords[rootResetFlag.resetKey], fieldPath);
+
+    await validateField(resetValue, dependency);
 
     setState((current) => ({
       ...current,
@@ -217,13 +185,17 @@ export const useField = <T>({
       touched: false,
       validating: false,
       value: formatterRef.current
-        ? formatterRef.current({ newValue: initialVal, oldValue: undefined })
-        : initialVal
+        ? formatterRef.current({ newValue: resetValue, oldValue: undefined })
+        : resetValue
     }));
-  }, [context.resetFlag]);
+  }, [rootResetFlag]);
 
   useUnmount(() => {
-    setDirty();
+    // No need to call setDirty, because a field could be
+    // unmounted because removal form array, which calls
+    // setDirty or from conditional field change, which
+    // might have happened because some form state update
+    // which calls setDirty:
     context.methods.removeFromForm({ key: name });
   });
 
@@ -252,34 +224,11 @@ export const useField = <T>({
   }, [context.methods.getFieldId, name]);
 
   useMount(() => {
-    validateField(getInitialValue(), dependencyRef.current);
-  });
-
-  // This is needed, because while resetting their state the
-  // fields will call setDirty and some fields won't get the
-  // correct initial value because incorrect pristine state.
-  // But that's been handled in the FormRoot, where after all
-  // micro-task based updates the pristine state is set finally
-  // to true and we must ensure that these fields that didn't get
-  // the right reset state recalculate it with the correct
-  // pristine state
-  useUpdate(() => {
-    if (pristine) {
-      validateField(getInitialValue(), dependencyRef.current);
-    }
-  }, [pristine]);
-
-  // Update on initialValue change:
-  useUpdateOnly(() => {
     validateField(initialValue, dependencyRef.current);
-  }, [initialValue]);
+  });
 
   // Update parent Form state:
   useEffect(() => {
-    // setInForm is a constant
-    // amd there is no need to
-    // include it in the dependency
-    // array:
     context.methods.setInForm({
       key: name,
       valid: state.valid,

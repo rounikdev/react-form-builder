@@ -66,7 +66,7 @@ export interface FormState {
 
 export type ForceValidateFlag = Record<string, unknown>;
 
-export type ResetFlag = Record<string, unknown>;
+export type ResetFlag = { resetKey: string };
 
 export interface FieldErrorsPayload {
   fieldErrors: ValidationError[];
@@ -81,6 +81,8 @@ export interface SetFieldValuePayload {
 export interface FormContext {
   forceValidateFlag: ForceValidateFlag;
   isEdit: boolean;
+  isParentEdit: boolean;
+  localEdit: boolean;
   methods: {
     cancel: () => void;
     edit: () => void;
@@ -91,7 +93,6 @@ export interface FormContext {
     save: () => void;
     setInForm: (payload: FormSetPayload) => void;
   };
-  resetFlag: ResetFlag;
   state: FormState;
   valid: boolean;
 }
@@ -113,6 +114,7 @@ export interface FormRootProps extends Testable {
 }
 
 export interface FormObjectProps {
+  localEdit?: boolean;
   name: string;
   onReset?: () => void;
 }
@@ -123,6 +125,7 @@ export interface FormArrayProps<T> {
   children: (items: FormArrayChildrenArguments<T>) => ReactNode;
   factory: () => T;
   initialValue?: T[];
+  localEdit?: boolean;
   name: string;
   onReset?: () => void;
 }
@@ -190,9 +193,11 @@ export interface FormRootProviderContext {
     scrollFieldIntoView: (fieldId: string) => void;
     setDirty: () => void;
     setFieldValue: (payload: SetFieldValuePayload) => void;
+    setResetFlag: Dispatch<SetStateAction<ResetFlag>>;
     setResetRecords: Dispatch<SetStateAction<Record<string, FormStateEntry>>>;
   };
   pristine: boolean;
+  resetFlag: ResetFlag;
   resetRecords: Record<string, FormStateEntry>;
   scrolledField: string;
 }
@@ -241,6 +246,8 @@ export interface FormUserProps extends Animatable, Stylable {
     formData: FormStateEntryValue;
     hideClassName: string;
     isEdit: boolean;
+    isParentEdit: boolean;
+    localEdit: boolean;
     methods: FormContext['methods'];
   }) => JSX.Element | null;
 }

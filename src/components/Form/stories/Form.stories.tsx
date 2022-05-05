@@ -3,7 +3,7 @@ import { Story, Meta } from '@storybook/react';
 
 import { Button, TextInput } from '@ui';
 
-import { ConditionalFields, FormArray, FormRoot } from '../components';
+import { ConditionalFields, FormArray, FormRoot, FormUser } from '../components';
 
 import { FormStateDisplay, SubmitButton, UserForm } from './components';
 import {
@@ -25,15 +25,28 @@ const Template: Story<FC> = () => {
     <StrictMode>
       <section className={styles.Container}>
         <div className={styles.FormContainer}>
-          <FormRoot className={styles.Form} dataTest="users" onSubmit={console.log}>
+          <FormRoot
+            className={styles.Form}
+            dataTest="users"
+            onSubmit={console.log}
+            onReset={() => {
+              console.log('Form reset');
+            }}
+          >
             <FormStateDisplay />
             <FormArray factory={createUser} initialValue={initialUsers} name="users">
               {([users, addUser, removeUser]) => {
                 return (
                   <>
-                    <div className={styles.AddUserContainer}>
-                      <Button dataTest="add-user" onClick={addUser} text="Add User" />
-                    </div>
+                    <FormUser>
+                      {({ isEdit, isParentEdit }) => {
+                        return isParentEdit && isEdit ? (
+                          <div className={styles.AddUserContainer}>
+                            <Button dataTest="add-user" onClick={addUser} text="Add User" />
+                          </div>
+                        ) : null;
+                      }}
+                    </FormUser>
                     {users.map((user, userIndex) => {
                       return (
                         <UserForm

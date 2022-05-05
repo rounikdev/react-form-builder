@@ -2,76 +2,68 @@ import { useCallback, useState } from 'react';
 
 import { GlobalModel, useUpdateOnly } from '@services';
 
-import { useFormEditContext, useFormRoot } from '../../providers';
-import { ResetFlag } from '../../types';
+import { INITIAL_RESET_RECORD_KEY } from '../../constants';
+import { useFormRoot } from '../../providers';
 
 export const useFormArray = <T>({
   factory,
   fieldId,
-  initialValue = [],
-  resetFlag
+  initialValue = []
 }: {
   factory: () => T;
   fieldId: string;
   initialValue?: T[];
-  resetFlag: ResetFlag;
 }) => {
   const {
-    formData: providedFormData,
     methods: { setDirty },
-    pristine,
+    resetFlag: rootResetFlag,
     resetRecords
   } = useFormRoot();
 
-  const { isEdit } = useFormEditContext();
-
-  const getInitialValue = useCallback(() => {
-    const fieldPath = fieldId.split('.');
-
-    const resetRecordsKey =
-      Object.keys(resetRecords).find((key) => fieldId.indexOf(key) === 0) || '';
-
-    const valueFromResetRecords = GlobalModel.getNestedValue(
-      resetRecords[resetRecordsKey],
-      fieldPath
-    ) as T[];
-
-    const valueFromFormData = GlobalModel.getNestedValue(providedFormData, fieldPath) as T[];
-
-    const nonEditValue = pristine ? initialValue : valueFromResetRecords ?? valueFromFormData;
-
-    // If editing nested form, read from form data
-    // (get blank instances when adding to arrays,
-    // clear nested conditional fields).
-    // If on root level form, if pristine, read initial state,
-    // else check if has reset data or fallback to the
-    // form data.
-    return (isEdit ? valueFromFormData : nonEditValue) || [];
-  }, [fieldId, initialValue, isEdit, pristine, providedFormData, resetRecords]);
-
-  const [list, setList] = useState<T[]>(getInitialValue());
+  const [list, setList] = useState<T[]>(initialValue);
 
   const add = useCallback(() => {
     setDirty();
     setList((currentList) => (factory ? [...currentList, factory()] : currentList));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [factory]);
+  }, [factory, setDirty]);
 
-  const remove = useCallback((index: number) => {
-    setDirty();
-    setList((currentState) => currentState.filter((_, i) => i !== index));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useUpdateOnly(() => {
-    setList(getInitialValue());
-  }, [resetFlag]);
+  const remove = useCallback(
+    (index: number) => {
+      setDirty();
+      setList((currentState) => currentState.filter((_, i) => i !== index));
+    },
+    [setDirty]
+  );
 
   useUpdateOnly(() => {
-    if (!isEdit) {
-      setList(getInitialValue());
+    if (
+      rootResetFlag.resetKey &&
+      (fieldId.indexOf(rootResetFlag.resetKey) === 0 ||
+        rootResetFlag.resetKey === 'root' ||
+        rootResetFlag.resetKey === INITIAL_RESET_RECORD_KEY)
+    ) {
+      const resetValue = (GlobalModel.getNestedValue(
+        resetRecords[rootResetFlag.resetKey],
+        fieldId.split('.')
+      ) ?? []) as T[];
+
+      if (resetValue) {
+        // Reset array to prevent existing items
+        // to read from the reset state with old names
+        // For example item with index 0 should get
+        // index 1, but because reset flag is set
+        // before the array will be updated. that
+        // item will still have index 0 and will
+        // get the values of the 0-th array element
+        // instead of the one with index 1:
+        setList([]);
+
+        requestAnimationFrame(() => {
+          setList(resetValue);
+        });
+      }
     }
-  }, [isEdit]);
+  }, [rootResetFlag]);
 
   return { add, list, remove };
 };

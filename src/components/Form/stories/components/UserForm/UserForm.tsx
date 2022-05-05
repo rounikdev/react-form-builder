@@ -16,21 +16,28 @@ interface UserFormProps {
 
 export const UserForm: FC<UserFormProps> = memo(({ removeUser, user, userIndex }) => {
   return (
-    <div className={styles.Container} key={user.id} data-test={`user-${userIndex}`}>
+    <div className={styles.Container} data-test={`user-${userIndex}`}>
       <div className={styles.User}>
-        <FormObject name={`${userIndex}`}>
+        <FormObject name={`${userIndex}`} localEdit>
           <div className={styles.Controls}>
             <FormUser>
-              {({ isEdit, methods }) => {
-                return (
+              {({ isEdit, isParentEdit, methods }) => {
+                return isParentEdit ? (
                   <div>
                     {!isEdit ? (
-                      <Button
-                        dataTest={`edit-user-${userIndex}`}
-                        onClick={methods.edit}
-                        text="Edit"
-                        variant="Edit"
-                      />
+                      <>
+                        <Button
+                          dataTest={`edit-user-${userIndex}`}
+                          onClick={methods.edit}
+                          text="Edit"
+                          variant="Edit"
+                        />
+                        <Button
+                          dataTest={`reset-user-${userIndex}`}
+                          onClick={() => methods.reset()}
+                          text="Reset"
+                        />
+                      </>
                     ) : (
                       <>
                         <Button
@@ -52,7 +59,7 @@ export const UserForm: FC<UserFormProps> = memo(({ removeUser, user, userIndex }
                       variant="Warn"
                     />
                   </div>
-                );
+                ) : null;
               }}
             </FormUser>
           </div>
@@ -81,19 +88,56 @@ export const UserForm: FC<UserFormProps> = memo(({ removeUser, user, userIndex }
             name="lastName"
             validator={nameValidator}
           />
-          <FormArray factory={createPhone} initialValue={user.phones} name="phones">
+          <FormArray factory={createPhone} initialValue={user.phones} localEdit name="phones">
             {([phones, addPhone, removePhone]) => {
               return (
                 <div className={styles.Phones}>
                   <FormUser>
-                    {({ isEdit }) => {
-                      return isEdit ? (
+                    {({ isEdit, isParentEdit }) => {
+                      return isParentEdit && isEdit ? (
                         <Button
                           className={styles.AddButton}
                           dataTest={`add-phone-user-${userIndex}`}
                           onClick={addPhone}
                           text="Add Phone"
                         />
+                      ) : null;
+                    }}
+                  </FormUser>
+                  <FormUser>
+                    {({ isEdit, isParentEdit, methods }) => {
+                      return isParentEdit ? (
+                        <div>
+                          {!isEdit ? (
+                            <>
+                              <Button
+                                dataTest={`edit-user-${userIndex}-phones`}
+                                onClick={methods.edit}
+                                text="Edit"
+                                variant="Edit"
+                              />
+                              <Button
+                                dataTest={`reset-user-${userIndex}-phones`}
+                                onClick={() => methods.reset()}
+                                text="Reset"
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <Button
+                                className={styles.CancelButton}
+                                dataTest={`cancel-user-${userIndex}-phones`}
+                                onClick={methods.cancel}
+                                text="Cancel"
+                              />
+                              <Button
+                                dataTest={`save-user-${userIndex}-phones`}
+                                onClick={methods.save}
+                                text="Save"
+                              />
+                            </>
+                          )}
+                        </div>
                       ) : null;
                     }}
                   </FormUser>
