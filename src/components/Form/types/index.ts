@@ -4,7 +4,12 @@ import { Animatable, Disableable, Stylable, Testable } from '../../../types';
 
 import { TranslationSubstitute } from '../../Translation/types';
 
-export interface Field<T> extends UseFieldConfig<T>, Disableable, Stylable, Testable {
+export interface Field<T>
+  extends Omit<UseFieldConfig<T>, 'initialValue'>,
+    Disableable,
+    Stylable,
+    Testable {
+  autoComplete?: string;
   expandError?: boolean;
   hidden?: boolean;
   hideRequiredLabel?: boolean;
@@ -61,7 +66,7 @@ export interface FormState {
 
 export type ForceValidateFlag = Record<string, unknown>;
 
-export type ResetFlag = Record<string, unknown>;
+export type ResetFlag = { resetKey: string };
 
 export interface FieldErrorsPayload {
   fieldErrors: ValidationError[];
@@ -76,6 +81,8 @@ export interface SetFieldValuePayload {
 export interface FormContext {
   forceValidateFlag: ForceValidateFlag;
   isEdit: boolean;
+  isParentEdit: boolean;
+  localEdit: boolean;
   methods: {
     cancel: () => void;
     edit: () => void;
@@ -86,7 +93,6 @@ export interface FormContext {
     save: () => void;
     setInForm: (payload: FormSetPayload) => void;
   };
-  resetFlag: ResetFlag;
   state: FormState;
   valid: boolean;
 }
@@ -97,7 +103,6 @@ export interface FieldErrors {
 
 export interface FormRootProps extends Testable {
   className?: string;
-  initialData?: FormStateEntryValue;
   noValidate?: boolean;
   onChange?: (formState: {
     errors: FieldErrors;
@@ -109,19 +114,18 @@ export interface FormRootProps extends Testable {
 }
 
 export interface FormObjectProps {
+  localEdit?: boolean;
   name: string;
   onReset?: () => void;
 }
 
-export type FormArrayChildrenArguments = [
-  FormStateEntryValue[],
-  () => void,
-  (index: number) => void
-];
+export type FormArrayChildrenArguments<T> = [T[], () => void, (index: number) => void];
 
-export interface FormArrayProps {
-  children: (items: FormArrayChildrenArguments) => ReactNode;
-  factory: () => FormStateEntryValue;
+export interface FormArrayProps<T> {
+  children: (items: FormArrayChildrenArguments<T>) => ReactNode;
+  factory: () => T;
+  initialValue?: T[];
+  localEdit?: boolean;
   name: string;
   onReset?: () => void;
 }
@@ -168,6 +172,7 @@ export interface UseFieldReturnType<T> {
   errors: ValidationError[];
   fieldRef: MutableRefObject<HTMLElement | HTMLInputElement | null>;
   focused: boolean;
+  isEdit: boolean;
   onBlurHandler: FocusEventHandler<HTMLElement>;
   onChangeHandler: (value: T) => Promise<void>;
   onFocusHandler: FocusEventHandler<HTMLElement>;
@@ -182,16 +187,17 @@ export interface FormRootProviderContext {
   fieldToBeSet: SetFieldValuePayload;
   focusedField: string;
   formData: FormStateEntry;
-  initialData?: FormStateEntry;
   methods: {
     focusField: (fieldId: string) => void;
     registerFieldErrors?: (payload: FieldErrorsPayload) => void;
     scrollFieldIntoView: (fieldId: string) => void;
     setDirty: () => void;
     setFieldValue: (payload: SetFieldValuePayload) => void;
+    setResetFlag: Dispatch<SetStateAction<ResetFlag>>;
     setResetRecords: Dispatch<SetStateAction<Record<string, FormStateEntry>>>;
   };
   pristine: boolean;
+  resetFlag: ResetFlag;
   resetRecords: Record<string, FormStateEntry>;
   scrolledField: string;
 }
@@ -240,6 +246,8 @@ export interface FormUserProps extends Animatable, Stylable {
     formData: FormStateEntryValue;
     hideClassName: string;
     isEdit: boolean;
+    isParentEdit: boolean;
+    localEdit: boolean;
     methods: FormContext['methods'];
-  }) => JSX.Element;
+  }) => JSX.Element | null;
 }

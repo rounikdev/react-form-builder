@@ -6,6 +6,7 @@ module.exports = {
     '!src/**stories-components/**/*.*',
     '!src/**/*.stories.tsx',
     '!src/**/stories/**/*.*',
+    '!src/**/*.spec.{ts,tsx}',
     '!src/**/*.test.{ts,tsx}',
     '!src/index.ts',
     '!src/**/*.d.ts',
@@ -33,7 +34,7 @@ module.exports = {
     '^@services(.*)$': '<rootDir>/src/services$1',
     '^@ui(.*)$': '<rootDir>/src/ui$1'
   },
-  setupFilesAfterEnv: ['<rootDir>/enzyme-setup.js', '<rootDir>/jest-setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
   testEnvironment: 'jsdom',
   testPathIgnorePatterns: [],
   testRegex: 'tests/.*.test.(ts|tsx)$',

@@ -40,7 +40,7 @@ const Step_3_FormFields = () => {
       <br />
       <br />
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <button onClick={methods.reset}>reset</button>
+        <button onClick={() => methods.reset()}>reset</button>
       </div>
     </>
   );
@@ -79,7 +79,7 @@ const Playground = (): JSX.Element => {
               onClick={() => {
                 showModalById({
                   id: 'modal-2',
-                  animate: 'on',
+                  animate: true,
                   Backdrop: BackdropAnimate,
                   Container: ContainerAnimate,
                   forceShow: true,
@@ -98,7 +98,7 @@ const Playground = (): JSX.Element => {
           onClick={() => {
             showModalById({
               id: 'modal-2',
-              animate: 'on',
+              animate: true,
               Backdrop: BackdropAnimate,
               Container: ContainerAnimate,
               inline: true
