@@ -5,6 +5,8 @@ import { FormContext } from '../types';
 export const initialFormContext: FormContext = {
   forceValidateFlag: {},
   isEdit: false,
+  isParentEdit: false,
+  localEdit: false,
   methods: {
     cancel: () => {
       // default function
@@ -29,7 +31,6 @@ export const initialFormContext: FormContext = {
       // default function
     }
   },
-  resetFlag: {},
   state: {},
   valid: false
 };

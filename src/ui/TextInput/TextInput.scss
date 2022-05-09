@@ -28,6 +28,10 @@
   &.InputError {
     background-color: #ffa3af;
   }
+
+  &:disabled {
+    background-color: transparent;
+  }
 }
 
 .Error {

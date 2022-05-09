@@ -1,37 +1,41 @@
-import { FC, memo, useMemo } from 'react';
+import { memo, PropsWithChildren, useMemo } from 'react';
 
 import { FormContextInstance } from '../../context';
-import {
-  useFormArray,
-  useFormInteraction,
-  useFormParent,
-  useFormReducer,
-  useFormReset
-} from '../../hooks';
-import { FormEditProvider, useFormEditContext } from '../../providers';
+import { useFormArray, useFormReducer, useNestedForm } from '../../hooks';
+import { FormEditProvider } from '../../providers';
 import { formArrayReducer } from '../../reducers';
 import { flattenFormArrayState } from '../../services';
 import { FormContext, FormArrayProps } from '../../types';
 
-export const FormArray: FC<FormArrayProps> = memo(({ children, factory, name, onReset }) => {
+const BaseFormArray = <T,>({
+  children,
+  factory,
+  initialValue,
+  localEdit = false,
+  name,
+  onReset
+}: PropsWithChildren<FormArrayProps<T>>) => {
   const { context, removeFromForm, setInForm, valid, value } = useFormReducer({
     flattenState: flattenFormArrayState,
     reducer: formArrayReducer
   });
 
-  const { isEdit: isParentEdit } = useFormEditContext();
-
-  const { forceValidate, forceValidateFlag, reset, resetFlag } = useFormInteraction({ onReset });
-
-  const { getFieldId } = useFormParent({
+  const {
+    cancel,
+    edit,
+    isEdit,
+    isParentEdit,
     forceValidate,
-    name,
+    forceValidateFlag,
+    getFieldId,
     reset,
+    save
+  } = useNestedForm({
+    name,
+    onReset,
     valid,
     value
   });
-
-  const { cancel, edit, isEdit, save } = useFormReset({ fieldId: getFieldId(), reset });
 
   const methods = useMemo(
     () => ({
@@ -52,22 +56,31 @@ export const FormArray: FC<FormArrayProps> = memo(({ children, factory, name, on
     return {
       ...context,
       forceValidateFlag,
-      isEdit,
+      isEdit: localEdit ? isEdit : isEdit || isParentEdit,
+      isParentEdit,
+      localEdit,
       methods,
-      resetFlag,
       valid
     };
-  }, [context, forceValidateFlag, isEdit, methods, resetFlag, valid]);
+  }, [context, forceValidateFlag, isEdit, isParentEdit, localEdit, methods, valid]);
 
-  const { add, list, remove } = useFormArray({ factory, fieldId: getFieldId(), resetFlag });
+  const { add, list, remove } = useFormArray<T>({
+    factory,
+    fieldId: getFieldId(),
+    initialValue
+  });
 
   return (
-    <FormEditProvider isEdit={isEdit || isParentEdit}>
+    <FormEditProvider isEdit={formContext.isEdit}>
       <FormContextInstance.Provider value={formContext}>
         {children([list, add, remove])}
       </FormContextInstance.Provider>
     </FormEditProvider>
   );
-});
+};
+
+type FormArrayType = typeof BaseFormArray & { displayName: string };
+
+export const FormArray = memo(BaseFormArray) as FormArrayType;
 
 FormArray.displayName = 'FormArray';

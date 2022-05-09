@@ -55,6 +55,7 @@ describe('useCheckboxInput', () => {
       onFocusHandler: 'function',
       errors: 'object',
       focused: 'boolean',
+      isEdit: 'boolean',
       touched: 'boolean',
       valid: 'boolean',
       validating: 'boolean',

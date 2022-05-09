@@ -24,11 +24,15 @@ const FormRootContext = createContext<FormRootProviderContext>({
     setFieldValue: () => {
       // default function
     },
+    setResetFlag: () => {
+      // default function
+    },
     setResetRecords: () => {
       // default function
     }
   },
   pristine: true,
+  resetFlag: { resetKey: '' },
   resetRecords: {},
   scrolledField: ''
 });

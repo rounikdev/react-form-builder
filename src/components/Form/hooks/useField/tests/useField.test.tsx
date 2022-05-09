@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 
 import { ShowHide, testRender } from '@services/utils';
 
-import { FormObject, FormRoot } from '../../../components';
+import { FormRoot } from '../../../components';
 import { useFormRoot } from '../../../providers';
 import { Formatter, DependencyExtractor, Validator } from '../../../types';
 import { useForm } from '../../useForm/useForm';
@@ -103,45 +103,6 @@ describe('useField', () => {
     const name = 'firstName';
 
     const { result } = renderHook(() => useField({ initialValue, name }));
-
-    expect(result.current.value).toBe(initialValue);
-  });
-
-  it('Provides value when initialValue is set from the root Form context', () => {
-    const initialValue = 'Ivan';
-    const name = 'firstName';
-
-    const Wrapper: FC = ({ children }) => (
-      <FormRoot dataTest="root-form" initialData={{ [name]: initialValue }} onSubmit={jest.fn()}>
-        {children}
-      </FormRoot>
-    );
-
-    const { result } = renderHook(() => useField({ initialValue: undefined, name }), {
-      wrapper: Wrapper
-    });
-
-    expect(result.current.value).toBe(initialValue);
-  });
-
-  it('Provides value when initialValue is set from the root Form context in nested form', () => {
-    const initialValue = 'Ivan';
-    const name = 'firstName';
-    const parentFormName = 'user';
-
-    const Wrapper: FC = ({ children }) => (
-      <FormRoot
-        dataTest="root-form"
-        initialData={{ user: { [name]: initialValue } }}
-        onSubmit={jest.fn()}
-      >
-        <FormObject name={parentFormName}>{children}</FormObject>
-      </FormRoot>
-    );
-
-    const { result } = renderHook(() => useField({ initialValue: undefined, name }), {
-      wrapper: Wrapper
-    });
 
     expect(result.current.value).toBe(initialValue);
   });
@@ -256,40 +217,6 @@ describe('useField', () => {
     const { findByDataTest, getByDataTest } = testRender(
       <FormRoot dataTest="root-form">
         <TestInput initialValue={initialValue} name={name} />
-        <ResetButton />
-      </FormRoot>
-    );
-
-    const stateA = JSON.parse(getByDataTest('state').textContent || '');
-    expect(stateA.value).toBe(initialValue);
-
-    userEvent.clear(getByDataTest('input'));
-    userEvent.type(getByDataTest('input'), changedValue);
-
-    const stateB = JSON.parse(getByDataTest('state').textContent || '');
-    expect(stateB.value).toBe(changedValue);
-
-    userEvent.click(getByDataTest('reset'));
-
-    const stateC = JSON.parse((await findByDataTest('state')).textContent || '');
-    expect(stateC.value).toBe(initialValue);
-  });
-
-  // eslint-disable-next-line max-len
-  it('Sets the value to initialValue when reset is triggered and initialValue is provided by the root Form context', async () => {
-    const changedValue = 'Maria';
-    const initialValue = 'Ivan';
-    const name = 'firstName';
-
-    const ResetButton = () => {
-      const { methods } = useForm();
-
-      return <button data-test="reset" onClick={methods.reset}></button>;
-    };
-
-    const { findByDataTest, getByDataTest } = testRender(
-      <FormRoot dataTest="root-form" initialData={{ [name]: initialValue }} onSubmit={jest.fn()}>
-        <TestInput name={name} />
         <ResetButton />
       </FormRoot>
     );
@@ -662,7 +589,7 @@ describe('useField', () => {
     expect(stateC.value).toBe(formatter({ newValue: initialValue, oldValue: initialValue }));
   });
 
-  it('Updates the value when the initialValue provided inline is updated', () => {
+  it("Doesn't update the value when the initialValue provided inline is updated", () => {
     const name = 'firstName';
     const initialValueA = 'Ivan';
     const initialValueB = 'Maria';
@@ -677,7 +604,7 @@ describe('useField', () => {
 
     rerender({ initialValue: initialValueB });
 
-    expect(result.current.value).toBe(initialValueB);
+    expect(result.current.value).toBe(initialValueA);
     expect(result.current.valid).toBe(true);
   });
 

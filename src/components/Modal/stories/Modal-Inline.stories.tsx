@@ -40,7 +40,7 @@ const Step_3_FormFields = () => {
       <br />
       <br />
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <button onClick={methods.reset}>reset</button>
+        <button onClick={() => methods.reset()}>reset</button>
       </div>
     </>
   );

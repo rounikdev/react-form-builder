@@ -29,57 +29,6 @@
   align-self: flex-end;
 }
 
-.Group {
-  display: flex;
-  flex-direction: column;
-  width: calc(50% - 0.5rem);
-  padding: 2rem;
-  margin-bottom: 1rem;
-  border: 1px solid lighten(#91979d, 30%);
-  border-radius: 0.3rem;
-}
-
-.Input {
-  flex: 1;
-  margin-bottom: 2rem;
-  margin-right: 1rem;
-}
-
-.User {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 1rem;
-}
-
-.Phones {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: center;
-  margin: 1rem 0 0;
-
-  .PhonesList {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-  }
-
-  .Phone {
-    display: flex;
-    align-items: flex-end;
-    width: 100%;
-    margin-bottom: 1rem;
-
-    .PhoneInput {
-      margin-right: 1rem;
-    }
-  }
-}
-
 .Passwords {
   width: 100%;
   display: flex;
