@@ -27,11 +27,11 @@ export const useNestedForm = ({ name, onReset, valid, value }: UseNestedFormArgs
 
   const [isEdit, setIsEdit] = useState(false);
 
+  const formDataRef = useUpdatedRef(formData);
+
   const nameRef = useUpdatedRef(name);
 
-  const forceValidate = useCallback(() => {
-    setForceValidateFlag({});
-  }, []);
+  const forceValidate = useCallback(() => setForceValidateFlag({}), []);
 
   const getFieldId = useCallback(() => {
     const parentId = parentContext.methods.getFieldId();
@@ -54,50 +54,7 @@ export const useNestedForm = ({ name, onReset, valid, value }: UseNestedFormArgs
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const cancelWithoutReset = useCallback(() => {
-    setIsEdit(false);
-
-    setTimeout(() => {
-      setResetRecords((currentResetRecords) => {
-        const newResetRecords = { ...currentResetRecords };
-        delete newResetRecords[getFieldId()];
-        return newResetRecords;
-      });
-    });
-  }, [getFieldId, setResetRecords]);
-
-  const cancel = useCallback(() => {
-    setIsEdit(false);
-
-    reset();
-
-    setTimeout(() => {
-      setResetRecords((currentResetRecords) => {
-        const newResetRecords = { ...currentResetRecords };
-        delete newResetRecords[getFieldId()];
-        return newResetRecords;
-      });
-    });
-  }, [getFieldId, reset, setResetRecords]);
-
-  const formDataRef = useUpdatedRef(formData);
-
-  const edit = useCallback(() => {
-    setIsEdit(true);
-
-    setResetRecords((currentResetRecords) => {
-      return {
-        ...currentResetRecords,
-        [getFieldId()]: formDataRef.current
-      };
-    });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getFieldId, setResetRecords]); // formData makes Form test hang
-
-  const save = useCallback(() => {
-    setIsEdit(false);
-
+  const cleanFromResetState = useCallback(() => {
     setResetRecords((currentResetRecords) => {
       const newResetRecords = { ...currentResetRecords };
       delete newResetRecords[getFieldId()];
@@ -105,9 +62,39 @@ export const useNestedForm = ({ name, onReset, valid, value }: UseNestedFormArgs
     });
   }, [getFieldId, setResetRecords]);
 
-  useUpdateOnly(() => {
-    forceValidate();
-  }, [parentContext.forceValidateFlag]);
+  const cancelWithoutReset = useCallback(() => {
+    setIsEdit(false);
+
+    setTimeout(cleanFromResetState);
+  }, [cleanFromResetState]);
+
+  const cancel = useCallback(() => {
+    setIsEdit(false);
+
+    reset();
+
+    setTimeout(cleanFromResetState);
+  }, [cleanFromResetState, reset]);
+
+  const edit = useCallback(() => {
+    setIsEdit(true);
+
+    setResetRecords((currentResetRecords) => {
+      return {
+        ...currentResetRecords,
+        // Using just formData makes Form test hang:
+        [getFieldId()]: formDataRef.current
+      };
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getFieldId, setResetRecords]);
+
+  const save = useCallback(() => {
+    setIsEdit(false);
+
+    cleanFromResetState();
+  }, [cleanFromResetState]);
 
   useUpdate(() => {
     parentContext.methods.setInForm({
@@ -117,6 +104,15 @@ export const useNestedForm = ({ name, onReset, valid, value }: UseNestedFormArgs
     });
   }, [valid, value]);
 
+  useUpdateOnly(() => {
+    forceValidate();
+  }, [parentContext.forceValidateFlag]);
+
+  /**
+   * For UX/UI purpose.
+   * Close nested forms on closing
+   * the parent one:
+   */
   useUpdateOnly(() => {
     if (!isParentEdit && isEdit) {
       cancelWithoutReset();

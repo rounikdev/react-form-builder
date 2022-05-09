@@ -36,7 +36,7 @@ module.exports = {
   },
   setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
   testEnvironment: 'jsdom',
-  testPathIgnorePatterns: [],
+  testPathIgnorePatterns: ['instrumented'],
   testRegex: 'tests/.*.test.(ts|tsx)$',
   testTimeout: 20000
 };
