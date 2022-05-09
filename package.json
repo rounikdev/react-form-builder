@@ -28,7 +28,8 @@
         "cy:dev:ct": "cypress open-ct",
         "cy:prod:ct": "cypress run-ct",
         "instrument": "npx nyc instrument --compact=false src instrumented",
-        "report": "npx nyc report"
+        "report": "npx nyc report",
+        "cy:coverage": "yarn instrument && yarn cy:prod:ct && yarn report"
     },
     "sideEffects": false,
     "browserslist": [

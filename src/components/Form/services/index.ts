@@ -1,18 +1,4 @@
-import { FormState, FormStateEntry, FormStateEntryValue } from '../types';
-
-export const buildInitialFormState = (initialData: FormStateEntryValue): FormState => {
-  return initialData
-    ? Object.entries(initialData).reduce((currentInitialState, [key, value]) => {
-        return {
-          ...currentInitialState,
-          [key]: {
-            valid: false,
-            value
-          }
-        };
-      }, {})
-    : {};
-};
+import { FormState, FormStateEntry } from '../types';
 
 export const flattenFormState = (obj: FormStateEntry, [k, v]: [string, FormStateEntry]) => {
   return {
@@ -36,7 +22,6 @@ export const flattenFormArrayState = (state: FormState): FormStateEntry => {
         valid: obj.valid && current.valid
       };
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    { valid: true as boolean, value: [] as any[] }
+    { valid: true as boolean, value: [] as unknown[] }
   );
 };

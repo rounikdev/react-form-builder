@@ -23,7 +23,7 @@ const FormStateDisplay = () => {
           {Object.keys(errors).length ? (
             <div style={{ color: 'red' }}>
               <h3>Errors:</h3>
-              <pre>{JSON.stringify(errors, null, 2)}</pre>
+              <pre data-test="form-errors">{JSON.stringify(errors, null, 2)}</pre>
               <div style={{ color: 'initial' }}>
                 <h4>Scroll into view:</h4>
                 {Object.keys(errors).map((fieldId) => {
@@ -89,7 +89,7 @@ const FormStateDisplay = () => {
 
           <div>
             <h3>Form Data:</h3>
-            <pre>{JSON.stringify(formData, null, 2)}</pre>
+            <pre data-test="form-state">{JSON.stringify(formData, null, 2)}</pre>
           </div>
         </div>,
         element

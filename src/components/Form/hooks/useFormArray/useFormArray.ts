@@ -24,7 +24,7 @@ export const useFormArray = <T>({
 
   const add = useCallback(() => {
     setDirty();
-    setList((currentList) => (factory ? [...currentList, factory()] : currentList));
+    setList((currentList) => [...currentList, factory()]);
   }, [factory, setDirty]);
 
   const remove = useCallback(
@@ -45,23 +45,19 @@ export const useFormArray = <T>({
       const resetValue = (GlobalModel.getNestedValue(
         resetRecords[rootResetFlag.resetKey],
         fieldId.split('.')
-      ) ?? []) as T[];
+      ) || []) as T[];
 
-      if (resetValue) {
-        // Reset array to prevent existing items
-        // to read from the reset state with old names
-        // For example item with index 0 should get
-        // index 1, but because reset flag is set
-        // before the array will be updated. that
-        // item will still have index 0 and will
-        // get the values of the 0-th array element
-        // instead of the one with index 1:
-        setList([]);
+      // Reset array to prevent existing items
+      // to read from the reset state with old names
+      // For example item with index 0 should get
+      // index 1, but because reset flag is set
+      // before the array will be updated. that
+      // item will still have index 0 and will
+      // get the values of the 0-th array element
+      // instead of the one with index 1:
+      setList([]);
 
-        requestAnimationFrame(() => {
-          setList(resetValue);
-        });
-      }
+      requestAnimationFrame(() => setList(resetValue));
     }
   }, [rootResetFlag]);
 
