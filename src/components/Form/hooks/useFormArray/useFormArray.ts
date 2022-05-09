@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 
 import { GlobalModel, useUpdateOnly } from '@services';
 
-import { INITIAL_RESET_RECORD_KEY } from '../../constants';
+import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '../../constants';
 import { useFormRoot } from '../../providers';
 
 export const useFormArray = <T>({
@@ -39,7 +39,7 @@ export const useFormArray = <T>({
     if (
       rootResetFlag.resetKey &&
       (fieldId.indexOf(rootResetFlag.resetKey) === 0 ||
-        rootResetFlag.resetKey === 'root' ||
+        rootResetFlag.resetKey === ROOT_RESET_RECORD_KEY ||
         rootResetFlag.resetKey === INITIAL_RESET_RECORD_KEY)
     ) {
       const resetValue = (GlobalModel.getNestedValue(
@@ -57,6 +57,8 @@ export const useFormArray = <T>({
       // instead of the one with index 1:
       setList([]);
 
+      // Prevent UI from flickering because
+      // the rerendering of the array:
       requestAnimationFrame(() => setList(resetValue));
     }
   }, [rootResetFlag]);

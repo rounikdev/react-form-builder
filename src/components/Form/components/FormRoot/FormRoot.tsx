@@ -1,20 +1,13 @@
-import { FC, memo, useCallback, useMemo, useState } from 'react';
+import { FC, memo, useCallback, useMemo } from 'react';
 
 import { useClass, useUpdate, useUpdateOnly } from '@services';
 
-import { INITIAL_RESET_RECORD_KEY } from '../../constants';
 import { FormContextInstance } from '../../context';
-import {
-  useFormEdit,
-  useFormErrors,
-  useFormFieldInteraction,
-  useFormInteraction,
-  useFormReducer
-} from '../../hooks';
+import { useFormReducer, useRootForm } from '../../hooks';
 import { FormEditProvider, FormRootProvider } from '../../providers';
 import { formObjectReducer } from '../../reducers';
 import { flattenFormObjectState } from '../../services';
-import { FormContext, FormRootProps, FormStateEntry, ResetFlag } from '../../types';
+import { FormContext, FormRootProps } from '../../types';
 
 import styles from './FormRoot.scss';
 
@@ -25,60 +18,32 @@ export const FormRoot: FC<FormRootProps> = memo(
       reducer: formObjectReducer
     });
 
-    const [resetRecords, setResetRecords] = useState<Record<string, FormStateEntry>>({});
-
-    const [rootResetFlag, setRootResetFlag] = useState<ResetFlag>({
-      resetKey: INITIAL_RESET_RECORD_KEY
-    });
-
-    const [pristine, setPristine] = useState<boolean>(true);
-
-    const setDirty = useCallback(() => setPristine(false), []);
-
-    const { errors, registerFieldErrors } = useFormErrors();
-
     const {
+      cancel,
+      edit,
+      errors,
       fieldToBeSet,
       focusedField,
       focusField,
+      forceValidate,
+      forceValidateFlag,
+      isEdit,
+      getFieldId,
+      pristine,
+      registerFieldErrors,
+      reset,
+      resetRecords,
+      rootResetFlag,
+      save,
       scrolledField,
       scrollFieldIntoView,
-      setFieldValue
-    } = useFormFieldInteraction();
-
-    const reset = useCallback(() => {
-      setRootResetFlag({ resetKey: INITIAL_RESET_RECORD_KEY });
-
-      setPristine(true);
-    }, []);
-
-    const { forceValidate, forceValidateFlag } = useFormInteraction();
-
-    // Gather the initial state:
-    useUpdate(() => {
-      if (pristine) {
-        setResetRecords((currentResetRecords) => ({
-          ...currentResetRecords,
-          [INITIAL_RESET_RECORD_KEY]: value
-        }));
-      }
-    }, [value]);
-
-    const getFieldId = useCallback(() => '', []);
-
-    const { cancel, edit, isEdit, save } = useFormEdit({
-      fieldId: 'root',
-      formData: value,
-      pristine,
-      setResetFlag: setRootResetFlag,
-      setResetRecords
+      setDirty,
+      setFieldValue,
+      setResetRecords,
+      setRootResetFlag
+    } = useRootForm({
+      formData: value
     });
-
-    useUpdate(() => {
-      if (onChange) {
-        onChange({ errors, valid, value });
-      }
-    }, [errors, valid, value]);
 
     const onSubmitHandler = useCallback(
       (event) => {
@@ -90,6 +55,12 @@ export const FormRoot: FC<FormRootProps> = memo(
       },
       [onSubmit, valid, value]
     );
+
+    useUpdate(() => {
+      if (onChange) {
+        onChange({ errors, valid, value });
+      }
+    }, [errors, valid, value]);
 
     useUpdateOnly(() => {
       if (pristine && onReset) {
