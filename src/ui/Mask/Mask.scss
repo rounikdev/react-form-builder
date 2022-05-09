@@ -1,14 +1,14 @@
 .Mask {
   position: absolute;
   z-index: -1;
-  bottom: 0;
+  top: 0;
   left: 0;
   display: flex;
   align-items: center;
   width: 100%;
   background-color: var(--color-background-focus);
   opacity: 0;
-  transition: opacity var(--transition) ease-in-out;
+  transition: opacity var(--transition-normal) ease-in-out;
 
   &.Focused {
     opacity: 1;

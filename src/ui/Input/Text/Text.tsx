@@ -1,9 +1,11 @@
 import { FC, memo, useMemo } from 'react';
 
-import { useField } from '@components/Form';
+import { useTextInput } from '@components';
 import { useClass } from '@services';
 import { Mask } from '../../Mask/Mask';
 import { TextProps } from './types';
+
+import { ErrorField } from '../../ErrorField/ErrorField';
 
 import styles from './Text.scss';
 
@@ -17,9 +19,11 @@ export const Text: FC<TextProps> = memo(
     initialValue,
     label,
     name,
+    onBlurSideEffect,
     pattern,
     placeholder,
     required,
+    sideEffect,
     type,
     validator
   }) => {
@@ -32,53 +36,49 @@ export const Text: FC<TextProps> = memo(
       touched,
       valid,
       value
-    } = useField({
+    } = useTextInput({
       dependencyExtractor,
       formatter,
-      initialValue: initialValue ?? '',
+      initialValue,
       name,
+      onBlurSideEffect,
+      sideEffect,
       validator
     });
 
-    const showError = useMemo(() => !focused && touched && !valid, [focused, touched, valid]);
+    const isError = useMemo(() => !focused && touched && !valid, [focused, touched, valid]);
 
     const inputClass = useClass(
-      [styles.Input, pattern && styles.WithMask, showError && styles.Error],
-      [pattern, showError]
+      [styles.Input, pattern && styles.WithMask, isError && styles.Error],
+      [isError, pattern]
     );
 
     return (
       <div className={useClass([styles.Container, className], [className])}>
-        {pattern ? (
-          <Mask className={inputClass} focused={focused} pattern={pattern} value={value} />
-        ) : null}
         <label data-test={`${dataTest}-label`} className={styles.Label} htmlFor={id}>
           {label}
           <span className={styles.Required}>{required ? 'required' : null}</span>
         </label>
-        <input
-          autoComplete="off"
-          className={inputClass}
-          data-test={`${dataTest}-input`}
-          id={id}
-          onBlur={onBlurHandler}
-          onChange={(event) => {
-            onChangeHandler(event.target.value);
-          }}
-          onFocus={onFocusHandler}
-          placeholder={placeholder}
-          type={type || 'text'}
-          value={value}
-        />
-        {showError ? (
-          <ul className={styles.ErrorContainer}>
-            {errors.map((error, index) => (
-              <li key={index} className={styles.ErrorMsg}>
-                {error}
-              </li>
-            ))}
-          </ul>
-        ) : null}
+        <div className={styles.InputWrap}>
+          <input
+            autoComplete="off"
+            className={inputClass}
+            data-test={`${dataTest}-input`}
+            id={id}
+            onBlur={onBlurHandler}
+            onChange={(event) => {
+              onChangeHandler(event.target.value);
+            }}
+            onFocus={onFocusHandler}
+            placeholder={placeholder}
+            type={type || 'text'}
+            value={value}
+          />
+          {pattern ? (
+            <Mask className={inputClass} focused={focused} pattern={pattern} value={value} />
+          ) : null}
+        </div>
+        <ErrorField errors={errors} isError={isError} />
       </div>
     );
   }

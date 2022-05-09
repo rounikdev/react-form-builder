@@ -251,3 +251,5 @@ export interface FormUserProps extends Animatable, Stylable {
     methods: FormContext['methods'];
   }) => JSX.Element | null;
 }
+
+export type Pattern = string;

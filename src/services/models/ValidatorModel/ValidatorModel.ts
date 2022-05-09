@@ -1,5 +1,7 @@
 import { FormStateEntryValue, Validator, ValidityCheck } from '../../../components';
 
+import { InputModel } from '../InputModel';
+
 export class ValidatorModel {
   static createMaxLengthValidator = (max: number, message: string): Validator<string> => {
     if (max <= 0) {
@@ -192,5 +194,64 @@ export class ValidatorModel {
         };
       }, validityCheck);
     };
+  };
+
+  static requiredValidator = (value: string): ValidityCheck => {
+    let validityCheck: ValidityCheck;
+
+    if (value) {
+      validityCheck = {
+        errors: [],
+        valid: true
+      };
+    } else {
+      validityCheck = {
+        errors: [{ text: 'Required field' }],
+        valid: false
+      };
+    }
+
+    return validityCheck;
+  };
+
+  static creditCardValidator: Validator<string> = (value) => {
+    let validityCheck: ValidityCheck;
+
+    const pattern = InputModel.creditCardPattern;
+
+    if (value.length === 0 || value.length === pattern.length) {
+      validityCheck = {
+        errors: [],
+        valid: true
+      };
+    } else {
+      validityCheck = {
+        errors: [{ text: 'Invalid Credit Card' }],
+        valid: false
+      };
+    }
+
+    return validityCheck;
+  };
+
+  static monthYearValidator: Validator<string> = (value) => {
+    const pattern = /^(((0)[1-9])|((1)[0-2]))( \/ )\d{2}$/i;
+    const isValid = pattern.test(value);
+
+    let validityCheck: ValidityCheck;
+
+    if (value.length === 0 || isValid) {
+      validityCheck = {
+        errors: [],
+        valid: true
+      };
+    } else {
+      validityCheck = {
+        errors: [{ text: 'Invalid Month / Year' }],
+        valid: false
+      };
+    }
+
+    return validityCheck;
   };
 }

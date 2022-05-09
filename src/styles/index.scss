@@ -5,40 +5,42 @@
   * {
     box-sizing: border-box;
   }
+
+  // color:
+  --color-border: #9b9b9b;
+  --color-border-active: #1c1c1c;
+  --color-font: #363636;
+  --color-label: #363636;
+  --color-error: red;
+  --color-ok: green;
+  --color-background-focus: #f5f5f5;
+
+  // border-radius:
+  --border-radius-small: 0.2rem;
+  --border-radius-medium: 0.4rem;
+  --border-radius-large: 0.8rem;
+
+  // font-size:
+  --font-base: 10px;
+  --font-tiny: 1.2rem;
+  --font-small: 1.4rem;
+  --font-medium: 2rem;
+
+  // margin, padding:
+  --offset-tiny: 0.4rem;
+  --offset-small: 1rem;
+  --offset-normal: 1.6rem;
+  --offset-medium: 2rem;
+  --offset-large: 3rem;
+
+  // transition:
+  --transition-faster: 100ms;
+  --transition-fast: 200ms;
+  --transition-normal: 300ms;
+  --transition-slow: 500ms;
 }
 
-// color:
-$colorBorder: #9b9b9b;
-$colorBorderActive: #1c1c1c;
-$colorFont: #363636;
-$colorLabel: #363636;
-$colorError: red;
-$colorSuccess: green;
-$colorBackgroundFocus: #f5f5f5;
-
-// border-radius:
-$borderRadiusSmall: 0.2rem;
-$borderRadiusMedium: 0.4rem;
-$borderRadiusLarge: 0.8rem;
-
-// font-size:
-$baseFontSize: 10px;
-$fontTiny: 1.2rem;
-$fontSmall: 1.4rem;
-$fontMedium: 2rem;
-
-// margin, padding:
-$offsetTiny: 0.4rem;
-$offsetSmall: 1rem;
-$offsetNormal: 1.6rem;
-$offsetMedium: 2rem;
-$offsetLarge: 3rem;
-
-// transition:
-$transitionFaster: 100ms;
-$transitionFast: 200ms;
-$transitionNormal: 300ms;
-$transitionSlow: 500ms;
+$baseFontSize: var(--font-base);
 
 :export {
   baseFontSize: $baseFontSize;
