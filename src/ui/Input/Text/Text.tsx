@@ -62,7 +62,7 @@ export const Text: FC<TextProps> = memo(
     );
 
     return (
-      <div className={containerClass} style={{ display: hidden ? 'none' : 'initial' }}>
+      <div className={containerClass} style={{ display: hidden ? 'none' : 'flex' }}>
         <label data-test={`${dataTest}-label`} className={styles.Label} htmlFor={id}>
           {label}
           <span className={styles.Required}>{required ? 'required' : null}</span>

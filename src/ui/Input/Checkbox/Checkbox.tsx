@@ -52,7 +52,7 @@ export const Checkbox: FC<CheckboxProps> = memo(
     );
 
     return (
-      <div className={containerClass} style={{ display: hidden ? 'none' : 'initial' }}>
+      <div className={containerClass} style={{ display: hidden ? 'none' : 'flex' }}>
         <div className={styles.InputWrap}>
           <input
             aria-hidden={hidden}
