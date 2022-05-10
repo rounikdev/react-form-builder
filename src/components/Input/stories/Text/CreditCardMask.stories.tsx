@@ -18,6 +18,7 @@ const Template: ComponentStory<typeof TextInput> = (args): JSX.Element => (
 export const CreditCardMask = Template.bind({});
 CreditCardMask.args = {
   dataTest: 'credit-card',
+  disabled: false,
   formatter: InputModel.creditCardFormatter,
   id: 'creditCard',
   label: 'Credit Card',

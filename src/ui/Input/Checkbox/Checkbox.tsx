@@ -13,6 +13,7 @@ export const Checkbox: FC<CheckboxProps> = memo(
     dataTest,
     dependencyExtractor,
     disabled,
+    hidden,
     id,
     initialValue,
     label,
@@ -51,9 +52,11 @@ export const Checkbox: FC<CheckboxProps> = memo(
     );
 
     return (
-      <div className={containerClass}>
+      <div className={containerClass} style={{ display: hidden ? 'none' : 'initial' }}>
         <div className={styles.InputWrap}>
           <input
+            aria-hidden={hidden}
+            aria-invalid={!valid}
             aria-required={required}
             checked={value}
             className={inputClass}

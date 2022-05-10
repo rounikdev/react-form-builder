@@ -18,6 +18,7 @@ const Template: ComponentStory<typeof TextInput> = (args): JSX.Element => (
 export const MonthYear = Template.bind({});
 MonthYear.args = {
   dataTest: 'month-year',
+  disabled: false,
   formatter: InputModel.monthYearFormatter,
   id: 'monthYear',
   label: 'Month Year',

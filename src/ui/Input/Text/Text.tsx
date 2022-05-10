@@ -1,6 +1,6 @@
-import { FC, memo, useMemo } from 'react';
+import { FC, memo, MutableRefObject, useMemo } from 'react';
 
-import { useTextInput } from '@components';
+import { useTextInput, useTranslation } from '@components';
 import { useClass } from '@services';
 import { Mask } from '../../Mask/Mask';
 import { TextProps } from './types';
@@ -14,7 +14,9 @@ export const Text: FC<TextProps> = memo(
     className,
     dataTest,
     dependencyExtractor,
+    disabled,
     formatter,
+    hidden,
     id,
     initialValue,
     label,
@@ -29,7 +31,9 @@ export const Text: FC<TextProps> = memo(
   }) => {
     const {
       errors,
+      fieldRef,
       focused,
+      isEdit,
       onBlurHandler,
       onChangeHandler,
       onFocusHandler,
@@ -46,6 +50,8 @@ export const Text: FC<TextProps> = memo(
       validator
     });
 
+    const { translate } = useTranslation();
+
     const isError = useMemo(() => !focused && touched && !valid, [focused, touched, valid]);
 
     const containerClass = useClass([styles.Container, className], [className]);
@@ -56,23 +62,29 @@ export const Text: FC<TextProps> = memo(
     );
 
     return (
-      <div className={containerClass}>
+      <div className={containerClass} style={{ display: hidden ? 'none' : 'initial' }}>
         <label data-test={`${dataTest}-label`} className={styles.Label} htmlFor={id}>
           {label}
           <span className={styles.Required}>{required ? 'required' : null}</span>
         </label>
         <div className={styles.InputWrap}>
           <input
+            aria-hidden={hidden}
+            aria-invalid={!valid}
+            aria-required={required}
             autoComplete="off"
             className={inputClass}
             data-test={`${dataTest}-input`}
+            disabled={typeof disabled === 'boolean' ? disabled : !isEdit}
             id={id}
+            name={name}
             onBlur={onBlurHandler}
             onChange={(event) => {
               onChangeHandler(event.target.value);
             }}
             onFocus={onFocusHandler}
-            placeholder={placeholder}
+            placeholder={translate(placeholder || '') as string}
+            ref={fieldRef as MutableRefObject<HTMLInputElement>}
             type={type || 'text'}
             value={value}
           />
