@@ -2,7 +2,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { FormObject, FormRoot, useForm } from '@components/Form';
 
-import { Text as Input } from '@components/Input/stories/Text/Text';
+import { Text as Input } from '@ui';
 
 import { useModal } from '@components/Modal/context';
 import Modal from '@components/Modal/Inline';

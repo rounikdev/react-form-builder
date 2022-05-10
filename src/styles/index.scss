@@ -1,4 +1,53 @@
-$baseFontSize: 10px;
+:root {
+  font-family: Roboto Condensed, sans-serif;
+  font-size: 10px;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  // color:
+  --color-border: #9b9b9b;
+  --color-border-active: #1c1c1c;
+  --color-font: #363636;
+  --color-font-secondary: #9b9b9bd3;
+  --color-label: #363636;
+  --color-error: red;
+  --color-ok: green;
+  --color-background-focus: #f5f5f5;
+
+  // border-width
+  --border-width-normal: 0.1rem;
+  --border-width-large: 0.2rem;
+
+  // border-radius:
+  --border-radius-small: 0.2rem;
+  --border-radius-normal: 0.4rem;
+  --border-radius-medium: 0.6rem;
+  --border-radius-large: 0.8rem;
+
+  // font-size:
+  --font-base: 10px;
+  --font-tiny: 1.2rem;
+  --font-small: 1.4rem;
+  --font-normal: 1.6rem;
+  --font-medium: 2rem;
+
+  // margin, padding:
+  --offset-tiny: 0.4rem;
+  --offset-small: 1rem;
+  --offset-normal: 1.6rem;
+  --offset-medium: 2rem;
+  --offset-large: 3rem;
+
+  // transition:
+  --transition-faster: 100ms;
+  --transition-fast: 200ms;
+  --transition-normal: 300ms;
+  --transition-slow: 500ms;
+}
+
+$baseFontSize: var(--font-base);
 
 :export {
   baseFontSize: $baseFontSize;

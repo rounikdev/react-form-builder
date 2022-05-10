@@ -1,5 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
+import { InputModel, ValidatorModel } from '@services';
 import { Text as TextInput } from '@ui';
 
 export default {
@@ -14,22 +15,18 @@ const Template: ComponentStory<typeof TextInput> = (args): JSX.Element => (
   </div>
 );
 
-export const Text = Template.bind({});
-Text.args = {
-  autoComplete: 'off',
-  dataTest: 'text',
-  dependencyExtractor: () => {},
+export const MonthYear = Template.bind({});
+MonthYear.args = {
+  dataTest: 'month-year',
   disabled: false,
-  formatter: ({ newValue }: { newValue: string }) => newValue,
-  hidden: false,
-  id: 'text',
-  initialValue: 'Text',
-  label: 'Text Label',
-  name: 'text',
-  onBlurSideEffect: ({ setValue }) => {
-    setValue && setValue('90');
-
-    return '90';
-  },
-  placeholder: 'text'
+  formatter: InputModel.monthYearFormatter,
+  id: 'monthYear',
+  label: 'Month Year',
+  name: 'monthYear',
+  pattern: InputModel.monthYearPattern,
+  required: true,
+  validator: ValidatorModel.composeValidators(
+    ValidatorModel.requiredValidator,
+    ValidatorModel.monthYearValidator
+  )
 };

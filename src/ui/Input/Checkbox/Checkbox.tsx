@@ -1,18 +1,19 @@
 import { FC, memo, MutableRefObject, useMemo } from 'react';
 
+import { useCheckboxInput } from '@components';
 import { useClass } from '@services';
 
-import { useCheckboxInput } from '../../useCheckboxInput/useCheckboxInput';
-
-import { InputCheckboxProps } from './types';
+import { CheckboxProps } from './types';
 
 import styles from './Checkbox.scss';
 
-export const Checkbox: FC<InputCheckboxProps> = memo(
+export const Checkbox: FC<CheckboxProps> = memo(
   ({
+    className,
     dataTest,
     dependencyExtractor,
     disabled,
+    hidden,
     id,
     initialValue,
     label,
@@ -40,22 +41,22 @@ export const Checkbox: FC<InputCheckboxProps> = memo(
 
     const isError = useMemo(() => touched && !focused && !valid, [focused, touched, valid]);
 
+    const containerClass = useClass(
+      [styles.Container, className, disabled && styles.Disabled, isError && styles.Error],
+      [className, disabled, isError]
+    );
+
     const inputClass = useClass(
       [styles.Input, focused && styles.Focus, isError && styles.Error, disabled && styles.Disabled],
       [focused, isError, disabled]
     );
 
-    const labelClasses = useClass([styles.Label, isError && styles.LabelError], [isError]);
-
     return (
-      <div
-        className={useClass(
-          [styles.Container, disabled && styles.Disabled, isError && styles.Error],
-          [disabled, isError]
-        )}
-      >
-        <div className={styles.InputBox}>
+      <div className={containerClass} style={{ display: hidden ? 'none' : 'flex' }}>
+        <div className={styles.InputWrap}>
           <input
+            aria-hidden={hidden}
+            aria-invalid={!valid}
             aria-required={required}
             checked={value}
             className={inputClass}
@@ -74,11 +75,12 @@ export const Checkbox: FC<InputCheckboxProps> = memo(
         <div className={styles.LabelContainer}>
           {label ? (
             <label
-              className={labelClasses}
+              className={styles.Label}
               data-test={`${dataTest}-label`}
               htmlFor={id}
               title={label}
             >
+              {required ? '*' : null}
               {label}
             </label>
           ) : null}

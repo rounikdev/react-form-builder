@@ -1,0 +1,11 @@
+.Container {
+  width: 100%;
+  padding: 0 var(--offset-small);
+
+  .ErrorMsg {
+    margin: 0 0 var(--offset-tiny) var(--offset-small);
+    font-size: var(--font-small);
+    color: var(--color-error);
+    list-style-type: square;
+  }
+}
