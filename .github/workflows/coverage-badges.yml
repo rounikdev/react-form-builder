@@ -13,30 +13,119 @@ jobs:
       - uses: actions/checkout@v2
       - run: yarn install
       - run: yarn test
-      - id: read_coverage
-        name: Read coverage
-        run: |
-          content=`cat ./coverage/coverage-summary.json`
-          # the following lines are only required for multi line json
-          content="${content//'%'/'%25'}"
-          content="${content//$'\n'/''}"
-          content="${content//$'\r'/'%0D'}"
-          # end of optional handling for multi line json
-          echo "coverage=$content" >> $GITHUB_ENV
-          echo $content
-          # echo '::set-output name=coverage.json::$content'
+      - run: yarn cy:coverage
 
-      - name: Check coverage file
+      - name: Read coverage
         run: |
-          echo "${{ fromJson(env.coverage) }}"
-      - name: Create badge
+          contentUnit=`cat ./coverage/coverage-summary.json`
+          # the following lines are only required for multi line json
+          contentUnit="${contentUnit//'%'/'%25'}"
+          # content="${content//$'\n'/'%0A'}" <-- this breaks the task
+          contentUnit="${contentUnit//$'\n'/''}"
+          contentUnit="${contentUnit//$'\r'/'%0D'}"
+          # end of optional handling for multi line json
+          echo "coverageUnit=$contentUnit" >> $GITHUB_ENV
+          contentInt=`cat ./nyc/coverage/coverage-summary.json`
+          # the following lines are only required for multi line json
+          contentInt="${contentInt//'%'/'%25'}"
+          # content="${content//$'\n'/'%0A'}" <-- this breaks the task
+          contentInt="${contentInt//$'\n'/''}"
+          contentInt="${contentInt//$'\r'/'%0D'}"
+          # end of optional handling for multi line json
+          echo "coverageInt=$contentInt" >> $GITHUB_ENV
+
+      - name: Create unit test statements coverage badge
         uses: schneegans/dynamic-badges-action@v1.3.0
         with:
           auth: ${{ secrets.GIST_SECRET }}
           gistID: ded8feb6e79c379a8e04b613ced59d28
-          filename: coverage.json
-          label: Coverage
-          message: ${{ fromJson(env.coverage).total.lines.pct }}
-          valColorRange: ${{ fromJson(env.coverage).total.lines.pct }}
+          filename: coverage-unit-statements.json
+          label: statements
+          message: ${{ fromJson(env.coverageUnit).total.statements.pct }}
+          valColorRange: ${{ fromJson(env.coverageUnit).total.statements.pct }}
+          maxColorRange: 100
+          minColorRange: 0
+
+      - name: Create unit test branches coverage badge
+        uses: schneegans/dynamic-badges-action@v1.3.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: ded8feb6e79c379a8e04b613ced59d28
+          filename: coverage-unit-branches.json
+          label: branches
+          message: ${{ fromJson(env.coverageUnit).total.branches.pct }}
+          valColorRange: ${{ fromJson(env.coverageUnit).total.branches.pct }}
+          maxColorRange: 100
+          minColorRange: 0
+
+      - name: Create unit test functions coverage badge
+        uses: schneegans/dynamic-badges-action@v1.3.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: ded8feb6e79c379a8e04b613ced59d28
+          filename: coverage-unit-functions.json
+          label: functions
+          message: ${{ fromJson(env.coverageUnit).total.functions.pct }}
+          valColorRange: ${{ fromJson(env.coverageUnit).total.functions.pct }}
+          maxColorRange: 100
+          minColorRange: 0
+
+      - name: Create unit test lines coverage badge
+        uses: schneegans/dynamic-badges-action@v1.3.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: ded8feb6e79c379a8e04b613ced59d28
+          filename: coverage-unit-lines.json
+          label: lines
+          message: ${{ fromJson(env.coverageUnit).total.lines.pct }}
+          valColorRange: ${{ fromJson(env.coverageUnit).total.lines.pct }}
+          maxColorRange: 100
+          minColorRange: 0
+
+      - name: Create integration test statements coverage badge
+        uses: schneegans/dynamic-badges-action@v1.3.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: ded8feb6e79c379a8e04b613ced59d28
+          filename: coverage-int-statements.json
+          label: statements
+          message: ${{ fromJson(env.coverageInt).total.statements.pct }}
+          valColorRange: ${{ fromJson(env.coverageInt).total.statements.pct }}
+          maxColorRange: 100
+          minColorRange: 0
+
+      - name: Create integration test branches coverage badge
+        uses: schneegans/dynamic-badges-action@v1.3.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: ded8feb6e79c379a8e04b613ced59d28
+          filename: coverage-int-branches.json
+          label: branches
+          message: ${{ fromJson(env.coverageInt).total.branches.pct }}
+          valColorRange: ${{ fromJson(env.coverageInt).total.branches.pct }}
+          maxColorRange: 100
+          minColorRange: 0
+
+      - name: Create integration test functions coverage badge
+        uses: schneegans/dynamic-badges-action@v1.3.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: ded8feb6e79c379a8e04b613ced59d28
+          filename: coverage-int-functions.json
+          label: functions
+          message: ${{ fromJson(env.coverageInt).total.functions.pct }}
+          valColorRange: ${{ fromJson(env.coverageInt).total.functions.pct }}
+          maxColorRange: 100
+          minColorRange: 0
+
+      - name: Create integration test lines coverage badge
+        uses: schneegans/dynamic-badges-action@v1.3.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: ded8feb6e79c379a8e04b613ced59d28
+          filename: coverage-int-lines.json
+          label: lines
+          message: ${{ fromJson(env.coverageInt).total.lines.pct }}
+          valColorRange: ${{ fromJson(env.coverageInt).total.lines.pct }}
           maxColorRange: 100
           minColorRange: 0

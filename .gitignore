@@ -19,3 +19,4 @@ coverage
 cypress/integration/examples
 .nyc_output
 instrumented
+nyc
