@@ -24,6 +24,9 @@ jobs:
           # end of optional handling for multi line json
           echo '::set-output name=coverage.json::$content'
 
+      - name: Check coverage file
+        run: |
+          echo "${{fromJson(steps.read_coverage.outputs.coverage.json)}}"
       - name: Create badge
         uses: schneegans/dynamic-badges-action@v1.3.0
         with:
