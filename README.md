@@ -16,7 +16,7 @@
 
 ![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/MechoshiPuhanaga/ded8feb6e79c379a8e04b613ced59d28/raw/coverage-int-functions.json)
 
-![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/MechoshiPuhanaga/ded8feb6e79c379a8e04b613ced59d28/raw/coverage-int-lines.json)
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/MechoshiPuhanaga/ded8feb6e79c379a8e04b613ced59d28/raw/coverage-unit-lines.json)
 
 ## Testing
 
