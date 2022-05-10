@@ -1,7 +1,21 @@
 {
-  "include": "src",
   "exclude": [
     "**/*.spec.js",
     "**/stories/**"
-  ]
+  ],
+  "include": "src",
+  "report-dir": "nyc/coverage",
+  "reporter": [
+    "clover",
+    "cobertura",
+    "json",
+    "json-summary",
+    "lcov",
+    "text"
+  ],
+  "temp-dir": "nyc/temp",
+  "branches": 50,
+  "lines": 50,
+  "functions": 50,
+  "statements": 50
 }
