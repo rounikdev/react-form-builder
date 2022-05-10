@@ -1,4 +1,4 @@
-name: coverage-badges
+name: Create coverage badges
 
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
           content="${content//$'\r'/'%0D'}"
           # end of optional handling for multi line json
           echo "::set-output name=coverage.json::$content"
-          
+
       - name: Create badge
         uses: schneegans/dynamic-badges-action@v1.3.0
         with:
@@ -34,4 +34,3 @@ jobs:
           valColorRange: ${{ fromJson(steps.read_coverage.outputs.coverage).total.lines.pct }}
           maxColorRange: 100
           minColorRange: 0
-          
