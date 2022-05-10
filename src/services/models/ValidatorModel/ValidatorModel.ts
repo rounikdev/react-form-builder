@@ -196,7 +196,7 @@ export class ValidatorModel {
     };
   };
 
-  static requiredValidator = (value: string): ValidityCheck => {
+  static requiredValidator = (value: unknown): ValidityCheck => {
     let validityCheck: ValidityCheck;
 
     if (value) {

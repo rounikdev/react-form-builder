@@ -1,6 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Checkbox as CheckboxInput } from './Checkbox';
+import { ValidatorModel } from '@services';
+import { Checkbox as CheckboxInput } from '@ui';
 
 export default {
   component: CheckboxInput,
@@ -21,5 +22,7 @@ Checkbox.args = {
   id: 'checkbox',
   initialValue: false,
   label: 'Checkbox Label',
-  name: 'checkbox'
+  name: 'checkbox',
+  required: true,
+  validator: ValidatorModel.requiredValidator
 };

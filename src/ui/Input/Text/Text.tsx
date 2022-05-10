@@ -48,13 +48,15 @@ export const Text: FC<TextProps> = memo(
 
     const isError = useMemo(() => !focused && touched && !valid, [focused, touched, valid]);
 
+    const containerClass = useClass([styles.Container, className], [className]);
+
     const inputClass = useClass(
       [styles.Input, pattern && styles.WithMask, isError && styles.Error],
       [isError, pattern]
     );
 
     return (
-      <div className={useClass([styles.Container, className], [className])}>
+      <div className={containerClass}>
         <label data-test={`${dataTest}-label`} className={styles.Label} htmlFor={id}>
           {label}
           <span className={styles.Required}>{required ? 'required' : null}</span>

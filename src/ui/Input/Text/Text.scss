@@ -2,6 +2,15 @@
   display: flex;
   flex-direction: column;
 
+  &,
+  * {
+    box-sizing: border-box;
+
+    &:not(.Input) {
+      user-select: none;
+    }
+  }
+
   .Label {
     display: flex;
     justify-content: space-between;
