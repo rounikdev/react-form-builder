@@ -23,7 +23,7 @@ jobs:
           content="${content//$'\r'/'%0D'}"
           # end of optional handling for multi line json
           echo "coverage=$content" >> $GITHUB_ENV
-          echo "${{ env.coverage }}"
+          echo $content
           # echo '::set-output name=coverage.json::$content'
 
       - name: Check coverage file
