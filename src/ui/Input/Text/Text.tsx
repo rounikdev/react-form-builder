@@ -1,7 +1,7 @@
 import { FC, memo, MutableRefObject, useMemo } from 'react';
+import { useClass } from '@rounik/react-custom-hooks';
 
 import { useTextInput, useTranslation } from '@components';
-import { useClass } from '@services';
 import { Mask } from '../../Mask/Mask';
 import { TextProps } from './types';
 

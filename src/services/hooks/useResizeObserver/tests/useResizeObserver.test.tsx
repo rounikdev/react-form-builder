@@ -1,3 +1,0 @@
-describe('useResizeObserver', () => {
-  it('TODO', () => {});
-});

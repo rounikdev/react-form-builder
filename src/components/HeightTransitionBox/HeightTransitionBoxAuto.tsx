@@ -1,6 +1,10 @@
 import { FC, memo, useCallback, useLayoutEffect, useRef, useState } from 'react';
-
-import { useLastDiffValue, useMutationObserver, useUpdateOnly, useWindowResize } from '@services';
+import {
+  useLastDiffValue,
+  useMutationObserver,
+  useUpdateOnly,
+  useWindowResize
+} from '@rounik/react-custom-hooks';
 
 import { useHeightTransition } from './HeightTransitionProvider';
 import { HeightTransitionBoxProps } from './types';
@@ -11,6 +15,8 @@ const MUTATION_OBSERVER_CONFIG = {
   childList: true,
   subtree: true
 };
+
+const DEBOUNCE_TIME = 200;
 
 export const HeightTransitionBoxAuto: FC<HeightTransitionBoxProps> = memo(
   ({
@@ -43,7 +49,7 @@ export const HeightTransitionBoxAuto: FC<HeightTransitionBoxProps> = memo(
       target: contentRef
     });
 
-    useWindowResize({ callback: observerCallback });
+    useWindowResize({ callback: observerCallback, debounceTime: DEBOUNCE_TIME });
 
     // Handles nested transitions like
     // ErrorFields of ConditionalFields

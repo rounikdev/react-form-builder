@@ -7,17 +7,16 @@ import {
   useRef,
   useState
 } from 'react';
-
 import {
-  GlobalModel,
-  useIsMounted,
   useLastDiffValue,
   useUpdate,
   useUpdateOnly,
   useUpdatedRef,
   useMount,
   useUnmount
-} from '@services';
+} from '@rounik/react-custom-hooks';
+
+import { GlobalModel, useIsMounted } from '@services';
 
 import { useFormEditContext, useFormRoot } from '../../providers';
 import {
@@ -55,6 +54,8 @@ export const useField = <T>({
   } = useFormRoot();
 
   const isMounted = useIsMounted();
+
+  console.log('isMounted: ', isMounted);
 
   const fieldRef = useRef<HTMLElement | null>(null);
 

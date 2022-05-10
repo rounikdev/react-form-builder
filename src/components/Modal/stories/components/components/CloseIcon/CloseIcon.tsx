@@ -1,6 +1,5 @@
 import { FC, memo } from 'react';
-
-import { useClass } from '@services';
+import { useClass } from '@rounik/react-custom-hooks';
 
 import styles from './CloseIcon.scss';
 

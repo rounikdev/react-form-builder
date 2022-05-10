@@ -1,7 +1,7 @@
 import { FC, memo } from 'react';
+import { useClass } from '@rounik/react-custom-hooks';
 
 import { ModalContainerProps } from '@components/Modal/types';
-import { useClass } from '@services';
 
 import { CloseIcon } from '../components';
 

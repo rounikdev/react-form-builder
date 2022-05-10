@@ -1,6 +1,5 @@
 import { FC, memo } from 'react';
-
-import { useUpdate } from '@services';
+import { useUpdate } from '@rounik/react-custom-hooks';
 
 import { useForm } from '../../hooks';
 import { ForceValidateFlag } from '../../types';

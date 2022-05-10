@@ -1,8 +1,8 @@
 import { FC, useEffect } from 'react';
 import { fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useUpdateOnly } from '@rounik/react-custom-hooks';
 
-import { useUpdateOnly } from '@services';
 import { ShowHide, testRender } from '@services/utils';
 
 import { FormArray, FormObject, FormRoot } from '../components';

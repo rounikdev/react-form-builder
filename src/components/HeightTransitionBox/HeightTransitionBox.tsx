@@ -1,6 +1,5 @@
 import { FC, memo, useCallback, useRef, useState } from 'react';
-
-import { useMutationObserver } from '@services';
+import { useMutationObserver } from '@rounik/react-custom-hooks';
 
 import { useHeightTransition } from './HeightTransitionProvider';
 import { HeightTransitionBoxProps } from './types';
