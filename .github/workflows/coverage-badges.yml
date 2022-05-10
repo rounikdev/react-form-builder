@@ -22,11 +22,12 @@ jobs:
           content="${content//$'\n'/'%0A'}"
           content="${content//$'\r'/'%0D'}"
           # end of optional handling for multi line json
+          echo $content
           echo '::set-output name=coverage.json::$content'
 
       - name: Check coverage file
         run: |
-          echo "${{fromJson(steps.read_coverage.outputs.coverage.json)}}"
+          echo "${{fromJson(steps.read_coverage.outputs.coverage)}}"
       - name: Create badge
         uses: schneegans/dynamic-badges-action@v1.3.0
         with:
@@ -34,7 +35,7 @@ jobs:
           gitsID: ded8feb6e79c379a8e04b613ced59d28
           filename: coverage.json
           label: Coverage
-          message: ${{ fromJson(steps.read_coverage.outputs.coverage.json).total.lines.pct }}
-          valColorRange: ${{ fromJson(steps.read_coverage.outputs.coverage.json).total.lines.pct }}
+          message: ${{ fromJson(steps.read_coverage.outputs.coverage).total.lines.pct }}
+          valColorRange: ${{ fromJson(steps.read_coverage.outputs.coverage).total.lines.pct }}
           maxColorRange: 100
           minColorRange: 0
