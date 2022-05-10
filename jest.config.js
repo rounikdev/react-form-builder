@@ -21,7 +21,7 @@ module.exports = {
       statements: 50
     }
   },
-  coverageReporters: ['json', 'lcov', 'text', 'clover', 'cobertura'],
+  coverageReporters: ['clover', 'cobertura', 'json', 'json-summary', 'lcov', 'text'],
   globalSetup: './jest-global-setup.js',
   reporters: ['default'],
   moduleNameMapper: {
