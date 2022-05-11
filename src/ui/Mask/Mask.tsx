@@ -32,14 +32,7 @@ export const Mask: FC<IMaskProps> = memo(({ className, focused, pattern, value }
         [className, focused]
       )}
     >
-      <span
-        className={styles.MaskTxt}
-        onMouseUpCapture={() => {
-          console.log(window.getSelection()?.toString());
-        }}
-      >
-        {maskTxt}
-      </span>
+      <span className={styles.MaskTxt}>{maskTxt}</span>
     </div>
   );
 });

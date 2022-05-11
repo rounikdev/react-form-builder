@@ -17,22 +17,22 @@
     "types": "dist/index.d.ts",
     "files": [
         "dist/**/*"
-      ],
+    ],
     "sideEffects": false,
     "repository": "git@github.com:rounikdev/react-form-builder.git",
     "homepage": "git@github.com:rounikdev/react-form-builder.git",
     "author": "Rounik Dev",
     "contributors": [
-    {
-        "email": "nikolaygelemerov@gmail.com",
-        "name": "Nikolay Gelemerov",
-        "url": "https://github.com/nikolaygelemerov"
-    },
-    {
-        "email": "mechokio@gmail.com",
-        "name": "Mechoshi Puhanaga",
-        "url": "https://github.com/MechoshiPuhanaga"
-    }
+        {
+            "email": "nikolaygelemerov@gmail.com",
+            "name": "Nikolay Gelemerov",
+            "url": "https://github.com/nikolaygelemerov"
+        },
+        {
+            "email": "mechokio@gmail.com",
+            "name": "Mechoshi Puhanaga",
+            "url": "https://github.com/MechoshiPuhanaga"
+        }
     ],
     "license": "MIT",
     "private": false,
@@ -52,7 +52,7 @@
         "last 2 versions"
     ],
     "dependencies": {
-        "@rounik/react-custom-hooks": "0.1.4",
+        "@rounik/react-custom-hooks": "0.1.5",
         "@types/node": "17.0.31",
         "@types/react": "17.0.39",
         "@types/react-dom": "17.0.13",

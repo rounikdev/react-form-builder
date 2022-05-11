@@ -1824,13 +1824,12 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
-"@rounik/react-custom-hooks@0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@rounik/react-custom-hooks/-/react-custom-hooks-0.1.4.tgz#818b71301a858050e4f7861672dd9fadb831e3aa"
-  integrity sha512-fLASWTl5wATDMuPTReXW9qePGJuJyYwBbg/0Ro7qnPzcz8kn4Q9pQm5kkXpAPrYoCecM66byhANMT5Bn381cjw==
+"@rounik/react-custom-hooks@0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@rounik/react-custom-hooks/-/react-custom-hooks-0.1.5.tgz#9d8d939de6c993383a3f533b632fa9aac6f870b2"
+  integrity sha512-xlisj8ZZotAvEsbBha94eZRUuntyiBNb8l1qiup2sJz6iai9THxeNgZYBU9UUxVnMdIvhS96h1JRTclRxSHPng==
   dependencies:
     react "17.0.2"
-    react-dom "17.0.2"
 
 "@sinclair/typebox@^0.23.3":
   version "0.23.5"
