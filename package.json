@@ -1,8 +1,9 @@
 {
-    "name": "form-builder-2",
+    "name": "@rounik/react-form-builder",
     "version": "0.0.1",
-    "description": "React form builder",
+    "description": "React form builder with field hooks for building custom design systems",
     "keywords": [
+        "design system",
         "fields",
         "form",
         "headless",
@@ -11,14 +12,30 @@
         "state",
         "typescript"
     ],
-    "license": "MIT",
-    "author": {
-        "email": "mechokio@gmail.com",
-        "name": "Mechoshi Puhanaga"
+    "main": "dist/cjs/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist/**/*"
+      ],
+    "sideEffects": false,
+    "repository": "git@github.com:rounikdev/react-form-builder.git",
+    "homepage": "git@github.com:rounikdev/react-form-builder.git",
+    "author": "Rounik Dev",
+    "contributors": [
+    {
+        "email": "nikolaygelemerov@gmail.com",
+        "name": "Nikolay Gelemerov",
+        "url": "https://github.com/nikolaygelemerov"
     },
-    "main": "cjs/index.js",
-    "module": "index.js",
-    "types": "index.d.ts",
+    {
+        "email": "mechokio@gmail.com",
+        "name": "Mechoshi Puhanaga",
+        "url": "https://github.com/MechoshiPuhanaga"
+    }
+    ],
+    "license": "MIT",
+    "private": false,
     "scripts": {
         "start": "start-storybook -p 3000",
         "build": "rollup -c",
@@ -31,7 +48,6 @@
         "report": "npx nyc report",
         "cy:coverage": "yarn instrument && yarn cy:prod:ct && yarn report"
     },
-    "sideEffects": false,
     "browserslist": [
         "last 2 versions"
     ],
