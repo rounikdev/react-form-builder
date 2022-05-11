@@ -1824,13 +1824,13 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
-"@rounik/react-custom-hooks@^0.1.3":
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/@rounik/react-custom-hooks/-/react-custom-hooks-0.1.3.tgz#a1e888a9fbb8e8000437636b9bfef969e95811ac"
-  integrity sha512-pn8jDzpXI4CgkK0gcqy9WvUC705R4RG7rRpodg/xn3xY8hfRYOld1BIAjCT9YhZp/DQM1zD2TU5zuFLpm7marg==
+"@rounik/react-custom-hooks@0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@rounik/react-custom-hooks/-/react-custom-hooks-0.1.4.tgz#818b71301a858050e4f7861672dd9fadb831e3aa"
+  integrity sha512-fLASWTl5wATDMuPTReXW9qePGJuJyYwBbg/0Ro7qnPzcz8kn4Q9pQm5kkXpAPrYoCecM66byhANMT5Bn381cjw==
   dependencies:
-    react "18.0.0"
-    react-dom "18.0.0"
+    react "17.0.2"
+    react-dom "17.0.2"
 
 "@sinclair/typebox@^0.23.3":
   version "0.23.5"
@@ -12332,14 +12332,6 @@ react-dom@17.0.2:
     object-assign "^4.1.1"
     scheduler "^0.20.2"
 
-react-dom@18.0.0:
-  version "18.0.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.0.0.tgz#26b88534f8f1dbb80853e1eabe752f24100d8023"
-  integrity sha512-XqX7uzmFo0pUceWFCt7Gff6IyIMzFUn7QMZrbrQfGxtaxXZIcGQzoNpRLE3fQLnS4XzLLPMZX2T9TRcSrasicw==
-  dependencies:
-    loose-envify "^1.1.0"
-    scheduler "^0.21.0"
-
 react-draggable@^4.4.3:
   version "4.4.5"
   resolved "https://registry.yarnpkg.com/react-draggable/-/react-draggable-4.4.5.tgz#9e37fe7ce1a4cf843030f521a0a4cc41886d7e7c"
@@ -12478,13 +12470,6 @@ react@17.0.2:
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
-
-react@18.0.0:
-  version "18.0.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-18.0.0.tgz#b468736d1f4a5891f38585ba8e8fb29f91c3cb96"
-  integrity sha512-x+VL6wbT4JRVPm7EGxXhZ8w8LTROaxPXOqhlGyVSrv0sB1jkyFGgXxJ8LVoPRLvPR6/CIZGFmfzqUa2NYeMr2A==
-  dependencies:
-    loose-envify "^1.1.0"
 
 read-only-stream@^2.0.0:
   version "2.0.0"
@@ -13125,13 +13110,6 @@ scheduler@^0.20.2:
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
-
-scheduler@^0.21.0:
-  version "0.21.0"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.21.0.tgz#6fd2532ff5a6d877b6edb12f00d8ab7e8f308820"
-  integrity sha512-1r87x5fz9MXqswA2ERLo0EbOAU74DpIUO090gIasYTqlVoJeMcl+Z1Rg7WHz+qtPujhS/hGIt9kxZOYBV3faRQ==
-  dependencies:
-    loose-envify "^1.1.0"
 
 schema-utils@2.7.0:
   version "2.7.0"

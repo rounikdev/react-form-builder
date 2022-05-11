@@ -55,8 +55,6 @@ export const useField = <T>({
 
   const isMounted = useIsMounted();
 
-  console.log('isMounted: ', isMounted);
-
   const fieldRef = useRef<HTMLElement | null>(null);
 
   const isRenderedRef = useRef(false);
