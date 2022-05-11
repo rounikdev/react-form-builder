@@ -1,6 +1,5 @@
 import { CSSProperties, FC, memo, useCallback, useMemo, useRef, useState } from 'react';
-
-import { useMount, useUpdate, useUpdateOnly } from '@services';
+import { useMount, useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { useModal } from '@components/Modal/context';
 import { ModalBuilderProps } from '@components/Modal/types';

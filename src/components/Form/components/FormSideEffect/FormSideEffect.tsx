@@ -1,6 +1,5 @@
 import { FC, useEffect } from 'react';
-
-import { useUpdatedRef } from '@services';
+import { useUpdatedRef } from '@rounik/react-custom-hooks';
 
 import { useForm } from '../../hooks';
 import { useFormRoot } from '../../providers';

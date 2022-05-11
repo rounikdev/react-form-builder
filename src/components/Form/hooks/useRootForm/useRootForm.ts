@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react';
-
-import { useUpdate, useUpdatedRef, useUpdateOnly } from '@services';
+import { useUpdate, useUpdatedRef, useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '../../constants';
 import {

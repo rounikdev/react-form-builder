@@ -1,7 +1,7 @@
 import { FC, FocusEvent, memo, MutableRefObject, useMemo } from 'react';
+import { useClass } from '@rounik/react-custom-hooks';
 
 import { Field, useField, useTranslation } from '@components';
-import { useClass } from '@services';
 
 import styles from './TextInput.scss';
 

@@ -1,7 +1,7 @@
 import { FC, memo, MutableRefObject, useMemo } from 'react';
+import { useClass } from '@rounik/react-custom-hooks';
 
 import { useCheckboxInput } from '@components';
-import { useClass } from '@services';
 
 import { CheckboxProps } from './types';
 

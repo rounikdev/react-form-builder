@@ -7,9 +7,7 @@ import {
   useRef,
   useState
 } from 'react';
-
 import {
-  GlobalModel,
   useIsMounted,
   useLastDiffValue,
   useUpdate,
@@ -17,7 +15,9 @@ import {
   useUpdatedRef,
   useMount,
   useUnmount
-} from '@services';
+} from '@rounik/react-custom-hooks';
+
+import { GlobalModel } from '@services';
 
 import { useFormEditContext, useFormRoot } from '../../providers';
 import {

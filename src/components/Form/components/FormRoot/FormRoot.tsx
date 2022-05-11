@@ -1,6 +1,5 @@
 import { FC, memo, useCallback, useMemo } from 'react';
-
-import { useClass, useUpdate, useUpdateOnly } from '@services';
+import { useClass, useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { FormContextInstance } from '../../context';
 import { useFormReducer, useRootForm } from '../../hooks';

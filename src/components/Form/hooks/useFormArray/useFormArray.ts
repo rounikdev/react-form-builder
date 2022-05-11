@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
+import { useUpdateOnly } from '@rounik/react-custom-hooks';
 
-import { GlobalModel, useUpdateOnly } from '@services';
+import { GlobalModel } from '@services';
 
 import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '../../constants';
 import { useFormRoot } from '../../providers';
