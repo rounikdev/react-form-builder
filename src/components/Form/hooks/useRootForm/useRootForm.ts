@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { useUpdate, useUpdatedRef, useUpdateOnly } from '@rounik/react-custom-hooks';
+import { useUpdate, useUpdatedRef } from '@rounik/react-custom-hooks';
 
 import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '../../constants';
 import {
@@ -7,12 +7,13 @@ import {
   FieldErrorsPayload,
   ForceValidateFlag,
   FormStateEntry,
+  FormStateEntryValue,
   ResetFlag,
   SetFieldValuePayload
 } from '../../types';
 
 interface UseRootFormProps {
-  formData: FormStateEntry;
+  formData: FormStateEntryValue;
 }
 
 export const useRootForm = ({ formData }: UseRootFormProps) => {
@@ -116,12 +117,6 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
       }));
     }
   }, [formData]);
-
-  useUpdateOnly(() => {
-    if (pristine) {
-      setRootResetFlag({ resetKey: INITIAL_RESET_RECORD_KEY });
-    }
-  }, [pristine]);
 
   return {
     cancel,
