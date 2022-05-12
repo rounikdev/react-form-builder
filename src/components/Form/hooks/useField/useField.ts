@@ -162,6 +162,13 @@ export const useField = <T>({
 
   const dependencyRef = useUpdatedRef(dependency);
 
+  const fieldId = useMemo(() => {
+    const parentId = context.methods.getFieldId();
+
+    return parentId ? `${parentId}.${name}` : name;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [context.methods.getFieldId, name]);
+
   // Validate only when dependency
   // has changed. That's why we use
   // ref for the value:
@@ -171,8 +178,6 @@ export const useField = <T>({
   }, [typeof dependency === 'bigint' ? dependency : JSON.stringify(dependency)]);
 
   useUpdateOnly(async () => {
-    const parentId = context.methods.getFieldId();
-    const fieldId = parentId ? `${parentId}.${name}` : name;
     const fieldPath = fieldId.split('.');
 
     const resetValue = GlobalModel.getNestedValue(resetRecords[rootResetFlag.resetKey], fieldPath);
@@ -202,26 +207,20 @@ export const useField = <T>({
   // Update form errors state on errors update:
   useEffect(() => {
     if (registerFieldErrors) {
-      const parentId = context.methods.getFieldId();
-      const fieldId = parentId ? `${parentId}.${name}` : name;
-
       registerFieldErrors({ fieldErrors: state.errors, fieldId });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [context.methods.getFieldId, name, state.errors]);
+  }, [fieldId, state.errors]);
 
   // Remove from form errors state on unmount:
   useEffect(() => {
     return () => {
       if (registerFieldErrors) {
-        const parentId = context.methods.getFieldId();
-        const fieldId = parentId ? `${parentId}.${name}` : name;
-
         registerFieldErrors({ fieldErrors: [], fieldId });
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [context.methods.getFieldId, name]);
+  }, [fieldId]);
 
   useMount(() => {
     validateField(initialValue, dependencyRef.current);
@@ -251,9 +250,6 @@ export const useField = <T>({
 
   // Focus element from the root form:
   useUpdate(() => {
-    const parentId = context.methods.getFieldId();
-    const fieldId = parentId ? `${parentId}.${name}` : name;
-
     if (focusedField === fieldId && fieldRef.current) {
       fieldRef.current.focus();
 
@@ -263,9 +259,6 @@ export const useField = <T>({
 
   // Scroll element into view from the root form:
   useUpdate(() => {
-    const parentId = context.methods.getFieldId();
-    const fieldId = parentId ? `${parentId}.${name}` : name;
-
     if (scrolledField === fieldId && fieldRef.current) {
       fieldRef.current.scrollIntoView({
         behavior: 'smooth',
@@ -279,9 +272,6 @@ export const useField = <T>({
 
   // Set value from the root form:
   useUpdate(() => {
-    const parentId = context.methods.getFieldId();
-    const fieldId = parentId ? `${parentId}.${name}` : name;
-
     if (fieldToBeSet.id === fieldId) {
       setDirty();
       validateField(fieldToBeSet.value, dependencyRef.current);
