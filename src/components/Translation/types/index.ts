@@ -1,3 +1,8 @@
+export enum TranslationActions {
+  SET_LANGUAGE = 'SET_LANGUAGE',
+  UPDATE_DICTIONARIES = 'UPDATE_DICTIONARIES'
+}
+
 export interface Language {
   id: string; // EN
   label: string; // English
@@ -11,16 +16,21 @@ export interface Dictionary extends Language {
   data: LanguageData;
 }
 
+export type Dictionaries = Record<string, Dictionary>;
+
 export interface TranslationState {
   currentLanguageId: string;
-  dictionaries: {
-    [languageId: string]: Dictionary;
-  };
+  dictionaries: Dictionaries;
 }
 
 export interface TranslationSetLanguageAction {
   payload: string;
-  type: 'SET_LANGUAGE';
+  type: TranslationActions.SET_LANGUAGE;
+}
+
+export interface TranslationUpdateDictionariesAction {
+  payload: Dictionaries;
+  type: TranslationActions.UPDATE_DICTIONARIES;
 }
 
 export type TranslationSubstitute = JSX.Element | string;
@@ -33,8 +43,15 @@ export interface TranslationContext {
     key: string,
     substitutes?: TranslationSubstitute[]
   ) => string | TranslationSubstitute[];
+  updateDictionaries: (dictionaries: Dictionaries) => void;
 }
 
-export enum TranslationActions {
-  SET_LANGUAGE = 'SET_LANGUAGE'
+export interface TranslationProviderProps {
+  languageId: string;
+  dictionaries: Dictionaries;
+}
+
+export interface TranslationProps {
+  substitutes?: TranslationSubstitute[];
+  text: string;
 }
