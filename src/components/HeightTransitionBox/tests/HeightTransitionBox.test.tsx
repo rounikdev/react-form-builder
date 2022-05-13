@@ -33,7 +33,7 @@ const TestCmp: FC<
         transitionDuration={transitionDuration}
         transitionType={transitionType}
       >
-        {showContent ? <div data-test="test-content" style={{ height: 200 }} /> : null}
+        {showContent ? <div data-test="test-content" /> : null}
       </HeightTransitionBox>
     </>
   );
