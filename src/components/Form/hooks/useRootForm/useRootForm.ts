@@ -6,7 +6,6 @@ import {
   FieldErrors,
   FieldErrorsPayload,
   ForceValidateFlag,
-  FormStateEntry,
   FormStateEntryValue,
   ResetFlag,
   SetFieldValuePayload
@@ -36,7 +35,7 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
     resetKey: INITIAL_RESET_RECORD_KEY
   });
 
-  const [resetRecords, setResetRecords] = useState<Record<string, FormStateEntry>>({});
+  const [resetRecords, setResetRecords] = useState<Record<string, FormStateEntryValue>>({});
 
   const forceValidate = useCallback(() => {
     setForceValidateFlag({});
