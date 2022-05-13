@@ -23,7 +23,7 @@ describe('useRootForm', () => {
 
     expect(result.current.forceValidateFlag).toEqual({});
 
-    expect(result.current.rootResetFlag).toEqual({ resetKey: INITIAL_RESET_RECORD_KEY });
+    expect(result.current.resetFlag).toEqual({ resetKey: INITIAL_RESET_RECORD_KEY });
 
     expect(result.current.resetRecords).toEqual({
       [INITIAL_RESET_RECORD_KEY]: formData
@@ -151,10 +151,10 @@ describe('useRootForm', () => {
     const { result } = renderHook(() => useRootForm({ formData }));
 
     act(() => {
-      result.current.setRootResetFlag({ resetKey: newResetKey });
+      result.current.setResetFlag({ resetKey: newResetKey });
     });
 
-    expect(result.current.rootResetFlag).toEqual({ resetKey: newResetKey });
+    expect(result.current.resetFlag).toEqual({ resetKey: newResetKey });
 
     act(() => {
       result.current.setDirty();
@@ -166,7 +166,7 @@ describe('useRootForm', () => {
       result.current.reset();
     });
 
-    expect(result.current.rootResetFlag).toEqual({ resetKey: INITIAL_RESET_RECORD_KEY });
+    expect(result.current.resetFlag).toEqual({ resetKey: INITIAL_RESET_RECORD_KEY });
     expect(result.current.pristine).toBe(true);
   });
 

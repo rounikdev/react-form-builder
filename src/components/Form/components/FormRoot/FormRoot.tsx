@@ -32,14 +32,14 @@ export const FormRoot: FC<FormRootProps> = memo(
       registerFieldErrors,
       reset,
       resetRecords,
-      rootResetFlag,
+      resetFlag,
       save,
       scrolledField,
       scrollFieldIntoView,
       setDirty,
       setFieldValue,
       setResetRecords,
-      setRootResetFlag
+      setResetFlag
     } = useRootForm({
       formData: value
     });
@@ -116,7 +116,7 @@ export const FormRoot: FC<FormRootProps> = memo(
         setDirty,
         setFieldValue,
         setResetRecords,
-        setResetFlag: setRootResetFlag
+        setResetFlag
       }),
       // eslint-disable-next-line react-hooks/exhaustive-deps
       []
@@ -130,7 +130,7 @@ export const FormRoot: FC<FormRootProps> = memo(
         formData: value,
         methods: rootProviderMethods,
         pristine,
-        resetFlag: rootResetFlag,
+        resetFlag,
         resetRecords,
         scrolledField
       };
@@ -142,7 +142,7 @@ export const FormRoot: FC<FormRootProps> = memo(
       pristine,
       resetRecords,
       rootProviderMethods,
-      rootResetFlag,
+      resetFlag,
       scrolledField,
       value
     ]);

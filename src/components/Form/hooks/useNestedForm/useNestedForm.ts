@@ -15,7 +15,7 @@ interface UseNestedFormArgs {
 export const useNestedForm = ({ name, onReset, valid, value }: UseNestedFormArgs) => {
   const {
     formData,
-    methods: { setResetFlag: setRootResetFlag, setResetRecords }
+    methods: { setResetFlag, setResetRecords }
   } = useFormRoot();
 
   const parentContext = useForm();
@@ -41,12 +41,12 @@ export const useNestedForm = ({ name, onReset, valid, value }: UseNestedFormArgs
 
   // TODO: Fix the nested reset issue
   const reset = useCallback(() => {
-    setRootResetFlag({ resetKey: getFieldId() });
+    setResetFlag({ resetKey: getFieldId() });
 
     if (onReset) {
       onReset();
     }
-  }, [getFieldId, onReset, setRootResetFlag]);
+  }, [getFieldId, onReset, setResetFlag]);
 
   const clear = useCallback(() => {
     parentContext.methods.removeFromForm({ key: nameRef.current });

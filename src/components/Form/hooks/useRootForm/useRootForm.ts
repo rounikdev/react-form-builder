@@ -32,7 +32,7 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
 
   const [forceValidateFlag, setForceValidateFlag] = useState<ForceValidateFlag>({});
 
-  const [rootResetFlag, setRootResetFlag] = useState<ResetFlag>({
+  const [resetFlag, setResetFlag] = useState<ResetFlag>({
     resetKey: INITIAL_RESET_RECORD_KEY
   });
 
@@ -64,7 +64,7 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
   const cancel = useCallback(() => {
     setIsEdit(false);
 
-    setRootResetFlag({ resetKey: ROOT_RESET_RECORD_KEY });
+    setResetFlag({ resetKey: ROOT_RESET_RECORD_KEY });
 
     setTimeout(() => {
       setResetRecords((currentResetRecords) => {
@@ -103,7 +103,7 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
   const getFieldId = useCallback(() => '', []);
 
   const reset = useCallback(() => {
-    setRootResetFlag({ resetKey: INITIAL_RESET_RECORD_KEY });
+    setResetFlag({ resetKey: INITIAL_RESET_RECORD_KEY });
 
     setPristine(true);
   }, []);
@@ -133,14 +133,14 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
     registerFieldErrors,
     reset,
     resetRecords,
-    rootResetFlag,
+    resetFlag,
     save,
     scrolledField,
     scrollFieldIntoView,
     setDirty,
     setFieldValue,
     setPristine,
-    setResetRecords,
-    setRootResetFlag
+    setResetFlag,
+    setResetRecords
   };
 };

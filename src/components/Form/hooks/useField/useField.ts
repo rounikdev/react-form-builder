@@ -49,7 +49,7 @@ export const useField = <T>({
     focusedField,
     formData,
     methods: { focusField, registerFieldErrors, scrollFieldIntoView, setDirty, setFieldValue },
-    resetFlag: rootResetFlag,
+    resetFlag,
     resetRecords,
     scrolledField
   } = useFormRoot();
@@ -180,7 +180,7 @@ export const useField = <T>({
   useUpdateOnly(async () => {
     const fieldPath = fieldId.split('.');
 
-    const resetValue = GlobalModel.getNestedValue(resetRecords[rootResetFlag.resetKey], fieldPath);
+    const resetValue = GlobalModel.getNestedValue(resetRecords[resetFlag.resetKey], fieldPath);
 
     await validateField(resetValue, dependency);
 
@@ -193,7 +193,7 @@ export const useField = <T>({
         ? formatterRef.current({ newValue: resetValue, oldValue: undefined })
         : resetValue
     }));
-  }, [rootResetFlag]);
+  }, [resetFlag]);
 
   useUnmount(() => {
     // No need to call setDirty, because a field could be
