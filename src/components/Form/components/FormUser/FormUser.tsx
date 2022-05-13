@@ -1,6 +1,6 @@
 import { FC, memo } from 'react';
 
-import { HeightTransitionBoxAuto, HeightTransitionProvider } from '../../../HeightTransitionBox';
+import { HeightTransitionBox, HeightTransitionProvider } from '../../../HeightTransitionBox';
 
 import { useForm } from '../../hooks';
 import { useFormRoot } from '../../providers';
@@ -23,7 +23,7 @@ export const FormUser: FC<FormUserProps> = memo(
 
     return animate ? (
       <HeightTransitionProvider>
-        <HeightTransitionBoxAuto
+        <HeightTransitionBox
           className={className}
           contentClassName={contentClassName}
           dataTest={animateDataTest}
@@ -38,7 +38,7 @@ export const FormUser: FC<FormUserProps> = memo(
             localEdit,
             methods
           })}
-        </HeightTransitionBoxAuto>
+        </HeightTransitionBox>
       </HeightTransitionProvider>
     ) : (
       children({ formData, hideClassName: styles.Hide, isEdit, isParentEdit, localEdit, methods })
