@@ -114,7 +114,7 @@ describe('HeightTransitionBox', () => {
 
     cy.get('[data-test="toggle-content"]').click();
 
-    // TODO timeouts in `cy:prod:ct`
+    // TODO sporadically timeouts in `cy:prod:ct`
     // cy.wait(600);
     // cy.get('[data-test="test-content"]').should('not.exist');
   });
