@@ -6,6 +6,7 @@ export interface HeightTransitionBoxProps extends Stylable {
   children?: ReactNode;
   contentClassName?: string;
   dataTest?: string;
+  isRoot?: boolean;
   memoizeChildren?: boolean;
   onTransitionEnd?: TransitionEventHandler | null;
   transitionDuration?: number;

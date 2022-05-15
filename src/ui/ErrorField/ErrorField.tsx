@@ -1,6 +1,6 @@
 import { FC, memo } from 'react';
 
-import { HeightTransitionBoxAuto, ValidationError } from '../../components';
+import { HeightTransitionBox, ValidationError } from '../../components';
 
 import styles from './ErrorField.scss';
 
@@ -11,7 +11,7 @@ export interface ErrorFieldProps {
 
 export const ErrorField: FC<ErrorFieldProps> = memo(({ errors, isError }) => {
   return (
-    <HeightTransitionBoxAuto memoizeChildren>
+    <HeightTransitionBox>
       {isError ? (
         <ul className={styles.Container}>
           {errors.map((error, index) => (
@@ -21,6 +21,6 @@ export const ErrorField: FC<ErrorFieldProps> = memo(({ errors, isError }) => {
           ))}
         </ul>
       ) : null}
-    </HeightTransitionBoxAuto>
+    </HeightTransitionBox>
   );
 });
