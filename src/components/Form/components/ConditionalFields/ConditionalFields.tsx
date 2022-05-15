@@ -2,7 +2,7 @@ import { FC, memo, useEffect, useMemo, useRef } from 'react';
 
 import { GlobalModel, RAFIdInfo } from '@services';
 
-import { HeightTransitionBoxAuto, HeightTransitionProvider } from '../../../HeightTransitionBox';
+import { HeightTransitionBox, HeightTransitionProvider } from '../../../HeightTransitionBox';
 
 import { useFormRoot } from '../../providers';
 import { ConditionalFieldsProps } from '../../types';
@@ -78,7 +78,7 @@ export const ConditionalFields: FC<ConditionalFieldsProps> = memo(
 
     return animate ? (
       <HeightTransitionProvider>
-        <HeightTransitionBoxAuto
+        <HeightTransitionBox
           className={className}
           contentClassName={contentClassName}
           dataTest={animateDataTest}
@@ -86,7 +86,7 @@ export const ConditionalFields: FC<ConditionalFieldsProps> = memo(
           transitionDuration={animateDuration}
         >
           {childrenToRender}
-        </HeightTransitionBoxAuto>
+        </HeightTransitionBox>
       </HeightTransitionProvider>
     ) : (
       childrenToRender

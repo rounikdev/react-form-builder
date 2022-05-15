@@ -3,7 +3,9 @@ import { createContext, FC, memo, useContext, useMemo, useState } from 'react';
 import { HeightTransitionBoxContext } from './types';
 
 const initialContext: HeightTransitionBoxContext = {
-  actions: { forceUpdate: () => {} },
+  actions: {
+    forceUpdate: /* istanbul ignore next */ () => {}
+  },
   shouldForceUpdate: {}
 };
 
@@ -31,4 +33,4 @@ export const HeightTransitionProvider: FC = memo(({ children }) => {
   );
 });
 
-HeightTransitionContext.displayName = 'HeightTransitionContext';
+HeightTransitionProvider.displayName = 'HeightTransitionProvider';
