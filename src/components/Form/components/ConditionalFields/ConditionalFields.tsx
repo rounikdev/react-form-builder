@@ -1,4 +1,4 @@
-import { FC, memo, useEffect, useMemo, useRef } from 'react';
+import { FC, memo, useEffect, useMemo, useRef, useState } from 'react';
 
 import { GlobalModel, RAFIdInfo } from '@services';
 
@@ -21,12 +21,12 @@ export const ConditionalFields: FC<ConditionalFieldsProps> = memo(
     condition,
     contentClassName,
     noScroll,
-    scrollTimeout
+    scrollTimeout = SCROLL_RAF_TIMEOUT
   }) => {
     const { formData } = useFormRoot();
 
     const ref = useRef<null | HTMLDivElement>(null);
-    const enableScrollRef = useRef(false);
+    const [enableScroll, setEnableScroll] = useState(false);
 
     const shouldRenderChildren = useMemo(() => condition(formData), [condition, formData]);
 
@@ -45,36 +45,30 @@ export const ConditionalFields: FC<ConditionalFieldsProps> = memo(
     );
 
     useEffect(() => {
-      const enableScrollRafIdInfo = GlobalModel.setRAFTimeout(
-        () => (enableScrollRef.current = true),
-        ENABLE_SCROLL_SCROLL_RAF_TIMEOUT
-      );
+      const enableScrollRafIdInfo = GlobalModel.setRAFTimeout(() => {
+        setEnableScroll(true);
+      }, ENABLE_SCROLL_SCROLL_RAF_TIMEOUT);
 
       return () => GlobalModel.clearRAFTimeout(enableScrollRafIdInfo);
     }, []);
 
     useEffect(() => {
-      if (!enableScrollRef.current || noScroll) {
+      if (!shouldRenderChildren || !enableScroll || noScroll) {
         return;
       }
 
-      let rafIdInfo: RAFIdInfo;
-
-      if (shouldRenderChildren) {
-        rafIdInfo = GlobalModel.setRAFTimeout(() => {
-          ref.current?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-            inline: 'nearest'
-          });
-        }, scrollTimeout ?? SCROLL_RAF_TIMEOUT);
-      }
+      const rafIdInfo = GlobalModel.setRAFTimeout(() => {
+        ref.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+          inline: 'nearest'
+        });
+      }, scrollTimeout);
 
       return () => {
         GlobalModel.clearRAFTimeout(rafIdInfo);
       };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [shouldRenderChildren]);
+    }, [enableScroll, noScroll, scrollTimeout, shouldRenderChildren]);
 
     return animate ? (
       <HeightTransitionProvider>
