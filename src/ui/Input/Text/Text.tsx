@@ -33,7 +33,6 @@ export const Text: FC<TextProps> = memo(
       errors,
       fieldRef,
       focused,
-      isEdit,
       onBlurHandler,
       onChangeHandler,
       onFocusHandler,
@@ -75,7 +74,7 @@ export const Text: FC<TextProps> = memo(
             autoComplete="off"
             className={inputClass}
             data-test={`${dataTest}-input`}
-            disabled={typeof disabled === 'boolean' ? disabled : !isEdit}
+            disabled={disabled}
             id={id}
             name={name}
             onBlur={onBlurHandler}
