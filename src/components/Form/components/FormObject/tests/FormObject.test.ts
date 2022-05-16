@@ -1,3 +1,0 @@
-describe('FormObject', () => {
-  it('TODO', () => {});
-});

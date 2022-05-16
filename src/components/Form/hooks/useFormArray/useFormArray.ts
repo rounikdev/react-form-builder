@@ -17,7 +17,7 @@ export const useFormArray = <T>({
 }) => {
   const {
     methods: { setDirty },
-    resetFlag: rootResetFlag,
+    resetFlag,
     resetRecords
   } = useFormRoot();
 
@@ -38,13 +38,13 @@ export const useFormArray = <T>({
 
   useUpdateOnly(() => {
     if (
-      rootResetFlag.resetKey &&
-      (fieldId.indexOf(rootResetFlag.resetKey) === 0 ||
-        rootResetFlag.resetKey === ROOT_RESET_RECORD_KEY ||
-        rootResetFlag.resetKey === INITIAL_RESET_RECORD_KEY)
+      resetFlag.resetKey &&
+      (fieldId.indexOf(resetFlag.resetKey) === 0 ||
+        resetFlag.resetKey === ROOT_RESET_RECORD_KEY ||
+        resetFlag.resetKey === INITIAL_RESET_RECORD_KEY)
     ) {
       const resetValue = (GlobalModel.getNestedValue(
-        resetRecords[rootResetFlag.resetKey],
+        resetRecords[resetFlag.resetKey],
         fieldId.split('.')
       ) || []) as T[];
 
@@ -62,7 +62,7 @@ export const useFormArray = <T>({
       // the rerendering of the array:
       requestAnimationFrame(() => setList(resetValue));
     }
-  }, [rootResetFlag]);
+  }, [resetFlag]);
 
   return { add, list, remove };
 };

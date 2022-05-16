@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 
 import { ShowHide, testRender } from '@services/utils';
 
-import { FormRoot } from '../../../components';
+import { FormObject, FormRoot } from '../../../components';
 import { useFormRoot } from '../../../providers';
 import { Formatter, DependencyExtractor, Validator } from '../../../types';
 import { useForm } from '../../useForm/useForm';
@@ -742,6 +742,71 @@ describe('useField', () => {
           initialValue={changedValue}
           name={dependencyName}
         />
+        <SetValueButton />
+      </FormRoot>
+    );
+
+    expect(await findByDataTest('input')).toHaveValue(initialValue);
+    expect(getByDataTest('input')).not.toBeValid();
+
+    userEvent.click(getByDataTest('set-field-value'));
+
+    expect(await findByDataTest('input')).toHaveValue(changedValue);
+    expect(getByDataTest('input')).toBeValid();
+  });
+
+  // eslint-disable-next-line max-len
+  it('Sets the value from the root form context with nested form. Validating with dependency.', async () => {
+    const initialValue = 'Ivan';
+    const changedValue = 'Peter';
+    const parentFormName = 'user';
+    const name = 'firstName';
+    const dependencyName = 'lastName';
+    const error = 'Error';
+
+    const SetValueButton = () => {
+      const { methods } = useFormRoot();
+
+      return (
+        <button
+          data-test="set-field-value"
+          onClick={() =>
+            methods.setFieldValue({ id: `${parentFormName}.${name}`, value: changedValue })
+          }
+        ></button>
+      );
+    };
+
+    const { findByDataTest, getByDataTest } = testRender(
+      <FormRoot dataTest="root-form" onSubmit={jest.fn()}>
+        <FormObject name="user">
+          <TestInput
+            initialValue={initialValue}
+            name={name}
+            dependencyExtractor={(formData) => {
+              if (formData[parentFormName]) {
+                return formData[parentFormName][dependencyName];
+              } else {
+                return undefined;
+              }
+            }}
+            validator={(firstName, lastName) => {
+              if (firstName === lastName) {
+                return { errors: [], valid: true };
+              } else {
+                return {
+                  errors: [{ text: error }],
+                  valid: false
+                };
+              }
+            }}
+          />
+          <TestInput
+            dataTestInput="dependency-input"
+            initialValue={changedValue}
+            name={dependencyName}
+          />
+        </FormObject>
         <SetValueButton />
       </FormRoot>
     );
