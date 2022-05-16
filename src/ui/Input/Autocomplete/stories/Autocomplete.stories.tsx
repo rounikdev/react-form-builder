@@ -48,5 +48,6 @@ Basic.args = {
   extractLabel: (item) => item.label,
   id: 'fruits',
   label: 'Fruits',
-  list: options
+  list: options,
+  multi: true
 };

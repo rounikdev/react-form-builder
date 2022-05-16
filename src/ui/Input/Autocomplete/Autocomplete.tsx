@@ -28,7 +28,7 @@ const initialContext: AutocompleteContext = {
   select: () => {
     // default function
   },
-  selected: ''
+  selected: []
 };
 
 const Context = createContext(initialContext);
@@ -41,7 +41,8 @@ const BaseAutocomplete = <T,>({
   extractLabel,
   id,
   label,
-  list
+  list,
+  multi
 }: PropsWithChildren<AutocompleteProps<T>>) => {
   const [show, setShow] = useState(false);
 
@@ -49,7 +50,7 @@ const BaseAutocomplete = <T,>({
 
   const [focused, setFocused] = useState<string>('');
 
-  const [selected, select] = useState<string>('');
+  const [selected, setSelected] = useState<string[]>([]);
 
   const focusRef = useRef(-1);
 
@@ -79,8 +80,8 @@ const BaseAutocomplete = <T,>({
     focusRef.current = -1;
     setFocused('');
 
-    if (selected) {
-      setSearch(selected);
+    if (selected.length) {
+      setSearch(selected.join(', '));
     }
   }, [selected]);
 
@@ -114,7 +115,7 @@ const BaseAutocomplete = <T,>({
           break;
 
         case 'Escape':
-          select('');
+          setSelected([]);
           close();
           break;
       }
@@ -123,6 +124,23 @@ const BaseAutocomplete = <T,>({
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [filteredList, show]
+  );
+
+  const select = useCallback(
+    (id: string) => {
+      setSelected((currentSelected) => {
+        if (!multi) {
+          return [id];
+        } else {
+          if (currentSelected.includes(id)) {
+            return currentSelected.filter((item) => item !== id);
+          } else {
+            return [...currentSelected, id];
+          }
+        }
+      });
+    },
+    [multi]
   );
 
   useOnOutsideClick({ callback: close, element });
@@ -181,6 +199,7 @@ const BaseAutocomplete = <T,>({
           <div className={listboxContainerClasses} role="none" tabIndex={0}>
             <ul
               aria-labelledby={`${id}-label`}
+              {...(multi ? { 'aria-multiselectable': true } : {})}
               className={styles.ListBox}
               data-test={`${dataTest}-listbox`}
               id={`${id}-listbox`}

@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, RefObject, SetStateAction } from 'react';
+import { ReactNode, RefObject } from 'react';
 
 import { Stylable, Testable } from '@root/types';
 import { Field, TranslationSubstitute } from '@components';
@@ -9,8 +9,8 @@ export interface AutocompleteContext {
   inputRef: RefObject<HTMLInputElement>;
   open: () => void;
   opened: boolean;
-  select: Dispatch<SetStateAction<string>>;
-  selected: string;
+  select: (id: string) => void;
+  selected: string[];
 }
 
 export interface AutocompleteProps<T> extends Field<T> {
@@ -18,6 +18,7 @@ export interface AutocompleteProps<T> extends Field<T> {
   extractId: (item: T) => string;
   extractLabel: (item: T) => string;
   list: T[];
+  multi?: boolean;
 }
 
 export interface OptionProps extends Stylable, Testable {

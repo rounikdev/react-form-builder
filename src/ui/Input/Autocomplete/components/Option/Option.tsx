@@ -29,7 +29,7 @@ export const Option: FC<OptionProps> = memo(({ className, dataTest, id, text, su
   }, [substitutes, text, translate]);
 
   const isSelected = useMemo(() => {
-    return selected === id;
+    return selected.includes(id);
   }, [selected, id]);
 
   useUpdate(() => {
