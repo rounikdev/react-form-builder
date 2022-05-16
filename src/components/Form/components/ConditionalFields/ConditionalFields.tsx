@@ -1,6 +1,6 @@
 import { FC, memo, useEffect, useMemo, useRef, useState } from 'react';
 
-import { GlobalModel, RAFIdInfo } from '@services';
+import { GlobalModel } from '@services';
 
 import { HeightTransitionBox, HeightTransitionProvider } from '../../../HeightTransitionBox';
 
