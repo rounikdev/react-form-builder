@@ -49,6 +49,7 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
         const newErrors = { ...currentErrors };
 
         delete newErrors[fieldId];
+
         return newErrors;
       }
       return {
@@ -68,7 +69,9 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
     setTimeout(() => {
       setResetRecords((currentResetRecords) => {
         const newResetRecords = { ...currentResetRecords };
+
         delete newResetRecords[ROOT_RESET_RECORD_KEY];
+
         return newResetRecords;
       });
     });
@@ -94,7 +97,9 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
 
     setResetRecords((currentResetRecords) => {
       const newResetRecords = { ...currentResetRecords };
+
       delete newResetRecords[ROOT_RESET_RECORD_KEY];
+
       return newResetRecords;
     });
   }, []);
@@ -107,7 +112,8 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
     setPristine(true);
   }, []);
 
-  // Gather the initial state:
+  // Store the initial reset state
+  // in the resetRecords:
   useUpdate(() => {
     if (pristine) {
       setResetRecords((currentResetRecords) => ({

@@ -116,7 +116,6 @@ export interface FormRootProps extends Testable {
 export interface FormObjectProps {
   localEdit?: boolean;
   name: string;
-  onReset?: () => void;
 }
 
 export type FormArrayChildrenArguments<T> = [T[], () => void, (index: number) => void];
@@ -127,7 +126,6 @@ export interface FormArrayProps<T> {
   initialValue?: T[];
   localEdit?: boolean;
   name: string;
-  onReset?: () => void;
 }
 
 export interface ValidationError {
@@ -198,7 +196,7 @@ export interface FormRootProviderContext {
   };
   pristine: boolean;
   resetFlag: ResetFlag;
-  resetRecords: Record<string, FormStateEntry>;
+  resetRecords: Record<string, FormStateEntryValue>;
   scrolledField: string;
 }
 
