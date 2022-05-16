@@ -12,8 +12,7 @@ const BaseFormArray = <T,>({
   factory,
   initialValue,
   localEdit = false,
-  name,
-  onReset
+  name
 }: PropsWithChildren<FormArrayProps<T>>) => {
   const { context, removeFromForm, setInForm, valid, value } = useFormReducer({
     flattenState: flattenFormArrayState,
@@ -32,7 +31,6 @@ const BaseFormArray = <T,>({
     save
   } = useNestedForm({
     name,
-    onReset,
     valid,
     value
   });

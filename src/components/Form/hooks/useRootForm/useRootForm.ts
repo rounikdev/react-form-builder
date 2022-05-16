@@ -1,18 +1,18 @@
 import { useCallback, useState } from 'react';
-import { useUpdate, useUpdatedRef, useUpdateOnly } from '@rounik/react-custom-hooks';
+import { useUpdate, useUpdatedRef } from '@rounik/react-custom-hooks';
 
 import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '../../constants';
 import {
   FieldErrors,
   FieldErrorsPayload,
   ForceValidateFlag,
-  FormStateEntry,
+  FormStateEntryValue,
   ResetFlag,
   SetFieldValuePayload
 } from '../../types';
 
 interface UseRootFormProps {
-  formData: FormStateEntry;
+  formData: FormStateEntryValue;
 }
 
 export const useRootForm = ({ formData }: UseRootFormProps) => {
@@ -31,11 +31,11 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
 
   const [forceValidateFlag, setForceValidateFlag] = useState<ForceValidateFlag>({});
 
-  const [rootResetFlag, setRootResetFlag] = useState<ResetFlag>({
+  const [resetFlag, setResetFlag] = useState<ResetFlag>({
     resetKey: INITIAL_RESET_RECORD_KEY
   });
 
-  const [resetRecords, setResetRecords] = useState<Record<string, FormStateEntry>>({});
+  const [resetRecords, setResetRecords] = useState<Record<string, FormStateEntryValue>>({});
 
   const forceValidate = useCallback(() => {
     setForceValidateFlag({});
@@ -49,6 +49,7 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
         const newErrors = { ...currentErrors };
 
         delete newErrors[fieldId];
+
         return newErrors;
       }
       return {
@@ -63,12 +64,14 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
   const cancel = useCallback(() => {
     setIsEdit(false);
 
-    setRootResetFlag({ resetKey: ROOT_RESET_RECORD_KEY });
+    setResetFlag({ resetKey: ROOT_RESET_RECORD_KEY });
 
     setTimeout(() => {
       setResetRecords((currentResetRecords) => {
         const newResetRecords = { ...currentResetRecords };
+
         delete newResetRecords[ROOT_RESET_RECORD_KEY];
+
         return newResetRecords;
       });
     });
@@ -94,7 +97,9 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
 
     setResetRecords((currentResetRecords) => {
       const newResetRecords = { ...currentResetRecords };
+
       delete newResetRecords[ROOT_RESET_RECORD_KEY];
+
       return newResetRecords;
     });
   }, []);
@@ -102,12 +107,13 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
   const getFieldId = useCallback(() => '', []);
 
   const reset = useCallback(() => {
-    setRootResetFlag({ resetKey: INITIAL_RESET_RECORD_KEY });
+    setResetFlag({ resetKey: INITIAL_RESET_RECORD_KEY });
 
     setPristine(true);
   }, []);
 
-  // Gather the initial state:
+  // Store the initial reset state
+  // in the resetRecords:
   useUpdate(() => {
     if (pristine) {
       setResetRecords((currentResetRecords) => ({
@@ -116,12 +122,6 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
       }));
     }
   }, [formData]);
-
-  useUpdateOnly(() => {
-    if (pristine) {
-      setRootResetFlag({ resetKey: INITIAL_RESET_RECORD_KEY });
-    }
-  }, [pristine]);
 
   return {
     cancel,
@@ -138,14 +138,14 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
     registerFieldErrors,
     reset,
     resetRecords,
-    rootResetFlag,
+    resetFlag,
     save,
     scrolledField,
     scrollFieldIntoView,
     setDirty,
     setFieldValue,
     setPristine,
-    setResetRecords,
-    setRootResetFlag
+    setResetFlag,
+    setResetRecords
   };
 };

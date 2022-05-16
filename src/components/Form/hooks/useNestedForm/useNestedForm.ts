@@ -7,15 +7,14 @@ import { useForm } from '../useForm/useForm';
 
 interface UseNestedFormArgs {
   name: string;
-  onReset?: () => void;
   valid: boolean;
   value: FormStateEntryValue;
 }
 
-export const useNestedForm = ({ name, onReset, valid, value }: UseNestedFormArgs) => {
+export const useNestedForm = ({ name, valid, value }: UseNestedFormArgs) => {
   const {
     formData,
-    methods: { setResetFlag: setRootResetFlag, setResetRecords }
+    methods: { setResetFlag, setResetRecords }
   } = useFormRoot();
 
   const parentContext = useForm();
@@ -41,12 +40,8 @@ export const useNestedForm = ({ name, onReset, valid, value }: UseNestedFormArgs
 
   // TODO: Fix the nested reset issue
   const reset = useCallback(() => {
-    setRootResetFlag({ resetKey: getFieldId() });
-
-    if (onReset) {
-      onReset();
-    }
-  }, [getFieldId, onReset, setRootResetFlag]);
+    setResetFlag({ resetKey: getFieldId() });
+  }, [getFieldId, setResetFlag]);
 
   const clear = useCallback(() => {
     parentContext.methods.removeFromForm({ key: nameRef.current });
@@ -56,7 +51,9 @@ export const useNestedForm = ({ name, onReset, valid, value }: UseNestedFormArgs
   const cleanFromResetState = useCallback(() => {
     setResetRecords((currentResetRecords) => {
       const newResetRecords = { ...currentResetRecords };
+
       delete newResetRecords[getFieldId()];
+
       return newResetRecords;
     });
   }, [getFieldId, setResetRecords]);
@@ -64,6 +61,9 @@ export const useNestedForm = ({ name, onReset, valid, value }: UseNestedFormArgs
   const cancelWithoutReset = useCallback(() => {
     setIsEdit(false);
 
+    // Timeout keeps the state enough time,
+    // so the nested fields to be able to
+    // read their values from it:
     setTimeout(cleanFromResetState);
   }, [cleanFromResetState]);
 
@@ -72,6 +72,9 @@ export const useNestedForm = ({ name, onReset, valid, value }: UseNestedFormArgs
 
     reset();
 
+    // Timeout keeps the state enough time,
+    // so the nested fields to be able to
+    // read their values from it:
     setTimeout(cleanFromResetState);
   }, [cleanFromResetState, reset]);
 

@@ -29,7 +29,6 @@ export const useFormReducer = ({
       payload,
       type: FormActions.REMOVE_FROM_FORM
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setInForm = useCallback((payload: FormSetPayload) => {
