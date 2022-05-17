@@ -118,3 +118,8 @@ export const TestButton: FC<TestButtonProps> = ({
     </button>
   );
 };
+
+export const keyEvent = (eventName: 'keyup' | 'keydown', code: string) => {
+  const event = new KeyboardEvent(eventName, { code });
+  document.dispatchEvent(event);
+};

@@ -18,8 +18,8 @@ export interface UseAutocompleteArgs<T>
   extractLabel: (item: T) => string;
   initialValue?: T[];
   list: T[];
-  multi: boolean;
-  onBlur: () => void;
+  multi?: boolean;
+  onBlur?: () => void;
 }
 
 export interface UseAutocompleteReturnType<T>

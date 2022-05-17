@@ -38,7 +38,7 @@ export const useAutocomplete = <T>({
   extractId,
   extractLabel,
   formatter,
-  initialValue,
+  initialValue = [],
   list,
   multi,
   name,
@@ -62,7 +62,7 @@ export const useAutocomplete = <T>({
   } = useField<T[]>({
     dependencyExtractor,
     formatter,
-    initialValue: initialValue ?? [],
+    initialValue: multi ? initialValue : initialValue.length ? [initialValue[0]] : [],
     name,
     onBlur,
     onFocus,
@@ -143,7 +143,9 @@ export const useAutocomplete = <T>({
           break;
       }
 
-      setFocused(extractId(filteredList[focusRef.current]));
+      if (filteredList[focusRef.current]) {
+        setFocused(extractId(filteredList[focusRef.current]));
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [filteredList, show]
@@ -200,6 +202,23 @@ export const useAutocomplete = <T>({
       })
     );
   }, [selected]);
+
+  // Update from value from useField:
+  useUpdateOnly(() => {
+    setSelected((currentSelected) => {
+      if (value.length !== currentSelected.length) {
+        return value.map((option) => extractId(option));
+      } else {
+        const dif = value.filter((item) => !currentSelected.includes(extractId(item)));
+
+        if (dif.length) {
+          return value.map((option) => extractId(option));
+        } else {
+          return currentSelected;
+        }
+      }
+    });
+  }, [value]);
 
   return {
     close,

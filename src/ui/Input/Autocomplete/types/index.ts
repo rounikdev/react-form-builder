@@ -10,7 +10,7 @@ export interface AutocompleteProps<T> extends Omit<Field<T[]>, 'onBlur'> {
   initialValue?: T[];
   list: T[];
   multi?: boolean;
-  onBlur: () => void; // because we are calling onBlurHandler without providing an event
+  onBlur?: () => void; // because we are calling onBlurHandler without providing an event
 }
 
 export interface OptionProps extends Stylable, Testable {
