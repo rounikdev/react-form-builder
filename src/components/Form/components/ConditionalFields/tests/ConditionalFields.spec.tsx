@@ -1,12 +1,11 @@
-import { fireEvent, waitFor } from '@testing-library/react';
+import { mount } from '@cypress/react';
 
 import { FormRoot } from '@components';
 import { Text } from '@ui';
-import { testRender } from '@services/utils';
 
 import { ConditionalFields } from '../ConditionalFields';
 
-describe('ConditionalFields', () => {
+describe('HeightTransitionBox', () => {
   const fieldNameA = 'firstName';
   const fieldNameB = 'lastName';
 
@@ -16,12 +15,8 @@ describe('ConditionalFields', () => {
     window.HTMLElement.prototype.scrollIntoView = originalScrollIntoView;
   });
 
-  it('Has display name', () => {
-    expect(ConditionalFields.displayName).toBe('ConditionalFields');
-  });
-
-  it('Renders the field on condition', async () => {
-    const { findByDataTest, getByDataTest, queryByDataTest } = testRender(
+  it('Renders the field on condition', () => {
+    mount(
       <FormRoot dataTest="test">
         <Text dataTest={fieldNameA} id={fieldNameA} name={fieldNameA} />
         <ConditionalFields condition={(formData) => formData[fieldNameA]?.length > 0}>
@@ -30,17 +25,15 @@ describe('ConditionalFields', () => {
       </FormRoot>
     );
 
-    expect(queryByDataTest(`${fieldNameB}-input`)).not.toBeInTheDocument();
+    cy.get(`[data-test="${fieldNameB}-input"]`).should('not.exist');
 
-    fireEvent.change(getByDataTest(`${fieldNameA}-input`), { target: { value: 'a' } });
-    expect(await findByDataTest(`${fieldNameB}-input`)).toBeInTheDocument();
+    cy.get(`[data-test="${fieldNameA}-input"]`).type('a');
 
-    fireEvent.change(getByDataTest(`${fieldNameA}-input`), { target: { value: '' } });
-    expect(queryByDataTest(`${fieldNameB}-input`)).not.toBeInTheDocument();
+    cy.get(`[data-test="${fieldNameB}-input"]`).should('exist');
   });
 
   it('Has `HeightTransitionBox` with no children when `animate` prop is passed', () => {
-    const { getByDataTest, queryByDataTest } = testRender(
+    mount(
       <FormRoot dataTest="test">
         <Text dataTest={fieldNameA} id={fieldNameA} name={fieldNameA} />
         <ConditionalFields
@@ -53,12 +46,12 @@ describe('ConditionalFields', () => {
       </FormRoot>
     );
 
-    expect(getByDataTest('test-heightTransition-container')).toBeInTheDocument();
-    expect(queryByDataTest(`${fieldNameB}-input`)).not.toBeInTheDocument();
+    cy.get(`[data-test="test-heightTransition-container"]`).should('exist');
+    cy.get(`[data-test="${fieldNameB}-input"]`).should('not.exist');
   });
 
   it('Has `HeightTransitionBox` with children when `animate` props is passed', () => {
-    const { getByDataTest } = testRender(
+    mount(
       <FormRoot dataTest="test">
         <Text dataTest={fieldNameA} id={fieldNameA} name={fieldNameA} />
         <ConditionalFields
@@ -71,16 +64,20 @@ describe('ConditionalFields', () => {
       </FormRoot>
     );
 
-    expect(getByDataTest('test-heightTransition-container')).toBeInTheDocument();
-    expect(getByDataTest(`${fieldNameB}-input`)).toBeInTheDocument();
+    cy.get(`[data-test="test-heightTransition-container"]`).should('exist');
+    cy.get(`[data-test="${fieldNameB}-input"]`).should('exist');
   });
 
-  it('Runs `scrollIntoView` function when condition is met', async () => {
-    const mockScrollIntoView = jest.fn();
+  it('Runs `scrollIntoView` function when condition is met', () => {
+    const mock = {
+      fn() {}
+    };
 
-    window.HTMLElement.prototype.scrollIntoView = mockScrollIntoView;
+    cy.spy(mock, 'fn').as('args');
 
-    testRender(
+    window.HTMLElement.prototype.scrollIntoView = mock.fn;
+
+    mount(
       <FormRoot dataTest="test">
         <Text dataTest={fieldNameA} id={fieldNameA} name={fieldNameA} />
         <ConditionalFields
@@ -93,12 +90,6 @@ describe('ConditionalFields', () => {
       </FormRoot>
     );
 
-    await waitFor(async () => {
-      expect(mockScrollIntoView).toHaveBeenCalledWith({
-        behavior: 'smooth',
-        block: 'start',
-        inline: 'nearest'
-      });
-    });
+    cy.get('@args').should('have.been.called');
   });
 });
