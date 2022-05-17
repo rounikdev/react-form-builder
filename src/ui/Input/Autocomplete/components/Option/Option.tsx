@@ -2,15 +2,14 @@ import { FC, Fragment, memo, useCallback, useMemo, useRef } from 'react';
 
 import { useClass, useUpdate } from '@rounik/react-custom-hooks';
 
-import { useTranslation } from '@components';
+import { useComboBox, useTranslation } from '@components';
 
-import { useCombobox } from '../../Autocomplete';
 import { OptionProps } from '../../types';
 
 import styles from './Option.scss';
 
 export const Option: FC<OptionProps> = memo(({ className, dataTest, id, text, substitutes }) => {
-  const { close, focused, opened, select, selected } = useCombobox();
+  const { close, focused, multi, opened, select, selected } = useComboBox();
 
   const { translate } = useTranslation();
 
@@ -50,16 +49,22 @@ export const Option: FC<OptionProps> = memo(({ className, dataTest, id, text, su
       id={`${id}-option`}
       onClick={useCallback(() => {
         select(id);
-        close();
-      }, [close, id, select])}
+
+        if (!multi) {
+          close();
+        }
+      }, [close, id, multi, select])}
       onKeyUp={useCallback(
         (event) => {
           if (event.code === 'Enter') {
             select(id);
-            close();
+
+            if (!multi) {
+              close();
+            }
           }
         },
-        [close, id, select]
+        [close, id, multi, select]
       )}
       ref={element}
       role="option"
