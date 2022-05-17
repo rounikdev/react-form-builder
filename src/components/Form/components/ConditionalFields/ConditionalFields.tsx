@@ -1,4 +1,4 @@
-import { FC, memo, useEffect, useMemo, useRef, useState } from 'react';
+import { CSSProperties, FC, memo, useEffect, useMemo, useRef, useState } from 'react';
 
 import { GlobalModel } from '@services';
 
@@ -20,29 +20,32 @@ export const ConditionalFields: FC<ConditionalFieldsProps> = memo(
     className,
     condition,
     contentClassName,
+    hidden,
     noScroll,
     scrollTimeout = SCROLL_RAF_TIMEOUT
   }) => {
     const { formData } = useFormRoot();
 
     const ref = useRef<null | HTMLDivElement>(null);
+    const styleRef = useRef<CSSProperties>({});
+
     const [enableScroll, setEnableScroll] = useState(false);
 
     const shouldRenderChildren = useMemo(() => condition(formData), [condition, formData]);
 
-    const childrenToRender = useMemo(
-      () =>
-        shouldRenderChildren ? (
-          <>
-            <div
-              ref={ref}
-              style={{ width: 0, height: 0, overflow: 'hidden', visibility: 'hidden' }}
-            />
-            {children}
-          </>
-        ) : null,
-      [children, shouldRenderChildren]
-    );
+    const childrenToRender = useMemo(() => {
+      if (!shouldRenderChildren) {
+        if (hidden) {
+          styleRef.current = { display: 'none' };
+        } else {
+          return null;
+        }
+      } else {
+        styleRef.current = {};
+      }
+
+      return children;
+    }, [children, hidden, shouldRenderChildren]);
 
     useEffect(() => {
       const enableScrollRafIdInfo = GlobalModel.setRAFTimeout(() => {
@@ -77,13 +80,17 @@ export const ConditionalFields: FC<ConditionalFieldsProps> = memo(
           contentClassName={contentClassName}
           dataTest={animateDataTest}
           memoizeChildren={animateMemoizeChildren}
+          ref={ref}
+          style={styleRef.current}
           transitionDuration={animateDuration}
         >
           {childrenToRender}
         </HeightTransitionBox>
       </HeightTransitionProvider>
     ) : (
-      childrenToRender
+      <div className={className} ref={ref} style={styleRef.current}>
+        <div className={contentClassName}>{childrenToRender}</div>
+      </div>
     );
   }
 );

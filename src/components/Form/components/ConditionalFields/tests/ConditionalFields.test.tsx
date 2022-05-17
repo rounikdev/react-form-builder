@@ -101,4 +101,24 @@ describe('ConditionalFields', () => {
       });
     });
   });
+
+  it('Has `HeightTransitionBox` with children when `hidden` props is passed', () => {
+    const { getByDataTest } = testRender(
+      <FormRoot dataTest="test">
+        <Text dataTest={fieldNameA} id={fieldNameA} name={fieldNameA} />
+        <ConditionalFields
+          animate
+          animateDataTest="test"
+          hidden
+          condition={(formData) => formData[fieldNameA]?.length === 0}
+        >
+          <Text dataTest={fieldNameB} id={fieldNameB} name={fieldNameB} />
+        </ConditionalFields>
+      </FormRoot>
+    );
+
+    expect(window.getComputedStyle(getByDataTest('test-heightTransition-container')).display).toBe(
+      'block'
+    );
+  });
 });

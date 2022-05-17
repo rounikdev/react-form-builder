@@ -1,16 +1,11 @@
-import userEvent from '@testing-library/user-event';
+import { mount } from '@cypress/react';
 
 import { FormRoot, FormUser } from '@components';
 import { Text } from '@ui';
-import { testRender } from '@services/utils';
 
 describe('FormUser', () => {
-  it('Has display name', () => {
-    expect(FormUser.displayName).toBe('FormUser');
-  });
-
-  it('Mounts with children', async () => {
-    const { findByDataTest, getByText } = testRender(
+  it('Mounts with children', () => {
+    mount(
       <FormRoot dataTest="test">
         <FormUser>
           {({ formData }) => {
@@ -32,9 +27,8 @@ describe('FormUser', () => {
       </FormRoot>
     );
 
-    userEvent.type(await findByDataTest('idNumber-input'), '007');
+    cy.get(`[data-test="idNumber-input"]`).type('007');
 
-    // eslint-disable-next-line testing-library/prefer-screen-queries
-    expect(getByText('007')).toBeInTheDocument();
+    cy.get(`[data-test="read-input"]`).should('have.text', '007');
   });
 });
