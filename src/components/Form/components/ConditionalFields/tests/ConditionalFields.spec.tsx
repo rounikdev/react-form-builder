@@ -92,4 +92,26 @@ describe('HeightTransitionBox', () => {
 
     cy.get('@args').should('have.been.called');
   });
+
+  it('Has `HeightTransitionBox` with children when `hidden` props is passed', () => {
+    mount(
+      <FormRoot dataTest="test">
+        <Text dataTest={fieldNameA} id={fieldNameA} name={fieldNameA} />
+        <ConditionalFields
+          animate
+          animateDataTest="test"
+          hidden
+          condition={(formData) => formData[fieldNameA]?.length === 0}
+        >
+          <Text dataTest={fieldNameB} id={fieldNameB} name={fieldNameB} />
+        </ConditionalFields>
+      </FormRoot>
+    );
+
+    cy.get('[data-test="test-heightTransition-container"]').should('have.css', 'display', 'block');
+
+    cy.get(`[data-test="${fieldNameA}-input"]`).type('a');
+
+    cy.get('[data-test="test-heightTransition-container"]').should('have.css', 'display', 'none');
+  });
 });

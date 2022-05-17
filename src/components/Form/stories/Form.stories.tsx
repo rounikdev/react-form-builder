@@ -61,7 +61,7 @@ const Template: Story<FC> = () => {
                 );
               }}
             </FormArray>
-            <ConditionalFields condition={(formData) => formData?.users?.length > 2}>
+            <ConditionalFields hidden condition={(formData) => formData?.users?.length > 2}>
               <div className={styles.Passwords}>
                 <TextInput
                   className={styles.PasswordInput}

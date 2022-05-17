@@ -1,49 +1,20 @@
 import { FC, memo } from 'react';
 
-import { HeightTransitionBox, HeightTransitionProvider } from '../../../HeightTransitionBox';
-
 import { useForm } from '../../hooks';
 import { useFormRoot } from '../../providers';
 import { FormUserProps } from '../../types';
 
-import styles from './FormUser.scss';
+export const FormUser: FC<FormUserProps> = memo(({ children }) => {
+  const { isEdit, isParentEdit, localEdit, methods } = useForm();
+  const { formData } = useFormRoot();
 
-export const FormUser: FC<FormUserProps> = memo(
-  ({
-    animate,
-    animateDataTest,
-    animateDuration,
-    animateMemoizeChildren,
-    children,
-    className,
-    contentClassName
-  }) => {
-    const { isEdit, isParentEdit, localEdit, methods } = useForm();
-    const { formData } = useFormRoot();
-
-    return animate ? (
-      <HeightTransitionProvider>
-        <HeightTransitionBox
-          className={className}
-          contentClassName={contentClassName}
-          dataTest={animateDataTest}
-          memoizeChildren={animateMemoizeChildren}
-          transitionDuration={animateDuration}
-        >
-          {children({
-            formData,
-            hideClassName: styles.Hide,
-            isEdit,
-            isParentEdit,
-            localEdit,
-            methods
-          })}
-        </HeightTransitionBox>
-      </HeightTransitionProvider>
-    ) : (
-      children({ formData, hideClassName: styles.Hide, isEdit, isParentEdit, localEdit, methods })
-    );
-  }
-);
+  return children({
+    formData,
+    isEdit,
+    isParentEdit,
+    localEdit,
+    methods
+  });
+});
 
 FormUser.displayName = 'FormUser';

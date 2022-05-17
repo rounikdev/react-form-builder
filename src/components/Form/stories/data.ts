@@ -96,7 +96,7 @@ export const repeatPasswordValidator = (val: string, depVal: any): ValidityCheck
 };
 
 export const passwordDependencyExtractor: DependencyExtractor = (formData) => {
-  return { password: formData.password, usersLength: formData.users.length };
+  return { password: formData.password, usersLength: formData.users?.length };
 };
 
 export const createUser = (): User => ({
