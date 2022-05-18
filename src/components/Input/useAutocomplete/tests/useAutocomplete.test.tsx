@@ -1,8 +1,13 @@
 import { act, renderHook } from '@testing-library/react-hooks';
 
+import { useMount } from '@rounik/react-custom-hooks';
+
+import { FormRoot } from '@components';
+import { useFormRoot } from '@components/Form/providers';
 import { keyEvent } from '@services/utils';
 
 import { useAutocomplete } from '../useAutocomplete';
+import { FC } from 'react';
 
 interface Fruit {
   ID: string;
@@ -264,5 +269,54 @@ describe('useAutocomplete', () => {
     });
 
     expect(result.current.selected).toEqual([list[0].ID]);
+  });
+
+  it('Setting value from root form', () => {
+    const name = 'fruits';
+
+    const ValueSetter = () => {
+      const {
+        methods: { setFieldValue }
+      } = useFormRoot();
+
+      useMount(() => {
+        setTimeout(() => {
+          setFieldValue({ id: name, value: [list[1]] });
+        });
+      });
+
+      return null;
+    };
+
+    const Wrapper: FC = ({ children }) => {
+      return (
+        <FormRoot dataTest="root">
+          <ValueSetter />
+          {children}
+        </FormRoot>
+      );
+    };
+
+    jest.useFakeTimers();
+
+    const { result } = renderHook(
+      () =>
+        useAutocomplete({ extractId, extractLabel, initialValue: [], list, multi: false, name }),
+      {
+        wrapper: Wrapper
+      }
+    );
+
+    act(() => {
+      result.current.select(list[0].ID);
+    });
+
+    expect(result.current.selected).toEqual([list[0].ID]);
+
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    expect(result.current.selected).toEqual([list[1].ID]);
   });
 });
