@@ -64,6 +64,7 @@ const options: Fruit[] = [
 export const Basic = Template<Fruit>().bind({});
 
 Basic.args = {
+  autocomplete: true,
   children: ({ options }) => {
     return options.map((option) => (
       <Option dataTest={option.id} id={option.id} key={option.id} text={option.label} />

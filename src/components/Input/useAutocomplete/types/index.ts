@@ -1,4 +1,4 @@
-import { Dispatch, Provider, RefObject, SetStateAction } from 'react';
+import { Provider, RefObject } from 'react';
 import { UseFieldConfig, UseFieldReturnType } from '../../../Form';
 
 export interface AutocompleteContext {
@@ -34,7 +34,7 @@ export interface UseAutocompleteReturnType<T>
   search: string;
   select: AutocompleteContext['select'];
   selected: string[];
-  setSearch: Dispatch<SetStateAction<string>>;
+  setSearch: (search: string) => void;
   show: boolean;
   wrapperRef: RefObject<HTMLElement>;
 }

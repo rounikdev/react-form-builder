@@ -4,6 +4,7 @@ import { Stylable, Testable } from '@root/types';
 import { Field, TranslationSubstitute } from '@components';
 
 export interface AutocompleteProps<T> extends Omit<Field<T[]>, 'onBlur'> {
+  autocomplete?: boolean;
   children: ({ options }: { options: T[] }) => ReactNode | ReactNode[];
   extractId: (item: T) => string;
   extractLabel: (item: T) => string;

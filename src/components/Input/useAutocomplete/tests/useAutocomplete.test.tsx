@@ -28,6 +28,36 @@ const list: Fruit[] = [
 const extractId = (item: Fruit) => item.ID;
 const extractLabel = (item: Fruit) => item.title;
 
+interface ValueSetterProps {
+  name: string;
+  value: Fruit[];
+}
+
+const ValueSetter: FC<ValueSetterProps> = ({ name, value }) => {
+  const {
+    methods: { setFieldValue }
+  } = useFormRoot();
+
+  useMount(() => {
+    setTimeout(() => {
+      setFieldValue({ id: name, value });
+    });
+  });
+
+  return null;
+};
+
+type WrapperProps = ValueSetterProps;
+
+const Wrapper: FC<WrapperProps> = ({ children, name, value }) => {
+  return (
+    <FormRoot dataTest="root">
+      <ValueSetter name={name} value={value} />
+      {children}
+    </FormRoot>
+  );
+};
+
 describe('useAutocomplete', () => {
   it('Returns the right properties', () => {
     const name = 'fruits';
@@ -205,18 +235,19 @@ describe('useAutocomplete', () => {
 
     expect(result.current.focusedId).toBe(list[0].ID);
 
-    // TODO: fix Escape keyup logic
-    // act(() => {
-    //   keyEvent('keyup', 'Escape');
-    // });
+    act(() => {
+      keyEvent('keyup', 'Escape');
+    });
 
-    // expect(result.current.focusedId).toBe('');
+    expect(result.current.focused).toBe(false);
 
-    // expect(result.current.search).toBe('');
+    expect(result.current.focusedId).toBe('');
 
-    // expect(result.current.selected).toEqual([]);
+    expect(result.current.search).toBe('');
 
-    // expect(result.current.show).toBe(false);
+    expect(result.current.selected).toEqual([]);
+
+    expect(result.current.show).toBe(false);
   });
 
   it('Calling select updates the selected list when multi', () => {
@@ -271,31 +302,8 @@ describe('useAutocomplete', () => {
     expect(result.current.selected).toEqual([list[0].ID]);
   });
 
-  it('Setting value from root form', () => {
+  it('Sets single value from root form when no multi and single value provided', () => {
     const name = 'fruits';
-
-    const ValueSetter = () => {
-      const {
-        methods: { setFieldValue }
-      } = useFormRoot();
-
-      useMount(() => {
-        setTimeout(() => {
-          setFieldValue({ id: name, value: [list[1]] });
-        });
-      });
-
-      return null;
-    };
-
-    const Wrapper: FC = ({ children }) => {
-      return (
-        <FormRoot dataTest="root">
-          <ValueSetter />
-          {children}
-        </FormRoot>
-      );
-    };
 
     jest.useFakeTimers();
 
@@ -303,6 +311,10 @@ describe('useAutocomplete', () => {
       () =>
         useAutocomplete({ extractId, extractLabel, initialValue: [], list, multi: false, name }),
       {
+        initialProps: {
+          name,
+          value: [list[1]]
+        },
         wrapper: Wrapper
       }
     );
@@ -318,5 +330,139 @@ describe('useAutocomplete', () => {
     });
 
     expect(result.current.selected).toEqual([list[1].ID]);
+  });
+
+  it("Doesn't set a value from root when providing nonexisting option", () => {
+    const name = 'fruits';
+
+    jest.useFakeTimers();
+
+    const { result } = renderHook(
+      () =>
+        useAutocomplete({ extractId, extractLabel, initialValue: [], list, multi: false, name }),
+      {
+        initialProps: {
+          name,
+          value: [{ ID: '3', title: 'Mellon' }]
+        },
+        wrapper: Wrapper
+      }
+    );
+
+    act(() => {
+      result.current.select(list[0].ID);
+    });
+
+    expect(result.current.selected).toEqual([list[0].ID]);
+
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    expect(result.current.selected).toEqual([list[0].ID]);
+  });
+
+  it('Sets the first element from root form when no multi and multiple values provided', () => {
+    const name = 'fruits';
+
+    jest.useFakeTimers();
+
+    const { result } = renderHook(
+      () =>
+        useAutocomplete({ extractId, extractLabel, initialValue: [], list, multi: false, name }),
+      {
+        initialProps: {
+          name,
+          value: list
+        },
+        wrapper: Wrapper
+      }
+    );
+
+    act(() => {
+      result.current.select(list[1].ID);
+    });
+
+    expect(result.current.selected).toEqual([list[1].ID]);
+
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    expect(result.current.selected).toEqual([list[0].ID]);
+  });
+
+  it('Sets multiple values from root form when multi', () => {
+    const name = 'fruits';
+
+    jest.useFakeTimers();
+
+    const { result } = renderHook(
+      () => useAutocomplete({ extractId, extractLabel, initialValue: [], list, multi: true, name }),
+      {
+        initialProps: {
+          name,
+          value: list
+        },
+        wrapper: Wrapper
+      }
+    );
+
+    act(() => {
+      result.current.select(list[0].ID);
+    });
+
+    expect(result.current.selected).toEqual([list[0].ID]);
+
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    expect(result.current.selected).toEqual(list.map((option) => option.ID));
+  });
+
+  it('Sets multiple values from root form when multi and new options with same length', () => {
+    const name = 'fruits';
+
+    const thirdFruit = {
+      ID: '3',
+      title: 'Mellon'
+    };
+
+    const longerList = [...list, thirdFruit];
+
+    jest.useFakeTimers();
+
+    const { result } = renderHook(
+      () =>
+        useAutocomplete({
+          extractId,
+          extractLabel,
+          initialValue: [],
+          list: longerList,
+          multi: true,
+          name
+        }),
+      {
+        initialProps: {
+          name,
+          value: list
+        },
+        wrapper: Wrapper
+      }
+    );
+
+    act(() => {
+      result.current.select(list[1].ID);
+      result.current.select(thirdFruit.ID);
+    });
+
+    expect(result.current.selected).toEqual([list[1].ID, thirdFruit.ID]);
+
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    expect(result.current.selected).toEqual(list.map((option) => option.ID));
   });
 });

@@ -11,6 +11,7 @@ import { AutocompleteProps } from './types';
 import styles from './Autocomplete.scss';
 
 const BaseAutocomplete = <T,>({
+  autocomplete,
   children,
   className,
   dataTest,
@@ -131,7 +132,8 @@ const BaseAutocomplete = <T,>({
           }}
           onFocus={open}
           type="text"
-          value={show ? search : selected.join(', ')}
+          value={show && autocomplete ? search : selected.join(', ')}
+          readOnly={!autocomplete}
           ref={fieldRef as LegacyRef<HTMLInputElement>}
         />
         {show ? (

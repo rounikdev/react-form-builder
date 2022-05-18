@@ -70,13 +70,12 @@ export const useAutocomplete = <T>({
     validator
   });
 
-  const [show, setShow] = useState(false);
-
-  const [search, setSearch] = useState<string>('');
-
-  const [focused, setFocused] = useState<string>('');
-
-  const [selected, setSelected] = useState<string[]>(value.map((option) => extractId(option)));
+  const [state, setState] = useState({
+    focused: '',
+    search: '',
+    selected: value.map((option) => extractId(option)),
+    show: false
+  });
 
   const focusRef = useRef(-1);
 
@@ -84,33 +83,33 @@ export const useAutocomplete = <T>({
 
   const filteredList = useMemo(() => {
     return list.filter((listItem) => {
-      return extractLabel(listItem).toLocaleLowerCase().indexOf(search.toLocaleLowerCase()) >= 0;
+      return extractLabel(listItem).toLowerCase().indexOf(state.search.toLowerCase()) >= 0;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [list, search]);
+  }, [list, state.search]);
 
   const open = useCallback(() => {
-    setShow(true);
-    setSearch('');
+    setState((currentState) => ({ ...currentState, search: '', show: true }));
   }, []);
 
   const close = useCallback(() => {
-    setShow(false);
     focusRef.current = -1;
-    setFocused('');
 
-    if (selected.length) {
-      setSearch(selected.join(', '));
-    }
+    setState((currentState) => ({
+      ...currentState,
+      focused: '',
+      search: state.selected.join(', '),
+      show: false
+    }));
 
     // This is needed to have
     // correct focused state:
     (onBlurHandler as UseAutocompleteReturnType<T>['onBlurHandler'])();
-  }, [onBlurHandler, selected]);
+  }, [onBlurHandler, state.selected]);
 
   const keyUpHandler = useCallback(
     (event) => {
-      if (!show) {
+      if (!state.show) {
         return;
       }
 
@@ -138,39 +137,59 @@ export const useAutocomplete = <T>({
           break;
 
         case 'Escape':
-          setSelected([]);
-          close();
-          break;
+          setState((currentState) => ({
+            ...currentState,
+            focused: '',
+            search: '',
+            selected: [],
+            show: false
+          }));
+
+          return;
       }
 
       if (filteredList[focusRef.current]) {
-        setFocused(extractId(filteredList[focusRef.current]));
+        setState((currentState) => ({
+          ...currentState,
+          focused: extractId(filteredList[focusRef.current])
+        }));
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [filteredList, show]
+    [filteredList, state.show]
   );
 
   const select = useCallback(
     (id: string) => {
-      setSelected((currentSelected) => {
+      setState((currentState) => {
+        let newSelected = currentState.selected;
+
         if (!multi) {
-          return [id];
+          newSelected = [id];
         } else {
-          if (currentSelected.includes(id)) {
-            return currentSelected.filter((item) => item !== id);
+          if (newSelected.includes(id)) {
+            newSelected = newSelected.filter((item) => item !== id);
           } else {
-            return [...currentSelected, id];
+            newSelected = [...newSelected, id];
           }
         }
+
+        return {
+          ...currentState,
+          selected: newSelected
+        };
       });
     },
     [multi]
   );
 
+  const setSearch = useCallback((search: string) => {
+    setState((currentState) => ({ ...currentState, search }));
+  }, []);
+
   useOnOutsideClick({
     callback: () => {
-      if (show) {
+      if (state.show) {
         close();
       }
     },
@@ -185,38 +204,63 @@ export const useAutocomplete = <T>({
   const contextValue: AutocompleteContext = useMemo(() => {
     return {
       close,
-      focused,
+      focused: state.focused,
       multi,
       open,
       inputRef: fieldRef as RefObject<HTMLInputElement>,
-      opened: show,
+      opened: state.show,
       select,
-      selected
+      selected: state.selected
     };
-  }, [close, fieldRef, focused, multi, open, select, selected, show]);
+  }, [close, fieldRef, multi, open, select, state.focused, state.selected, state.show]);
 
   useUpdateOnly(() => {
     onChangeHandler(
       list.filter((option) => {
-        return selected.includes(extractId(option));
+        return state.selected.includes(extractId(option));
       })
     );
-  }, [selected]);
+  }, [state.selected]);
 
   // Update from value from useField:
   useUpdateOnly(() => {
-    setSelected((currentSelected) => {
-      if (value.length !== currentSelected.length) {
-        return value.map((option) => extractId(option));
-      } else {
-        const dif = value.filter((item) => !currentSelected.includes(extractId(item)));
+    if (
+      value.find(
+        (incomingOption) => !list.find((option) => extractId(option) === extractId(incomingOption))
+      )
+    ) {
+      // if there is an incoming option that
+      // doesn't exist in the options list:
+      return;
+    }
 
-        if (dif.length) {
-          return value.map((option) => extractId(option));
+    setState((currentState) => {
+      let newSelected = currentState.selected;
+
+      if (!multi) {
+        if (newSelected[0] !== extractId(value[0])) {
+          newSelected = [extractId(value[0])];
         } else {
-          return currentSelected;
+          newSelected = newSelected;
+        }
+      } else {
+        if (value.length !== newSelected.length) {
+          newSelected = value.map((option) => extractId(option));
+        } else {
+          const dif = value.filter((item) => !newSelected.includes(extractId(item)));
+
+          if (dif.length) {
+            newSelected = value.map((option) => extractId(option));
+          } else {
+            newSelected = newSelected;
+          }
         }
       }
+
+      return {
+        ...currentState,
+        selected: newSelected
+      };
     });
   }, [value]);
 
@@ -227,17 +271,17 @@ export const useAutocomplete = <T>({
     fieldRef,
     filteredList,
     focused: isFocused,
-    focusedId: focused,
+    focusedId: state.focused,
     isEdit,
     onBlurHandler: onBlurHandler as UseAutocompleteReturnType<T>['onBlurHandler'],
     onFocusHandler,
     open,
     Provider: Context.Provider,
-    search,
+    search: state.search,
     select,
-    selected,
+    selected: state.selected,
     setSearch,
-    show,
+    show: state.show,
     touched,
     valid,
     validating,
