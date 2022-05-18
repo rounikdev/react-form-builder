@@ -1,4 +1,4 @@
-import { ReactNode, TransitionEventHandler } from 'react';
+import { CSSProperties, MutableRefObject, ReactNode, TransitionEventHandler } from 'react';
 
 import { Stylable } from '../../../types';
 
@@ -9,6 +9,8 @@ export interface HeightTransitionBoxProps extends Stylable {
   isRoot?: boolean;
   memoizeChildren?: boolean;
   onTransitionEnd?: TransitionEventHandler | null;
+  ref?: MutableRefObject<HTMLDivElement | null>;
+  style?: CSSProperties;
   transitionDuration?: number;
   transitionType?: string;
 }
