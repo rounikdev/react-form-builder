@@ -1,4 +1,5 @@
 import { FC, memo, MouseEventHandler } from 'react';
+
 import { useClass } from '@rounik/react-custom-hooks';
 
 import { Stylable, Testable } from '../../types';

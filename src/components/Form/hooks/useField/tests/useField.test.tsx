@@ -25,7 +25,7 @@ interface TestInputProps<T> {
   validator?: Validator<T>;
 }
 
-const BigIntTestInput: FC<TestInputProps<BigInt>> = ({
+const BigIntTestInput: FC<TestInputProps<bigint>> = ({
   dataTestInput = 'input',
   dependencyExtractor,
   formatter,
@@ -36,7 +36,7 @@ const BigIntTestInput: FC<TestInputProps<BigInt>> = ({
   sideEffect,
   validator
 }) => {
-  const { fieldRef, ...state } = useField<BigInt>({
+  const { fieldRef, ...state } = useField<bigint>({
     dependencyExtractor,
     formatter,
     initialValue: initialValue || BigInt(0),
