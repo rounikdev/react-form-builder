@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
-import { Stylable, Testable } from '@root/types';
-import { Field, TranslationSubstitute } from '@components';
+import { Field, TranslationSubstitute } from '../../../../components';
+import { Stylable, Testable } from '../../../../types';
 
 export interface AutocompleteProps<T> extends Omit<Field<T[]>, 'onBlur'> {
   autocomplete?: boolean;
