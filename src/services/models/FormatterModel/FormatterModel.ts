@@ -1,4 +1,6 @@
-import { Formatter, OldNewValue } from '../../../components';
+import { Formatter, OldNewValue, Pattern } from '../../../components';
+
+import { GlobalModel } from '../GlobalModel/GlobalModel';
 
 export class FormatterModel {
   static composeFormatters = <T>(...formatters: (Formatter<T> | undefined)[]): Formatter<T> => {
@@ -36,8 +38,8 @@ export class FormatterModel {
 
   static formatIntegerString = ({ rawValue = '', allowNegative = false }): string => {
     let newValue = allowNegative
-      ? FormatterModel.removeNonDigitFromNegativeString(rawValue)
-      : FormatterModel.removeNonDigitFromString(rawValue);
+      ? GlobalModel.removeNonDigitFromNegativeString(rawValue)
+      : GlobalModel.removeNonDigitFromString(rawValue);
 
     if (allowNegative && newValue.length > 2 && newValue[0] === '-' && newValue[1] === '0') {
       newValue = newValue.slice(0, 1) + newValue.slice(2);
@@ -91,11 +93,6 @@ export class FormatterModel {
   static removeFirstCharZeroFormatter: Formatter<string> = ({ newValue }) =>
     newValue[0] === '0' ? newValue.substring(1) : newValue;
 
-  static removeNonDigitFromNegativeString = (rawValue: string): string =>
-    rawValue.replace(/(?!^)\-|[^-\d]+/, '');
-
-  static removeNonDigitFromString = (rawValue: string): string => rawValue.replace(/\D/g, '');
-
   static stringToAmountFormatter = ({ newValue: rawValue = '', allowNegative = false }): string => {
     let newValue = rawValue;
     const indexOfFirstDot = rawValue.indexOf('.');
@@ -107,7 +104,7 @@ export class FormatterModel {
       integerString = allowNegative
         ? FormatterModel.formatIntegerString({ rawValue: integerString, allowNegative: true })
         : FormatterModel.formatIntegerString({ rawValue: integerString });
-      decimalString = FormatterModel.removeNonDigitFromString(decimalString);
+      decimalString = GlobalModel.removeNonDigitFromString(decimalString);
       decimalString = decimalString.substring(0, 2);
 
       if (integerString && !decimalString) {
@@ -145,4 +142,34 @@ export class FormatterModel {
   static zerosAndIntegerFormatter: Formatter<string> = ({ newValue }) => {
     return newValue?.replace(/\D/g, '');
   };
+
+  /* START Mast Formatters */
+
+  static creditCardPattern: Pattern = '****  ****  ****  ****';
+
+  static monthYearPattern: Pattern = 'mm / yy';
+
+  static creditCardFormatter: Formatter<string> = ({
+    newValue,
+    oldValue = ''
+  }: OldNewValue<string>) =>
+    GlobalModel.valueSplitter({
+      goForward: newValue?.length > oldValue?.length,
+      pattern: FormatterModel.creditCardPattern,
+      patternDelimiter: '  ',
+      value: GlobalModel.removeNonDigitFromString(newValue)
+    });
+
+  static monthYearFormatter: Formatter<string> = ({
+    newValue,
+    oldValue = ''
+  }: OldNewValue<string>) =>
+    GlobalModel.valueSplitter({
+      goForward: newValue?.length > oldValue?.length,
+      pattern: FormatterModel.monthYearPattern,
+      patternDelimiter: ' / ',
+      value: GlobalModel.removeNonDigitFromString(newValue)
+    });
+
+  /* END Mast Formatters */
 }

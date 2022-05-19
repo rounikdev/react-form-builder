@@ -1,6 +1,6 @@
 import { FormStateEntryValue, Validator, ValidityCheck } from '../../../components';
 
-import { InputModel } from '../InputModel';
+import { FormatterModel } from '../FormatterModel';
 
 export class ValidatorModel {
   static createMaxLengthValidator = (max: number, message: string): Validator<string> => {
@@ -217,7 +217,7 @@ export class ValidatorModel {
   static creditCardValidator: Validator<string> = (value) => {
     let validityCheck: ValidityCheck;
 
-    const pattern = InputModel.creditCardPattern;
+    const pattern = FormatterModel.creditCardPattern;
 
     if (value.length === 0 || value.length === pattern.length) {
       validityCheck = {

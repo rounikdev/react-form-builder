@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { InputModel, ValidatorModel } from '@services';
+import { FormatterModel, ValidatorModel } from '@services';
 import { Text as TextInput } from '@ui';
 
 export default {
@@ -19,11 +19,11 @@ export const CreditCardMask = Template.bind({});
 CreditCardMask.args = {
   dataTest: 'credit-card',
   disabled: false,
-  formatter: InputModel.creditCardFormatter,
+  formatter: FormatterModel.creditCardFormatter,
   id: 'creditCard',
   label: 'Credit Card',
   name: 'creditCard',
-  pattern: InputModel.creditCardPattern,
+  pattern: FormatterModel.creditCardPattern,
   required: true,
   validator: ValidatorModel.composeValidators(
     ValidatorModel.requiredValidator,
