@@ -1,3 +1,5 @@
+import { testRender } from '../../../utils';
+
 import { GlobalModel } from '../GlobalModel';
 
 describe('GlobalModel', () => {
@@ -154,5 +156,22 @@ describe('GlobalModel', () => {
     tests.forEach(({ expected, item, path }) => {
       expect(GlobalModel.getNestedValue(item, path)).toEqual(expected);
     });
+  });
+
+  it('clearRAFTimeout', () => {
+    jest.useFakeTimers();
+    const mockCallback = jest.fn();
+
+    const rafIdInfo = GlobalModel.setRAFTimeout(mockCallback, 200);
+
+    GlobalModel.clearRAFTimeout(rafIdInfo);
+
+    jest.runAllTimers();
+
+    expect(mockCallback).not.toBeCalled();
+  });
+
+  it('debounceRAF', () => {
+    const {} = testRender(<input data-test="test-input" />);
   });
 });
