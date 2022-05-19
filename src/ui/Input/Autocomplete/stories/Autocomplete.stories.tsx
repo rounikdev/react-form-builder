@@ -1,10 +1,12 @@
 import { ComponentMeta, Story } from '@storybook/react';
 
-import { FormRoot, ValidityCheck } from '@components';
+import { FormRoot } from '@components';
 
 import { Autocomplete } from '../Autocomplete';
 import { Option } from '../components';
 import { AutocompleteProps } from '../types';
+
+import { Fruit, fruitsValidator, options } from './data';
 
 import styles from './Autocomplete.stories.scss';
 
@@ -12,11 +14,6 @@ export default {
   title: 'Components/Autocomplete',
   component: Autocomplete
 } as ComponentMeta<typeof Autocomplete>;
-
-interface Fruit {
-  id: string;
-  label: string;
-}
 
 const Template =
   <T,>(): Story<AutocompleteProps<T>> =>
@@ -26,40 +23,6 @@ const Template =
         <Autocomplete {...args} />
       </FormRoot>
     );
-
-const fruitsValidator = (value: Fruit[]): ValidityCheck => {
-  let validityCheck: ValidityCheck = {
-    errors: [],
-    valid: true
-  };
-
-  if (value.length < 2) {
-    validityCheck = {
-      errors: [{ text: 'Select at least 2 fruits' }],
-      valid: false
-    };
-  }
-
-  return validityCheck;
-};
-
-const options: Fruit[] = [
-  {
-    id: 'apples',
-    label: 'apples'
-  },
-  {
-    id: 'bananas',
-    label: 'bananas'
-  },
-  {
-    id: 'strawberries',
-    label: 'strawberries'
-  },
-  { id: 'pears', label: 'pears' },
-  { id: 'blackberries', label: 'blackberries' },
-  { id: 'mellon', label: 'mellon' }
-];
 
 export const Basic = Template<Fruit>().bind({});
 

@@ -24,7 +24,7 @@ const BaseAutocomplete = <T,>({
   initialValue,
   label,
   list,
-  multi = false,
+  multi,
   name,
   onBlur,
   onFocus,
@@ -94,14 +94,18 @@ const BaseAutocomplete = <T,>({
         onFocus={onFocusHandler}
       >
         {multi ? (
-          <ul className={styles.MultiOptionList}>
+          <ul className={styles.MultiOptionList} data-test={`${dataTest}-chips-list`}>
             {selected
               .map((optionId) => {
                 return list.find((item) => extractId(item) === optionId);
               })
               .map((option) => {
                 return option ? (
-                  <li className={styles.MultiOption} key={extractId(option)}>
+                  <li
+                    className={styles.MultiOption}
+                    data-test={`${dataTest}-chip-list-item-${extractId(option)}`}
+                    key={extractId(option)}
+                  >
                     {extractLabel(option)}{' '}
                     <button
                       className={styles.RemoveMultiOption}
@@ -117,7 +121,7 @@ const BaseAutocomplete = <T,>({
               })}
           </ul>
         ) : null}
-        <label id={`${id}-label`} htmlFor={`${id}-textbox`}>
+        <label data-test={`${dataTest}-label`} id={`${id}-label`} htmlFor={`${id}-textbox`}>
           {label}
         </label>
         <input
@@ -125,6 +129,7 @@ const BaseAutocomplete = <T,>({
           {...(focusedId ? { 'aria-activedescendant': `${focusedId}-option` } : {})}
           {...(show ? { 'aria-controls': `${id}-listbox` } : {})}
           className={useClass([styles.Input, isError && styles.Error], [isError])}
+          data-test={`${dataTest}-input`}
           disabled={disabled}
           id={`${id}-textbox`}
           onChange={(event) => {

@@ -33,6 +33,31 @@ const initialContext: AutocompleteContext = {
 
 const Context = createContext(initialContext);
 
+interface GetInitialValueArgs<T> {
+  extractId: (item: T) => string;
+  multi?: boolean;
+  options: T[];
+  value: T[];
+}
+const getInitialValue = <T>({ extractId, multi, options, value }: GetInitialValueArgs<T>): T[] => {
+  const hasNonExistingOption = value.find(
+    (incomingOption) => !options.find((option) => extractId(option) === extractId(incomingOption))
+  );
+
+  let initialValue = value;
+
+  if (hasNonExistingOption) {
+    initialValue = value.filter(
+      (incomingOption) =>
+        !!options.find((option) => extractId(option) === extractId(incomingOption))
+    );
+  }
+
+  return multi ? initialValue : initialValue.length ? [initialValue[0]] : [];
+};
+
+// TODO: Filter the value for non existing options on options change
+
 export const useAutocomplete = <T>({
   dependencyExtractor,
   extractId,
@@ -62,7 +87,7 @@ export const useAutocomplete = <T>({
   } = useField<T[]>({
     dependencyExtractor,
     formatter,
-    initialValue: multi ? initialValue : initialValue.length ? [initialValue[0]] : [],
+    initialValue: getInitialValue({ extractId, multi, options: list, value: initialValue }),
     name,
     onBlur,
     onFocus,
