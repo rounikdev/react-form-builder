@@ -1,4 +1,5 @@
 import { FC, memo, useMemo } from 'react';
+
 import { useClass } from '@rounik/react-custom-hooks';
 
 import styles from './Mask.scss';

@@ -1,5 +1,6 @@
 import { FC, memo } from 'react';
 import ReactDOM from 'react-dom';
+
 import { useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { useModal } from './context';

@@ -1,6 +1,8 @@
 {
+  "all": true,
   "exclude": [
-    "**/*.spec.js",
+    "**/*.spec.*",
+    "**/*.test.*",
     "**/stories/**"
   ],
   "include": "src",

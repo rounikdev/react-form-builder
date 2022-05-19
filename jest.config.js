@@ -16,9 +16,9 @@ module.exports = {
   coverageThreshold: {
     global: {
       branches: 70,
-      functions: 75,
-      lines: 75,
-      statements: 75
+      functions: 70,
+      lines: 70,
+      statements: 70
     }
   },
   coverageReporters: ['clover', 'cobertura', 'json', 'json-summary', 'lcov', 'text'],

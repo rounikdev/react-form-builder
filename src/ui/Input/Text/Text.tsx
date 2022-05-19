@@ -1,4 +1,5 @@
 import { FC, memo, MutableRefObject, useMemo } from 'react';
+
 import { useClass } from '@rounik/react-custom-hooks';
 
 import { useTextInput, useTranslation } from '@components';
