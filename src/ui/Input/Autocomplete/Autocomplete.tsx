@@ -141,7 +141,7 @@ const BaseAutocomplete = <T,>({
         <List
           dataTest={dataTest}
           id={id}
-          list={filteredList}
+          list={show ? filteredList : []}
           multi={multi}
           renderOption={renderOption}
           rowsToDisplay={rowsToDisplay}
