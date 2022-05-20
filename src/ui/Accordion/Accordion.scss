@@ -1,0 +1,27 @@
+.Container {
+  display: inline-block;
+  width: 100%;
+  transition: all var(--transition-fast) ease-in-out var(--transition-faster);
+
+  &.Opened {
+    margin: var(--offset-small) 0;
+  }
+}
+
+.Header {
+  display: inline-block;
+  width: 100%;
+}
+
+.Content {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  overflow: hidden;
+  transition: height var(--transition-normal) ease-in-out;
+}
+
+.Hidden {
+  position: absolute;
+  width: 100%;
+}
