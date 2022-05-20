@@ -52,7 +52,8 @@
     "last 2 versions"
   ],
   "dependencies": {
-    "@rounik/react-custom-hooks": "0.1.5"
+    "@rounik/react-custom-hooks": "0.1.5",
+    "react-scroll-component": "^0.6.7"
   },
   "devDependencies": {
     "@babel/core": "7.17.12",

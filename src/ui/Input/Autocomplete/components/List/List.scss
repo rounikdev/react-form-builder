@@ -1,0 +1,26 @@
+.List {
+  display: inline-block;
+  margin: 0;
+  margin-top: 0.4rem;
+  padding: 0;
+  width: 100%;
+  background-color: transparent;
+  border-radius: 0.4rem;
+  overflow-y: hidden;
+  transition: height 500ms ease-out;
+}
+
+.Scroller {
+  right: 0.1rem;
+  z-index: 1;
+  width: 0.4rem;
+  background-color: rgba(rgb(235, 126, 53), 0.8);
+  border-radius: 0.4rem;
+  opacity: 1;
+}
+
+.ScrollerContainer {
+  width: 100% !important;
+  border-bottom-left-radius: 0.4rem;
+  border-bottom-right-radius: 0.4rem;
+}
