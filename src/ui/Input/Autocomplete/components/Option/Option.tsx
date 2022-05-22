@@ -1,6 +1,6 @@
 import { forwardRef, Fragment, memo, RefObject, useCallback, useMemo } from 'react';
 
-import { useClass, useUpdate } from '@rounik/react-custom-hooks';
+import { useClass, useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { useComboBox, useTranslation } from '@components';
 
@@ -30,7 +30,7 @@ export const Option = memo(
       return selected.includes(id);
     }, [selected, id]);
 
-    useUpdate(() => {
+    useUpdateOnly(() => {
       if (opened && id === focused) {
         (ref as RefObject<HTMLLIElement>).current?.focus();
       }
