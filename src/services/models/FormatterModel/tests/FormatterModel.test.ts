@@ -1,3 +1,4 @@
+import { GlobalModel } from '@root/../dist';
 import { FormatterModel } from '../FormatterModel';
 
 describe('FormatterModel', () => {
@@ -199,7 +200,7 @@ describe('FormatterModel', () => {
 
     tests.forEach((item) =>
       // only number digits or empty string
-      expect(FormatterModel.removeNonDigitFromString(item.input)).toBe(item.expect)
+      expect(GlobalModel.removeNonDigitFromString(item.input)).toBe(item.expect)
     );
   });
 

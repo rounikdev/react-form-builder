@@ -1,3 +1,7 @@
+import { FC, useMemo, useState } from 'react';
+import { waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
 import { testRender } from '../../../utils';
 
 import { GlobalModel } from '../GlobalModel';
@@ -171,7 +175,90 @@ describe('GlobalModel', () => {
     expect(mockCallback).not.toBeCalled();
   });
 
-  it('debounceRAF', () => {
-    const {} = testRender(<input data-test="test-input" />);
+  describe('debounceRAF', () => {
+    const TestCmp: FC<{ onChange?: (value: string) => void }> = ({ onChange }) => {
+      jest.useFakeTimers();
+      const [value, setValue] = useState('');
+
+      const debouncedOnChange = useMemo(
+        () =>
+          GlobalModel.debounceRAF(
+            onChange
+              ? (value) => {
+                  onChange && onChange(value);
+                  setValue(value);
+                }
+              : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (null as any),
+            200
+          ),
+        [onChange]
+      );
+
+      return (
+        <input
+          data-test="test-input"
+          onChange={(e) => debouncedOnChange(e.target.value)}
+          value={value}
+        />
+      );
+    };
+
+    it('Called with callback', async () => {
+      const mockCallback = jest.fn();
+
+      const { getByDataTest } = testRender(<TestCmp onChange={mockCallback} />);
+
+      userEvent.type(getByDataTest('test-input'), 'a');
+      userEvent.type(getByDataTest('test-input'), 'b');
+
+      await waitFor(() => {
+        expect(getByDataTest('test-input')).toHaveValue('b');
+      });
+
+      await waitFor(() => {
+        expect(mockCallback).toHaveBeenCalledWith('b');
+      });
+    });
+
+    it('Called with no callback', async () => {
+      const { getByDataTest } = testRender(<TestCmp />);
+
+      userEvent.type(getByDataTest('test-input'), 'a');
+      userEvent.type(getByDataTest('test-input'), 'b');
+
+      await waitFor(() => {
+        expect(getByDataTest('test-input')).toHaveValue('');
+      });
+    });
   });
+
+  describe('setRAFTimeout', () => {
+    it('Called with callback', () => {
+      jest.useFakeTimers();
+      const mockCallback = jest.fn();
+
+      GlobalModel.setRAFTimeout(mockCallback, 200);
+
+      jest.runAllTimers();
+
+      expect(mockCallback).toBeCalled();
+    });
+
+    it('Called with no callback', () => {
+      jest.useFakeTimers();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const mockCallback = null as unknown as jest.Mock;
+
+      GlobalModel.setRAFTimeout(mockCallback, 200);
+
+      jest.runAllTimers();
+
+      try {
+        expect(mockCallback).not.toBeCalled();
+      } catch (error) {}
+    });
+  });
+
+  it('valueSplitter', () => {});
 });
