@@ -1,6 +1,6 @@
-import { FC, memo } from 'react';
+import { FC, memo, useRef } from 'react';
 
-import { useClass } from '@rounik/react-custom-hooks';
+import { useClass, useUpdate } from '@rounik/react-custom-hooks';
 
 import { useAccordion } from './hooks';
 import { AccordionProps } from './types';
@@ -12,17 +12,17 @@ export const Accordion: FC<AccordionProps> = memo(
     children,
     className,
     dataTest,
-    disabled = false,
+    disabled,
+    excludeFromGroup,
     id,
-    keepMounted = false,
-    keepOpened = false,
-    opened = false,
+    keepMounted,
+    opened,
     renderHeader
   }) => {
     const {
       close,
       content,
-      contentElement,
+      contentWrapperRef,
       height,
       hiddenContent,
       isOpen,
@@ -31,16 +31,16 @@ export const Accordion: FC<AccordionProps> = memo(
     } = useAccordion({
       children,
       disabled,
+      excludeFromGroup,
       id,
       keepMounted,
-      keepOpened,
       opened
     });
 
     let element = null;
 
     if (keepMounted) {
-      element = <div ref={hiddenContent}>{contentElement}</div>;
+      element = <div ref={hiddenContent}>{content}</div>;
     } else {
       if (isOpen && height === 0) {
         element = (
@@ -49,7 +49,7 @@ export const Accordion: FC<AccordionProps> = memo(
           </div>
         );
       } else {
-        element = <div key="cache">{contentElement}</div>;
+        element = <div key="cache">{content}</div>;
       }
     }
 
@@ -67,7 +67,7 @@ export const Accordion: FC<AccordionProps> = memo(
           className={styles.Content}
           id={`${id}-content`}
           onTransitionEnd={onTransitionEndHandler}
-          ref={content}
+          ref={contentWrapperRef}
           role="region"
           style={{ height }}
         >

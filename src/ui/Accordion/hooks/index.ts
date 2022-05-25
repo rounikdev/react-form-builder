@@ -9,107 +9,101 @@ export const useAccordionGroup = () => useContext<AccordionContext>(accordionCon
 
 export const useAccordion = ({
   children,
-  disabled = false,
+  disabled,
+  excludeFromGroup,
   id,
-  keepMounted = false,
-  keepOpened = false,
-  opened = false
+  keepMounted,
+  opened
 }: UseAccordionArgs) => {
-  const { addAccordion, closeInAccordionGroup, openInAccordionGroup, removeAccordion } =
-    useAccordionGroup();
+  const { closeInGroup, openedControlledAccordions, openInGroup } = useAccordionGroup();
 
-  const [contentElement, setContentElement] = useState<ReactNode>(keepMounted ? children : null);
+  const [content, setContent] = useState<ReactNode>(keepMounted ? children : null);
 
   const [height, setHeight] = useState<string | number>(0);
 
-  const [isOpen, setIsOpen] = useState(opened && !disabled);
+  const [isOpen, setIsOpen] = useState(opened);
 
-  const content = useRef<HTMLDivElement>(null);
+  const contentWrapperRef = useRef<HTMLDivElement>(null);
 
   const hiddenContent = useRef<HTMLDivElement>(null);
 
-  const isTransitioning = useRef(false);
-
   const close = useCallback(() => {
-    if (!isTransitioning.current) {
-      setHeight(content.current?.offsetHeight || 0);
-
-      closeInAccordionGroup(id);
-
-      isTransitioning.current = true;
-
-      requestAnimationFrame(() => {
-        setIsOpen(false);
-      });
+    if (disabled) {
+      return;
     }
-  }, [closeInAccordionGroup, id]);
+
+    setHeight(contentWrapperRef.current?.offsetHeight || 0);
+
+    if (!excludeFromGroup) {
+      closeInGroup(id);
+    }
+
+    requestAnimationFrame(() => {
+      setIsOpen(false);
+    });
+  }, [closeInGroup, disabled, excludeFromGroup, id]);
 
   const open = useCallback(() => {
-    if (!isTransitioning.current && !disabled) {
-      setHeight(0);
-
-      openInAccordionGroup({ id, keepOpened });
-
-      isTransitioning.current = true;
-
-      requestAnimationFrame(() => {
-        setIsOpen(true);
-      });
+    if (disabled) {
+      return;
     }
-  }, [disabled, id, keepOpened, openInAccordionGroup]);
+
+    setHeight(0);
+
+    if (!excludeFromGroup) {
+      openInGroup(id);
+    }
+
+    requestAnimationFrame(() => {
+      setIsOpen(true);
+    });
+  }, [excludeFromGroup, disabled, id, openInGroup]);
 
   const onTransitionEndHandler = useCallback(() => {
     if (!isOpen && !keepMounted) {
-      setContentElement(null);
+      setContent(null);
     }
 
     if (isOpen) {
+      // This prevents some content to be cut-off:
       setHeight('auto');
     }
-
-    isTransitioning.current = false;
   }, [isOpen, keepMounted]);
 
   useMount(() => {
-    addAccordion({ close, id, open });
-
-    isOpen && openInAccordionGroup({ id, keepOpened });
+    isOpen && openInGroup(id);
   });
 
   useUnmount(() => {
-    removeAccordion(id);
-
-    closeInAccordionGroup(id);
+    closeInGroup(id);
   });
 
   useUpdate(() => {
     if (isOpen) {
-      setContentElement(children);
+      setContent(children);
     } else {
       setHeight(0);
     }
   }, [children, isOpen]);
 
   useUpdateOnly(() => {
-    if (opened && !isOpen) {
-      open();
-    } else if (!opened && isOpen) {
-      close();
+    if (!excludeFromGroup) {
+      if (!openedControlledAccordions.includes(id) && isOpen) {
+        close();
+      }
     }
-  }, [close, isOpen, open, opened]);
+  }, [excludeFromGroup, openedControlledAccordions]);
 
   useLayoutEffect(() => {
-    const newHeight = height;
-
     if (isOpen && height === 0 && hiddenContent.current) {
-      setHeight(hiddenContent.current.offsetHeight || newHeight);
+      setHeight(hiddenContent.current.offsetHeight || height);
     }
   }, [isOpen, height]);
 
   return {
     close,
     content,
-    contentElement,
+    contentWrapperRef,
     height,
     hiddenContent,
     isOpen,

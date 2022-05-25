@@ -3,16 +3,11 @@ import { createContext } from 'react';
 import { AccordionContext } from '../types';
 
 export const accordionContext = createContext<AccordionContext>({
-  addAccordion: () => {
+  closeInGroup: () => {
     // default implementation
   },
-  closeInAccordionGroup: () => {
-    // default implementation
-  },
-  openInAccordionGroup: () => {
-    // default implementation
-  },
-  removeAccordion: () => {
+  openedControlledAccordions: [],
+  openInGroup: () => {
     // default implementation
   }
 });

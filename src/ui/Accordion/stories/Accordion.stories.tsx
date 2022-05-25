@@ -1,4 +1,4 @@
-import { FC, StrictMode } from 'react';
+import { FC, StrictMode, useState } from 'react';
 import { Story, Meta } from '@storybook/react';
 
 import { useMount, useUnmount } from '@rounik/react-custom-hooks';
@@ -25,7 +25,7 @@ const Content: FC<{ id: string }> = ({ id }) => {
   });
 
   return (
-    <>
+    <div data-test={`${id}-component`}>
       <Image
         alt="cat"
         className={styles.Image}
@@ -46,7 +46,7 @@ const Content: FC<{ id: string }> = ({ id }) => {
         consectetur adipisicing elit. Sit obcaecati magni sapiente consequatur adipisci doloremque,
         quod numquam iure assumenda quia.
       </p>
-    </>
+    </div>
   );
 };
 
@@ -58,6 +58,7 @@ const renderHeader =
         <button
           aria-controls={`${id}-content`}
           aria-expanded={isOpen}
+          data-test={`${id}-header`}
           disabled={disabled}
           className={styles.HeaderButton}
           id={`${id}-header`}
@@ -75,9 +76,18 @@ const renderHeader =
   };
 
 const Template: Story<FC> = () => {
+  const [mountBears, setMountBears] = useState(true);
   return (
     <StrictMode>
       <div className={styles.Container}>
+        <button
+          data-test="unmount-bears"
+          onClick={() => {
+            setMountBears(false);
+          }}
+        >
+          Unmount bears
+        </button>
         <AccordionGroup maxOpened={1}>
           <Accordion
             dataTest="cats"
@@ -91,18 +101,28 @@ const Template: Story<FC> = () => {
           <Accordion dataTest="dogs" id="dogs" keepMounted renderHeader={renderHeader('Dogs')}>
             <Content id="dogs-content" />
           </Accordion>
-          <Accordion dataTest="bears" disabled id="bears" renderHeader={renderHeader('Bears')}>
-            <Content id="bears-content" />
-          </Accordion>
+          {mountBears ? (
+            <Accordion dataTest="bears" disabled id="bears" renderHeader={renderHeader('Bears')}>
+              <Content id="bears-content" />
+            </Accordion>
+          ) : null}
           <Accordion
             dataTest="dolphins"
+            excludeFromGroup
             id="dolphins"
-            keepOpened
             renderHeader={renderHeader('Dolphins')}
           >
             <Content id="dolphins-content" />
           </Accordion>
         </AccordionGroup>
+        <Accordion
+          dataTest="elephants"
+          id="elephants"
+          keepMounted
+          renderHeader={renderHeader('Elephants - outside of a group')}
+        >
+          <Content id="elephants-content" />
+        </Accordion>
       </div>
     </StrictMode>
   );

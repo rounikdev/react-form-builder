@@ -1,4 +1,6 @@
-import { CSSProperties, FC, HTMLProps, memo, useCallback, useState } from 'react';
+import { CSSProperties, FC, memo, useCallback, useState } from 'react';
+
+import { Stylable } from '../../types';
 
 const getImageStyle = (naturalHeight: number, naturalWidth: number): CSSProperties => {
   let dimension = 'width';
@@ -12,49 +14,24 @@ const getImageStyle = (naturalHeight: number, naturalWidth: number): CSSProperti
   };
 };
 
-type ImageProps = HTMLProps<HTMLImageElement>;
+interface ImageProps extends Stylable {
+  alt: string;
+  src: string;
+}
 
 export const Image: FC<ImageProps> = memo(({ alt, className, src }) => {
-  const [status, setStatus] = useState({
-    error: false,
-    loaded: false,
-    loading: true,
-    naturalHeight: null,
-    naturalWidth: null,
+  const [state, setState] = useState({
     style: { width: '100%' } as CSSProperties
   });
 
-  const onErrorHandler = useCallback(() => {
-    setStatus((currentStatus) => {
-      return {
-        ...currentStatus,
-        error: true,
-        loaded: false,
-        loading: false
-      };
-    });
-  }, []);
-
   const onLoadHandler = useCallback(({ target: { naturalHeight, naturalWidth } }) => {
-    setStatus({
-      error: false,
-      loaded: true,
-      loading: false,
-      naturalHeight,
-      naturalWidth,
+    setState({
       style: getImageStyle(naturalHeight, naturalWidth)
     });
   }, []);
 
   return src ? (
-    <img
-      alt={alt}
-      className={className}
-      onError={onErrorHandler}
-      onLoad={onLoadHandler}
-      src={src}
-      style={status.style}
-    />
+    <img alt={alt} className={className} onLoad={onLoadHandler} src={src} style={state.style} />
   ) : null;
 });
 

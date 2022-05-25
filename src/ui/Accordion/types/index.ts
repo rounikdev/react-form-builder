@@ -2,38 +2,26 @@ import { ReactNode } from 'react';
 
 import { Stylable, Testable } from '../../../types';
 
-export interface AddAccordionArgs {
-  close: () => void;
-  id: string;
-  open: () => void;
-}
-
-export interface OpenInAccordionGroupArgs {
-  id: string;
-  keepOpened: boolean;
-}
-
 export interface AccordionContext {
-  addAccordion: (params: AddAccordionArgs) => void;
-  closeInAccordionGroup: (id: string) => void;
-  openInAccordionGroup: (params: OpenInAccordionGroupArgs) => void;
-  removeAccordion: (id: string) => void;
+  closeInGroup: (id: string) => void;
+  openedControlledAccordions: string[];
+  openInGroup: (id: string) => void;
 }
 
 export interface RenderHeaderArgs {
   close: () => void;
-  disabled: boolean;
+  disabled?: boolean;
   id: string;
-  isOpen: boolean;
+  isOpen?: boolean;
   open: () => void;
 }
 
 export interface UseAccordionArgs {
   children: ReactNode;
   disabled?: boolean;
+  excludeFromGroup?: boolean;
   id: string;
   keepMounted?: boolean;
-  keepOpened?: boolean;
   opened?: boolean;
 }
 
@@ -45,15 +33,3 @@ export interface AccordionGroupProps {
   children: ReactNode;
   maxOpened: number;
 }
-
-export interface OpenedAccordion {
-  id: string;
-  keepOpened: boolean;
-}
-
-export type AccordionControls = {
-  [key: string]: {
-    close(): void;
-    open(): void;
-  };
-};
