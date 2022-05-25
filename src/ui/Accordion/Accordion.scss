@@ -19,6 +19,10 @@
   width: 100%;
   overflow: hidden;
   transition: height var(--transition-normal) ease-in-out;
+
+  &.Open {
+    overflow: initial;
+  }
 }
 
 .Hidden {

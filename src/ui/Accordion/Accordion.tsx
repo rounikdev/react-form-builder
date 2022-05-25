@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import { FC, memo, useCallback, useState } from 'react';
 
 import { useClass } from '@rounik/react-custom-hooks';
 
@@ -37,6 +37,8 @@ export const Accordion: FC<AccordionProps> = memo(
       opened
     });
 
+    const [overflow, setOverflow] = useState(opened);
+
     let element = null;
 
     if (keepMounted) {
@@ -64,9 +66,20 @@ export const Accordion: FC<AccordionProps> = memo(
         <div className={styles.Header}>{renderHeader({ close, disabled, id, isOpen, open })}</div>
         <div
           aria-labelledby={`${id}-header`}
-          className={styles.Content}
+          className={useClass(
+            [styles.Content, isOpen && overflow && styles.Open],
+            [isOpen, overflow]
+          )}
           id={`${id}-content`}
-          onTransitionEnd={onTransitionEndHandler}
+          onTransitionEnd={useCallback(() => {
+            onTransitionEndHandler();
+
+            if (isOpen) {
+              setOverflow(true);
+            } else {
+              setOverflow(false);
+            }
+          }, [isOpen, onTransitionEndHandler])}
           ref={contentWrapperRef}
           role="region"
           style={{ height }}
