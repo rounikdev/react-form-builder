@@ -1,6 +1,6 @@
-import { FC, memo, useRef } from 'react';
+import { FC, memo } from 'react';
 
-import { useClass, useUpdate } from '@rounik/react-custom-hooks';
+import { useClass } from '@rounik/react-custom-hooks';
 
 import { useAccordion } from './hooks';
 import { AccordionProps } from './types';
