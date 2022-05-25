@@ -28,11 +28,6 @@ export const Basic = Template<Fruit>().bind({});
 
 Basic.args = {
   autocomplete: true,
-  children: ({ options }) => {
-    return options.map((option) => (
-      <Option dataTest={option.id} id={option.id} key={option.id} text={option.label} />
-    ));
-  },
   className: styles.Autocomplete,
   dataTest: 'test-autocomplete',
   extractId: (item) => item?.id ?? '',
@@ -43,5 +38,8 @@ Basic.args = {
   list: options,
   multi: true,
   name: 'fruits',
+  renderOption: ({ item, ref }) => (
+    <Option dataTest={item.id} id={item.id} key={item.id} ref={ref} text={item.label} />
+  ),
   validator: fruitsValidator
 };

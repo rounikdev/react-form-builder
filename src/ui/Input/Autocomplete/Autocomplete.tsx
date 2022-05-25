@@ -1,4 +1,4 @@
-import { LegacyRef, memo, PropsWithChildren, RefObject, useMemo } from 'react';
+import { LegacyRef, memo, RefObject, useMemo } from 'react';
 
 import { useClass } from '@rounik/react-custom-hooks';
 
@@ -7,12 +7,12 @@ import { useAutocomplete } from '@components';
 import { ErrorField } from '../../ErrorField/ErrorField';
 
 import { AutocompleteProps } from './types';
+import { List } from './components';
 
 import styles from './Autocomplete.scss';
 
 const BaseAutocomplete = <T,>({
   autocomplete,
-  children,
   className,
   dataTest,
   dependencyExtractor,
@@ -28,9 +28,11 @@ const BaseAutocomplete = <T,>({
   name,
   onBlur,
   onFocus,
+  renderOption,
+  rowsToDisplay = 4,
   sideEffect,
   validator
-}: PropsWithChildren<AutocompleteProps<T>>) => {
+}: AutocompleteProps<T>) => {
   const {
     close,
     context,
@@ -65,11 +67,6 @@ const BaseAutocomplete = <T,>({
     sideEffect,
     validator
   });
-
-  const listboxContainerClasses = useClass(
-    [styles.ListBoxContainer, !show && styles.Closed],
-    [show]
-  );
 
   const isError = useMemo(
     () => !isFocused && touched && !valid && !disabled,
@@ -141,20 +138,14 @@ const BaseAutocomplete = <T,>({
           readOnly={!autocomplete}
           ref={fieldRef as LegacyRef<HTMLInputElement>}
         />
-        {show ? (
-          <div className={listboxContainerClasses} role="none" tabIndex={0}>
-            <ul
-              aria-labelledby={`${id}-label`}
-              {...(multi ? { 'aria-multiselectable': true } : {})}
-              className={styles.ListBox}
-              data-test={`${dataTest}-listbox`}
-              id={`${id}-listbox`}
-              role="listbox"
-            >
-              {children({ options: filteredList })}
-            </ul>
-          </div>
-        ) : null}
+        <List
+          dataTest={dataTest}
+          id={id}
+          list={show ? filteredList : []}
+          multi={multi}
+          renderOption={renderOption}
+          rowsToDisplay={rowsToDisplay}
+        />
         <ErrorField errors={errors} isError={isError} />
       </div>
     </Provider>

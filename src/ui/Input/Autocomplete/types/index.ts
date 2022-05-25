@@ -1,16 +1,21 @@
-import { ReactNode } from 'react';
+import { ReactNode, RefObject } from 'react';
 
 import { Field, TranslationSubstitute } from '../../../../components';
 import { Stylable, Testable } from '../../../../types';
 
-export interface AutocompleteProps<T> extends Omit<Field<T[]>, 'onBlur'> {
+export interface ListProps<T> extends Testable {
+  id: string;
+  list: T[];
+  multi?: boolean;
+  renderOption: ({}: { item: T; ref: RefObject<HTMLLIElement> }) => ReactNode;
+  rowsToDisplay?: number;
+}
+
+export interface AutocompleteProps<T> extends Omit<Field<T[]>, 'onBlur'>, ListProps<T> {
   autocomplete?: boolean;
-  children: ({ options }: { options: T[] }) => ReactNode | ReactNode[];
   extractId: (item: T) => string;
   extractLabel: (item: T) => string;
   initialValue?: T[];
-  list: T[];
-  multi?: boolean;
   onBlur?: () => void; // because we are calling onBlurHandler without providing an event
 }
 
