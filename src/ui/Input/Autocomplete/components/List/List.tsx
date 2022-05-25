@@ -1,4 +1,4 @@
-import { createRef, FC, memo, RefObject, useMemo, useState } from 'react';
+import { createRef, memo, RefObject, useMemo, useState } from 'react';
 import Scroll from 'react-scroll-component';
 
 import { usePrevious, useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
@@ -42,7 +42,7 @@ export const List = <T,>({
   }, [listToRender]);
 
   useUpdate(() => {
-    const rowHeight = (rowRefs && rowRefs[0]?.current?.clientHeight) ?? null;
+    const rowHeight = (rowRefs && rowRefs[0]?.current?.offsetHeight) ?? null;
 
     setStyle((prevStyle) => ({
       ...prevStyle,
