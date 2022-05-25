@@ -114,6 +114,7 @@ export const useAutocomplete = <T>({
   }, [list, state.search]);
 
   const open = useCallback(() => {
+    focusRef.current = -1;
     setState((currentState) => ({ ...currentState, search: '', show: true }));
   }, []);
 

@@ -12197,6 +12197,11 @@ react-refresh@^0.11.0:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.11.0.tgz#77198b944733f0f1f1a90e791de4541f9f074046"
   integrity sha512-F27qZr8uUqwhWZboondsPx8tnC3Ct3SxZA3V5WyEvujRyyNv0VYPhoBg1gZ8/MV5tubQp76Trw8lTv9hzRBa+A==
 
+react-scroll-component@0.6.7:
+  version "0.6.7"
+  resolved "https://registry.yarnpkg.com/react-scroll-component/-/react-scroll-component-0.6.7.tgz#875b5ecb20f1e4c62ccedee054e54917bc42e9a4"
+  integrity sha512-sB/SqbfHrXzGcTj0h7WzSIht+pzCnUSvr1SxQo80TFOSyjeYwqXFAP3fhI7Q7+t2ufhKqWU5OUQ3HZr2fJfXAA==
+
 react-sizeme@^3.0.1:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/react-sizeme/-/react-sizeme-3.0.2.tgz#4a2f167905ba8f8b8d932a9e35164e459f9020e4"
