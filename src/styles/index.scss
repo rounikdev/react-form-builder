@@ -30,7 +30,7 @@
   --color-button: #f7f7f7;
   --color-button-disabled: #050505;
 
-  // Buttons:
+  // Buttons: they should have box-shadow when active
   --color-button-primary-background: #525252; // color: --color-button
   --color-button-primary-background-disabled: #999999; // color: --color-button-disabled
 
@@ -66,8 +66,8 @@
   --transition: 300ms;
 
   // box-shadow:
-  --box-shadow-base: 300ms;
-  --box-shadow-active: 300ms;
+  --box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  --box-shadow-active: 0 0.3rem 1rem rgba(0, 0, 0, 0.3);
 }
 
 $baseFontSize: var(--font-medium);
