@@ -19,7 +19,7 @@ const Template: ComponentStory<FC> = () => (
       <Datepicker
         dataTest="from"
         id="from"
-        label="From"
+        label="from"
         name="from"
         required
         validator={ValidatorModel.requiredValidator}
@@ -27,7 +27,7 @@ const Template: ComponentStory<FC> = () => (
       <Datepicker
         dataTest="to"
         id="to"
-        label="To"
+        label="to"
         name="to"
         minDateExtractor={(formValue) => formValue?.from}
         useEndOfDay

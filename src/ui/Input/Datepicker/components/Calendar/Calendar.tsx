@@ -60,7 +60,7 @@ export const Calendar: FC<CalendarProps> = memo(
             label={translate('previousMonth') as string}
           />
           <span aria-live="polite" className={styles.Month}>
-            {translate(monthName)}
+            {translate(`months.${monthName}`)}
           </span>
           <Control
             onClick={() => changeMonth(1)}
@@ -87,7 +87,7 @@ export const Calendar: FC<CalendarProps> = memo(
           {dayNames.map((weekDayName) => {
             return (
               <span className={styles.Weekday} key={weekDayName}>
-                {translate(weekDayName)}
+                {translate(`weekdays.${weekDayName}`)}
               </span>
             );
           })}

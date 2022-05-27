@@ -67,7 +67,7 @@ export const Datepicker: FC<DatepickerProps> = memo(
       <div className={useClass([styles.Container, className], [className])} ref={containerRef}>
         <label className={styles.Label} htmlFor={id}>
           {translate(label)}
-          <span className={styles.Required}>{required ? 'required' : null}</span>
+          <span className={styles.Required}>{required ? translate('required') : null}</span>
         </label>
         <DatepickerInput
           calendarIsOpened={state.show}
