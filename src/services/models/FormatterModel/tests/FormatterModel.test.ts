@@ -1,4 +1,4 @@
-import { GlobalModel } from '@root/../dist';
+import { GlobalModel } from '../../GlobalModel/GlobalModel';
 import { FormatterModel } from '../FormatterModel';
 
 describe('FormatterModel', () => {
