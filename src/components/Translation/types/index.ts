@@ -9,7 +9,7 @@ export interface Language {
 }
 
 export interface LanguageData {
-  [key: string]: string; // {..., firstName: 'First Name', ...}
+  [key: string]: string | LanguageData; // {..., firstName: 'First Name', ...}
 }
 
 export interface Dictionary extends Language {

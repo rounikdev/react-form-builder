@@ -206,7 +206,7 @@ export class ValidatorModel {
       };
     } else {
       validityCheck = {
-        errors: [{ text: 'Required field' }],
+        errors: [{ text: 'requiredField' }],
         valid: false
       };
     }
