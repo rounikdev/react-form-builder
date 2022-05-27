@@ -3,6 +3,7 @@ import { FC, FocusEventHandler, memo, RefObject } from 'react';
 import { dayNames, useTranslation } from '@components';
 import { DatepickerState } from '../../../../../components';
 
+import { Animator } from '../../../../Animator';
 import { IconChevronLeft, IconChevronRight } from '../../../../icons';
 
 import { Control } from '../Control/Control';
@@ -92,7 +93,12 @@ export const Calendar: FC<CalendarProps> = memo(
             );
           })}
         </div>
-        <div className={styles.WeekList}>
+
+        <Animator
+          className={styles.WeekList}
+          enterClass={state.toLeft ? styles.FromLeftEnter : styles.FromRightEnter}
+          exitClass={state.toLeft ? styles.FromLeftExit : styles.FromRightExit}
+        >
           <WeekList
             maxDate={maxDate}
             minDate={minDate}
@@ -103,7 +109,7 @@ export const Calendar: FC<CalendarProps> = memo(
             useEndOfDay={useEndOfDay}
             year={state.year}
           />
-        </div>
+        </Animator>
       </div>
     );
   }

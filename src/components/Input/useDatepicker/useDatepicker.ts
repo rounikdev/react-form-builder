@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { FocusEvent, useCallback, useMemo, useRef, useState } from 'react';
 
 import { useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
 
@@ -155,7 +155,12 @@ export const useDatepicker = ({
   const hide = useCallback(
     ({ target }) => {
       if (state.show && containerRef.current && !containerRef.current.contains(target)) {
-        setState((currentState) => ({ ...currentState, show: false }));
+        setState((currentState) => ({
+          ...currentState,
+          month: new Date().getMonth(),
+          show: false,
+          year: new Date().getFullYear()
+        }));
       }
     },
     [state.show]
@@ -178,7 +183,8 @@ export const useDatepicker = ({
 
   const focusCalendar = useCallback(() => {
     calendarRef.current && calendarRef.current.focus();
-  }, []);
+    onFocusHandler(new Event('focus') as unknown as FocusEvent<HTMLElement, Element>);
+  }, [onFocusHandler]);
 
   const inputBlurHandler = useCallback(
     (event) => {
@@ -264,6 +270,14 @@ export const useDatepicker = ({
       year: value?.getFullYear() ?? currentState.year
     }));
   }, [value]);
+
+  useUpdate(() => {
+    setState((currentState) => ({
+      ...currentState,
+      month: minDate?.getMonth() ?? maxDate?.getMonth() ?? currentState.month,
+      year: minDate?.getFullYear() ?? maxDate?.getFullYear() ?? currentState.year
+    }));
+  }, [minDate, maxDate]);
 
   useUpdate(() => {
     if (state.show) {

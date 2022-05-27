@@ -10,21 +10,24 @@
   cursor: pointer;
 
   &.Today {
-    background-color: yellow;
+    color: var(--color-background-focus);
+    background-color: var(--color-border);
     border-radius: var(--border-radius-normal);
   }
 
   &.FromOtherMonth {
-    color: var(--color-background-focus);
+    color: var(--color-font-secondary);
   }
 
   &.Selected {
+    color: var(--color-background-focus);
     background-color: var(--color-ok);
     border-radius: var(--border-radius-normal);
   }
 
   &.NotSelectable {
-    color: var(--color-font-secondary);
+    opacity: 0.3;
+    color: var(--color-error);
     cursor: not-allowed;
   }
 

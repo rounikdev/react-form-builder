@@ -1,15 +1,19 @@
-import { FC, memo, useMemo } from 'react';
+import { FC, memo, ReactNode, useMemo } from 'react';
 
 import { useClass } from '@rounik/react-custom-hooks';
 
 import { useDatepicker, useTranslation } from '@components';
 
+import { Animator } from '../../Animator';
 import { ErrorField } from '../../ErrorField/ErrorField';
 
 import { Calendar, DatepickerInput } from './components';
 import { DatepickerProps } from './types';
 
 import styles from './Datepicker.scss';
+
+const shouldAnimate = (currentChildren: ReactNode, newChildren: ReactNode) =>
+  !currentChildren || !newChildren;
 
 export const Datepicker: FC<DatepickerProps> = memo(
   ({
@@ -79,22 +83,28 @@ export const Datepicker: FC<DatepickerProps> = memo(
           toggle={toggle}
           value={dateInput}
         />
-        {state.show ? (
-          <Calendar
-            changeMonth={changeMonth}
-            changeYear={changeYear}
-            calendarRef={calendarRef}
-            maxDate={maxDate}
-            minDate={minDate}
-            monthName={monthName}
-            onBlurHandler={onBlurHandler}
-            onFocusHandler={onFocusHandler}
-            selectDate={selectDate}
-            state={state}
-            useEndOfDay={useEndOfDay}
-            value={value}
-          />
-        ) : null}
+        <Animator
+          enterClass={styles.CalendarEnter}
+          exitClass={styles.CalendarExit}
+          shouldAnimate={shouldAnimate}
+        >
+          {state.show ? (
+            <Calendar
+              changeMonth={changeMonth}
+              changeYear={changeYear}
+              calendarRef={calendarRef}
+              maxDate={maxDate}
+              minDate={minDate}
+              monthName={monthName}
+              onBlurHandler={onBlurHandler}
+              onFocusHandler={onFocusHandler}
+              selectDate={selectDate}
+              state={state}
+              useEndOfDay={useEndOfDay}
+              value={value}
+            />
+          ) : null}
+        </Animator>
         <ErrorField errors={errors} isError={isError} />
       </div>
     );
