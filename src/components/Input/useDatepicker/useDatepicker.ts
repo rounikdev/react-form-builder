@@ -6,8 +6,15 @@ import { useField } from '../../Form';
 import { useFormRoot } from '../../Form/providers';
 
 import { monthNames } from './constants';
-import { canBeSelected, formatDateInput, validateDateInput } from './helpers';
-import { DatepickerState, UseDatepickerArgs } from './types';
+import { datepickerContext } from './context';
+import {
+  canBeSelected,
+  constructWeeksInMonth,
+  formatDateInput,
+  getDaysInMonth,
+  validateDateInput
+} from './helpers';
+import { DatepickerContext, DatepickerState, UseDatepickerArgs } from './types';
 
 export const useDatepicker = ({
   dependencyExtractor,
@@ -86,6 +93,12 @@ export const useDatepicker = ({
   }, [state.input, useEndOfDay]);
 
   const monthName = useMemo(() => monthNames[state.month], [state.month]);
+
+  const weeks = useMemo(() => {
+    const days = getDaysInMonth({ month: state.month, useEndOfDay, year: state.year });
+
+    return constructWeeksInMonth(days);
+  }, [state.month, state.year, useEndOfDay]);
 
   const blurCalendar = useCallback(
     (event) => {
@@ -224,6 +237,7 @@ export const useDatepicker = ({
 
   const toggle = useCallback((event) => {
     event.preventDefault();
+
     setState((currentState) => {
       const { month, selected, show, year } = currentState;
 
@@ -291,31 +305,66 @@ export const useDatepicker = ({
     }
   }, [blurCalendar, state.show]);
 
+  const context: DatepickerContext = useMemo(
+    () => ({
+      blurCalendar,
+      calendarRef,
+      changeMonth,
+      changeYear,
+      clearInput,
+      containerRef,
+      dateInput,
+      errors,
+      focusCalendar,
+      focused,
+      hide,
+      maxDate,
+      minDate,
+      monthName,
+      inputBlurHandler,
+      inputChangeHandler,
+      onBlurHandler,
+      onFocusHandler,
+      Provider: datepickerContext.Provider,
+      selectDate,
+      state,
+      toggle,
+      touched,
+      valid,
+      validating,
+      value,
+      weeks
+    }),
+    [
+      blurCalendar,
+      changeMonth,
+      changeYear,
+      clearInput,
+      dateInput,
+      errors,
+      focusCalendar,
+      focused,
+      hide,
+      inputBlurHandler,
+      inputChangeHandler,
+      maxDate,
+      minDate,
+      monthName,
+      onBlurHandler,
+      onFocusHandler,
+      selectDate,
+      state,
+      toggle,
+      touched,
+      valid,
+      validating,
+      value,
+      weeks
+    ]
+  );
+
   return {
-    blurCalendar,
-    calendarRef,
-    changeMonth,
-    changeYear,
-    clearInput,
-    containerRef,
-    dateInput,
-    errors,
-    focusCalendar,
-    focused,
-    hide,
-    maxDate,
-    minDate,
-    monthName,
-    inputBlurHandler,
-    inputChangeHandler,
-    onBlurHandler,
-    onFocusHandler,
-    selectDate,
-    state,
-    toggle,
-    touched,
-    valid,
-    validating,
-    value
+    context,
+    Provider: datepickerContext.Provider
   };
 };

@@ -81,7 +81,7 @@ export const canBeSelected = ({
 };
 
 export const constructWeeksInMonth = (days: Date[]) => {
-  const weeks = [];
+  const weeks: Date[][] = [];
   let currentWeek: Date[] = new Array(7);
 
   days.forEach((day) => {

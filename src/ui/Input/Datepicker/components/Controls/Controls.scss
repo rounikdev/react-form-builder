@@ -1,0 +1,25 @@
+.ControlGroup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .Month,
+  .Year {
+    font-size: var(--offset-medium);
+    font-weight: bold;
+  }
+
+  button {
+    height: 100%;
+    font-size: 1.4rem;
+    color: var(--color-border);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+
+    &:focus {
+      color: var(--color-background-focus);
+      outline: none;
+    }
+  }
+}
