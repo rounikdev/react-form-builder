@@ -1,6 +1,6 @@
 import { FC, memo, useMemo } from 'react';
 
-import { areSameDay, canBeSelected } from '../../helpers';
+import { areSameDay, canBeSelected } from '@components';
 
 interface DayProps {
   date: Date;

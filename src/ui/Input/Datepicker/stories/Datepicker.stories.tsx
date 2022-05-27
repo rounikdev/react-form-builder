@@ -3,26 +3,28 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { FormRoot } from '@components';
 
-import { Standard } from '../views';
+import { Datepicker } from '../Datepicker';
 
 import styles from './Datepicker.stories.scss';
 
 export default {
   title: 'Components/Datepicker',
-  component: Standard
-} as ComponentMeta<typeof Standard>;
+  component: Datepicker
+} as ComponentMeta<typeof Datepicker>;
 
 const Template: ComponentStory<FC> = () => (
-  <FormRoot dataTest="form-with-autocomplete">
-    <Standard dataTest="from" id="from" label="From" name="from" />
-    <Standard
-      dataTest="to"
-      id="to"
-      label="To"
-      name="to"
-      minDateExtractor={(formValue) => formValue?.from}
-      useEndOfDay
-    />
+  <FormRoot dataTest="form-with-datepicker">
+    <div className={styles.DatepickersContainer}>
+      <Datepicker dataTest="from" id="from" label="From" name="from" />
+      <Datepicker
+        dataTest="to"
+        id="to"
+        label="To"
+        name="to"
+        minDateExtractor={(formValue) => formValue?.from}
+        useEndOfDay
+      />
+    </div>
   </FormRoot>
 );
 

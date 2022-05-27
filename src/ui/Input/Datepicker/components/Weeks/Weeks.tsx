@@ -1,7 +1,8 @@
 import { FC, memo, useMemo } from 'react';
 
-import { constructWeeksInMonth, getDaysInMonth } from '../../helpers';
-import { Day } from '..';
+import { constructWeeksInMonth, getDaysInMonth } from '@components';
+
+import { Day } from '../Day/Day';
 
 interface WeeksProps {
   maxDate?: Date;

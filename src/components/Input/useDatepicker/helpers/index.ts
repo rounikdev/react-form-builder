@@ -1,3 +1,5 @@
+import { millisecondsInDay } from '../constants';
+
 export const areSameDay = (dayA: Date, dayB: Date) => {
   return (
     dayA.getDate() === dayB.getDate() &&
@@ -116,7 +118,7 @@ export const constructWeeksInMonth = (days: Date[]) => {
   while (indexOfMissingDay > 0) {
     indexOfMissingDay = weeks[0].findIndex((item) => item !== undefined);
 
-    const newDay = new Date(new Date(weeks[0][indexOfMissingDay]).getTime() - 24 * 60 * 60 * 1000);
+    const newDay = new Date(new Date(weeks[0][indexOfMissingDay]).getTime() - millisecondsInDay);
 
     weeks[0][indexOfMissingDay - 1] = newDay;
   }
@@ -128,27 +130,31 @@ export const constructWeeksInMonth = (days: Date[]) => {
     indexOfMissingDay = weeks[4].findIndex((item) => item === undefined);
 
     const newDay = new Date(
-      new Date(weeks[4][indexOfMissingDay - 1]).getTime() + 24 * 60 * 60 * 1000
+      new Date(weeks[4][indexOfMissingDay - 1]).getTime() + millisecondsInDay
     );
 
     weeks[4][indexOfMissingDay] = newDay;
   }
 
-  // Add days from the next month if needed:
-  indexOfMissingDay = weeks[5].findIndex((item) => item === undefined);
-
-  while (indexOfMissingDay > -1 && indexOfMissingDay <= 6) {
+  if (weeks[5].findIndex((item) => item !== undefined) === -1) {
+    weeks.splice(5, 1);
+  } else {
+    // Add days from the next month if needed:
     indexOfMissingDay = weeks[5].findIndex((item) => item === undefined);
 
-    let prevDay = weeks[5][indexOfMissingDay - 1];
+    while (indexOfMissingDay > -1 && indexOfMissingDay <= 6) {
+      indexOfMissingDay = weeks[5].findIndex((item) => item === undefined);
 
-    if (indexOfMissingDay === 0) {
-      prevDay = weeks[4][6];
+      let prevDay = weeks[5][indexOfMissingDay - 1];
+
+      if (indexOfMissingDay === 0) {
+        prevDay = weeks[4][6];
+      }
+
+      const newDay = new Date(new Date(prevDay).getTime() + millisecondsInDay);
+
+      weeks[5][indexOfMissingDay] = newDay;
     }
-
-    const newDay = new Date(new Date(prevDay).getTime() + 24 * 60 * 60 * 1000);
-
-    weeks[5][indexOfMissingDay] = newDay;
   }
 
   return weeks;
