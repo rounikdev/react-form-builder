@@ -42,41 +42,43 @@ export const Calendar: FC<CalendarProps> = memo(
   }) => {
     return (
       <div
+        aria-label="chooseDate"
+        aria-modal={true}
         className={styles.Container}
         onBlur={onBlurHandler}
         onFocus={onFocusHandler}
         ref={calendarRef}
-        role="listbox"
+        role="dialog"
         tabIndex={0}
       >
         <div className={styles.ControlGroup}>
           <Control
             onClick={() => changeMonth(-1)}
             icon={<IconChevronLeft action />}
-            label="Previous month"
-            tabIndex={0}
+            label="previousMonth"
           />
-          <span className={styles.Month}>{monthName}</span>
+          <span aria-live="polite" className={styles.Month}>
+            {monthName}
+          </span>
           <Control
             onClick={() => changeMonth(1)}
             icon={<IconChevronRight action />}
-            label="Next month"
-            tabIndex={0}
+            label="nextMonth"
           />
         </div>
         <div className={styles.ControlGroup}>
           <Control
             onClick={() => changeYear(-1)}
             icon={<IconChevronLeft action />}
-            label="Previous year"
-            tabIndex={0}
+            label="previousYear"
           />
-          <span className={styles.Year}>{state.year}</span>
+          <span aria-live="polite" className={styles.Year}>
+            {state.year}
+          </span>
           <Control
             onClick={() => changeYear(1)}
             icon={<IconChevronRight action />}
-            label="Next year"
-            tabIndex={0}
+            label="nextYear"
           />
         </div>
         <div className={styles.Weekdays}>

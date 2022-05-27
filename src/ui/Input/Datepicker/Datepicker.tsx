@@ -62,7 +62,7 @@ export const Datepicker: FC<DatepickerProps> = memo(
     const isError = useMemo(() => !focused && touched && !valid, [focused, touched, valid]);
 
     return (
-      <div ref={containerRef} className={useClass([styles.Container, className], [className])}>
+      <div className={useClass([styles.Container, className], [className])} ref={containerRef}>
         <label className={styles.Label} htmlFor={id}>
           {label}
           <span className={styles.Required}>{required ? 'required' : null}</span>

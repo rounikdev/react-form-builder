@@ -1,4 +1,4 @@
-import { ComponentType, FC, memo, MouseEvent, ReactNode } from 'react';
+import { FC, memo, MouseEvent, ReactNode } from 'react';
 
 import { Stylable } from '../../../../../types';
 
@@ -8,12 +8,11 @@ interface DatepickerControlProps extends Stylable {
   icon?: ReactNode;
   label?: string;
   onClick: (event: MouseEvent, dataValue?: number) => void;
-  tabIndex: number;
-  tag?: ComponentType;
+  tabIndex?: number;
 }
 
 export const Control: FC<DatepickerControlProps> = memo(
-  ({ className, describedBy, expanded, icon, label, onClick, tabIndex, ...otherProps }) => {
+  ({ className, describedBy, expanded, icon, label, onClick, tabIndex = 0, ...otherProps }) => {
     return (
       <button
         aria-describedby={describedBy}
