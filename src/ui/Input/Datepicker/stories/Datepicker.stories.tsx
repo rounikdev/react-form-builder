@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { FormRoot } from '@components';
+import { ValidatorModel } from '@services';
 
 import { Datepicker } from '../Datepicker';
 
@@ -15,7 +16,14 @@ export default {
 const Template: ComponentStory<FC> = () => (
   <FormRoot dataTest="form-with-datepicker">
     <div className={styles.DatepickersContainer}>
-      <Datepicker dataTest="from" id="from" label="From" name="from" />
+      <Datepicker
+        dataTest="from"
+        id="from"
+        label="From"
+        name="from"
+        required
+        validator={ValidatorModel.requiredValidator}
+      />
       <Datepicker
         dataTest="to"
         id="to"

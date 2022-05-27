@@ -1,0 +1,36 @@
+.Container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(100% / 7);
+  height: 100%;
+  line-height: var(--font-normal);
+  font-size: var(--font-normal);
+  text-align: center;
+  cursor: pointer;
+
+  &.Today {
+    background-color: yellow;
+    border-radius: var(--border-radius-normal);
+  }
+
+  &.FromOtherMonth {
+    color: var(--color-background-focus);
+  }
+
+  &.Selected {
+    background-color: var(--color-ok);
+    border-radius: var(--border-radius-normal);
+  }
+
+  &.NotSelectable {
+    color: var(--color-font-secondary);
+    cursor: not-allowed;
+  }
+
+  &:focus {
+    background-color: var(--color-background-focus);
+    border-radius: var(--border-radius-normal);
+    outline: none;
+  }
+}

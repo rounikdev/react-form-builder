@@ -4,7 +4,9 @@ import { constructWeeksInMonth, getDaysInMonth } from '@components';
 
 import { Day } from '../Day/Day';
 
-interface WeeksProps {
+import styles from './WeekList.scss';
+
+interface WeekListProps {
   maxDate?: Date;
   minDate?: Date;
   month: number;
@@ -15,7 +17,7 @@ interface WeeksProps {
   year: number;
 }
 
-export const Weeks: FC<WeeksProps> = memo(
+export const WeekList: FC<WeekListProps> = memo(
   ({ maxDate, minDate, month, onSelect, selected, today, useEndOfDay, year }) => {
     const days = useMemo(
       () => getDaysInMonth({ month, useEndOfDay, year }),
@@ -33,7 +35,6 @@ export const Weeks: FC<WeeksProps> = memo(
         week.push(
           <Day
             date={weeks[i][j]}
-            emptyKey={i + j}
             isOtherMonth={weeks[i][j]?.getMonth() !== month}
             key={i + j}
             maxDate={maxDate}
@@ -46,7 +47,7 @@ export const Weeks: FC<WeeksProps> = memo(
       }
 
       weeksJSX.push(
-        <div data-role="week" key={i}>
+        <div className={styles.Week} key={i}>
           {week}
         </div>
       );
@@ -56,4 +57,4 @@ export const Weeks: FC<WeeksProps> = memo(
   }
 );
 
-Weeks.displayName = 'Weeks';
+WeekList.displayName = 'WeekList';

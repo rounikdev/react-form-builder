@@ -1,157 +1,18 @@
 .Container {
   position: relative;
   display: flex;
-  width: 50%;
-  height: 5rem;
-  margin-bottom: var(--offset-small);
+  flex-direction: column;
+}
 
-  input {
-    width: 10rem;
-    padding-left: var(--offset-small);
-    font-size: var(--offset-normal);
-    border: 1px solid var(--color-border);
-    border-top-left-radius: var(--border-radius-normal);
-    border-bottom-left-radius: var(--border-radius-normal);
-    cursor: pointer;
+.Label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: calc(var(--offset-small) / 2);
+  color: var(--color-label);
+  font-size: var(--font-small);
 
-    &:focus {
-      outline: none;
-    }
-  }
-
-  input + button {
-    font-size: 2.6rem;
-    background-color: var(--color-border);
-    border: none;
-    border-top-right-radius: var(--border-radius-normal);
-    border-bottom-right-radius: var(--border-radius-normal);
-    outline: none;
-    appearance: none;
-    cursor: pointer;
-
-    &:focus {
-      color: var(--color-background-focus);
-    }
-  }
-
-  [data-role="datepicker"] {
-    position: absolute;
-    right: 0;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    width: 26rem;
-    height: 26rem;
-    padding: 0.3rem 0;
-    overflow: hidden;
-    background-color: burlywood;
-    border-radius: var(--border-radius-normal);
-    will-change: transform;
-
-    &:focus {
-      outline: none;
-    }
-
-    [data-role="control-group"] {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      height: 3rem;
-      margin-bottom: var(--offset-small);
-      padding: 0 0.3rem;
-
-      [data-role="month"],
-      [data-role="year"] {
-        font-size: var(--font-normal);
-      }
-
-      button {
-        height: 100%;
-        font-size: 1.4rem;
-        color: var(--color-border);
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-
-        &:focus {
-          color: var(--color-background-focus);
-          outline: none;
-        }
-      }
-    }
-
-    [data-role="week-days-wrapper"] {
-      display: flex;
-      align-items: center;
-      height: 2rem;
-    }
-
-    [data-role="week-day"] {
-      display: inline-block;
-      width: calc(100% / 7);
-      font-size: var(--font-normal);
-      text-align: center;
-    }
-
-    [data-role="weeks-wrapper"] {
-      // width: 300%;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-evenly;
-      width: 100%;
-    }
-
-    [data-role="week"] {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      width: 100%;
-
-      [data-empty="true"] {
-        visibility: hidden;
-      }
-    }
-
-    [data-role="day"] {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: calc(100% / 7);
-      height: 100%;
-      line-height: var(--font-normal);
-      font-size: var(--font-normal);
-      text-align: center;
-
-      &[data-today="true"] {
-        background-color: yellow;
-        border-radius: var(--border-radius-normal);
-      }
-
-      &[data-isothermonth="true"] {
-        color: var(--color-background-focus);
-      }
-
-      &[data-selected="true"] {
-        background-color: var(--color-ok);
-        border-radius: var(--border-radius-normal);
-      }
-
-      &[data-not-selectable="false"] {
-        cursor: pointer;
-      }
-
-      &[data-not-selectable="true"] {
-        color: var(--color-font-secondary);
-        cursor: not-allowed;
-      }
-
-      &:focus {
-        background-color: var(--color-background-focus);
-        border-radius: var(--border-radius-normal);
-        outline: none;
-      }
-    }
+  .Required {
+    color: var(--color-border);
+    font-size: var(--font-tiny);
   }
 }

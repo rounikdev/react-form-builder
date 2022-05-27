@@ -1,0 +1,28 @@
+.Container {
+  display: flex;
+}
+
+.Input {
+  width: 12rem;
+  padding-left: var(--offset-small);
+  font-size: var(--offset-medium);
+  border: 1px solid var(--color-border);
+  border-top-left-radius: var(--border-radius-normal);
+  border-bottom-left-radius: var(--border-radius-normal);
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.OpenControl {
+  background-color: transparent;
+  border: 1px solid var(--color-border);
+  border-left: none;
+  border-top-right-radius: var(--border-radius-normal);
+  border-bottom-right-radius: var(--border-radius-normal);
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+}

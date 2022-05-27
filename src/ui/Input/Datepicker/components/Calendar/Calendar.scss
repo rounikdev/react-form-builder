@@ -1,0 +1,66 @@
+.Container {
+  position: absolute;
+  right: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: 26rem;
+  height: 26rem;
+  padding: 0.3rem 0;
+  overflow: hidden;
+  background-color: burlywood;
+  border-radius: var(--border-radius-normal);
+  will-change: transform;
+
+  &:focus {
+    outline: none;
+  }
+
+  .ControlGroup {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--offset-small);
+
+    .Month,
+    .Year {
+      font-size: var(--offset-medium);
+      font-weight: bold;
+    }
+
+    button {
+      height: 100%;
+      font-size: 1.4rem;
+      color: var(--color-border);
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+
+      &:focus {
+        color: var(--color-background-focus);
+        outline: none;
+      }
+    }
+  }
+
+  .Weekdays {
+    display: flex;
+    align-items: center;
+    height: 2rem;
+  }
+
+  .Weekday {
+    display: inline-block;
+    width: calc(100% / 7);
+    font-size: var(--font-normal);
+    text-align: center;
+  }
+
+  .WeekList {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 100%;
+  }
+}

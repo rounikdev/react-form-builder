@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 
-import { useUpdate } from '@rounik/react-custom-hooks';
+import { useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { useField } from '../../Form';
 import { useFormRoot } from '../../Form/providers';
@@ -102,7 +102,7 @@ export const useDatepicker = ({
 
   // Will work for 'month === 1`
   const changeMonth = useCallback(
-    (event, months) => {
+    (months) => {
       let newMonth: number;
       let newYear = state.year;
 
@@ -127,7 +127,7 @@ export const useDatepicker = ({
     [state.month, state.year]
   );
 
-  const changeYear = useCallback((event, years) => {
+  const changeYear = useCallback((years) => {
     setState((currentState) => ({
       ...currentState,
       changed: {},
@@ -252,15 +252,6 @@ export const useDatepicker = ({
   }, [clearInput, maxDate, minDate, value]);
 
   useUpdate(() => {
-    if (state.show) {
-      focusCalendar();
-    } else {
-      blurCalendar(new Event('focus'));
-    }
-  }, [blurCalendar, focusCalendar, state.show]);
-
-  // reset logic when no initial value
-  useUpdate(() => {
     if (!value) {
       clearInput();
     }
@@ -273,6 +264,18 @@ export const useDatepicker = ({
       year: value?.getFullYear() ?? currentState.year
     }));
   }, [value]);
+
+  useUpdate(() => {
+    if (state.show) {
+      focusCalendar();
+    }
+  }, [focusCalendar, state.show]);
+
+  useUpdateOnly(() => {
+    if (!state.show) {
+      blurCalendar(new Event('focus'));
+    }
+  }, [blurCalendar, state.show]);
 
   return {
     blurCalendar,

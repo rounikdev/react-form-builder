@@ -1,10 +1,13 @@
 import { FC, memo, useMemo } from 'react';
 
+import { useClass } from '@rounik/react-custom-hooks';
+
 import { areSameDay, canBeSelected } from '@components';
+
+import styles from './Day.scss';
 
 interface DayProps {
   date: Date;
-  emptyKey: number;
   isOtherMonth?: boolean;
   maxDate?: Date;
   minDate?: Date;
@@ -14,7 +17,7 @@ interface DayProps {
 }
 
 export const Day: FC<DayProps> = memo(
-  ({ date, emptyKey, isOtherMonth, maxDate, minDate, onSelect, selected, today }) => {
+  ({ date, isOtherMonth, maxDate, minDate, onSelect, selected, today }) => {
     const selectable = useMemo(
       () =>
         canBeSelected({
@@ -25,7 +28,11 @@ export const Day: FC<DayProps> = memo(
       [date, maxDate, minDate]
     );
 
-    return date ? (
+    const isSelected = selected && areSameDay(date, selected);
+
+    const isToday = areSameDay(date, today);
+
+    return (
       <span
         aria-current={areSameDay(date, today) ? 'date' : 'false'}
         aria-label={date.toLocaleDateString(window.navigator.language, {
@@ -34,13 +41,17 @@ export const Day: FC<DayProps> = memo(
           year: 'numeric'
         })}
         aria-selected={!!selected}
-        data-date={date?.toLocaleDateString()}
-        data-empty="false"
-        data-isothermonth={isOtherMonth}
-        data-not-selectable={!selectable}
-        data-role="day"
-        data-selected={selected && areSameDay(date, selected)}
-        data-today={areSameDay(date, today)}
+        className={useClass(
+          [
+            styles.Container,
+            isOtherMonth && styles.FromOtherMonth,
+            !selectable && styles.NotSelectable,
+            isSelected && styles.Selected,
+            isToday && styles.Today
+          ],
+          [isOtherMonth, isSelected, isToday, selectable]
+        )}
+        data-date={date.toLocaleDateString()}
         key={date.getTime()}
         {...(selectable ? { onClick: () => onSelect(date) } : {})}
         onKeyDown={({ keyCode }) => {
@@ -52,10 +63,6 @@ export const Day: FC<DayProps> = memo(
         tabIndex={0}
       >
         {date.getDate()}
-      </span>
-    ) : (
-      <span data-empty="true" data-role="day" key={emptyKey}>
-        *
       </span>
     );
   }
