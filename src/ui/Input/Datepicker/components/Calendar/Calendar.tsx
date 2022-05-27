@@ -1,6 +1,6 @@
 import { FC, FocusEventHandler, memo, RefObject } from 'react';
 
-import { dayNames } from '@components';
+import { dayNames, useTranslation } from '@components';
 import { DatepickerState } from '../../../../../components';
 
 import { IconChevronLeft, IconChevronRight } from '../../../../icons';
@@ -40,9 +40,11 @@ export const Calendar: FC<CalendarProps> = memo(
     useEndOfDay,
     value
   }) => {
+    const { translate } = useTranslation();
+
     return (
       <div
-        aria-label="chooseDate"
+        aria-label={translate('chooseDate') as string}
         aria-modal={true}
         className={styles.Container}
         onBlur={onBlurHandler}
@@ -55,22 +57,22 @@ export const Calendar: FC<CalendarProps> = memo(
           <Control
             onClick={() => changeMonth(-1)}
             icon={<IconChevronLeft action />}
-            label="previousMonth"
+            label={translate('previousMonth') as string}
           />
           <span aria-live="polite" className={styles.Month}>
-            {monthName}
+            {translate(monthName)}
           </span>
           <Control
             onClick={() => changeMonth(1)}
             icon={<IconChevronRight action />}
-            label="nextMonth"
+            label={translate('nextMonth') as string}
           />
         </div>
         <div className={styles.ControlGroup}>
           <Control
             onClick={() => changeYear(-1)}
             icon={<IconChevronLeft action />}
-            label="previousYear"
+            label={translate('previousYear') as string}
           />
           <span aria-live="polite" className={styles.Year}>
             {state.year}
@@ -78,14 +80,14 @@ export const Calendar: FC<CalendarProps> = memo(
           <Control
             onClick={() => changeYear(1)}
             icon={<IconChevronRight action />}
-            label="nextYear"
+            label={translate('nextYear') as string}
           />
         </div>
         <div className={styles.Weekdays}>
           {dayNames.map((weekDayName) => {
             return (
               <span className={styles.Weekday} key={weekDayName}>
-                {weekDayName}
+                {translate(weekDayName)}
               </span>
             );
           })}

@@ -1,5 +1,7 @@
 import { ChangeEvent, FC, FocusEvent, FocusEventHandler, memo, MouseEvent } from 'react';
 
+import { useTranslation } from '@components';
+
 import { IconCalendar } from '../../../../icons';
 
 import { Control } from '../Control/Control';
@@ -18,7 +20,9 @@ interface DatepickerInputProps {
 }
 
 export const DatepickerInput: FC<DatepickerInputProps> = memo(
-  ({ calendarIsOpened, id, onBlur, onChange, onFocus, placeholder, toggle, value }) => {
+  ({ calendarIsOpened, id, onBlur, onChange, onFocus, placeholder = '', toggle, value }) => {
+    const { translate } = useTranslation();
+
     return (
       <div className={styles.Container}>
         <input
@@ -29,13 +33,13 @@ export const DatepickerInput: FC<DatepickerInputProps> = memo(
           onBlur={onBlur}
           onChange={onChange}
           onFocus={onFocus}
-          placeholder={placeholder}
+          placeholder={translate(placeholder) as string}
           value={value}
         />
         <Control
           className={styles.OpenControl}
           tabIndex={0}
-          label="chooseDate"
+          label={translate('chooseDate') as string}
           describedBy={id}
           expanded={calendarIsOpened}
           onClick={toggle}

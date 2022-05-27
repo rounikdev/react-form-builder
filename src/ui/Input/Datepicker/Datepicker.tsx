@@ -2,7 +2,7 @@ import { FC, memo, useMemo } from 'react';
 
 import { useClass } from '@rounik/react-custom-hooks';
 
-import { useDatepicker } from '@components';
+import { useDatepicker, useTranslation } from '@components';
 
 import { ErrorField } from '../../ErrorField/ErrorField';
 
@@ -17,11 +17,11 @@ export const Datepicker: FC<DatepickerProps> = memo(
     dependencyExtractor,
     initialValue,
     id,
-    label,
+    label = '',
     maxDateExtractor,
     minDateExtractor,
     name,
-    placeholder,
+    placeholder = '',
     required,
     sideEffect,
     useEndOfDay,
@@ -59,12 +59,14 @@ export const Datepicker: FC<DatepickerProps> = memo(
       validator
     });
 
+    const { translate } = useTranslation();
+
     const isError = useMemo(() => !focused && touched && !valid, [focused, touched, valid]);
 
     return (
       <div className={useClass([styles.Container, className], [className])} ref={containerRef}>
         <label className={styles.Label} htmlFor={id}>
-          {label}
+          {translate(label)}
           <span className={styles.Required}>{required ? 'required' : null}</span>
         </label>
         <DatepickerInput
