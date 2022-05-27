@@ -38,6 +38,7 @@ export class GlobalModel {
       const wait: FrameRequestCallback = (timestamp) => {
         const elapsedTime = timestamp - startTime;
 
+        /* istanbul ignore next */
         if (elapsedTime < time) {
           GlobalModel.clearRAFTimeout(rafIdInfo);
           rafIdInfo.id = requestAnimationFrame(wait);
@@ -72,6 +73,7 @@ export class GlobalModel {
     const wait: FrameRequestCallback = (timestamp) => {
       const elapsedTime = timestamp - startTime;
 
+      /* istanbul ignore next */
       if (elapsedTime < timeout) {
         GlobalModel.clearRAFTimeout(rafIdInfo);
         rafIdInfo.id = requestAnimationFrame(wait);
@@ -139,7 +141,7 @@ export class GlobalModel {
   };
 
   static removeNonDigitFromNegativeString = (rawValue: string): string =>
-    rawValue.replace(/(?!^)\-|[^-\d]+/, '');
+    rawValue.replace(/[^\d|-]/g, '').replace(/(?!^)-/g, '');
 
   static removeNonDigitFromString = (rawValue: string): string => rawValue.replace(/\D/g, '');
 }

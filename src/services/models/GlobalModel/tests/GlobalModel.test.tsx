@@ -260,5 +260,61 @@ describe('GlobalModel', () => {
     });
   });
 
-  it('valueSplitter', () => {});
+  it('valueSplitter', () => {
+    const pattern = '** | ** | **';
+    const patternDelimiter = ' | ';
+
+    const tests = [
+      {
+        goForward: true,
+        expected: 'ab | cd | ef',
+        value: 'abcdef'
+      },
+      {
+        goForward: false,
+        expected: 'ab | cd | e',
+        value: 'abcde'
+      }
+    ];
+
+    tests.forEach(({ goForward, expected, value }) =>
+      expect(GlobalModel.valueSplitter({ goForward, pattern, patternDelimiter, value })).toBe(
+        expected
+      )
+    );
+  });
+
+  it('removeNonDigitFromNegativeString', () => {
+    const tests = [
+      {
+        expected: '-13',
+        value: '-1a3'
+      },
+      {
+        expected: '-13',
+        value: 'a-13.-r'
+      }
+    ];
+
+    tests.forEach(({ expected, value }) =>
+      expect(GlobalModel.removeNonDigitFromNegativeString(value)).toBe(expected)
+    );
+  });
+
+  it('removeNonDigitFromString', () => {
+    const tests = [
+      {
+        expected: '13',
+        value: '-1a3'
+      },
+      {
+        expected: '13',
+        value: 'a-13.-r'
+      }
+    ];
+
+    tests.forEach(({ expected, value }) =>
+      expect(GlobalModel.removeNonDigitFromString(value)).toBe(expected)
+    );
+  });
 });
