@@ -70,7 +70,7 @@
   --box-shadow-active: 0 0.3rem 1rem rgba(0, 0, 0, 0.3);
 }
 
-$baseFontSize: var(--font-medium);
+$baseFontSize: 10px;
 
 :export {
   baseFontSize: $baseFontSize;
