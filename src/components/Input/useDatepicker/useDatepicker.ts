@@ -55,13 +55,13 @@ export const useDatepicker = ({
   const maxDate = useMemo(
     () => (maxDateExtractor ? maxDateExtractor(formData) : undefined),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [maxDateExtractor ? maxDateExtractor(formData) : undefined]
+    [maxDateExtractor, formData]
   );
 
   const minDate = useMemo(
     () => (minDateExtractor ? minDateExtractor(formData) : undefined),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [minDateExtractor ? minDateExtractor(formData) : undefined]
+    [minDateExtractor, formData]
   );
 
   const [state, setState] = useState<DatepickerState>({
@@ -69,6 +69,7 @@ export const useDatepicker = ({
     month: new Date().getMonth(),
     today: new Date(),
     toLeft: false,
+    selected: undefined,
     show: false,
     year: new Date().getFullYear()
   });
@@ -80,12 +81,10 @@ export const useDatepicker = ({
   const dateInput = useMemo(() => {
     let dateInputValue = state.input || '';
 
-    if (dateInputValue && validateDateInput({ dateString: dateInputValue, useEndOfDay })) {
-      dateInputValue = formatDateInput(
-        validateDateInput({ dateString: dateInputValue, useEndOfDay })
-      );
-    } else {
-      dateInputValue = state.input || '';
+    const validDate = validateDateInput({ dateString: dateInputValue, useEndOfDay });
+
+    if (validDate) {
+      dateInputValue = formatDateInput(validDate);
     }
 
     return dateInputValue;
@@ -105,14 +104,14 @@ export const useDatepicker = ({
         onBlurHandler(event);
       }
 
-      if (calendarRef.current instanceof HTMLDivElement) {
+      if (calendarRef.current) {
         calendarRef.current.blur();
       }
     },
     [onBlurHandler]
   );
 
-  // Will work for 'month === 1`
+  // Will work for 'Math.abs(month) === 1`
   const changeMonth = useCallback(
     (months) => {
       let newMonth: number;
@@ -150,26 +149,25 @@ export const useDatepicker = ({
     onChangeHandler(undefined);
 
     setState((currentState) => {
-      const today = new Date();
+      const now = new Date();
 
       return {
         ...currentState,
         input: null,
-        month: today.getMonth(),
-        today,
-        year: today.getFullYear()
+        month: minDate?.getMonth() ?? maxDate?.getMonth() ?? now.getMonth(),
+        selected: undefined,
+        today: now,
+        year: minDate?.getFullYear() ?? maxDate?.getFullYear() ?? now.getFullYear()
       };
     });
-  }, [onChangeHandler]);
+  }, [maxDate, minDate, onChangeHandler]);
 
   const hide = useCallback(
     ({ target }) => {
-      if (state.show && containerRef.current && !containerRef.current.contains(target)) {
+      if (state.show && !containerRef.current?.contains(target)) {
         setState((currentState) => ({
           ...currentState,
-          month: new Date().getMonth(),
-          show: false,
-          year: new Date().getFullYear()
+          show: false
         }));
       }
     },
@@ -192,7 +190,8 @@ export const useDatepicker = ({
   );
 
   const focusCalendar = useCallback(() => {
-    calendarRef.current && calendarRef.current.focus();
+    calendarRef.current?.focus();
+
     onFocusHandler(new Event('focus') as unknown as FocusEvent<HTMLElement, Element>);
   }, [onFocusHandler]);
 
@@ -232,20 +231,29 @@ export const useDatepicker = ({
     }));
   }, []);
 
-  const toggle = useCallback((event) => {
-    event.preventDefault();
+  const toggle = useCallback(
+    (event) => {
+      event.preventDefault();
 
-    setState((currentState) => {
-      const { month, selected, show, year } = currentState;
+      setState((currentState) => {
+        const { selected, show } = currentState;
 
-      return {
-        ...currentState,
-        month: selected ? selected.getMonth() : month,
-        show: !show,
-        year: selected ? selected.getFullYear() : year
-      };
-    });
-  }, []);
+        const now = new Date();
+
+        return {
+          ...currentState,
+          month: selected
+            ? selected.getMonth()
+            : minDate?.getMonth() ?? maxDate?.getMonth() ?? now.getMonth(),
+          show: !show,
+          year: selected
+            ? selected.getFullYear()
+            : minDate?.getFullYear() ?? maxDate?.getFullYear() ?? now.getFullYear()
+        };
+      });
+    },
+    [maxDate, minDate]
+  );
 
   useUpdate(() => {
     document.addEventListener('click', hide);
