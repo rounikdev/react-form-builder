@@ -25,9 +25,9 @@ export const WeekList: FC = memo(() => {
     }
 
     weeksJSX.push(
-      <div className={styles.Week} key={i}>
+      <tr className={styles.Week} key={i}>
         {week}
-      </div>
+      </tr>
     );
   }
 

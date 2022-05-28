@@ -3,6 +3,13 @@
   justify-content: space-between;
   align-items: center;
 
+  .Label {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+  }
+
   .Month,
   .Year {
     font-size: var(--offset-medium);

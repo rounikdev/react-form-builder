@@ -23,6 +23,7 @@ export const DatepickerInput: FC<DatepickerInputProps> = memo(({ id, placeholder
     <div className={styles.Container}>
       <input
         aria-label={dateInput ? '' : 'noDateSelected'}
+        aria-live="polite"
         autoComplete="off"
         className={styles.Input}
         id={id}
@@ -34,9 +35,7 @@ export const DatepickerInput: FC<DatepickerInputProps> = memo(({ id, placeholder
       />
       <Control
         className={styles.OpenControl}
-        tabIndex={0}
         label={translate('chooseDate') as string}
-        describedBy={id}
         expanded={state.show}
         onClick={toggle}
         icon={<IconCalendar action />}

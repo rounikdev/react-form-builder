@@ -31,24 +31,29 @@ export const Calendar: FC = memo(() => {
       tabIndex={0}
     >
       <Controls />
-      <div className={styles.Weekdays}>
-        {dayNames.map((weekDayName) => {
-          return (
-            <span className={styles.Weekday} key={weekDayName}>
-              {translate(`weekdays.${weekDayName}`)}
-            </span>
-          );
-        })}
-      </div>
-      <Animator
-        className={styles.WeekList}
-        enterClass={state.toLeft ? styles.FromLeftEnter : styles.FromRightEnter}
-        exitClass={state.toLeft ? styles.FromLeftExit : styles.FromRightExit}
-        shouldAnimate={shouldAnimate}
-      >
-        {/* 'key' helps in deciding when to animate */}
-        <WeekList key={state.month + state.year} />
-      </Animator>
+      <table role="grid">
+        <thead>
+          <tr className={styles.Weekdays}>
+            {dayNames.map((weekDayName) => {
+              return (
+                <th className={styles.Weekday} key={weekDayName}>
+                  {translate(`weekdays.${weekDayName}`)}
+                </th>
+              );
+            })}
+          </tr>
+        </thead>
+        <Animator
+          className={styles.WeekList}
+          enterClass={state.toLeft ? styles.FromLeftEnter : styles.FromRightEnter}
+          exitClass={state.toLeft ? styles.FromLeftExit : styles.FromRightExit}
+          shouldAnimate={shouldAnimate}
+          tag="tbody"
+        >
+          {/* 'key' helps in deciding when to animate */}
+          <WeekList key={state.month + state.year} />
+        </Animator>
+      </table>
     </div>
   );
 });

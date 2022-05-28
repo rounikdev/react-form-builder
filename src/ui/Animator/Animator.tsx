@@ -9,7 +9,14 @@ import { AnimatorProps, AnimatorState } from './types';
 const defaultShouldAnimate = () => true;
 
 export const Animator: FC<AnimatorProps> = memo(
-  ({ children, className, enterClass, exitClass, shouldAnimate = defaultShouldAnimate }) => {
+  ({
+    children,
+    className,
+    enterClass,
+    exitClass,
+    shouldAnimate = defaultShouldAnimate,
+    tag: Tag = 'div'
+  }) => {
     const [state, setState] = useState<AnimatorState>({
       content: null,
       exiting: false
@@ -38,7 +45,7 @@ export const Animator: FC<AnimatorProps> = memo(
     }, [children]);
 
     return (
-      <div
+      <Tag
         className={useClass(
           [state.exiting ? exitClass : enterClass, className],
           [state.exiting, exitClass, enterClass, className]
@@ -47,7 +54,7 @@ export const Animator: FC<AnimatorProps> = memo(
         onTransitionEnd={setNewChildren}
       >
         {state.content}
-      </div>
+      </Tag>
     );
   }
 );
