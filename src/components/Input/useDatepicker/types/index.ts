@@ -29,7 +29,6 @@ export interface DatepickerContext {
   errors: ValidationError[];
   focusCalendar: () => void;
   focused: boolean;
-  hide: (event: MouseEvent) => void;
   maxDate?: Date;
   minDate?: Date;
   monthName: string;

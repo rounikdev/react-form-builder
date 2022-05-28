@@ -1,6 +1,6 @@
 import { FocusEvent, useCallback, useMemo, useRef, useState } from 'react';
 
-import { useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
+import { useOnOutsideClick, useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { useField } from '../../Form';
 import { useFormRoot } from '../../Form/providers';
@@ -162,18 +162,6 @@ export const useDatepicker = ({
     });
   }, [maxDate, minDate, onChangeHandler]);
 
-  const hide = useCallback(
-    ({ target }) => {
-      if (state.show && !containerRef.current?.contains(target)) {
-        setState((currentState) => ({
-          ...currentState,
-          show: false
-        }));
-      }
-    },
-    [state.show]
-  );
-
   const selectDate = useCallback(
     (date) => {
       if (canBeSelected({ date, maxDate, minDate })) {
@@ -255,13 +243,16 @@ export const useDatepicker = ({
     [maxDate, minDate]
   );
 
-  useUpdate(() => {
-    document.addEventListener('click', hide);
+  const hide = useCallback(() => {
+    if (state.show) {
+      setState((currentState) => ({
+        ...currentState,
+        show: false
+      }));
+    }
+  }, [state.show]);
 
-    return () => {
-      document.removeEventListener('click', hide);
-    };
-  }, [hide]);
+  useOnOutsideClick({ callback: hide, element: containerRef });
 
   useUpdate(() => {
     const selected = value || null;
@@ -321,7 +312,6 @@ export const useDatepicker = ({
       errors,
       focusCalendar,
       focused,
-      hide,
       maxDate,
       minDate,
       monthName,
@@ -348,7 +338,6 @@ export const useDatepicker = ({
       errors,
       focusCalendar,
       focused,
-      hide,
       inputBlurHandler,
       inputChangeHandler,
       maxDate,

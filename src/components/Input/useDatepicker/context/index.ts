@@ -23,9 +23,6 @@ export const datepickerContext = createContext<DatepickerContext>({
     // default implementation
   },
   focused: false,
-  hide: () => {
-    // default implementation
-  },
   maxDate: undefined,
   minDate: undefined,
   monthName: '',
