@@ -46,7 +46,6 @@ export const datepickerContext = createContext<DatepickerContext>({
     // default implementation
   },
   state: {
-    changed: { init: true },
     input: null,
     month: new Date().getMonth(),
     today: new Date(),

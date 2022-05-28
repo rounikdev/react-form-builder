@@ -65,7 +65,6 @@ export const useDatepicker = ({
   );
 
   const [state, setState] = useState<DatepickerState>({
-    changed: { init: true },
     input: null,
     month: new Date().getMonth(),
     today: new Date(),
@@ -131,7 +130,6 @@ export const useDatepicker = ({
 
       setState((currentState) => ({
         ...currentState,
-        changed: {},
         month: newMonth,
         toLeft: months < 0,
         year: newYear
@@ -143,7 +141,6 @@ export const useDatepicker = ({
   const changeYear = useCallback((years) => {
     setState((currentState) => ({
       ...currentState,
-      changed: {},
       toLeft: years < 0,
       year: currentState.year + years
     }));
@@ -243,7 +240,6 @@ export const useDatepicker = ({
 
       return {
         ...currentState,
-        changed: { init: !show },
         month: selected ? selected.getMonth() : month,
         show: !show,
         year: selected ? selected.getFullYear() : year

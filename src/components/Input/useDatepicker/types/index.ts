@@ -2,12 +2,7 @@ import { ChangeEvent, FocusEvent, FocusEventHandler, MouseEvent, Provider, RefOb
 
 import { FormStateEntryValue, UseFieldConfig, ValidationError } from '../../../Form';
 
-export type DatepickerChanged = {
-  init?: boolean;
-};
-
 export interface DatepickerState {
-  changed: DatepickerChanged;
   input: string | null;
   month: number;
   selected?: Date;
