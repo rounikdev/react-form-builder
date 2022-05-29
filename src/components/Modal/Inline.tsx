@@ -1,5 +1,6 @@
 import { FC, memo, useMemo } from 'react';
 import ReactDOM from 'react-dom';
+
 import { useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { ModalInlineProps } from './types';
