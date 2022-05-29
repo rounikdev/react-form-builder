@@ -1,5 +1,3 @@
-import { millisecondsInDay } from '../constants';
-
 export const areSameDay = (dayA: Date, dayB: Date) => {
   return (
     dayA.getDate() === dayB.getDate() &&
@@ -118,9 +116,11 @@ export const constructWeeksInMonth = (days: Date[]) => {
   while (indexOfMissingDay > 0) {
     indexOfMissingDay = weeks[0].findIndex((item) => item !== undefined);
 
-    const newDay = new Date(new Date(weeks[0][indexOfMissingDay]).getTime() - millisecondsInDay);
+    const newDate = new Date(weeks[0][indexOfMissingDay]);
 
-    weeks[0][indexOfMissingDay - 1] = newDay;
+    newDate.setDate(newDate.getDate() - 1);
+
+    weeks[0][indexOfMissingDay - 1] = newDate;
   }
 
   // Add days from the next month if needed:
@@ -129,11 +129,11 @@ export const constructWeeksInMonth = (days: Date[]) => {
   while (indexOfMissingDay > -1 && indexOfMissingDay <= 6) {
     indexOfMissingDay = weeks[4].findIndex((item) => item === undefined);
 
-    const newDay = new Date(
-      new Date(weeks[4][indexOfMissingDay - 1]).getTime() + millisecondsInDay
-    );
+    const newDate = new Date(weeks[4][indexOfMissingDay - 1]);
 
-    weeks[4][indexOfMissingDay] = newDay;
+    newDate.setDate(newDate.getDate() + 1);
+
+    weeks[4][indexOfMissingDay] = newDate;
   }
 
   if (weeks[5].findIndex((item) => item !== undefined) === -1) {
@@ -151,9 +151,11 @@ export const constructWeeksInMonth = (days: Date[]) => {
         prevDay = weeks[4][6];
       }
 
-      const newDay = new Date(new Date(prevDay).getTime() + millisecondsInDay);
+      const newDate = new Date(prevDay);
 
-      weeks[5][indexOfMissingDay] = newDay;
+      newDate.setDate(newDate.getDate() + 1);
+
+      weeks[5][indexOfMissingDay] = newDate;
     }
   }
 

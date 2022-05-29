@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useState } from 'react';
+import { FC, memo, useCallback, useRef, useState } from 'react';
 
 import { useClass, useMount, useUpdateOnly } from '@rounik/react-custom-hooks';
 
@@ -22,6 +22,8 @@ export const Animator: FC<AnimatorProps> = memo(
       exiting: false
     });
 
+    const isAnimating = useRef(false);
+
     useMount(() => {
       setState({
         content: children,
@@ -30,18 +32,26 @@ export const Animator: FC<AnimatorProps> = memo(
     });
 
     useUpdateOnly(() => {
-      setState((prevState) =>
-        shouldAnimate(prevState.content, children)
-          ? { ...prevState, exiting: true }
-          : { content: children, exiting: false }
-      );
+      setState((prevState) => {
+        if (shouldAnimate(prevState.content, children) && !isAnimating.current) {
+          isAnimating.current = true;
+
+          return { ...prevState, exiting: true };
+        }
+
+        return prevState;
+      });
     }, [children]);
 
     const setNewChildren = useCallback(() => {
-      setState({
-        content: children,
-        exiting: false
-      });
+      if (isAnimating.current) {
+        isAnimating.current = false;
+
+        setState({
+          content: children,
+          exiting: false
+        });
+      }
     }, [children]);
 
     return (

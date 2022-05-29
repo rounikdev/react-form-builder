@@ -3,6 +3,7 @@ import { ChangeEvent, FocusEvent, FocusEventHandler, MouseEvent, Provider, RefOb
 import { FormStateEntryValue, UseFieldConfig, ValidationError } from '../../../Form';
 
 export interface DatepickerState {
+  focusedDate: string;
   input: string | null;
   month: number;
   selected?: Date;
@@ -29,6 +30,7 @@ export interface DatepickerContext {
   errors: ValidationError[];
   focusCalendar: () => void;
   focused: boolean;
+  hide: () => void;
   maxDate?: Date;
   minDate?: Date;
   monthName: string;
@@ -36,8 +38,10 @@ export interface DatepickerContext {
   inputChangeHandler: (event: ChangeEvent) => void;
   onBlurHandler: FocusEventHandler<HTMLElement>;
   onFocusHandler: FocusEventHandler<HTMLElement>;
+  openButtonRef: RefObject<HTMLButtonElement>;
   Provider: Provider<DatepickerContext>;
   selectDate: (date: Date) => void;
+  setFocusedDate: (focusedDate: string) => void;
   state: DatepickerState;
   toggle: (event: MouseEvent) => void;
   touched: boolean;

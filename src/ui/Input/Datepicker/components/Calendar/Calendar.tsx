@@ -10,9 +10,8 @@ import { WeekList } from '../WeekList/WeekList';
 import styles from './Calendar.scss';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const shouldAnimate = (currentChildren: any, newChildren: any) => {
-  return currentChildren?.key !== newChildren?.key;
-};
+const shouldAnimate = (currentChildren: any, newChildren: any) =>
+  currentChildren?.key !== newChildren?.key;
 
 export const Calendar: FC = memo(() => {
   const { calendarRef, onBlurHandler, onFocusHandler, state } = useDatepickerContext();
@@ -51,7 +50,7 @@ export const Calendar: FC = memo(() => {
           tag="tbody"
         >
           {/* 'key' helps in deciding when to animate */}
-          <WeekList key={state.month + state.year} />
+          <WeekList key={`${state.month}.${state.year}`} />
         </Animator>
       </table>
     </div>

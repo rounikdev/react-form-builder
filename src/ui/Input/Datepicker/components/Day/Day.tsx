@@ -12,7 +12,7 @@ interface DayProps {
 }
 
 export const Day: FC<DayProps> = memo(({ date, isOtherMonth }) => {
-  const { maxDate, minDate, selectDate, state, value } = useDatepickerContext();
+  const { maxDate, minDate, selectDate, setFocusedDate, state, value } = useDatepickerContext();
 
   const elementRef = useRef<HTMLButtonElement>(null);
 
@@ -30,15 +30,42 @@ export const Day: FC<DayProps> = memo(({ date, isOtherMonth }) => {
 
   const isToday = areSameDay(date, state.today);
 
+  const isFocused = `${date.getTime()}` === state.focusedDate;
+
   useUpdate(() => {
-    if (isSelected) {
-      return elementRef.current?.focus();
+    if (isSelected && !state.focusedDate) {
+      setFocusedDate(`${date.getTime()}`);
+
+      return elementRef.current?.focus({
+        // This prevents visual glitch
+        // causing controls and table head
+        // to move too:
+        preventScroll: true
+      });
     }
 
-    if (!value && isToday) {
-      return elementRef.current?.focus();
+    if (!value && isToday && !state.focusedDate) {
+      setFocusedDate(`${date.getTime()}`);
+
+      return elementRef.current?.focus({
+        // This prevents visual glitch
+        // causing controls and table head
+        // to move too:
+        preventScroll: true
+      });
     }
   }, [isSelected, isToday, value]);
+
+  useUpdate(() => {
+    if (isFocused) {
+      elementRef.current?.focus({
+        // This prevents visual glitch
+        // causing controls and table head
+        // to move too:
+        preventScroll: true
+      });
+    }
+  }, [isFocused]);
 
   return (
     <td
@@ -48,13 +75,15 @@ export const Day: FC<DayProps> = memo(({ date, isOtherMonth }) => {
           isOtherMonth && styles.FromOtherMonth,
           !selectable && styles.NotSelectable,
           isSelected && styles.Selected,
-          isToday && styles.Today
+          isToday && styles.Today,
+          isFocused && styles.Focused
         ],
-        [isOtherMonth, isSelected, isToday, selectable]
+        [isFocused, isOtherMonth, isSelected, isToday, selectable]
       )}
     >
       <button
         aria-current={areSameDay(date, state.today) ? 'date' : 'false'}
+        aria-disabled={!selectable}
         aria-label={date.toLocaleDateString(window.navigator.language, {
           day: 'numeric',
           month: 'long',
@@ -72,7 +101,7 @@ export const Day: FC<DayProps> = memo(({ date, isOtherMonth }) => {
           }
         }}
         ref={elementRef}
-        tabIndex={0}
+        tabIndex={-1}
       >
         {date.getDate()}
       </button>

@@ -23,6 +23,9 @@ export const datepickerContext = createContext<DatepickerContext>({
     // default implementation
   },
   focused: false,
+  hide: () => {
+    // default implementation
+  },
   maxDate: undefined,
   minDate: undefined,
   monthName: '',
@@ -38,11 +41,16 @@ export const datepickerContext = createContext<DatepickerContext>({
   onFocusHandler: () => {
     // default implementation
   },
+  openButtonRef: { current: null },
   Provider: {} as Provider<DatepickerContext>,
   selectDate: () => {
     // default implementation
   },
+  setFocusedDate: () => {
+    // default implementation
+  },
   state: {
+    focusedDate: '',
     input: null,
     month: new Date().getMonth(),
     today: new Date(),

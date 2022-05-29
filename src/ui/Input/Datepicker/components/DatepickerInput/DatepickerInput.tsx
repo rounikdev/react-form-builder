@@ -14,8 +14,15 @@ interface DatepickerInputProps {
 }
 
 export const DatepickerInput: FC<DatepickerInputProps> = memo(({ id, placeholder = '' }) => {
-  const { dateInput, inputBlurHandler, inputChangeHandler, onFocusHandler, state, toggle } =
-    useDatepickerContext();
+  const {
+    dateInput,
+    inputBlurHandler,
+    inputChangeHandler,
+    onFocusHandler,
+    openButtonRef,
+    state,
+    toggle
+  } = useDatepickerContext();
 
   const { translate } = useTranslation();
 
@@ -38,7 +45,9 @@ export const DatepickerInput: FC<DatepickerInputProps> = memo(({ id, placeholder
         label={translate('chooseDate') as string}
         expanded={state.show}
         onClick={toggle}
+        onFocus={onFocusHandler}
         icon={<IconCalendar action />}
+        ref={openButtonRef}
       />
     </div>
   );

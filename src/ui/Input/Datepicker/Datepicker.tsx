@@ -1,4 +1,4 @@
-import { FC, memo, ReactNode, useMemo } from 'react';
+import { FC, memo, ReactNode, useCallback, useMemo } from 'react';
 
 import { useClass } from '@rounik/react-custom-hooks';
 
@@ -49,10 +49,21 @@ export const Datepicker: FC<DatepickerProps> = memo(
       [context.focused, context.touched, context.valid]
     );
 
+    const containerOnBlurHandler = useCallback((event) => {
+      if (
+        event.relatedTarget === null ||
+        !context.containerRef.current?.contains(event.relatedTarget)
+      ) {
+        context.hide();
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
       <Provider value={context}>
         <div
           className={useClass([styles.Container, className], [className])}
+          onBlur={containerOnBlurHandler}
           ref={context.containerRef}
         >
           <label className={styles.Label} htmlFor={id}>

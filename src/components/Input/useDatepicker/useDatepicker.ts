@@ -1,6 +1,11 @@
 import { FocusEvent, useCallback, useMemo, useRef, useState } from 'react';
 
-import { useOnOutsideClick, useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
+import {
+  useKeyboardEvent,
+  useOnOutsideClick,
+  useUpdate,
+  useUpdateOnly
+} from '@rounik/react-custom-hooks';
 
 import { useField } from '../../Form';
 import { useFormRoot } from '../../Form/providers';
@@ -65,6 +70,7 @@ export const useDatepicker = ({
   );
 
   const [state, setState] = useState<DatepickerState>({
+    focusedDate: '',
     input: null,
     month: new Date().getMonth(),
     today: new Date(),
@@ -77,6 +83,8 @@ export const useDatepicker = ({
   const calendarRef = useRef<HTMLDivElement>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const openButtonRef = useRef<HTMLButtonElement>(null);
 
   const dateInput = useMemo(() => {
     let dateInputValue = state.input || '';
@@ -111,6 +119,13 @@ export const useDatepicker = ({
     [onBlurHandler]
   );
 
+  const setFocusedDate = useCallback((focusedDate: string) => {
+    setState((currentState) => ({
+      ...currentState,
+      focusedDate
+    }));
+  }, []);
+
   // Will work for 'Math.abs(month) === 1`
   const changeMonth = useCallback(
     (months) => {
@@ -129,6 +144,7 @@ export const useDatepicker = ({
 
       setState((currentState) => ({
         ...currentState,
+        focusedDate: '',
         month: newMonth,
         toLeft: months < 0,
         year: newYear
@@ -169,6 +185,7 @@ export const useDatepicker = ({
 
         setState((currentState) => ({
           ...currentState,
+          focusedDate: '',
           show: false,
           input: formatDateInput(date)
         }));
@@ -214,6 +231,7 @@ export const useDatepicker = ({
   const inputChangeHandler = useCallback(({ target: { value: inputValue } }) => {
     setState((currentState) => ({
       ...currentState,
+      focusedDate: '',
       input: inputValue,
       show: false
     }));
@@ -247,12 +265,101 @@ export const useDatepicker = ({
     if (state.show) {
       setState((currentState) => ({
         ...currentState,
+        focusedDate: '',
         show: false
       }));
     }
   }, [state.show]);
 
   useOnOutsideClick({ callback: hide, element: containerRef });
+
+  useKeyboardEvent({
+    eventType: 'keyup',
+    handler: (event) => {
+      if (state.show) {
+        let newFocusedDate = 0;
+
+        let date = new Date();
+
+        if (
+          state.focusedDate === '' &&
+          ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.code)
+        ) {
+          newFocusedDate = weeks[0][0].getTime();
+
+          setFocusedDate(`${newFocusedDate}`);
+
+          return;
+        }
+
+        switch (event.code) {
+          case 'Tab':
+            setFocusedDate('');
+
+            break;
+
+          case 'Escape':
+            hide();
+
+            openButtonRef?.current?.focus();
+
+            break;
+
+          case 'ArrowRight':
+            date = new Date(parseInt(state.focusedDate, 10));
+            date.setDate(date.getDate() + 1);
+            newFocusedDate = date.getTime();
+
+            if (newFocusedDate > weeks[weeks.length - 1][6].getTime()) {
+              changeMonth(1);
+            }
+
+            setFocusedDate(`${newFocusedDate}`);
+
+            break;
+
+          case 'ArrowLeft':
+            date = new Date(parseInt(state.focusedDate, 10));
+            date.setDate(date.getDate() - 1);
+            newFocusedDate = date.getTime();
+
+            if (newFocusedDate < weeks[0][0].getTime()) {
+              changeMonth(-1);
+            }
+
+            setFocusedDate(`${newFocusedDate}`);
+
+            break;
+
+          case 'ArrowDown':
+            date = new Date(parseInt(state.focusedDate, 10));
+            date.setDate(date.getDate() + 7);
+            newFocusedDate = date.getTime();
+
+            if (newFocusedDate > weeks[weeks.length - 1][6].getTime()) {
+              changeMonth(1);
+            }
+
+            setFocusedDate(`${newFocusedDate}`);
+
+            break;
+
+          case 'ArrowUp':
+            date = new Date(parseInt(state.focusedDate, 10));
+            date.setDate(date.getDate() - 7);
+            newFocusedDate = date.getTime();
+
+            if (newFocusedDate < weeks[0][0].getTime()) {
+              changeMonth(-1);
+            }
+
+            setFocusedDate(`${newFocusedDate}`);
+
+            break;
+        }
+      }
+    }
+  });
 
   useUpdate(() => {
     const selected = value || null;
@@ -312,6 +419,7 @@ export const useDatepicker = ({
       errors,
       focusCalendar,
       focused,
+      hide,
       maxDate,
       minDate,
       monthName,
@@ -319,8 +427,10 @@ export const useDatepicker = ({
       inputChangeHandler,
       onBlurHandler,
       onFocusHandler,
+      openButtonRef,
       Provider: datepickerContext.Provider,
       selectDate,
+      setFocusedDate,
       state,
       toggle,
       touched,
@@ -338,6 +448,7 @@ export const useDatepicker = ({
       errors,
       focusCalendar,
       focused,
+      hide,
       inputBlurHandler,
       inputChangeHandler,
       maxDate,
@@ -345,7 +456,9 @@ export const useDatepicker = ({
       monthName,
       onBlurHandler,
       onFocusHandler,
+      openButtonRef,
       selectDate,
+      setFocusedDate,
       state,
       toggle,
       touched,
