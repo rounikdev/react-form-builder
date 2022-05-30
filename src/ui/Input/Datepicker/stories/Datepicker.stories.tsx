@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, StrictMode } from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { FormRoot } from '@components';
@@ -14,37 +14,39 @@ export default {
 } as ComponentMeta<typeof Datepicker>;
 
 const Template: ComponentStory<FC> = () => (
-  <FormRoot dataTest="form-with-datepicker">
-    <div className={styles.DatepickersContainer}>
-      <Datepicker
-        dataTest="from"
-        id="from"
-        label="from"
-        name="from"
-        required
-        validator={ValidatorModel.requiredValidator}
-      />
-      <Datepicker
-        dataTest="between"
-        id="between"
-        label="between"
-        name="between"
-        minDateExtractor={(formValue) => formValue?.from}
-        maxDateExtractor={(formValue) => formValue?.to}
-        required
-        validator={ValidatorModel.requiredValidator}
-        useEndOfDay
-      />
-      <Datepicker
-        dataTest="to"
-        id="to"
-        label="to"
-        name="to"
-        minDateExtractor={(formValue) => formValue?.from}
-        useEndOfDay
-      />
-    </div>
-  </FormRoot>
+  <StrictMode>
+    <FormRoot dataTest="form-with-datepicker">
+      <div className={styles.DatepickersContainer}>
+        <Datepicker
+          dataTest="from"
+          id="from"
+          label="from"
+          name="from"
+          required
+          validator={ValidatorModel.requiredValidator}
+        />
+        <Datepicker
+          dataTest="between"
+          id="between"
+          label="between"
+          name="between"
+          minDateExtractor={(formValue) => formValue?.from}
+          maxDateExtractor={(formValue) => formValue?.to}
+          required
+          validator={ValidatorModel.requiredValidator}
+          useEndOfDay
+        />
+        <Datepicker
+          dataTest="to"
+          id="to"
+          label="to"
+          name="to"
+          minDateExtractor={(formValue) => formValue?.from}
+          useEndOfDay
+        />
+      </div>
+    </FormRoot>
+  </StrictMode>
 );
 
 export const DatepickerDemo = Template.bind({});
