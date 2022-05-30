@@ -96,7 +96,7 @@ export const Day: FC<DayProps> = memo(({ date, isOtherMonth }) => {
         key={date.getTime()}
         {...(selectable ? { onClick: () => selectDate(date) } : {})}
         onKeyDown={({ code }) => {
-          if ((selectable && code === 'Enter') || code === 'Space') {
+          if (selectable && (code === 'Enter' || code === 'Space')) {
             selectDate(date);
           }
         }}
