@@ -19,6 +19,7 @@ const shouldAnimate = (currentChildren: ReactNode, newChildren: ReactNode) =>
 export const Datepicker: FC<DatepickerProps> = memo(
   ({
     className,
+    dataTest,
     dependencyExtractor,
     initialValue,
     id,
@@ -64,14 +65,15 @@ export const Datepicker: FC<DatepickerProps> = memo(
       <Provider value={context}>
         <div
           className={useClass([styles.Container, className], [className])}
+          data-test={`${dataTest}-datepicker-container`}
           onBlur={containerOnBlurHandler}
           ref={context.containerRef}
         >
-          <label className={styles.Label} htmlFor={id}>
+          <label className={styles.Label} data-test={`${dataTest}-datepicker-label`} htmlFor={id}>
             {translate(label)}
             <span className={styles.Required}>{required ? translate('required') : null}</span>
           </label>
-          <DatepickerInput id={id} placeholder={placeholder} />
+          <DatepickerInput dataTest={dataTest} id={id} placeholder={placeholder} />
           <Animator
             enterClass={styles.CalendarEnter}
             exitClass={styles.CalendarExit}
@@ -79,7 +81,7 @@ export const Datepicker: FC<DatepickerProps> = memo(
           >
             {context.state.show ? (
               <TabTrap active={context.state.show}>
-                <Calendar />
+                <Calendar dataTest={dataTest} />
               </TabTrap>
             ) : null}
           </Animator>

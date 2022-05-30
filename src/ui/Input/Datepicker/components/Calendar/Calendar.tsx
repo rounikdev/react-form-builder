@@ -2,6 +2,8 @@ import { FC, memo } from 'react';
 
 import { dayNames, useDatepickerContext, useTranslation } from '@components';
 
+import { Testable } from '../../../../../types';
+
 import { Animator } from '../../../../Animator';
 
 import { Controls } from '../Controls/Controls';
@@ -9,11 +11,13 @@ import { WeekList } from '../WeekList/WeekList';
 
 import styles from './Calendar.scss';
 
+type CalendarProps = Testable;
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const shouldAnimate = (currentChildren: any, newChildren: any) =>
   currentChildren?.key !== newChildren?.key;
 
-export const Calendar: FC = memo(() => {
+export const Calendar: FC<CalendarProps> = memo(({ dataTest }) => {
   const { calendarRef, onBlurHandler, onFocusHandler, state } = useDatepickerContext();
 
   const { translate } = useTranslation();
@@ -29,7 +33,7 @@ export const Calendar: FC = memo(() => {
       role="dialog"
       tabIndex={0}
     >
-      <Controls />
+      <Controls dataTest={dataTest} />
       <table role="grid">
         <thead>
           <tr className={styles.Weekdays}>
@@ -50,7 +54,7 @@ export const Calendar: FC = memo(() => {
           tag="tbody"
         >
           {/* 'key' helps in deciding when to animate */}
-          <WeekList key={`${state.month}.${state.year}`} />
+          <WeekList dataTest={dataTest} key={`${state.month}.${state.year}`} />
         </Animator>
       </table>
     </div>

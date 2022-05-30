@@ -1,8 +1,8 @@
 import { FocusEventHandler, forwardRef, memo, MouseEvent, ReactNode } from 'react';
 
-import { Stylable } from '../../../../../types';
+import { Stylable, Testable } from '../../../../../types';
 
-interface DatepickerControlProps extends Stylable {
+interface DatepickerControlProps extends Stylable, Testable {
   describedBy?: string;
   expanded?: boolean;
   icon?: ReactNode;
@@ -17,6 +17,7 @@ export const Control = memo(
     (
       {
         className,
+        dataTest,
         describedBy,
         expanded,
         icon,
@@ -34,6 +35,7 @@ export const Control = memo(
           aria-expanded={expanded}
           aria-label={label}
           className={className}
+          data-test={dataTest}
           onClick={onClick}
           onFocus={onFocus}
           ref={ref}

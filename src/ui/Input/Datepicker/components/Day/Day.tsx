@@ -4,14 +4,16 @@ import { useClass, useUpdate } from '@rounik/react-custom-hooks';
 
 import { areSameDay, canBeSelected, useDatepickerContext } from '@components';
 
+import { Testable } from '../../../../../types';
+
 import styles from './Day.scss';
 
-interface DayProps {
+interface DayProps extends Testable {
   date: Date;
   isOtherMonth?: boolean;
 }
 
-export const Day: FC<DayProps> = memo(({ date, isOtherMonth }) => {
+export const Day: FC<DayProps> = memo(({ dataTest, date, isOtherMonth }) => {
   const { maxDate, minDate, selectDate, setFocusedDate, state, value } = useDatepickerContext();
 
   const elementRef = useRef<HTMLButtonElement>(null);
@@ -92,6 +94,7 @@ export const Day: FC<DayProps> = memo(({ date, isOtherMonth }) => {
         {...(isSelected ? { 'aria-selected': true } : {})}
         className={styles.Button}
         data-date={date.toLocaleDateString()}
+        data-test={`${dataTest}-datepicker-day-${date.toLocaleDateString()}`}
         disabled={!selectable}
         key={date.getTime()}
         {...(selectable ? { onClick: () => selectDate(date) } : {})}

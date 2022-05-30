@@ -2,11 +2,15 @@ import { FC, memo } from 'react';
 
 import { useDatepickerContext } from '@components';
 
+import { Testable } from '../../../../../types';
+
 import { Day } from '../Day/Day';
 
 import styles from './WeekList.scss';
 
-export const WeekList: FC = memo(() => {
+type WeekListProps = Testable;
+
+export const WeekList: FC<WeekListProps> = memo(({ dataTest }) => {
   const { state, weeks } = useDatepickerContext();
 
   const weeksJSX: JSX.Element[] = [];
@@ -17,6 +21,7 @@ export const WeekList: FC = memo(() => {
     for (let j = 0; j < weeks[i].length; j++) {
       week.push(
         <Day
+          dataTest={dataTest}
           date={weeks[i][j]}
           isOtherMonth={weeks[i][j]?.getMonth() !== state.month}
           key={i + j}
@@ -25,7 +30,7 @@ export const WeekList: FC = memo(() => {
     }
 
     weeksJSX.push(
-      <tr className={styles.Week} key={i}>
+      <tr className={styles.Week} data-test={`${dataTest}-datepicker-week-${i}`} key={i}>
         {week}
       </tr>
     );

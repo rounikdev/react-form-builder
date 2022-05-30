@@ -2,6 +2,8 @@ import { FC, memo, Ref } from 'react';
 
 import { useDatepickerContext, useTranslation } from '@components';
 
+import { Testable } from '../../../../../types';
+
 import { IconChevronLeft, IconChevronRight } from '../../../../icons';
 import { useTabTrap } from '../../../../TabTrap';
 
@@ -9,7 +11,9 @@ import { Control } from '../Control/Control';
 
 import styles from './Controls.scss';
 
-export const Controls: FC = memo(() => {
+type ControlsProps = Testable;
+
+export const Controls: FC<ControlsProps> = memo(({ dataTest }) => {
   const { changeMonth, changeYear, monthName, state } = useDatepickerContext();
 
   const { translate } = useTranslation();
@@ -23,29 +27,33 @@ export const Controls: FC = memo(() => {
           {`${translate(`months.${monthName}`)} ${state.year}`}
         </h2>
         <Control
-          onClick={() => changeMonth(-1)}
+          dataTest={`${dataTest}-datepicker-previous-month`}
           icon={<IconChevronLeft action />}
           label={translate('previousMonth') as string}
+          onClick={() => changeMonth(-1)}
           ref={firstTabFocusableRef as Ref<HTMLButtonElement>}
         />
         <span className={styles.Month}>{translate(`months.${monthName}`)}</span>
         <Control
-          onClick={() => changeMonth(1)}
+          dataTest={`${dataTest}-datepicker-next-month`}
           icon={<IconChevronRight action />}
           label={translate('nextMonth') as string}
+          onClick={() => changeMonth(1)}
         />
       </div>
       <div className={styles.ControlGroup}>
         <Control
-          onClick={() => changeYear(-1)}
+          dataTest={`${dataTest}-datepicker-previous-year`}
           icon={<IconChevronLeft action />}
           label={translate('previousYear') as string}
+          onClick={() => changeYear(-1)}
         />
         <span className={styles.Year}>{state.year}</span>
         <Control
-          onClick={() => changeYear(1)}
+          dataTest={`${dataTest}-datepicker-next-year`}
           icon={<IconChevronRight action />}
           label={translate('nextYear') as string}
+          onClick={() => changeYear(1)}
           ref={lastTabFocusableRef as Ref<HTMLButtonElement>}
         />
       </div>
