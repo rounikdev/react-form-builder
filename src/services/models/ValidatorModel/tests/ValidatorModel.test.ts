@@ -3,10 +3,7 @@ import { ValidatorModel } from '../ValidatorModel';
 const requiredValidationTestCases = [
   {
     expected: { errors: [{ text: 'requiredField' }], valid: false },
-    value: ''
-  },
-  {
-    expected: { errors: [{ text: 'requiredField' }], valid: false },
+    validator: ValidatorModel.createRequiredValidator(),
     value: false
   },
   {
@@ -297,8 +294,18 @@ describe('ValidatorModel', () => {
   it('createRequiredValidator', () => {
     const requiredValidator = ValidatorModel.createRequiredValidator('requiredField');
 
-    requiredValidationTestCases.forEach((testCase) => {
-      const validityCheck = requiredValidator(testCase.value);
+    ValidatorModel.createRequiredValidator();
+
+    [
+      ...requiredValidationTestCases,
+      {
+        expected: { errors: [{ text: 'requiredCreditCard' }], valid: false },
+        validator: ValidatorModel.createRequiredValidator('requiredCreditCard'),
+        value: ''
+      }
+    ].forEach((testCase) => {
+      const validator = testCase.validator || requiredValidator;
+      const validityCheck = validator(testCase.value);
 
       expect(validityCheck).toEqual(testCase.expected);
     });
@@ -417,6 +424,52 @@ describe('ValidatorModel', () => {
       )(testCase.value);
 
       expect(validityCheck).toEqual(testCase.expected);
+    });
+  });
+
+  it('creditCardValidator', () => {
+    const testCases = [
+      {
+        expected: { errors: [], valid: true },
+        value: '0012  2344  2323  0023'
+      },
+      {
+        expected: { errors: [], valid: true },
+        value: ''
+      },
+      {
+        expected: { errors: [{ text: 'invalidCreditCard' }], valid: false },
+        value: 'a'
+      }
+    ];
+
+    testCases.forEach(({ expected, value }) => {
+      expect(ValidatorModel.creditCardValidator(value)).toEqual(expected);
+    });
+  });
+
+  it('monthYearValidator', () => {
+    const testCases = [
+      {
+        expected: { errors: [], valid: true },
+        value: '11 / 18'
+      },
+      {
+        expected: { errors: [], valid: true },
+        value: ''
+      },
+      {
+        expected: { errors: [{ text: 'invalidMonthYear' }], valid: false },
+        value: '13 / 18'
+      },
+      {
+        expected: { errors: [{ text: 'invalidMonthYear' }], valid: false },
+        value: 'a'
+      }
+    ];
+
+    testCases.forEach(({ expected, value }) => {
+      expect(ValidatorModel.monthYearValidator(value)).toEqual(expected);
     });
   });
 });

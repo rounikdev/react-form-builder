@@ -227,7 +227,7 @@ describe('FormatterModel', () => {
       { input: '-f4.0', expect: '-4.0' },
       { input: '-1.1', expect: '-1.1' },
       { input: '-f4', expect: '-4' },
-      { input: '-f4-5', expect: '-4-5' }
+      { input: '-f4-5', expect: '-45' }
     ];
 
     negativeTestCases.forEach((item) =>

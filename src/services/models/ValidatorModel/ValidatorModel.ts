@@ -158,7 +158,7 @@ export class ValidatorModel {
     return validityCheck;
   };
 
-  static createRequiredValidator = (message = ''): Validator<unknown> => {
+  static createRequiredValidator = (message = 'requiredField'): Validator<unknown> => {
     return (value: unknown) => {
       return !!value
         ? {
@@ -225,7 +225,7 @@ export class ValidatorModel {
       };
     } else {
       validityCheck = {
-        errors: [{ text: 'Invalid Credit Card' }],
+        errors: [{ text: 'invalidCreditCard' }],
         valid: false
       };
     }
@@ -246,7 +246,7 @@ export class ValidatorModel {
       };
     } else {
       validityCheck = {
-        errors: [{ text: 'Invalid Month / Year' }],
+        errors: [{ text: 'invalidMonthYear' }],
         valid: false
       };
     }
