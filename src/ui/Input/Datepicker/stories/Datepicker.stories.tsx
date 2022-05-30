@@ -31,6 +31,8 @@ const Template: ComponentStory<FC> = () => (
         name="between"
         minDateExtractor={(formValue) => formValue?.from}
         maxDateExtractor={(formValue) => formValue?.to}
+        required
+        validator={ValidatorModel.requiredValidator}
         useEndOfDay
       />
       <Datepicker

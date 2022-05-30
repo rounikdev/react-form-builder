@@ -1,8 +1,9 @@
-import { FC, memo } from 'react';
+import { FC, memo, Ref } from 'react';
 
 import { useDatepickerContext, useTranslation } from '@components';
 
 import { IconChevronLeft, IconChevronRight } from '../../../../icons';
+import { useTabTrap } from '../../../../TabTrap';
 
 import { Control } from '../Control/Control';
 
@@ -12,6 +13,8 @@ export const Controls: FC = memo(() => {
   const { changeMonth, changeYear, monthName, state } = useDatepickerContext();
 
   const { translate } = useTranslation();
+
+  const { firstTabFocusableRef, lastTabFocusableRef } = useTabTrap();
 
   return (
     <>
@@ -23,6 +26,7 @@ export const Controls: FC = memo(() => {
           onClick={() => changeMonth(-1)}
           icon={<IconChevronLeft action />}
           label={translate('previousMonth') as string}
+          ref={firstTabFocusableRef as Ref<HTMLButtonElement>}
         />
         <span className={styles.Month}>{translate(`months.${monthName}`)}</span>
         <Control
@@ -42,6 +46,7 @@ export const Controls: FC = memo(() => {
           onClick={() => changeYear(1)}
           icon={<IconChevronRight action />}
           label={translate('nextYear') as string}
+          ref={lastTabFocusableRef as Ref<HTMLButtonElement>}
         />
       </div>
     </>

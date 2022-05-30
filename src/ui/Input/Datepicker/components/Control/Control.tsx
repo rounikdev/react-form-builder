@@ -1,12 +1,4 @@
-import {
-  FocusEventHandler,
-  forwardRef,
-  ForwardRefExoticComponent,
-  memo,
-  MouseEvent,
-  ReactNode,
-  RefAttributes
-} from 'react';
+import { FocusEventHandler, forwardRef, memo, MouseEvent, ReactNode } from 'react';
 
 import { Stylable } from '../../../../../types';
 
@@ -20,9 +12,7 @@ interface DatepickerControlProps extends Stylable {
   tabIndex?: number;
 }
 
-export const Control: ForwardRefExoticComponent<
-  DatepickerControlProps & RefAttributes<HTMLButtonElement>
-> = memo(
+export const Control = memo(
   forwardRef<HTMLButtonElement, DatepickerControlProps>(
     (
       {

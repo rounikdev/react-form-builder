@@ -6,6 +6,7 @@ import { useDatepicker, useTranslation } from '@components';
 
 import { Animator } from '../../Animator';
 import { ErrorField } from '../../ErrorField/ErrorField';
+import { TabTrap } from '../../TabTrap';
 
 import { Calendar, DatepickerInput } from './components';
 import { DatepickerProps } from './types';
@@ -76,7 +77,11 @@ export const Datepicker: FC<DatepickerProps> = memo(
             exitClass={styles.CalendarExit}
             shouldAnimate={shouldAnimate}
           >
-            {context.state.show ? <Calendar /> : null}
+            {context.state.show ? (
+              <TabTrap active={context.state.show}>
+                <Calendar />
+              </TabTrap>
+            ) : null}
           </Animator>
           <ErrorField errors={context.errors} isError={isError} />
         </div>

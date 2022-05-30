@@ -6,4 +6,5 @@ export * from './icons';
 export * from './Image/Image';
 export * from './Input';
 export * from './Mask/Mask';
+export * from './TabTrap';
 export * from './TextInput/TextInput';
