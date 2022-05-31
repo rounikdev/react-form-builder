@@ -27,7 +27,7 @@ export const Datepicker: FC<DatepickerProps> = memo(
     maxDateExtractor,
     minDateExtractor,
     name,
-    placeholder = '',
+    placeholder,
     required,
     sideEffect,
     useEndOfDay,

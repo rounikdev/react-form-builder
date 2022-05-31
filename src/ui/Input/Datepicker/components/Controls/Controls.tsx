@@ -33,7 +33,9 @@ export const Controls: FC<ControlsProps> = memo(({ dataTest }) => {
           onClick={() => changeMonth(-1)}
           ref={firstTabFocusableRef as Ref<HTMLButtonElement>}
         />
-        <span className={styles.Month}>{translate(`months.${monthName}`)}</span>
+        <span className={styles.Month} data-test={`${dataTest}-datepicker-month`}>
+          {translate(`months.${monthName}`)}
+        </span>
         <Control
           dataTest={`${dataTest}-datepicker-next-month`}
           icon={<IconChevronRight action />}
@@ -48,7 +50,9 @@ export const Controls: FC<ControlsProps> = memo(({ dataTest }) => {
           label={translate('previousYear') as string}
           onClick={() => changeYear(-1)}
         />
-        <span className={styles.Year}>{state.year}</span>
+        <span className={styles.Year} data-test={`${dataTest}-datepicker-year`}>
+          {state.year}
+        </span>
         <Control
           dataTest={`${dataTest}-datepicker-next-year`}
           icon={<IconChevronRight action />}

@@ -27,6 +27,7 @@ export const Calendar: FC<CalendarProps> = memo(({ dataTest }) => {
       aria-label={translate('chooseDate') as string}
       aria-modal={true}
       className={styles.Container}
+      data-test={`${dataTest}-datepicker-calendar`}
       onBlur={onBlurHandler}
       onFocus={onFocusHandler}
       ref={calendarRef}
