@@ -108,13 +108,9 @@ export const useDatepicker = ({
 
   const blurCalendar = useCallback(
     (event) => {
-      if (onBlurHandler) {
-        onBlurHandler(event);
-      }
+      onBlurHandler(event);
 
-      if (calendarRef.current) {
-        calendarRef.current.blur();
-      }
+      calendarRef.current?.blur();
     },
     [onBlurHandler]
   );
@@ -221,9 +217,7 @@ export const useDatepicker = ({
         clearInput();
       }
 
-      if (onBlurHandler) {
-        onBlurHandler(event);
-      }
+      onBlurHandler(event);
     },
     [clearInput, maxDate, minDate, onBlurHandler, selectDate, useEndOfDay]
   );

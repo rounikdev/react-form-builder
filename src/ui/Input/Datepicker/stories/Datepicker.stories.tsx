@@ -28,7 +28,6 @@ const Template: ComponentStory<FC> = () => (
         <Datepicker
           dataTest="between"
           id="between"
-          label="between"
           name="between"
           minDateExtractor={(formValue) => formValue?.from}
           maxDateExtractor={(formValue) => formValue?.to}

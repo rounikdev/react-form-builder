@@ -1,4 +1,4 @@
-import { FC, memo, useMemo, useRef } from 'react';
+import { FC, memo, useCallback, useMemo, useRef } from 'react';
 
 import { useClass, useUpdate } from '@rounik/react-custom-hooks';
 
@@ -28,12 +28,23 @@ export const Day: FC<DayProps> = memo(({ dataTest, date, isOtherMonth }) => {
     [date, maxDate, minDate]
   );
 
-  const isSelected = value && areSameDay(date, value);
+  const isSelected = useMemo(() => value && areSameDay(date, value), [date, value]);
 
-  const isToday = areSameDay(date, state.today);
+  const isToday = useMemo(() => areSameDay(date, state.today), [date, state.today]);
 
-  const isFocused = `${date.getTime()}` === state.focusedDate;
+  const isFocused = useMemo(
+    () => `${date.getTime()}` === state.focusedDate,
+    [date, state.focusedDate]
+  );
 
+  const onKeyDownHandler = useCallback(
+    ({ code }) => {
+      if (code === 'Enter' || code === 'Space') {
+        selectDate(date);
+      }
+    },
+    [date, selectDate]
+  );
   useUpdate(() => {
     if (isSelected && !state.focusedDate) {
       setFocusedDate(`${date.getTime()}`);
@@ -97,12 +108,8 @@ export const Day: FC<DayProps> = memo(({ dataTest, date, isOtherMonth }) => {
         data-test={`${dataTest}-datepicker-day-${date.toLocaleDateString()}`}
         disabled={!selectable}
         key={date.getTime()}
-        {...(selectable ? { onClick: () => selectDate(date) } : {})}
-        onKeyDown={({ code }) => {
-          if (selectable && (code === 'Enter' || code === 'Space')) {
-            selectDate(date);
-          }
-        }}
+        onClick={useCallback(() => selectDate(date), [date, selectDate])}
+        onKeyDown={onKeyDownHandler}
         ref={elementRef}
         tabIndex={-1}
       >
