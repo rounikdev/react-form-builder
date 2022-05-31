@@ -1,5 +1,9 @@
-import { ChangeEvent, FocusEvent, MouseEvent } from 'react';
+import { ChangeEvent, FC, FocusEvent, MouseEvent } from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
+
+import { useMount } from '@rounik/react-custom-hooks';
+
+import { testRender } from '@services/utils';
 
 import { monthNames } from '../constants';
 import {
@@ -11,6 +15,24 @@ import {
   validateDateInput
 } from '../helpers';
 import { useDatepicker } from '../useDatepicker';
+
+interface TestComponentProps {
+  initialValue?: Date;
+  name: string;
+  openOnMount?: boolean;
+}
+
+const TestComponent: FC<TestComponentProps> = ({ initialValue, name, openOnMount }) => {
+  const { context } = useDatepicker({ initialValue, name });
+
+  useMount(() => {
+    if (openOnMount) {
+      context.toggle({ preventDefault: () => {} } as unknown as MouseEvent);
+    }
+  });
+
+  return <div data-test="context-state">{JSON.stringify(context.state)}</div>;
+};
 
 const today = new Date('1 Jan 2022');
 
@@ -548,5 +570,82 @@ describe('useDatepicker', () => {
     });
 
     expect(result.current.context.dateInput).toBe('');
+  });
+
+  it('useDatepicker - handle keyup events on the document', () => {
+    const map: { [key: string]: EventListenerOrEventListenerObject } = {};
+
+    document.addEventListener = jest.fn((e, cb) => {
+      map[e] = cb;
+    });
+
+    const keyup = (code: string) => {
+      act(() => {
+        (map.keyup as EventListener)({ code } as unknown as Event);
+      });
+    };
+
+    const initialValue = new Date('2 Jan 2020');
+
+    const { getByDataTest } = testRender(
+      <TestComponent initialValue={initialValue} name="from" openOnMount />
+    );
+
+    const focusedDateShouldBe = (expected: string) => {
+      const state = JSON.parse(getByDataTest('context-state').textContent ?? '');
+      expect(state.focusedDate).toBe(expected);
+    };
+
+    keyup('Tab');
+    focusedDateShouldBe('');
+
+    keyup('ArrowRight');
+    // Because state.focusedDate is ''
+    // Here we set the focusedDate to the
+    // first date in the calendar:
+    focusedDateShouldBe(`${new Date('30 Dec 2019').getTime()}`);
+
+    keyup('ArrowRight');
+    focusedDateShouldBe(`${new Date('31 Dec 2019').getTime()}`);
+
+    keyup('ArrowLeft');
+    focusedDateShouldBe(`${new Date('30 Dec 2019').getTime()}`);
+
+    keyup('ArrowLeft');
+    focusedDateShouldBe(`${new Date('29 Dec 2019').getTime()}`);
+
+    keyup('ArrowDown');
+    focusedDateShouldBe(`${new Date('5 Jan 2020').getTime()}`);
+
+    keyup('ArrowRight');
+    focusedDateShouldBe(`${new Date('6 Jan 2020').getTime()}`);
+
+    keyup('ArrowUp');
+    focusedDateShouldBe(`${new Date('30 Dec 2019').getTime()}`);
+
+    keyup('ArrowUp');
+    focusedDateShouldBe(`${new Date('23 Dec 2019').getTime()}`);
+
+    keyup('ArrowDown');
+    focusedDateShouldBe(`${new Date('30 Dec 2019').getTime()}`);
+
+    keyup('ArrowDown');
+    focusedDateShouldBe(`${new Date('6 Jan 2020').getTime()}`);
+
+    keyup('Escape');
+
+    let state = JSON.parse(getByDataTest('context-state').textContent ?? '');
+    expect(state.focusedDate).toBe('');
+
+    expect(state.show).toBe(false);
+
+    // Shouldn't change focused
+    // if not shown:
+    keyup('ArrowLeft');
+
+    state = JSON.parse(getByDataTest('context-state').textContent ?? '');
+    expect(state.focusedDate).toBe('');
+
+    expect(state.show).toBe(false);
   });
 });
