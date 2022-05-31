@@ -1,9 +1,9 @@
 import { FormStateEntryValue, Validator, ValidityCheck } from '../../../components';
 
-import { InputModel } from '../InputModel';
+import { FormatterModel } from '../FormatterModel';
 
 export class ValidatorModel {
-  static createMaxLengthValidator = (max: number, message: string): Validator<string> => {
+  static createMaxLengthValidator = (max: number, message = ''): Validator<string> => {
     if (max <= 0) {
       return () => ({ errors: [], valid: true });
     } else {
@@ -22,7 +22,7 @@ export class ValidatorModel {
     }
   };
 
-  static createMinLengthValidator = (min: number, message: string): Validator<string> => {
+  static createMinLengthValidator = (min: number, message = ''): Validator<string> => {
     if (min <= 0) {
       return () => ({ errors: [], valid: true });
     } else {
@@ -46,8 +46,9 @@ export class ValidatorModel {
 
   static createMaxDateValidator = (
     max: string,
-    message: string,
-    formatDate: (timestamp: number) => string
+    message = '',
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    formatDate = (timestamp: number) => max
   ): Validator<string> => {
     return (value: string) => {
       const maxDate = Date.parse(max);
@@ -68,8 +69,9 @@ export class ValidatorModel {
 
   static createMinDateValidator = (
     min: string,
-    message: string,
-    formatDate: (timestamp: number) => string
+    message = '',
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    formatDate = (timestamp: number) => min
   ): Validator<string> => {
     return (value: string) => {
       const minDate = Date.parse(min);
@@ -88,7 +90,7 @@ export class ValidatorModel {
     };
   };
 
-  static createMaxNumberValidator = (max: number, message: string): Validator<string> => {
+  static createMaxNumberValidator = (max: number, message = ''): Validator<string> => {
     return (value: string) => {
       const valNumber = parseFloat(value);
       const validityCheck: ValidityCheck = {
@@ -105,7 +107,7 @@ export class ValidatorModel {
     };
   };
 
-  static createMinNumberValidator = (min: number, message: string): Validator<string> => {
+  static createMinNumberValidator = (min: number, message = ''): Validator<string> => {
     return (value: string) => {
       const valNumber = parseFloat(value);
       const validityCheck: ValidityCheck = {
@@ -122,10 +124,7 @@ export class ValidatorModel {
     };
   };
 
-  static createCharacterSetValidator = (
-    characterSet: RegExp,
-    message: string
-  ): Validator<string> => {
+  static createCharacterSetValidator = (characterSet: RegExp, message = ''): Validator<string> => {
     return (value: string) => {
       const validityCheck: ValidityCheck = {
         errors: [],
@@ -141,7 +140,25 @@ export class ValidatorModel {
     };
   };
 
-  static createRequiredValidator = (message: string): Validator<unknown> => {
+  static requiredValidator = (value: unknown): ValidityCheck => {
+    let validityCheck: ValidityCheck;
+
+    if (value) {
+      validityCheck = {
+        errors: [],
+        valid: true
+      };
+    } else {
+      validityCheck = {
+        errors: [{ text: 'requiredField' }],
+        valid: false
+      };
+    }
+
+    return validityCheck;
+  };
+
+  static createRequiredValidator = (message = 'requiredField'): Validator<unknown> => {
     return (value: unknown) => {
       return !!value
         ? {
@@ -157,7 +174,7 @@ export class ValidatorModel {
 
   static createExactLengthValidator = (
     max: number,
-    message: string,
+    message = '',
     maxToDisplay: number = max
   ): Validator<string> => {
     if (max <= 0) {
@@ -196,28 +213,10 @@ export class ValidatorModel {
     };
   };
 
-  static requiredValidator = (value: unknown): ValidityCheck => {
-    let validityCheck: ValidityCheck;
-
-    if (value) {
-      validityCheck = {
-        errors: [],
-        valid: true
-      };
-    } else {
-      validityCheck = {
-        errors: [{ text: 'requiredField' }],
-        valid: false
-      };
-    }
-
-    return validityCheck;
-  };
-
   static creditCardValidator: Validator<string> = (value) => {
     let validityCheck: ValidityCheck;
 
-    const pattern = InputModel.creditCardPattern;
+    const pattern = FormatterModel.creditCardPattern;
 
     if (value.length === 0 || value.length === pattern.length) {
       validityCheck = {
@@ -226,7 +225,7 @@ export class ValidatorModel {
       };
     } else {
       validityCheck = {
-        errors: [{ text: 'Invalid Credit Card' }],
+        errors: [{ text: 'invalidCreditCard' }],
         valid: false
       };
     }
@@ -247,7 +246,7 @@ export class ValidatorModel {
       };
     } else {
       validityCheck = {
-        errors: [{ text: 'Invalid Month / Year' }],
+        errors: [{ text: 'invalidMonthYear' }],
         valid: false
       };
     }
