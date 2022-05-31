@@ -1,3 +1,6 @@
+import { act, renderHook } from '@testing-library/react-hooks';
+
+import { monthNames } from '../constants';
 import {
   areSameDay,
   canBeSelected,
@@ -6,6 +9,7 @@ import {
   getDaysInMonth,
   validateDateInput
 } from '../helpers';
+import { useDatepicker } from '../useDatepicker';
 
 const today = new Date('1 Jan 2022');
 
@@ -228,5 +232,152 @@ describe('useDatepicker', () => {
     tests.forEach(({ dateString, expected, useEndOfDay }) => {
       expect(validateDateInput({ dateString, useEndOfDay })).toEqual(expected);
     });
+  });
+
+  it('useDatepicker - with initial value', () => {
+    const initialValue = new Date('1 Jan 2020');
+    const name = 'from';
+
+    const { result } = renderHook(() => useDatepicker({ initialValue, name }));
+
+    expect(result.current.context.value).toEqual(initialValue);
+    expect(result.current.context.dateInput).toBe('01/01/2020');
+  });
+
+  it('useDatepicker - with no initial value', () => {
+    const initialValue = undefined;
+    const name = 'from';
+
+    const { result } = renderHook(() => useDatepicker({ initialValue, name }));
+
+    expect(result.current.context.value).toEqual(undefined);
+    expect(result.current.context.dateInput).toBe('');
+  });
+
+  it('useDatepicker - with wrong initial value and minDate', () => {
+    const initialValue = new Date('1 Jan 2020');
+    const minDateExtractor = () => new Date('2 Jan 2020');
+    const name = 'from';
+
+    const { result } = renderHook(() => useDatepicker({ initialValue, minDateExtractor, name }));
+
+    expect(result.current.context.value).toEqual(undefined);
+    expect(result.current.context.dateInput).toBe('');
+  });
+
+  it('useDatepicker - with right initial value and minDate', () => {
+    const initialValue = new Date('3 Jan 2020');
+    const minDateExtractor = () => new Date('2 Jan 2020');
+    const name = 'from';
+
+    const { result } = renderHook(() => useDatepicker({ initialValue, minDateExtractor, name }));
+
+    expect(result.current.context.value).toEqual(initialValue);
+    expect(result.current.context.dateInput).toBe('03/01/2020');
+  });
+
+  it('useDatepicker - with wrong initial value and maxDate', () => {
+    const initialValue = new Date('2 Jan 2020');
+    const maxDateExtractor = () => new Date('1 Jan 2020');
+    const name = 'from';
+
+    const { result } = renderHook(() => useDatepicker({ initialValue, maxDateExtractor, name }));
+
+    expect(result.current.context.value).toEqual(undefined);
+    expect(result.current.context.dateInput).toBe('');
+  });
+
+  it('useDatepicker - with right initial value and maxDate', () => {
+    const initialValue = new Date('1 Jan 2020');
+    const maxDateExtractor = () => new Date('2 Jan 2020');
+    const name = 'from';
+
+    const { result } = renderHook(() => useDatepicker({ initialValue, maxDateExtractor, name }));
+
+    expect(result.current.context.value).toEqual(initialValue);
+    expect(result.current.context.dateInput).toBe('01/01/2020');
+  });
+
+  it('useDatepicker - with right initial value and maxDate and minDate', () => {
+    const initialValue = new Date('2 Jan 2020');
+    const maxDateExtractor = () => new Date('3 Jan 2020');
+    const minDateExtractor = () => new Date('1 Jan 2020');
+    const name = 'from';
+
+    const { result } = renderHook(() =>
+      useDatepicker({ initialValue, maxDateExtractor, minDateExtractor, name })
+    );
+
+    expect(result.current.context.value).toEqual(initialValue);
+    expect(result.current.context.dateInput).toBe('02/01/2020');
+  });
+
+  it('useDatepicker - change month', () => {
+    const initialValue = new Date('1 Dec 2020');
+
+    const previousMonthName = monthNames[10];
+    const monthName = monthNames[11];
+    const nextMonthName = monthNames[0];
+
+    const { result } = renderHook(() => useDatepicker({ initialValue, name: 'from' }));
+
+    expect(result.current.context.monthName).toEqual(monthName);
+    expect(result.current.context.state.year).toBe(2020);
+
+    act(() => {
+      result.current.context.changeMonth(1);
+    });
+
+    expect(result.current.context.monthName).toEqual(nextMonthName);
+    expect(result.current.context.state.year).toBe(2021);
+
+    act(() => {
+      result.current.context.changeMonth(-1);
+    });
+
+    expect(result.current.context.monthName).toEqual(monthName);
+    expect(result.current.context.state.year).toBe(2020);
+
+    act(() => {
+      result.current.context.changeMonth(-1);
+    });
+
+    expect(result.current.context.monthName).toEqual(previousMonthName);
+    expect(result.current.context.state.year).toBe(2020);
+  });
+
+  it('useDatepicker - change year', () => {
+    const initialValue = new Date('1 Dec 2020');
+
+    const { result } = renderHook(() => useDatepicker({ initialValue, name: 'from' }));
+
+    expect(result.current.context.state.year).toBe(2020);
+
+    act(() => {
+      result.current.context.changeYear(1);
+    });
+
+    expect(result.current.context.state.year).toBe(2021);
+
+    act(() => {
+      result.current.context.changeYear(-1);
+    });
+
+    expect(result.current.context.state.year).toBe(2020);
+  });
+
+  it('useDatepicker - select valid date', () => {
+    const initialValue = new Date('1 Dec 2020');
+    const newValue = new Date('3 Jun 2021');
+
+    const { result } = renderHook(() => useDatepicker({ initialValue, name: 'from' }));
+
+    expect(result.current.context.dateInput).toBe('01/12/2020');
+
+    act(() => {
+      result.current.context.selectDate(newValue);
+    });
+
+    expect(result.current.context.dateInput).toBe('03/06/2021');
   });
 });
