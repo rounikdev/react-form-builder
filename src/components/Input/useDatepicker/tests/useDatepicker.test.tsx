@@ -404,6 +404,26 @@ describe('useDatepicker', () => {
     expect(result.current.context.dateInput).toBe('03/06/2021');
   });
 
+  it("useDatepicker - selecting invalid date doesn't change the value", () => {
+    const initialValue = new Date('1 Jan 2020');
+
+    const maxDateExtractor = () => new Date('3 Jan 2020');
+
+    const newValue = new Date('4 Jan 2020');
+
+    const { result } = renderHook(() =>
+      useDatepicker({ initialValue, maxDateExtractor, name: 'from' })
+    );
+
+    expect(result.current.context.dateInput).toBe('01/01/2020');
+
+    act(() => {
+      result.current.context.selectDate(newValue);
+    });
+
+    expect(result.current.context.dateInput).toBe('01/01/2020');
+  });
+
   it('useDatepicker - inputChangeHandler', () => {
     const initialValue = new Date('1 Dec 2020');
 
@@ -506,6 +526,14 @@ describe('useDatepicker', () => {
 
     expect(result.current.context.state.show).toBe(true);
 
+    act(() => {
+      result.current.context.hide();
+    });
+
+    expect(result.current.context.state.show).toBe(false);
+
+    // Calling it for the second time
+    // has same result:
     act(() => {
       result.current.context.hide();
     });
