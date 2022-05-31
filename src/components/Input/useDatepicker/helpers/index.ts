@@ -88,13 +88,11 @@ export const constructWeeksInMonth = (days: Date[]) => {
     const dayIndex = day.getDay() === 0 ? 6 : day.getDay() - 1;
 
     if (dayIndex === 0) {
-      if (currentWeek) {
-        weeks.push(currentWeek);
-      }
+      weeks.push(currentWeek);
+
       currentWeek = new Array(7);
-    } else {
-      currentWeek = currentWeek || new Array(7);
     }
+
     currentWeek[dayIndex] = day;
   });
 
@@ -123,17 +121,25 @@ export const constructWeeksInMonth = (days: Date[]) => {
     weeks[0][indexOfMissingDay - 1] = newDate;
   }
 
-  // Add days from the next month if needed:
-  indexOfMissingDay = weeks[4].findIndex((item) => item === undefined);
+  if (weeks[4].findIndex((item) => item !== undefined) === -1) {
+    // February when 1-st is on monday
+    // and we have only 4 weeks to show:
+    weeks.splice(4, 2);
 
-  while (indexOfMissingDay > -1 && indexOfMissingDay <= 6) {
+    return weeks;
+  } else {
+    // Add days from the next month if needed:
     indexOfMissingDay = weeks[4].findIndex((item) => item === undefined);
 
-    const newDate = new Date(weeks[4][indexOfMissingDay - 1]);
+    while (indexOfMissingDay > -1 && indexOfMissingDay <= 6) {
+      indexOfMissingDay = weeks[4].findIndex((item) => item === undefined);
 
-    newDate.setDate(newDate.getDate() + 1);
+      const newDate = new Date(weeks[4][indexOfMissingDay - 1]);
 
-    weeks[4][indexOfMissingDay] = newDate;
+      newDate.setDate(newDate.getDate() + 1);
+
+      weeks[4][indexOfMissingDay] = newDate;
+    }
   }
 
   if (weeks[5].findIndex((item) => item !== undefined) === -1) {
@@ -145,11 +151,7 @@ export const constructWeeksInMonth = (days: Date[]) => {
     while (indexOfMissingDay > -1 && indexOfMissingDay <= 6) {
       indexOfMissingDay = weeks[5].findIndex((item) => item === undefined);
 
-      let prevDay = weeks[5][indexOfMissingDay - 1];
-
-      if (indexOfMissingDay === 0) {
-        prevDay = weeks[4][6];
-      }
+      const prevDay = weeks[5][indexOfMissingDay - 1];
 
       const newDate = new Date(prevDay);
 
@@ -168,12 +170,10 @@ export const formatDateInput = (date: Date | null) => {
   }
 
   const day: number = date.getDate();
-  let dd = '';
+  let dd = day.toString();
 
   if (day < 10) {
     dd = `0${day}`;
-  } else {
-    dd = day.toString();
   }
 
   const month: number = date.getMonth() + 1;
@@ -197,30 +197,24 @@ export const getDaysInMonth = ({
   useEndOfDay?: boolean;
   year: number;
 }) => {
-  const now = new Date();
-
-  const m = month != null ? month : now.getMonth();
-
-  const y = year || now.getFullYear();
-
-  let currentMonth = m;
+  let currentMonth = month;
 
   let currentDay = 1;
 
   const days = [];
 
-  while (currentMonth === m) {
-    let day = new Date(y, m, currentDay);
+  while (currentMonth === month) {
+    let day = new Date(year, month, currentDay);
 
     if (useEndOfDay) {
-      day = new Date(y, m, currentDay, 23, 59, 59);
+      day = new Date(year, month, currentDay, 23, 59, 59);
     }
 
     currentDay++;
 
     currentMonth = day.getMonth();
 
-    if (currentMonth === m) {
+    if (currentMonth === month) {
       days.push(day);
     }
   }
