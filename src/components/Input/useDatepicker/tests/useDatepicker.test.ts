@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent } from 'react';
+import { ChangeEvent, FocusEvent, MouseEvent } from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
 
 import { monthNames } from '../constants';
@@ -503,5 +503,50 @@ describe('useDatepicker', () => {
     });
 
     expect(result.current.context.state.focusedDate).toBe(currentTimestamp);
+  });
+
+  it('useDatepicker - calling inputBlurHandler with valid input value and no min/max date', () => {
+    const dateInput = '01/01/2020';
+
+    const { result } = renderHook(() => useDatepicker({ initialValue: undefined, name: 'from' }));
+
+    const blurEvent = { target: { value: dateInput } };
+
+    act(() => {
+      result.current.context.inputBlurHandler(blurEvent as unknown as FocusEvent);
+    });
+
+    expect(result.current.context.dateInput).toBe(dateInput);
+  });
+
+  it('useDatepicker - calling inputBlurHandler with invalid input value', () => {
+    const dateInput = '01012020';
+
+    const { result } = renderHook(() => useDatepicker({ initialValue: undefined, name: 'from' }));
+
+    const blurEvent = { target: { value: dateInput } };
+
+    act(() => {
+      result.current.context.inputBlurHandler(blurEvent as unknown as FocusEvent);
+    });
+
+    expect(result.current.context.dateInput).toBe('');
+  });
+
+  it('useDatepicker - calling inputBlurHandler with non-selectable valid input value', () => {
+    const dateInput = '02/01/2020';
+    const maxDateExtractor = () => new Date('1 Jan 2020');
+
+    const { result } = renderHook(() =>
+      useDatepicker({ initialValue: undefined, maxDateExtractor, name: 'from' })
+    );
+
+    const blurEvent = { target: { value: dateInput } };
+
+    act(() => {
+      result.current.context.inputBlurHandler(blurEvent as unknown as FocusEvent);
+    });
+
+    expect(result.current.context.dateInput).toBe('');
   });
 });
