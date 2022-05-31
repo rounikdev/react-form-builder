@@ -177,12 +177,10 @@ export const formatDateInput = (date: Date | null) => {
   }
 
   const month: number = date.getMonth() + 1;
-  let mm = '';
+  let mm = month.toString();
 
   if (month < 10) {
     mm = `0${month}`;
-  } else {
-    mm = month.toString();
   }
 
   const yyyy = date.getFullYear();

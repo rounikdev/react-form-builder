@@ -175,7 +175,7 @@ export const useDatepicker = ({
   }, [maxDate, minDate, onChangeHandler]);
 
   const selectDate = useCallback(
-    (date) => {
+    (date: Date) => {
       if (canBeSelected({ date, maxDate, minDate })) {
         onChangeHandler(date);
 

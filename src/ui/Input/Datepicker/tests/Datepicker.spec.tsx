@@ -149,6 +149,24 @@ describe('Datepicker', () => {
     cy.get('[data-test="to-datepicker-input"]').should('have.value', '');
   });
 
+  it('Enter 29 Feb in a leap year', () => {
+    mount(content);
+
+    cy.get('[data-test="from-datepicker-input"]').should('have.value', '');
+
+    cy.get('[data-test="from-datepicker-input"]').type('29/02/2020').blur();
+    cy.get('[data-test="from-datepicker-input"]').should('have.value', '29/02/2020');
+  });
+
+  it('Enter 29 Feb in a non-leap year', () => {
+    mount(content);
+
+    cy.get('[data-test="from-datepicker-input"]').should('have.value', '');
+
+    cy.get('[data-test="from-datepicker-input"]').type('29/02/2021').blur();
+    cy.get('[data-test="from-datepicker-input"]').should('have.value', '');
+  });
+
   it('Select date by key press', () => {
     mount(content);
 
