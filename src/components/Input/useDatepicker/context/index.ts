@@ -1,4 +1,4 @@
-import { createContext, Provider } from 'react';
+import { createContext } from 'react';
 
 import { DatepickerContext } from '../types';
 
@@ -42,7 +42,6 @@ export const datepickerContext = createContext<DatepickerContext>({
     // default implementation
   },
   openButtonRef: { current: null },
-  Provider: {} as Provider<DatepickerContext>,
   selectDate: () => {
     // default implementation
   },

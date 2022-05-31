@@ -422,7 +422,6 @@ export const useDatepicker = ({
       onBlurHandler,
       onFocusHandler,
       openButtonRef,
-      Provider: datepickerContext.Provider,
       selectDate,
       setFocusedDate,
       state,

@@ -1,4 +1,4 @@
-import { ChangeEvent, FocusEvent, FocusEventHandler, MouseEvent, Provider, RefObject } from 'react';
+import { ChangeEvent, FocusEvent, FocusEventHandler, MouseEvent, RefObject } from 'react';
 
 import { FormStateEntryValue, UseFieldConfig, ValidationError } from '../../../Form';
 
@@ -39,7 +39,6 @@ export interface DatepickerContext {
   onBlurHandler: FocusEventHandler<HTMLElement>;
   onFocusHandler: FocusEventHandler<HTMLElement>;
   openButtonRef: RefObject<HTMLButtonElement>;
-  Provider: Provider<DatepickerContext>;
   selectDate: (date: Date) => void;
   setFocusedDate: (focusedDate: string) => void;
   state: DatepickerState;

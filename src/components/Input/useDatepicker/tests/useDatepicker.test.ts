@@ -1,3 +1,4 @@
+import { ChangeEvent, MouseEvent } from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
 
 import { monthNames } from '../constants';
@@ -379,5 +380,128 @@ describe('useDatepicker', () => {
     });
 
     expect(result.current.context.dateInput).toBe('03/06/2021');
+  });
+
+  it('useDatepicker - inputChangeHandler', () => {
+    const initialValue = new Date('1 Dec 2020');
+
+    const { result } = renderHook(() => useDatepicker({ initialValue, name: 'from' }));
+
+    expect(result.current.context.dateInput).toBe('01/12/2020');
+
+    act(() => {
+      result.current.context.inputChangeHandler({
+        target: { value: '02/12/2020' }
+      } as unknown as ChangeEvent<Element>);
+    });
+
+    expect(result.current.context.dateInput).toBe('02/12/2020');
+  });
+
+  it('useDatepicker - calling toggle with initial value', () => {
+    const initialValue = new Date('1 Dec 2020');
+
+    const { result } = renderHook(() => useDatepicker({ initialValue, name: 'from' }));
+
+    act(() => {
+      result.current.context.toggle({ preventDefault: () => {} } as unknown as MouseEvent);
+    });
+
+    expect(result.current.context.state.month).toBe(11);
+    expect(result.current.context.state.year).toBe(2020);
+  });
+
+  it('useDatepicker - calling toggle without initial value', () => {
+    const now = new Date();
+
+    const { result } = renderHook(() => useDatepicker({ initialValue: undefined, name: 'from' }));
+
+    act(() => {
+      result.current.context.toggle({ preventDefault: () => {} } as unknown as MouseEvent);
+    });
+
+    expect(result.current.context.state.month).toBe(now.getMonth());
+    expect(result.current.context.state.year).toBe(now.getFullYear());
+  });
+
+  it('useDatepicker - calling toggle with maxDate and without initial value', () => {
+    const maxDateExtractor = () => new Date('1 Jan 2020');
+
+    const { result } = renderHook(() =>
+      useDatepicker({ initialValue: undefined, maxDateExtractor, name: 'from' })
+    );
+
+    act(() => {
+      result.current.context.toggle({ preventDefault: () => {} } as unknown as MouseEvent);
+    });
+
+    expect(result.current.context.state.month).toBe(0);
+    expect(result.current.context.state.year).toBe(2020);
+  });
+
+  it('useDatepicker - calling toggle with minDate, maxDate and without initial value', () => {
+    const maxDateExtractor = () => new Date('1 Jan 2020');
+    const minDateExtractor = () => new Date('1 Dec 2019');
+
+    const { result } = renderHook(() =>
+      useDatepicker({ initialValue: undefined, maxDateExtractor, minDateExtractor, name: 'from' })
+    );
+
+    act(() => {
+      result.current.context.toggle({ preventDefault: () => {} } as unknown as MouseEvent);
+    });
+
+    expect(result.current.context.state.month).toBe(11);
+    expect(result.current.context.state.year).toBe(2019);
+  });
+
+  it('useDatepicker - calling toggle opens and closes', () => {
+    const { result } = renderHook(() => useDatepicker({ initialValue: undefined, name: 'from' }));
+
+    expect(result.current.context.state.show).toBe(false);
+
+    act(() => {
+      result.current.context.toggle({ preventDefault: () => {} } as unknown as MouseEvent);
+    });
+
+    expect(result.current.context.state.show).toBe(true);
+
+    act(() => {
+      result.current.context.toggle({ preventDefault: () => {} } as unknown as MouseEvent);
+    });
+
+    expect(result.current.context.state.show).toBe(false);
+  });
+
+  it('useDatepicker - calling hide closes', () => {
+    const { result } = renderHook(() => useDatepicker({ initialValue: undefined, name: 'from' }));
+
+    expect(result.current.context.state.show).toBe(false);
+
+    act(() => {
+      result.current.context.toggle({ preventDefault: () => {} } as unknown as MouseEvent);
+    });
+
+    expect(result.current.context.state.show).toBe(true);
+
+    act(() => {
+      result.current.context.hide();
+    });
+
+    expect(result.current.context.state.show).toBe(false);
+  });
+
+  it('useDatepicker - can set focused date', () => {
+    const currentTimestamp = `${new Date().getTime()}`;
+
+    const { result } = renderHook(() => useDatepicker({ initialValue: undefined, name: 'from' }));
+
+    expect(result.current.context.state.focusedDate).toBe('');
+
+    act(() => {
+      result.current.context.setFocusedDate(currentTimestamp);
+    });
+
+    expect(result.current.context.state.focusedDate).toBe(currentTimestamp);
   });
 });
