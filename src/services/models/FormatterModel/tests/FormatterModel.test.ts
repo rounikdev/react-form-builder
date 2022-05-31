@@ -100,11 +100,18 @@ describe('FormatterModel', () => {
   it('formatIntegerString', () => {
     const tests = [
       { input: '00', expect: '0' },
-      { input: 'f0', expect: '0' }
+      { input: 'f0', expect: '0' },
+      { input: undefined, expect: '' },
+      { allowNegative: true, input: '-f0', expect: '-0' }
     ];
 
     tests.forEach((item) =>
-      expect(FormatterModel.formatIntegerString({ rawValue: item.input })).toEqual(item.expect)
+      expect(
+        FormatterModel.formatIntegerString({
+          rawValue: item.input,
+          allowNegative: item.allowNegative
+        })
+      ).toEqual(item.expect)
     );
 
     const negativeValuesCases = [
@@ -275,6 +282,110 @@ describe('FormatterModel', () => {
 
     test.forEach(({ input, expected }) =>
       expect(FormatterModel.zerosAndIntegerFormatter({ newValue: input })).toEqual(expected)
+    );
+  });
+
+  it('stringToNegativeAmountFormatter', () => {
+    const test = [
+      {
+        input: '-a0.0',
+        expected: '-0.0'
+      },
+      {
+        input: 'a0.0',
+        expected: '0.0'
+      },
+      {
+        input: '-a0.00b0',
+        expected: '-0.00'
+      },
+      {
+        input: undefined,
+        expected: ''
+      }
+    ];
+
+    test.forEach(({ input, expected }) =>
+      expect(FormatterModel.stringToNegativeAmountFormatter({ newValue: input as string })).toEqual(
+        expected
+      )
+    );
+  });
+
+  it('stringToPositiveAmountFormatter', () => {
+    const test = [
+      {
+        input: '-a0.0',
+        expected: '0.0'
+      },
+      {
+        input: 'a0.0',
+        expected: '0.0'
+      },
+      {
+        input: '-a0.00b0',
+        expected: '0.00'
+      },
+      {
+        input: undefined,
+        expected: ''
+      }
+    ];
+
+    test.forEach(({ input, expected }) =>
+      expect(FormatterModel.stringToPositiveAmountFormatter({ newValue: input as string })).toEqual(
+        expected
+      )
+    );
+  });
+
+  it('creditCardFormatter', () => {
+    const test = [
+      {
+        input: 'nm',
+        expected: ''
+      },
+      {
+        input: 'nm1',
+        expected: '1'
+      },
+      {
+        input: '1234568904',
+        expected: '1234  5689  04'
+      },
+      {
+        input: '1234568904324321',
+        expected: '1234  5689  0432  4321'
+      }
+    ];
+
+    test.forEach(({ input, expected }) =>
+      expect(FormatterModel.creditCardFormatter({ newValue: input })).toEqual(expected)
+    );
+  });
+
+  it('monthYearFormatter', () => {
+    const test = [
+      {
+        input: 'nm',
+        expected: ''
+      },
+      {
+        input: 'nm1',
+        expected: '1'
+      },
+      {
+        input: '1134568904',
+        expected: '11 / 34'
+      },
+      {
+        input: '115',
+        expected: '11 / 5'
+      }
+    ];
+
+    test.forEach(({ input, expected }) =>
+      expect(FormatterModel.monthYearFormatter({ newValue: input })).toEqual(expected)
     );
   });
 });
