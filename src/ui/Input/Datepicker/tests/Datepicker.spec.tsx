@@ -154,9 +154,9 @@ describe('Datepicker', () => {
 
     cy.get('[data-test="from-datepicker-expand-button"]').click();
 
-    cy.get(`[data-test="from-datepicker-day-${todayLocaleDateString}"]`)
-      .should('be.focused')
-      .trigger('keydown', { code: 'Enter' });
+    cy.get(`[data-test="from-datepicker-day-${todayLocaleDateString}"]`).trigger('keydown', {
+      code: 'Enter'
+    });
     cy.get('[data-test="from-datepicker-input"]').should('have.value', formatDateInput(today));
 
     // Clean the input by entering invalid data:
@@ -164,9 +164,9 @@ describe('Datepicker', () => {
 
     cy.get('[data-test="from-datepicker-expand-button"]').click();
 
-    cy.get(`[data-test="from-datepicker-day-${todayLocaleDateString}"]`)
-      .should('be.focused')
-      .trigger('keydown', { code: 'Space' });
+    cy.get(`[data-test="from-datepicker-day-${todayLocaleDateString}"]`).trigger('keydown', {
+      code: 'Space'
+    });
     cy.get('[data-test="from-datepicker-input"]').should('have.value', formatDateInput(today));
 
     // Clean the input by entering invalid data:
@@ -175,11 +175,11 @@ describe('Datepicker', () => {
     cy.get('[data-test="from-datepicker-expand-button"]').click();
 
     // Try some other key:
-    cy.get(`[data-test="from-datepicker-day-${todayLocaleDateString}"]`)
-      .should('be.focused')
-      .trigger('keydown', { code: 'Escape' });
+    cy.get(`[data-test="from-datepicker-day-${todayLocaleDateString}"]`).trigger('keydown', {
+      code: 'Escape'
+    });
 
-    cy.get(`[data-test="from-datepicker-day-${todayLocaleDateString}"]`).should('be.focused');
+    cy.get('[data-test="from-datepicker-input"]').should('have.value', '');
   });
 
   it('Trying to select non-selectable date', () => {
