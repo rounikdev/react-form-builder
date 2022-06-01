@@ -1,3 +1,5 @@
+import { GlobalModel } from '@services';
+
 import { TranslationState, TranslationSubstitute } from '../types';
 
 /**
@@ -44,7 +46,7 @@ export const translateFactory =
   (state: TranslationState) => (key: string, substitutes?: TranslationSubstitute[]) => {
     const { data = {} } = state.dictionaries[state.currentLanguageId] || {};
 
-    const translation = data[key] || key;
+    const translation: string = GlobalModel.getNestedValue(data, key.split('.')) || key;
 
     if (!substitutes) {
       return translation;

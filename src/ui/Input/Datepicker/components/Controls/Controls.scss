@@ -1,0 +1,36 @@
+.ControlGroup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .Label {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+  }
+
+  .Month,
+  .Year {
+    font-size: var(--offset-medium);
+    font-weight: bold;
+  }
+
+  button {
+    height: 100%;
+    font-size: 1.4rem;
+    color: var(--color-border);
+    background-color: transparent;
+    border: none;
+    border-radius: var(--border-radius-normal);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.3);
+    transition: all var(--transition-normal) ease-in-out;
+    cursor: pointer;
+
+    &:focus {
+      color: var(--color-background-focus);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+      outline: none;
+    }
+  }
+}
