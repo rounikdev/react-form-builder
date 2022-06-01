@@ -322,7 +322,18 @@ describe('Datepicker', () => {
     cy.focused().should('have.attr', 'data-date', todayLocaleDateString);
     cy.get(`[data-test="from-datepicker-day-${todayLocaleDateString}"]`)
       .should('exist')
-      .trigger('keydown', { code: 'Enter' });
+      .should('be.focused')
+      .trigger('keydown', {
+        code: 'Enter',
+        // This is needed in order to fix 'detached from DOM'
+        // issue, which most probably is due to the way React
+        // manages the DOM.
+        // Cypress team is working on the solution:
+        // https://github.com/cypress-io/cypress/issues/7306
+        // Alternative solution could be using cy.wait(300),
+        // or waitUntil:
+        force: true
+      });
     cy.get('[data-test="from-datepicker-input"]').should('have.value', formatDateInput(today));
 
     // Open the third calendar:
