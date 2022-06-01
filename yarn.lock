@@ -1710,10 +1710,10 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
-"@rounik/react-custom-hooks@0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@rounik/react-custom-hooks/-/react-custom-hooks-0.1.5.tgz#9d8d939de6c993383a3f533b632fa9aac6f870b2"
-  integrity sha512-xlisj8ZZotAvEsbBha94eZRUuntyiBNb8l1qiup2sJz6iai9THxeNgZYBU9UUxVnMdIvhS96h1JRTclRxSHPng==
+"@rounik/react-custom-hooks@0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@rounik/react-custom-hooks/-/react-custom-hooks-0.1.8.tgz#699fc4c2d9131f70bc4e7218100e7fc5c06a8ff9"
+  integrity sha512-MrVTzFsg2zC0XftE0aB7Q3+249KnbuKQ8cFJIJ+pQHJAe5AycbRWO9af62+q8h1wSvFGjW8RKVSf7MXWDsvY/A==
   dependencies:
     react "17.0.2"
 
