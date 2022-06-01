@@ -3,8 +3,8 @@ import { FC, forwardRef, memo, MutableRefObject, useCallback, useRef, useState }
 import {
   useLastDiffValue,
   useMutationObserver,
-  usePrevious,
   useUpdateOnly,
+  useUpdateSync,
   useWindowResize
 } from '@rounik/react-custom-hooks';
 
@@ -84,21 +84,17 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
       // Declare and initialize height
       // This is not done in a hook to prevent rendering skip
       let height = contentRef.current?.offsetHeight ?? 0;
-      const prevHeight = usePrevious(contentRef.current?.offsetHeight);
-
-      // Create `heightDiffRef` to detect the first `height` difference
-      const heightDiffRef = useRef<number | undefined>(height);
+      const prevHeight = useLastDiffValue(contentRef.current?.offsetHeight);
 
       // Set `height` to 0
       if (memoizeChildren && prevHeight !== undefined && !children && prevChildren) {
         height = 0;
       }
 
-      // If there is a diff then transitioning occurs
-      if (height !== heightDiffRef.current) {
+      // If there is a height diff allow transitioning
+      useUpdateSync(() => {
         isTransitioningRef.current = true;
-        heightDiffRef.current = height;
-      }
+      }, height);
 
       return (
         <div
