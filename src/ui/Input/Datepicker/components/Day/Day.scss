@@ -1,0 +1,58 @@
+.Container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(100% / 7);
+  height: 100%;
+  line-height: var(--font-normal);
+  font-size: var(--font-normal);
+  text-align: center;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.3);
+  transition: all var(--transition-normal) ease-in-out;
+  cursor: pointer;
+
+  &.Today {
+    color: var(--color-background-focus);
+    background-color: var(--color-border);
+    border-radius: var(--border-radius-normal);
+  }
+
+  &.FromOtherMonth {
+    color: var(--color-font-secondary);
+
+    &.Today {
+      color: var(--color-background-focus);
+    }
+  }
+
+  &.Selected {
+    color: var(--color-background-focus);
+    background-color: var(--color-ok);
+    border-radius: var(--border-radius-normal);
+  }
+
+  &.NotSelectable {
+    opacity: 0.3;
+    color: var(--color-error);
+    cursor: not-allowed;
+  }
+
+  &.Focused,
+  &:hover {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    border-radius: var(--border-radius-normal);
+    outline: none;
+  }
+}
+
+.Button {
+  appearance: none;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+  font-size: inherit;
+  background-color: inherit;
+  border: none;
+  outline: none;
+  cursor: inherit;
+}

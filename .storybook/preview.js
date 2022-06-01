@@ -1,13 +1,15 @@
 import React from 'react';
 
-import { BaseCSS } from '../src/components/BaseCSS/BaseCSS';
+import { BaseCSS, TranslationProvider } from '../src/components';
+
+import { dictionaries } from '../src/components/Translation/tests/data';
 
 export const decorators = [
   (StoryFn) => (
-    <>
+    <TranslationProvider dictionaries={dictionaries} languageId={dictionaries.EN.id}>
       <BaseCSS />
       <StoryFn />
-    </>
+    </TranslationProvider>
   )
 ];
 

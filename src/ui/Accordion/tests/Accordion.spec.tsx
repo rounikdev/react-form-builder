@@ -6,7 +6,7 @@ import Meta, { Basic as BasicStory } from '../stories/Accordion.stories';
 const AccordionDemo = composeStory(BasicStory, Meta);
 
 describe('Accordion', () => {
-  it('OPen and closes in group', () => {
+  it('Open and closes in group', () => {
     mount(<AccordionDemo />);
 
     // Option is opened:

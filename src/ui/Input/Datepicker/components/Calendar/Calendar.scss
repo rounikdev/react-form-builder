@@ -1,0 +1,119 @@
+.Container {
+  position: absolute;
+  right: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: 32rem;
+  height: 37rem;
+  padding: var(--offset-small);
+  overflow: hidden;
+  background-color: var(--color-background-focus);
+  border: 0.1rem solid var(--color-border);
+  border-radius: var(--border-radius-normal);
+  will-change: transform;
+
+  &:focus {
+    outline: none;
+  }
+
+  .ControlGroup {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .Month,
+    .Year {
+      font-size: var(--offset-medium);
+      font-weight: bold;
+    }
+
+    button {
+      height: 100%;
+      font-size: 1.4rem;
+      color: var(--color-border);
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+
+      &:focus {
+        color: var(--color-background-focus);
+        outline: none;
+      }
+    }
+  }
+
+  .Weekdays {
+    display: flex;
+    align-items: center;
+    height: 2rem;
+    margin: var(--offset-small) 0;
+  }
+
+  .Weekday {
+    display: inline-block;
+    width: calc(100% / 7);
+    font-size: var(--font-normal);
+    text-align: center;
+  }
+
+  .WeekList {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+  }
+}
+
+.FromLeftEnter {
+  animation: fromLeftEnter var(--transition-normal) ease-in-out;
+}
+
+.FromLeftExit {
+  animation: fromLeftExit var(--transition-normal) ease-in-out;
+}
+
+@keyframes fromLeftEnter {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fromLeftExit {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.FromRightEnter {
+  animation: fromRightEnter var(--transition-normal) ease-in-out;
+}
+
+.FromRightExit {
+  animation: fromRightExit var(--transition-normal) ease-in-out;
+}
+
+@keyframes fromRightEnter {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fromRightExit {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
