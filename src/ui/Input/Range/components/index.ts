@@ -1,1 +1,2 @@
-export * from './RangeHandle/RangeHandle';
+export * from './RangeLabels/RangeLabels';
+export * from './RangeSlider/RangeSlider';

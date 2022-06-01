@@ -16,20 +16,6 @@ $trackHeight: 6px;
   cursor: pointer;
 }
 
-.Max,
-.Min,
-.Option {
-  position: absolute;
-  color: var(--color-font);
-  font-size: var(--font-small);
-  transform: translate(-50%, -200%);
-}
-
-.Max {
-  right: 0;
-  transform: translate(50%, -200%);
-}
-
 .Bar {
   position: absolute;
   height: $trackHeight;

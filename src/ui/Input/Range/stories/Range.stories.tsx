@@ -1,15 +1,13 @@
 import { FC, StrictMode } from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import { FormRoot } from '@components';
-import { ValidatorModel } from '@services';
+import { FormRoot, RangeValue } from '@components';
 
 import { Range } from '../Range';
 
 import { RANGE_INITIAL_VALUE, RANGE_OPTIONS } from './data';
 
 import styles from './Range.stories.scss';
-import { RangeValue } from '../types';
 
 export default {
   title: 'Components/Range',
