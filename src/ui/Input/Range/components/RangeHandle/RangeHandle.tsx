@@ -1,5 +1,14 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
-import { FC, memo, MouseEventHandler, useCallback, useEffect, useMemo, useRef } from 'react';
+import {
+  FC,
+  KeyboardEventHandler,
+  memo,
+  MouseEventHandler,
+  useCallback,
+  useMemo,
+  useRef
+} from 'react';
+
+import { useUpdate } from '@rounik/react-custom-hooks';
 
 import { RangeHandleProps } from '../../types';
 
@@ -38,7 +47,54 @@ export const RangeHandle: FC<RangeHandleProps> = memo(
       [name, setIsMoving]
     );
 
-    useEffect(() => {
+    const onKeyDownHandler: KeyboardEventHandler = useCallback(
+      ({ code }) => {
+        const val = value[name];
+        switch (code) {
+          case 'ArrowRight':
+            if (options) {
+              const option = options.find((option) => option > val);
+
+              if (typeof option !== 'undefined') {
+                onChange({
+                  ...value,
+                  [name]: limit(option)
+                });
+              }
+            } else {
+              onChange({
+                ...value,
+                [name]: limit(val + 1)
+              });
+            }
+
+            break;
+          case 'ArrowLeft':
+            if (options) {
+              const option = [...options].reverse().find((option) => option < val);
+
+              if (typeof option !== 'undefined') {
+                onChange({
+                  ...value,
+                  [name]: limit(option)
+                });
+              }
+            } else {
+              onChange({
+                ...value,
+                [name]: limit(val - 1)
+              });
+            }
+
+            break;
+          default:
+            break;
+        }
+      },
+      [limit, name, onChange, options, value]
+    );
+
+    useUpdate(() => {
       const newX = clientX;
 
       const deltaPixels = newX - x.current;
@@ -55,7 +111,6 @@ export const RangeHandle: FC<RangeHandleProps> = memo(
           [name]: limit(newValue)
         });
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [clientX, isMoving, limit, name, onChange, unitsPerPixel]);
 
     return (
@@ -66,49 +121,7 @@ export const RangeHandle: FC<RangeHandleProps> = memo(
         className={styles.Container}
         onBlur={onBlur}
         onFocus={onFocus}
-        onKeyDown={({ code }) => {
-          const val = value[name];
-          switch (code) {
-            case 'ArrowRight':
-              if (options) {
-                const option = options.find((option) => option > val);
-
-                if (typeof option !== 'undefined') {
-                  onChange({
-                    ...value,
-                    [name]: limit(option)
-                  });
-                }
-              } else {
-                onChange({
-                  ...value,
-                  [name]: limit(val + 1)
-                });
-              }
-
-              break;
-            case 'ArrowLeft':
-              if (options) {
-                const option = [...options].reverse().find((option) => option < val);
-
-                if (typeof option !== 'undefined') {
-                  onChange({
-                    ...value,
-                    [name]: limit(option)
-                  });
-                }
-              } else {
-                onChange({
-                  ...value,
-                  [name]: limit(val - 1)
-                });
-              }
-
-              break;
-            default:
-              break;
-          }
-        }}
+        onKeyDown={onKeyDownHandler}
         onMouseDown={startMove}
         role="slider"
         style={style}
