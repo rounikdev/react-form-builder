@@ -76,6 +76,19 @@ const Template: ComponentStory<FC> = () => (
         />
         <Range
           className={styles.Range}
+          dataTest="points"
+          formatter={rangeFormatter}
+          id="points"
+          initialValue={RANGE_SINGLE_INITIAL_VALUE}
+          label="points"
+          max={100}
+          min={1}
+          name="points"
+          single
+          step={0.1}
+        />
+        <Range
+          className={styles.Range}
           dataTest="budget"
           formatter={rangeFormatter}
           id="budget"
