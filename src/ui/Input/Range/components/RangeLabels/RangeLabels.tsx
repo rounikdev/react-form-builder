@@ -1,19 +1,22 @@
 import { FC, memo } from 'react';
 
 import { useRangeContext } from '@components';
+import { GlobalModel } from '@services';
 
 import styles from './RangeLabels.scss';
 
 export const RangeLabels: FC = memo(() => {
-  const { max, min, options, pixelsPerUnit } = useRangeContext();
+  const { max, min, options, pixelsPerUnit, value } = useRangeContext();
 
   return (
     <>
       {options ? (
         options.map((option) => {
+          const isSelected = value.from === option || value.to === option;
+
           return (
             <div
-              className={styles.Option}
+              className={GlobalModel.classer([styles.Option, isSelected && styles.Selected])}
               key={option}
               style={{
                 left: (option - (min || 0)) * pixelsPerUnit

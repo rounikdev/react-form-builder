@@ -5,6 +5,10 @@
   color: var(--color-font);
   font-size: var(--font-small);
   transform: translate(-50%, -200%);
+
+  &.Selected {
+    font-size: var(--font-normal);
+  }
 }
 
 .Max {

@@ -65,6 +65,6 @@ const Template: ComponentStory<FC> = () => (
   </StrictMode>
 );
 
-export const DatepickerDemo = Template.bind({});
+export const RangeDemo = Template.bind({});
 
-DatepickerDemo.args = {};
+RangeDemo.args = {};
