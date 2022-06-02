@@ -27,6 +27,8 @@ export const useRange = ({
   options,
   sideEffect,
   single,
+  step,
+  stepExtra,
   validator
 }: UseRangeArgs) => {
   const { onBlurHandler, onChangeHandler, onFocusHandler, value } = useField<RangeValue>({
@@ -240,6 +242,8 @@ export const useRange = ({
       pixelsPerUnit,
       setIsMoving,
       single,
+      step,
+      stepExtra,
       stopMove,
       trackRef,
       unitsPerPixel,
@@ -261,6 +265,8 @@ export const useRange = ({
       options,
       pixelsPerUnit,
       single,
+      step,
+      stepExtra,
       stopMove,
       unitsPerPixel,
       value

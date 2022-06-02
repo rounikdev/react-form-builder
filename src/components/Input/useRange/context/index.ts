@@ -42,6 +42,8 @@ export const rangeContext = createContext<RangeContext>({
     // Default implementation
   },
   single: false,
+  step: 1,
+  stepExtra: 1,
   stopMove: () => {
     // Default implementation
   },

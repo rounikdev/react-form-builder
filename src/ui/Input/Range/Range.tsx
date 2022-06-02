@@ -16,6 +16,8 @@ export interface RangeProps extends Field<RangeValue> {
   min?: number;
   options?: RangeOptions;
   single?: boolean;
+  step?: number;
+  stepExtra?: number;
 }
 
 const defaultValue = { from: 0, to: 0 };
@@ -35,6 +37,8 @@ export const Range: FC<RangeProps> = memo(
     options,
     sideEffect,
     single,
+    step = 1,
+    stepExtra = 1,
     validator
   }) => {
     const { context, Provider } = useRange({
@@ -49,6 +53,8 @@ export const Range: FC<RangeProps> = memo(
       options,
       sideEffect,
       single,
+      step,
+      stepExtra,
       validator
     });
 
@@ -56,6 +62,7 @@ export const Range: FC<RangeProps> = memo(
       <Provider value={context}>
         <div
           className={useClass([styles.Container, className], [className])}
+          onMouseLeave={context.stopMove}
           onMouseMove={context.move}
           onMouseUp={context.stopMove}
         >

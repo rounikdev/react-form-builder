@@ -57,6 +57,7 @@ const Template: ComponentStory<FC> = () => (
           max={10000}
           min={0}
           name="savings"
+          stepExtra={100}
           validator={savingsValidator}
         />
         <Range
@@ -69,6 +70,7 @@ const Template: ComponentStory<FC> = () => (
           min={-10}
           name="deviation"
           single={false}
+          step={0.1}
         />
         <Range
           className={styles.Range}

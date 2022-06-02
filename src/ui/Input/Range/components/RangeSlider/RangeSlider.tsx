@@ -30,6 +30,8 @@ export const RangeSlider: FC<RangeSliderProps> = memo(({ limit, name }) => {
     options,
     pixelsPerUnit,
     setIsMoving,
+    step,
+    stepExtra,
     unitsPerPixel,
     value
   } = useRangeContext();
@@ -68,7 +70,7 @@ export const RangeSlider: FC<RangeSliderProps> = memo(({ limit, name }) => {
           } else {
             onChangeHandler({
               ...value,
-              [name]: limit(val + 1)
+              [name]: limit(val + step)
             });
           }
 
@@ -86,7 +88,25 @@ export const RangeSlider: FC<RangeSliderProps> = memo(({ limit, name }) => {
           } else {
             onChangeHandler({
               ...value,
-              [name]: limit(val - 1)
+              [name]: limit(val - step)
+            });
+          }
+
+          break;
+        case 'ArrowUp':
+          if (!options) {
+            onChangeHandler({
+              ...value,
+              [name]: limit(val + stepExtra)
+            });
+          }
+
+          break;
+        case 'ArrowDown':
+          if (!options) {
+            onChangeHandler({
+              ...value,
+              [name]: limit(val - stepExtra)
             });
           }
 
@@ -95,7 +115,7 @@ export const RangeSlider: FC<RangeSliderProps> = memo(({ limit, name }) => {
           break;
       }
     },
-    [limit, name, onChangeHandler, options, value]
+    [limit, name, onChangeHandler, options, step, stepExtra, value]
   );
 
   useUpdate(() => {
