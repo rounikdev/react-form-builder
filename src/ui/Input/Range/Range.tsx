@@ -91,9 +91,14 @@ export const Range: FC<RangeProps> = memo(
             )}
             <RangeLabels />
             {context.single ? null : (
-              <RangeSlider dataTest={dataTest} limit={context.limitFrom} name="from" />
+              <RangeSlider
+                dataTest={dataTest}
+                label={label}
+                limit={context.limitFrom}
+                name="from"
+              />
             )}
-            <RangeSlider dataTest={dataTest} limit={context.limitTo} name="to" />
+            <RangeSlider dataTest={dataTest} label={label} limit={context.limitTo} name="to" />
           </div>
         </div>
       </Provider>

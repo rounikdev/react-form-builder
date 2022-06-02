@@ -16,11 +16,12 @@ import { Testable } from '../../../../../types';
 import styles from './RangeSlider.scss';
 
 interface RangeSliderProps extends Testable {
+  label?: string;
   limit: (value: number) => number;
   name: 'from' | 'to';
 }
 
-export const RangeSlider: FC<RangeSliderProps> = memo(({ dataTest, limit, name }) => {
+export const RangeSlider: FC<RangeSliderProps> = memo(({ dataTest, label, limit, name }) => {
   const {
     clientX,
     isMoving,
@@ -141,7 +142,7 @@ export const RangeSlider: FC<RangeSliderProps> = memo(({ dataTest, limit, name }
 
   return (
     <div
-      aria-label={name}
+      aria-label={`${label} ${name}`}
       aria-valuemax={options ? options[options.length - 1] : max}
       aria-valuemin={options ? options[0] : min}
       aria-valuenow={value[name]}
