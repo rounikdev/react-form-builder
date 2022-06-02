@@ -13,6 +13,7 @@ export interface UseRangeArgs extends UseFieldConfig<RangeValue> {
   max?: number;
   min?: number;
   options?: RangeOptions;
+  single?: boolean;
 }
 
 export interface RangeContext {
@@ -39,6 +40,7 @@ export interface RangeContext {
       to: boolean;
     }>
   >;
+  single?: boolean;
   stopMove: () => void;
   trackRef: RefObject<HTMLDivElement>;
   unitsPerPixel: number;

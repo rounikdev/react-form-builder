@@ -10,10 +10,12 @@ import { RangeLabels, RangeSlider } from './components';
 import styles from './Range.scss';
 
 export interface RangeProps extends Field<RangeValue> {
+  hideBar?: boolean;
   initialValue?: RangeValue;
   max?: number;
   min?: number;
   options?: RangeOptions;
+  single?: boolean;
 }
 
 const defaultValue = { from: 0, to: 0 };
@@ -23,6 +25,7 @@ export const Range: FC<RangeProps> = memo(
     className,
     dependencyExtractor,
     formatter,
+    hideBar,
     initialValue = defaultValue,
     max,
     min,
@@ -31,6 +34,7 @@ export const Range: FC<RangeProps> = memo(
     onFocus,
     options,
     sideEffect,
+    single,
     validator
   }) => {
     const { context, Provider } = useRange({
@@ -44,6 +48,7 @@ export const Range: FC<RangeProps> = memo(
       onFocus,
       options,
       sideEffect,
+      single,
       validator
     });
 
@@ -59,9 +64,9 @@ export const Range: FC<RangeProps> = memo(
             onClick={context.onTrackClickHandler}
             ref={context.trackRef}
           >
-            <div className={styles.Bar} style={context.barStyle} />
+            {hideBar ? null : <div className={styles.Bar} style={context.barStyle} />}
             <RangeLabels />
-            <RangeSlider limit={context.limitFrom} name="from" />
+            {context.single ? null : <RangeSlider limit={context.limitFrom} name="from" />}
             <RangeSlider limit={context.limitTo} name="to" />
           </div>
         </div>

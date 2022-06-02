@@ -26,6 +26,7 @@ export const useRange = ({
   onFocus,
   options,
   sideEffect,
+  single,
   validator
 }: UseRangeArgs) => {
   const { onBlurHandler, onChangeHandler, onFocusHandler, value } = useField<RangeValue>({
@@ -99,13 +100,13 @@ export const useRange = ({
         return to;
       } else if (to > max) {
         return max;
-      } else if (to < value.from) {
-        return value.from as number;
+      } else if (to < ((single ? min : value.from) ?? value.from)) {
+        return (single ? min : value.from) ?? value.from;
       } else {
         return to;
       }
     },
-    [max, value.from]
+    [max, min, single, value.from]
   );
 
   const limitToOptions = useCallback(
@@ -161,19 +162,36 @@ export const useRange = ({
       const deltaFrom = Math.abs(value.from - clickValue);
       const deltaTo = Math.abs(value.to - clickValue);
 
-      if (deltaFrom < deltaTo) {
-        onChangeHandler({
-          ...value,
-          from: options ? limitToOptions(limitFrom(clickValue)) : limitFrom(clickValue)
-        });
-      } else {
+      if (single) {
         onChangeHandler({
           ...value,
           to: options ? limitToOptions(limitTo(clickValue)) : limitTo(clickValue)
         });
+      } else {
+        if (deltaFrom < deltaTo) {
+          onChangeHandler({
+            ...value,
+            from: options ? limitToOptions(limitFrom(clickValue)) : limitFrom(clickValue)
+          });
+        } else {
+          onChangeHandler({
+            ...value,
+            to: options ? limitToOptions(limitTo(clickValue)) : limitTo(clickValue)
+          });
+        }
       }
     },
-    [limitFrom, limitTo, limitToOptions, min, onChangeHandler, options, unitsPerPixel, value]
+    [
+      limitFrom,
+      limitTo,
+      limitToOptions,
+      min,
+      onChangeHandler,
+      options,
+      single,
+      unitsPerPixel,
+      value
+    ]
   );
 
   const move: MouseEventHandler = useCallback((event) => {
@@ -221,6 +239,7 @@ export const useRange = ({
       options,
       pixelsPerUnit,
       setIsMoving,
+      single,
       stopMove,
       trackRef,
       unitsPerPixel,
@@ -241,6 +260,7 @@ export const useRange = ({
       onTrackClickHandler,
       options,
       pixelsPerUnit,
+      single,
       stopMove,
       unitsPerPixel,
       value

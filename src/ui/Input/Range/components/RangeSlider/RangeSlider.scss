@@ -7,11 +7,14 @@ $trackHeight: 6px;
   background-color: var(--color-border);
   border-radius: var(--border-radius-normal);
   transform: translate(-50%, calc(-50% + $trackHeight / 2));
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.3);
+  transition: box-shadow var(--transition-normal) ease-in-out;
   cursor: pointer;
 
   &:focus,
   &:active {
     background-color: var(--color-label);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
     outline: none;
 
     .Value {

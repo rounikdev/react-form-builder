@@ -41,6 +41,7 @@ export const rangeContext = createContext<RangeContext>({
   setIsMoving: () => {
     // Default implementation
   },
+  single: false,
   stopMove: () => {
     // Default implementation
   },
