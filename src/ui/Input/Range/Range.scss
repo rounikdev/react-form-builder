@@ -5,6 +5,13 @@ $trackHeight: 6px;
   width: 100%;
 }
 
+.Live {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
 .Track {
   position: relative;
   display: flex;

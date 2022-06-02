@@ -54,6 +54,7 @@ const Template: ComponentStory<FC> = () => (
           formatter={rangeFormatter}
           id="savings"
           initialValue={RANGE_INITIAL_VALUE}
+          label="savings"
           max={10000}
           min={0}
           name="savings"
@@ -66,6 +67,7 @@ const Template: ComponentStory<FC> = () => (
           formatter={rangeFormatter}
           id="deviation"
           initialValue={RANGE_SINGLE_INITIAL_VALUE}
+          label="deviation"
           max={10}
           min={-10}
           name="deviation"
@@ -77,6 +79,7 @@ const Template: ComponentStory<FC> = () => (
           dataTest="budget"
           formatter={rangeFormatter}
           id="budget"
+          label="budget"
           name="budget"
           options={RANGE_OPTIONS}
         />
@@ -85,6 +88,7 @@ const Template: ComponentStory<FC> = () => (
           dataTest="volume"
           formatter={rangeFormatter}
           id="volume"
+          label="volume"
           name="volume"
           options={RANGE_VOLUME_OPTIONS}
           single
@@ -95,6 +99,7 @@ const Template: ComponentStory<FC> = () => (
           formatter={rangeFormatter}
           hideBar
           id="distance"
+          label="distance"
           name="distance"
           options={RANGE_OPTIONS}
           single

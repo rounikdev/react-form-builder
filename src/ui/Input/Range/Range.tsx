@@ -25,10 +25,12 @@ const defaultValue = { from: 0, to: 0 };
 export const Range: FC<RangeProps> = memo(
   ({
     className,
+    dataTest,
     dependencyExtractor,
     formatter,
     hideBar,
     initialValue = defaultValue,
+    label,
     max,
     min,
     name,
@@ -66,15 +68,32 @@ export const Range: FC<RangeProps> = memo(
           onMouseMove={context.move}
           onMouseUp={context.stopMove}
         >
+          {single ? (
+            <h2 aria-live="polite" className={styles.Live}>{`${label} ${context.value.to}`}</h2>
+          ) : (
+            <h2
+              aria-live="polite"
+              className={styles.Live}
+            >{`${label} from ${context.value.from} to ${context.value.to}`}</h2>
+          )}
           <div
             className={styles.Track}
+            data-test={`${dataTest}-range-track`}
             onClick={context.onTrackClickHandler}
             ref={context.trackRef}
           >
-            {hideBar ? null : <div className={styles.Bar} style={context.barStyle} />}
+            {hideBar ? null : (
+              <div
+                className={styles.Bar}
+                data-test={`${dataTest}-range-bar`}
+                style={context.barStyle}
+              />
+            )}
             <RangeLabels />
-            {context.single ? null : <RangeSlider limit={context.limitFrom} name="from" />}
-            <RangeSlider limit={context.limitTo} name="to" />
+            {context.single ? null : (
+              <RangeSlider dataTest={dataTest} limit={context.limitFrom} name="from" />
+            )}
+            <RangeSlider dataTest={dataTest} limit={context.limitTo} name="to" />
           </div>
         </div>
       </Provider>

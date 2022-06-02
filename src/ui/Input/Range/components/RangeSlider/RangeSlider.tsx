@@ -11,18 +11,20 @@ import {
 import { useUpdate } from '@rounik/react-custom-hooks';
 
 import { useRangeContext } from '@components';
+import { Testable } from '../../../../../types';
 
 import styles from './RangeSlider.scss';
 
-interface RangeSliderProps {
+interface RangeSliderProps extends Testable {
   limit: (value: number) => number;
   name: 'from' | 'to';
 }
 
-export const RangeSlider: FC<RangeSliderProps> = memo(({ limit, name }) => {
+export const RangeSlider: FC<RangeSliderProps> = memo(({ dataTest, limit, name }) => {
   const {
     clientX,
     isMoving,
+    max,
     min,
     onBlurHandler,
     onChangeHandler,
@@ -140,9 +142,12 @@ export const RangeSlider: FC<RangeSliderProps> = memo(({ limit, name }) => {
   return (
     <div
       aria-label={name}
+      aria-valuemax={options ? options[options.length - 1] : max}
+      aria-valuemin={options ? options[0] : min}
       aria-valuenow={value[name]}
       aria-valuetext={value[name]?.toString() || ''}
       className={styles.Container}
+      data-test={`${dataTest}-range-slider-${name}`}
       onBlur={onBlurHandler}
       onFocus={onFocusHandler}
       onKeyDown={onKeyDownHandler}
