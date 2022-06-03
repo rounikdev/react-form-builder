@@ -47,6 +47,7 @@ export const useRange = ({
       max: maximum,
       min: minimum
     };
+
     if (Array.isArray(options) && options.length > 1) {
       limits.max = options[options.length - 1];
       limits.min = options[0];
@@ -158,7 +159,7 @@ export const useRange = ({
 
   const onTrackClickHandler = useCallback(
     (event: MouseEvent) => {
-      const left = event.nativeEvent.clientX - (trackRef.current?.offsetLeft || 0);
+      const left = event.clientX - (trackRef.current?.offsetLeft || 0);
 
       const clickValue = (min || 0) + left * unitsPerPixel;
       const deltaFrom = Math.abs(value.from - clickValue);
@@ -167,18 +168,18 @@ export const useRange = ({
       if (single) {
         onChangeHandler({
           ...value,
-          to: options ? limitToOptions(limitTo(clickValue)) : limitTo(clickValue)
+          to: options ? limitToOptions(clickValue) : limitTo(clickValue)
         });
       } else {
         if (deltaFrom < deltaTo) {
           onChangeHandler({
             ...value,
-            from: options ? limitToOptions(limitFrom(clickValue)) : limitFrom(clickValue)
+            from: options ? limitToOptions(clickValue) : limitFrom(clickValue)
           });
         } else {
           onChangeHandler({
             ...value,
-            to: options ? limitToOptions(limitTo(clickValue)) : limitTo(clickValue)
+            to: options ? limitToOptions(clickValue) : limitTo(clickValue)
           });
         }
       }
