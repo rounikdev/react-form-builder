@@ -212,6 +212,11 @@ export const useRange = ({
         from: limitToOptions(value.from),
         to: limitToOptions(value.to)
       });
+    } else {
+      onChangeHandler({
+        from: limitFrom(value.from),
+        to: limitTo(value.to)
+      });
     }
   });
 

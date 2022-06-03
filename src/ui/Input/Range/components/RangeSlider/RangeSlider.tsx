@@ -97,7 +97,16 @@ export const RangeSlider: FC<RangeSliderProps> = memo(({ dataTest, label, limit,
 
           break;
         case 'ArrowUp':
-          if (!options) {
+          if (options) {
+            const option = options.find((option) => option > val);
+
+            if (typeof option !== 'undefined') {
+              onChangeHandler({
+                ...value,
+                [name]: limit(option)
+              });
+            }
+          } else {
             onChangeHandler({
               ...value,
               [name]: limit(val + stepExtra)
@@ -106,15 +115,22 @@ export const RangeSlider: FC<RangeSliderProps> = memo(({ dataTest, label, limit,
 
           break;
         case 'ArrowDown':
-          if (!options) {
+          if (options) {
+            const option = [...options].reverse().find((option) => option < val);
+
+            if (typeof option !== 'undefined') {
+              onChangeHandler({
+                ...value,
+                [name]: limit(option)
+              });
+            }
+          } else {
             onChangeHandler({
               ...value,
               [name]: limit(val - stepExtra)
             });
           }
 
-          break;
-        default:
           break;
       }
     },
@@ -146,7 +162,7 @@ export const RangeSlider: FC<RangeSliderProps> = memo(({ dataTest, label, limit,
       aria-valuemax={options ? options[options.length - 1] : max}
       aria-valuemin={options ? options[0] : min}
       aria-valuenow={value[name]}
-      aria-valuetext={value[name]?.toString() || ''}
+      aria-valuetext={`${value[name]}`}
       className={styles.Container}
       data-test={`${dataTest}-range-slider-${name}`}
       onBlur={onBlurHandler}

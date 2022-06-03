@@ -101,6 +101,7 @@ const Template: ComponentStory<FC> = () => (
           dataTest="volume"
           formatter={rangeFormatter}
           id="volume"
+          initialValue={{ from: 0, to: 11 }}
           label="volume"
           name="volume"
           options={RANGE_VOLUME_OPTIONS}

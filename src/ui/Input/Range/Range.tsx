@@ -64,6 +64,7 @@ export const Range: FC<RangeProps> = memo(
       <Provider value={context}>
         <div
           className={useClass([styles.Container, className], [className])}
+          data-test={`${dataTest}-range-container`}
           onMouseLeave={context.stopMove}
           onMouseMove={context.move}
           onMouseUp={context.stopMove}
