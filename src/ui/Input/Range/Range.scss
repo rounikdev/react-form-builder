@@ -1,0 +1,39 @@
+$trackHeight: 6px;
+
+.Container {
+  display: inline-block;
+  width: 100%;
+}
+
+.Live {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.Track {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: $trackHeight;
+  margin: var(--offset-large) 0;
+  background-color: var(--color-border);
+  border-radius: var(--border-radius-normal);
+  cursor: pointer;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 6rem;
+    transform: translateY(calc(-50% + $trackHeight/2));
+  }
+}
+
+.Bar {
+  position: absolute;
+  height: $trackHeight;
+  background-color: var(--color-ok);
+}

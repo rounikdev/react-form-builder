@@ -144,4 +144,6 @@ export class GlobalModel {
     rawValue.replace(/[^\d|-]/g, '').replace(/(?!^)-/g, '');
 
   static removeNonDigitFromString = (rawValue: string): string => rawValue.replace(/\D/g, '');
+
+  static classer = (list: (boolean | undefined | string)[]) => list.filter(Boolean).join(' ');
 }
