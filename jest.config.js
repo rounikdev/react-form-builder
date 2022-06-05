@@ -11,14 +11,15 @@ module.exports = {
     '!src/index.ts',
     '!src/**/*.d.ts',
     '!src/services/utils/**/*.*',
-    '!src/ui/**/*.*'
+    '!src/ui/**/*.*',
+    '!src/styles/**/*.*'
   ],
   coverageThreshold: {
     global: {
-      branches: 70,
-      functions: 70,
-      lines: 70,
-      statements: 70
+      branches: 95,
+      functions: 85,
+      lines: 95,
+      statements: 95
     }
   },
   coverageReporters: ['clover', 'cobertura', 'json', 'json-summary', 'lcov', 'text'],

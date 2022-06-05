@@ -9,6 +9,7 @@ import {
 } from 'react';
 
 import {
+  useBeforeFirstRender,
   useIsMounted,
   useLastDiffValue,
   useUpdate,
@@ -59,11 +60,9 @@ export const useField = <T>({
 
   const fieldRef = useRef<HTMLElement | null>(null);
 
-  const isRenderedRef = useRef(false);
-
   let stateValue = initialValue;
 
-  if (!isRenderedRef.current) {
+  useBeforeFirstRender(() => {
     if (formatter) {
       stateValue = formatter({
         newValue: initialValue
@@ -71,9 +70,7 @@ export const useField = <T>({
     } else {
       stateValue = initialValue;
     }
-
-    isRenderedRef.current = true;
-  }
+  });
 
   const [state, setFieldState] = useState<UseFieldState<T>>({
     errors: [],
@@ -93,58 +90,60 @@ export const useField = <T>({
     [isMounted]
   );
 
-  const valueRef = useUpdatedRef(state.value);
-
   const prevValue = useLastDiffValue(state.value);
 
-  const prevValueRef = useUpdatedRef(prevValue);
+  const valueRef = useUpdatedRef(state.value);
 
   const formatterRef = useUpdatedRef(formatter);
 
-  const validateField = useCallback(
-    async (value: T, dependencyValue?: FormStateEntryValue, useCurrentValue?: boolean) => {
-      let validityCheck: ValidityCheck;
+  const validatorRef = useUpdatedRef(validator);
 
-      const formattedValue = formatterRef.current
+  const validateField = useCallback(async (value: T, dependencyValue?: FormStateEntryValue) => {
+    let validityCheck: ValidityCheck;
+    let formattedValue: T;
+
+    if (value !== valueRef.current) {
+      formattedValue = formatterRef.current
         ? formatterRef.current({
             newValue: value,
-            oldValue: useCurrentValue ? valueRef.current : prevValueRef.current
+            oldValue: valueRef.current
           })
         : value;
+    } else {
+      formattedValue = valueRef.current;
+    }
 
-      setState((current) => ({
-        ...current,
-        valid: false,
-        validating: true,
-        value: formattedValue
-      }));
+    setState((current) => ({
+      ...current,
+      valid: false,
+      validating: true,
+      value: formattedValue
+    }));
 
-      if (validator) {
-        try {
-          validityCheck = await validator(formattedValue, dependencyValue);
-        } catch (error) {
-          validityCheck = {
-            errors: [{ text: 'errorValidating' }],
-            valid: false
-          };
-        }
-      } else {
+    if (validatorRef.current) {
+      try {
+        validityCheck = await validatorRef.current(formattedValue, dependencyValue);
+      } catch (error) {
         validityCheck = {
-          errors: [],
-          valid: true
+          errors: [{ text: 'errorValidating' }],
+          valid: false
         };
       }
+    } else {
+      validityCheck = {
+        errors: [],
+        valid: true
+      };
+    }
 
-      setState((current) => ({
-        ...current,
-        ...validityCheck,
-        validating: false,
-        value: formattedValue
-      }));
-    },
+    setState((current) => ({
+      ...current,
+      ...validityCheck,
+      validating: false,
+      value: formattedValue
+    }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [validator]
-  );
+  }, []);
 
   useUpdateOnly(() => {
     setState((current) => ({
@@ -190,9 +189,7 @@ export const useField = <T>({
       focused: false,
       touched: false,
       validating: false,
-      value: formatterRef.current
-        ? formatterRef.current({ newValue: resetValue, oldValue: undefined })
-        : resetValue
+      value: formatter ? formatter({ newValue: resetValue, oldValue: undefined }) : resetValue
     }));
   }, [resetFlag]);
 
@@ -232,9 +229,7 @@ export const useField = <T>({
     context.methods.setInForm({
       key: name,
       valid: state.valid,
-      value: formatterRef.current
-        ? formatterRef.current({ newValue: state.value, oldValue: prevValueRef.current })
-        : state.value
+      value: formatter ? formatter({ newValue: state.value, oldValue: prevValue }) : state.value
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, state.valid, state.value]);
@@ -297,7 +292,7 @@ export const useField = <T>({
     (val) => {
       setDirty();
 
-      return validateField(val, dependency, true);
+      return validateField(val, dependency);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [typeof dependency === 'bigint' ? dependency : JSON.stringify(dependency), validateField]

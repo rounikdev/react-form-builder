@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { InputModel, ValidatorModel } from '@services';
+import { FormatterModel, ValidatorModel } from '@services';
 import { Text as TextInput } from '@ui';
 
 export default {
@@ -19,11 +19,11 @@ export const MonthYear = Template.bind({});
 MonthYear.args = {
   dataTest: 'month-year',
   disabled: false,
-  formatter: InputModel.monthYearFormatter,
+  formatter: FormatterModel.monthYearFormatter,
   id: 'monthYear',
   label: 'Month Year',
   name: 'monthYear',
-  pattern: InputModel.monthYearPattern,
+  pattern: FormatterModel.monthYearPattern,
   required: true,
   validator: ValidatorModel.composeValidators(
     ValidatorModel.requiredValidator,

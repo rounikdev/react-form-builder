@@ -1,7 +1,7 @@
 import { createRef, memo, RefObject, useMemo, useState } from 'react';
 import Scroll from 'react-scroll-component';
 
-import { usePrevious, useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
+import { useLastDiffValue, useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { ListProps } from '../../types';
 
@@ -20,7 +20,7 @@ export const List = <T,>({
 
   const [rowRefs, setRowRefs] = useState<RefObject<HTMLLIElement>[]>([]);
 
-  const prevList = usePrevious(list);
+  const prevList = useLastDiffValue(list) || [];
 
   const scrollerOptions = useMemo(() => {
     return {

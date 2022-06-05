@@ -136,7 +136,7 @@ describe('Translation', () => {
     );
 
     expect(getByDataTest('translation')).toHaveTextContent(
-      dictionaries[languageId].data[translationKey]
+      dictionaries[languageId].data[translationKey] as string
     );
   });
 
@@ -196,7 +196,7 @@ describe('Translation', () => {
     );
 
     expect(getByDataTest('translation')).toHaveTextContent(
-      dictionaries[languageId].data[translationKey]
+      dictionaries[languageId].data[translationKey] as string
     );
 
     act(() => {
@@ -204,7 +204,7 @@ describe('Translation', () => {
     });
 
     expect(getByDataTest('translation')).toHaveTextContent(
-      dictionaries[newLanguageId].data[translationKey]
+      dictionaries[newLanguageId].data[translationKey] as string
     );
   });
 
@@ -225,7 +225,7 @@ describe('Translation', () => {
     );
 
     expect(getByDataTest('translation')).toHaveTextContent(
-      dictionaries[languageId].data[translationKey]
+      dictionaries[languageId].data[translationKey] as string
     );
 
     act(() => {

@@ -1,3 +1,4 @@
+import { Pattern } from '../../../components';
 import { RAFIdInfo } from './types';
 
 export class GlobalModel {
@@ -37,6 +38,7 @@ export class GlobalModel {
       const wait: FrameRequestCallback = (timestamp) => {
         const elapsedTime = timestamp - startTime;
 
+        /* istanbul ignore next */
         if (elapsedTime < time) {
           GlobalModel.clearRAFTimeout(rafIdInfo);
           rafIdInfo.id = requestAnimationFrame(wait);
@@ -71,6 +73,7 @@ export class GlobalModel {
     const wait: FrameRequestCallback = (timestamp) => {
       const elapsedTime = timestamp - startTime;
 
+      /* istanbul ignore next */
       if (elapsedTime < timeout) {
         GlobalModel.clearRAFTimeout(rafIdInfo);
         rafIdInfo.id = requestAnimationFrame(wait);
@@ -84,4 +87,63 @@ export class GlobalModel {
 
     return rafIdInfo;
   };
+
+  static valueSplitter = ({
+    goForward,
+    pattern,
+    patternDelimiter,
+    value
+  }: {
+    goForward: boolean;
+    pattern: Pattern;
+    patternDelimiter: string;
+    value: string;
+  }) => {
+    const patterSplitted = pattern.split(patternDelimiter);
+
+    let valueFormatted = value.split(patternDelimiter).join('').replace(/\s/g, '');
+    let indexCounter = 0;
+
+    const output = patterSplitted.reduce((accum, patternString, index) => {
+      let innerAccumulation = '';
+
+      innerAccumulation = Array.from(patternString).reduce((innerAccum) => {
+        if (valueFormatted.length > 0) {
+          if (indexCounter < index) {
+            indexCounter++;
+          }
+
+          innerAccum += valueFormatted[0];
+          valueFormatted = valueFormatted.substring(1);
+        } else {
+          innerAccum += '';
+        }
+
+        return innerAccum;
+      }, '');
+
+      if (
+        accum.length > 0 &&
+        (innerAccumulation !== '' ||
+          (goForward &&
+            accum.length ===
+              patternString.length * (indexCounter + 1) + patternDelimiter.length * indexCounter))
+      ) {
+        accum += `${patternDelimiter}${innerAccumulation}`;
+      } else {
+        accum += innerAccumulation;
+      }
+
+      return accum;
+    }, '');
+
+    return output;
+  };
+
+  static removeNonDigitFromNegativeString = (rawValue: string): string =>
+    rawValue.replace(/[^\d|-]/g, '').replace(/(?!^)-/g, '');
+
+  static removeNonDigitFromString = (rawValue: string): string => rawValue.replace(/\D/g, '');
+
+  static classer = (list: (boolean | undefined | string)[]) => list.filter(Boolean).join(' ');
 }
