@@ -1,7 +1,10 @@
-import { Field } from '../../../../Form/types';
-
-import { ExtractorFromSingleOption } from '../../../types';
-import { RadioGroupLabel, RadioGroupOption, RadioGroupValue } from '../../../useRadioGroup/types';
+import {
+  Field,
+  ExtractorFromSingleOption,
+  RadioGroupLabel,
+  RadioGroupOption,
+  RadioGroupValue
+} from '../../../../components';
 
 export interface RadioGroupProps extends Omit<Field<RadioGroupValue>, 'initialValue'> {
   groupLabel?: string;

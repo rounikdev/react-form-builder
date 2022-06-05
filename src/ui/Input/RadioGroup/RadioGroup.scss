@@ -1,17 +1,12 @@
 .Container {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
-
-  .GroupLabel + .InnerContainer {
-    padding: 1.2rem;
-  }
+  gap: var(--offset-medium);
 }
 
 .InnerContainer {
   display: flex;
-  gap: 1.6rem;
-  padding: 0;
+  gap: var(--offset-medium);
 
   &.Row {
     flex-direction: row;
@@ -25,7 +20,7 @@
 
 .RadioContainer {
   position: relative;
-  transition: all 300ms ease-in-out;
+  transition: all var(--transition) ease-in-out;
 
   &:hover > .Input:not(.Disabled) + .Label:not(.Error) {
     color: blue;

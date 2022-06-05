@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { FormRoot, FormUser } from '@components';
 
-import { RadioGroup as RadioGroupInput } from './RadioGroup';
+import { RadioGroup as RadioGroupInput } from '@ui';
 
 export default {
   component: RadioGroupInput,

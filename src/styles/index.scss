@@ -11,12 +11,13 @@
   // Inputs:
   --color-border: #525252;
   --color-border-focus: #1c1c1c;
-
-  --color-error: #b01717;
+  --color-border-error: #b01717;
+  --color-border-disabled: #6d6d6d;
 
   --color-input-background: #ffffff;
   --color-input-background-focus: #f7f7f7;
   --color-input-background-error: #ffcccc;
+  --color-input-background-disabled: #dddbdb;
 
   // Main:
   --color-background: #ffffff;
@@ -26,7 +27,9 @@
 
   // Fonts:
   --color-font: #1c1c1c;
+  --color-error: #b01717;
   --color-label: #525252;
+  --color-label-secondary: #6d6d6d;
   --color-button: #f7f7f7;
   --color-button-disabled: #050505;
 

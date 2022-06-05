@@ -13,7 +13,7 @@ export const ErrorField: FC<ErrorFieldProps> = memo(({ errors, isError }) => {
   const { translate } = useTranslation();
 
   return (
-    <HeightTransitionBox>
+    <HeightTransitionBox memoizeChildren>
       {isError ? (
         <ul className={styles.Container}>
           {errors.map((error, index) => (
