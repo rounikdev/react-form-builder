@@ -11,7 +11,7 @@ import { Image } from '../../Image/Image';
 
 import { Carousel } from '../Carousel';
 
-import { images, images2 } from './data';
+import { images, images2, Picture } from './data';
 
 import styles from './Carousel.stories.scss';
 
@@ -20,15 +20,11 @@ export default {
   component: Carousel
 } as ComponentMeta<typeof Carousel>;
 
-interface Picture {
-  alt: string;
-  id: number;
-  src: string;
-}
-
 const Carousels: FC = () => {
   const [toLeft, setToLeft] = useState(true);
+
   const [pausable, setPausable] = useState(true);
+
   const [imagesData, setImagesData] = useState(images);
 
   const changeDirection = useCallback(() => {
@@ -47,23 +43,25 @@ const Carousels: FC = () => {
     return !!item ? <Image {...item} /> : null;
   }, []);
 
-  const renderLeftButton = useCallback((props) => {
+  const renderLeftButton = useCallback(({ dataTest, onClick }) => {
     return (
       <Button
         className={styles.LeftButton}
-        {...props}
+        dataTest={`${dataTest}- carousel-left-button`}
         label="moveLeft"
+        onClick={onClick}
         text={<IconChevronLeft action />}
       />
     );
   }, []);
 
-  const renderRightButton = useCallback((props) => {
+  const renderRightButton = useCallback(({ dataTest, onClick }) => {
     return (
       <Button
         className={styles.RightButton}
-        {...props}
+        dataTest={`${dataTest}-carousel-right-button`}
         label="moveRight"
+        onClick={onClick}
         text={<IconChevronRight action />}
       />
     );
@@ -72,10 +70,12 @@ const Carousels: FC = () => {
   const renderMenu = useCallback(
     ({
       current,
+      dataTest,
       items,
       move
     }: {
       current: Picture | null;
+      dataTest: string;
       items: Picture[];
       move: (index?: number) => void;
     }) => {
@@ -90,7 +90,7 @@ const Carousels: FC = () => {
                   isCurrentItem && styles.Current
                 ])}
                 label={item.alt}
-                dataTest={`menu-button-item-${index}`}
+                dataTest={`${dataTest}-carousel-menu-button-item-${index}`}
                 disabled={isCurrentItem}
                 key={item.id}
                 onClick={() => {
@@ -110,28 +110,30 @@ const Carousels: FC = () => {
     <article>
       <Button
         className={styles.Button}
-        dataTest="direction"
+        dataTest="change-direction"
         onClick={changeDirection}
         text={toLeft ? 'To Left' : 'To Right'}
       />
       <Button
         className={styles.Button}
-        dataTest="pausable"
+        dataTest="change-pausable"
         onClick={togglePausable}
         text={pausable ? 'Pausable' : 'Not Pausable'}
       />
       <Button
         className={styles.Button}
-        dataTest="images"
+        dataTest="change-images"
         onClick={toggleImages}
         text={imagesData === images ? 'images' : 'images2'}
       />
       <Carousel
         auto
         className={useClass([styles.Carousel, pausable && styles.Pausable], [pausable])}
+        dataTest="animals"
         items={imagesData}
         interval={2000}
         keepDirection
+        label="animals"
         pausable={pausable}
         renderFrame={renderFrame}
         renderLeftButton={renderLeftButton}

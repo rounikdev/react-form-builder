@@ -59,3 +59,9 @@ export const images2 = [
     src: 'https://ichef.bbci.co.uk/news/976/cpsprodpb/11049/production/_113350796_hamster2.jpg'
   }
 ];
+
+export interface Picture {
+  alt: string;
+  id: number;
+  src: string;
+}

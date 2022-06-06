@@ -3,7 +3,7 @@ export const defaultExtractId = (item: any) => item?.id;
 
 export const defaultRenderFrame = () => null;
 
-export const getNextIndex = (current: number, last: number, toLeft: boolean): number => {
+export const getNextIndex = (current: number, last: number, toLeft?: boolean): number => {
   let next = null;
 
   switch (current) {
