@@ -6,96 +6,86 @@
 
 .InnerContainer {
   display: flex;
-  gap: var(--offset-medium);
 
   &.Row {
     flex-direction: row;
     flex-wrap: wrap;
+    gap: var(--offset-large);
   }
 
   &.Column {
     flex-direction: column;
-  }
-}
-
-.RadioContainer {
-  position: relative;
-  transition: all var(--transition) ease-in-out;
-
-  &:hover > .Input:not(.Disabled) + .Label:not(.Error) {
-    color: blue;
-    text-decoration: underline;
+    gap: var(--offset-medium);
   }
 
-  .Input {
-    position: absolute;
-    z-index: 1;
-    opacity: 0;
-    user-select: none;
-    transition: all 300ms ease-in-out;
+  .RadioContainer {
+    position: relative;
 
-    + .Label {
+    .Input {
+      position: absolute;
+      z-index: 1;
+      opacity: 0;
+      user-select: none;
+      transition: all var(--transition) ease-in-out;
+
+      &:checked + .Label .LabelCircle::after {
+        display: block;
+      }
+
+      &:focus + .Label .LabelCircle {
+        border-color: var(--color-border-focus);
+      }
+
+      &:disabled + .Label {
+        cursor: not-allowed;
+
+        .LabelCircle {
+          background-color: var(--color-input-background-disabled);
+          border: var(--border-width) dashed var(--color-border-disabled);
+        }
+      }
+    }
+
+    .Label {
       display: flex;
-      gap: 1.2rem;
-      align-items: center;
+      gap: var(--offset-small);
+      overflow: hidden;
+      color: var(--color-label);
+      font-size: var(--font-small);
+      text-overflow: ellipsis;
+      transition: all var(--transition) ease-in-out;
       cursor: pointer;
 
       .LabelText {
         flex: 1;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        margin-top: calc(var(--offset-small) / 2);
       }
 
-      &::before {
-        content: "";
-        display: inline-block;
-        width: 2rem;
-        height: 2rem;
-        vertical-align: bottom;
-        background-color: white;
-        border: 0.1rem solid black;
+      .LabelCircle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: var(--offset-large);
+        height: var(--offset-large);
+        background-color: var(--color-background);
+        border: var(--border-width) solid var(--color-border);
         border-radius: 50%;
-        transition: all 300ms ease-in-out;
-      }
+        transition: all var(--transition) ease-in-out;
 
-      &:hover:not(.Disabled):not(.Error) {
-        .LabelText {
-          color: blue !important;
+        &::after {
+          content: "";
+          display: none;
+          width: var(--offset-medium);
+          height: var(--offset-medium);
+          background-color: var(--color-font);
+          border-radius: 50%;
+          transition: all var(--transition) ease-in-out;
         }
 
-        &::before {
-          padding: 0;
-          border-color: blue;
+        &.Error {
+          background-color: var(--color-input-background-error);
+          border-color: var(--color-border-error);
         }
-      }
-
-      &.Disabled {
-        cursor: not-allowed;
-
-        &::before {
-          border: 0.1rem dashed grey;
-        }
-      }
-
-      &.Error {
-        &::before {
-          border-color: red;
-        }
-      }
-    }
-
-    &:checked:not(.Disabled):not(.Error) + .Label .LabelText {
-      font-weight: 600 !important;
-    }
-
-    &:checked:not(.Disabled) + .Label::before {
-      background: radial-gradient(black 0%, black 30%, white 35%, white 100%);
-    }
-
-    &:focus:not(.Disabled) + .Label {
-      &::before {
-        padding: 0;
-        border-color: blue;
       }
     }
   }

@@ -47,11 +47,11 @@
       outline: none;
       cursor: pointer;
 
-      &:checked ~ .Checkmark::after {
+      &:checked + .Checkmark::after {
         display: block;
       }
 
-      &:focus ~ .Checkmark {
+      &:focus + .Checkmark {
         background-color: var(--color-background-focus);
         border-color: var(--color-border-focus);
       }
@@ -59,7 +59,7 @@
       &:disabled {
         cursor: not-allowed;
 
-        ~ .Checkmark {
+        + .Checkmark {
           background-color: var(--color-input-background-disabled);
           border: var(--border-width) dashed var(--color-border-disabled);
         }
