@@ -1,0 +1,90 @@
+.Carousel {
+  width: 60rem;
+  height: 45rem;
+  margin: var(--offset-medium) auto;
+  background-color: var(--color-border-active);
+  border-radius: var(--border-radius-normal);
+  border: 0 solid var(--color-background-focus);
+  transition: border 300ms ease-in-out;
+
+  &.Pausable {
+    &:focus,
+    &:hover {
+      border: 1px solid var(--color-background-focus);
+    }
+  }
+}
+
+.LeftButton,
+.RightButton {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 4rem;
+  height: 4rem;
+  opacity: 0.3;
+  background-color: var(--color-background-focus);
+  border-radius: 50%;
+  transform: scale(1) translateY(-50%);
+  transition: all var(--transition-normal) ease-in-out;
+
+  &:hover,
+  &:focus {
+    &:not(:disabled) {
+      opacity: 1;
+      background-color: var(--color-background-focus);
+      transform: scale(1.04) translateY(-50%);
+    }
+  }
+
+  &:active {
+    &:not(:disabled) {
+      opacity: 1;
+      background-color: var(--color-background-focus);
+      transform: scale(0.98) translateY(-50%);
+    }
+  }
+}
+
+.LeftButton {
+  left: var(--offset-medium);
+}
+
+.RightButton {
+  right: var(--offset-medium);
+}
+
+.Button {
+  margin-right: var(--offset-small);
+}
+
+.Menu {
+  position: absolute;
+  bottom: var(--offset-medium);
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.MenuButton {
+  width: var(--offset-large);
+  height: var(--offset-small);
+  margin-right: var(--offset-small);
+  padding: 0;
+  background-color: var(--color-border);
+  transition: all var(--transition-normal) ease-in-out;
+  cursor: pointer;
+
+  &:focus,
+  &:hover {
+    background-color: var(--color-background-focus);
+  }
+
+  &.Current {
+    background-color: var(--color-ok);
+  }
+}

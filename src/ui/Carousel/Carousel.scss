@@ -1,0 +1,36 @@
+.Container {
+  position: relative;
+  overflow: hidden;
+}
+
+.Track {
+  display: flex;
+  align-items: center;
+  width: 200%;
+  height: 100%;
+  transform: translate(0, 0);
+  will-change: transform;
+
+  &.MoveToLeft {
+    transform: translate(-50%, 0);
+    transition: transform 300ms ease-in-out;
+  }
+
+  &.ToRight {
+    transform: translate(-50%, 0);
+  }
+
+  &.MoveToRight {
+    transform: translate(0, 0);
+    transition: transform 300ms ease-in-out;
+  }
+}
+
+.Frame {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 100%;
+}
