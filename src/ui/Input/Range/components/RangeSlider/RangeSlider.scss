@@ -28,7 +28,7 @@ $trackHeight: 6px;
 .Value {
   display: inline-block;
   padding: 1rem;
-  font-size: var(--font-normal);
+  font-size: var(--font-medium);
   border-radius: var(--border-radius-normal);
   transform: translate(calc(-50% + 1rem), -150%);
 }

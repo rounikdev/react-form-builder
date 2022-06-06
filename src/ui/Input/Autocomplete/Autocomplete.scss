@@ -15,14 +15,40 @@
   list-style: none;
 }
 
+.Label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: calc(var(--offset-small) / 2);
+  color: var(--color-label);
+  font-size: var(--font-small);
+
+  .Required {
+    font-size: var(--font-tiny);
+  }
+}
+
 .Input {
-  z-index: 1;
-  height: 4.4rem;
-  padding: var(--offset-normal);
-  font-size: var(--font-normal);
+  width: 100%;
+  padding: var(--offset-medium);
+  color: var(--color-font);
+  font-size: var(--font-medium);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--border-radius);
+  transition: all var(--transition) ease-in-out;
+
+  &:focus {
+    border: var(--border-width) solid var(--color-border-focus);
+    background-color: var(--color-input-background-focus);
+  }
+
+  &:disabled {
+    border: var(--border-width) dashed var(--color-border-disabled);
+    cursor: not-allowed;
+  }
 
   &.Error {
-    border-color: var(--color-error);
+    background-color: var(--color-input-background-error);
+    border-color: var(--color-border-error);
   }
 }
 
@@ -32,12 +58,12 @@
   width: 100%;
   height: 13.2rem;
   overflow-y: auto;
-  border-bottom-left-radius: var(--border-radius-normal);
-  border-bottom-right-radius: var(--border-radius-normal);
-  animation: open var(--transition-fast) ease-in-out forwards;
+  border-bottom-left-radius: var(--border);
+  border-bottom-right-radius: var(--border);
+  animation: open var(--transition) ease-in-out forwards;
 
   &.Closed {
-    animation: close var(--transition-fast) ease-in-out forwards;
+    animation: close var(--transition) ease-in-out forwards;
   }
 }
 
@@ -69,7 +95,7 @@
   flex-wrap: wrap;
   width: 100%;
   margin: 0;
-  margin-bottom: var(--offset-normal);
+  margin-bottom: var(--offset-small);
   padding: 0;
 }
 
@@ -77,17 +103,18 @@
   margin-right: var(--offset-small);
   margin-bottom: var(--offset-small);
   padding: var(--offset-tiny) var(--offset-small);
-  color: var(--color-background-focus);
-  font-size: var(--font-normal);
+  color: var(--color-font);
+  font-size: var(--font-medium);
   list-style: none;
-  background-color: var(--color-label);
-  border-radius: var(--border-radius-normal);
+  background-color: var(--color-card-background);
+  border: var(--border-width) solid;
+  border-radius: var(--border-radius);
 }
 
 .RemoveMultiOption {
   appearance: none;
-  color: var(--color-background-focus);
-  font-size: var(--font-normal);
+  color: var(--color-font);
+  font-size: var(--font-medium);
   background-color: transparent;
   border: none;
   outline: none;

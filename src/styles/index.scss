@@ -24,14 +24,16 @@
 
   // Color:
   --color-card-background: #f5f5f5;
+  --color-hover-background: #4e4e4e;
+  --color-selected-background: #868686;
 
   // Fonts:
   --color-font: #1c1c1c;
   --color-error: #b01717;
   --color-label: #525252;
-  --color-label-secondary: #6d6d6d;
   --color-button: #f7f7f7;
   --color-button-disabled: #050505;
+  --color-success: #47a112;
 
   // Buttons: they should have box-shadow when active
   --color-button-primary-background: #525252; // color: --color-button
@@ -52,6 +54,7 @@
   // ********* Fonts ****************
 
   // font-size:
+  --font-tiny: 1.2rem;
   --font-small: 1.4rem;
   --font-medium: 1.6rem;
   --font-large: 1.8rem;
@@ -59,6 +62,7 @@
   // ********* Offsets ****************
 
   // margin, padding:
+  --offset-tiny: 0.4rem;
   --offset-small: 0.8rem;
   --offset-medium: 1.6rem;
   --offset-large: 2.4rem;
