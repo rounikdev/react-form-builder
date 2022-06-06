@@ -1,12 +1,7 @@
 import { FC, StrictMode, useCallback, useState } from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import { useClass } from '@rounik/react-custom-hooks';
-
-import { GlobalModel } from '@services';
-
 import { Button } from '../../Button/Button';
-import { IconChevronLeft, IconChevronRight } from '../../icons';
 import { Image } from '../../Image/Image';
 
 import { Carousel } from '../Carousel';
@@ -19,6 +14,10 @@ export default {
   title: 'Components/Carousel',
   component: Carousel
 } as ComponentMeta<typeof Carousel>;
+
+const renderFrame = (item: Picture | null) => {
+  return !!item ? <Image {...item} /> : null;
+};
 
 const Carousels: FC = () => {
   const [toLeft, setToLeft] = useState(true);
@@ -38,73 +37,6 @@ const Carousels: FC = () => {
   const togglePausable = useCallback(() => {
     setPausable((current) => !current);
   }, []);
-
-  const renderFrame = useCallback((item) => {
-    return !!item ? <Image {...item} /> : null;
-  }, []);
-
-  const renderLeftButton = useCallback(({ dataTest, onClick }) => {
-    return (
-      <Button
-        className={styles.LeftButton}
-        dataTest={`${dataTest}- carousel-left-button`}
-        label="moveLeft"
-        onClick={onClick}
-        text={<IconChevronLeft action />}
-      />
-    );
-  }, []);
-
-  const renderRightButton = useCallback(({ dataTest, onClick }) => {
-    return (
-      <Button
-        className={styles.RightButton}
-        dataTest={`${dataTest}-carousel-right-button`}
-        label="moveRight"
-        onClick={onClick}
-        text={<IconChevronRight action />}
-      />
-    );
-  }, []);
-
-  const renderMenu = useCallback(
-    ({
-      current,
-      dataTest,
-      items,
-      move
-    }: {
-      current: Picture | null;
-      dataTest: string;
-      items: Picture[];
-      move: (index?: number) => void;
-    }) => {
-      return (
-        <div className={styles.Menu}>
-          {items.map((item, index) => {
-            const isCurrentItem = current?.id === item.id;
-            return (
-              <Button
-                className={GlobalModel.classer([
-                  styles.MenuButton,
-                  isCurrentItem && styles.Current
-                ])}
-                label={item.alt}
-                dataTest={`${dataTest}-carousel-menu-button-item-${index}`}
-                disabled={isCurrentItem}
-                key={item.id}
-                onClick={() => {
-                  move(index);
-                }}
-                text=""
-              />
-            );
-          })}
-        </div>
-      );
-    },
-    []
-  );
 
   return (
     <article>
@@ -128,17 +60,15 @@ const Carousels: FC = () => {
       />
       <Carousel
         auto
-        className={useClass([styles.Carousel, pausable && styles.Pausable], [pausable])}
+        className={styles.Carousel}
         dataTest="animals"
+        extractLabel={(item) => item?.alt ?? ''}
         items={imagesData}
         interval={2000}
         keepDirection
         label="animals"
         pausable={pausable}
         renderFrame={renderFrame}
-        renderLeftButton={renderLeftButton}
-        renderMenu={renderMenu}
-        renderRightButton={renderRightButton}
         startIndex={1}
         toLeft={toLeft}
       />

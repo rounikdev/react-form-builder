@@ -11,19 +11,31 @@ export interface UseCarouselConfig<T> {
   toLeft?: boolean;
 }
 
+export interface CarouselMenuProps<T> {
+  current: T | null;
+  dataTest: string;
+  extractId: (item: T | null) => string;
+  extractLabel: (item: T | null) => string;
+  items: T[];
+  move: (index?: number) => void;
+}
+
+export interface CarouselButtonProps extends Testable {
+  isLeft?: boolean;
+  label: string;
+  onClick: MouseEventHandler;
+  text: ReactNode;
+}
+
 export interface CarouselProps<T> extends Stylable, Testable, Omit<UseCarouselConfig<T>, 'styles'> {
   extractId?: (item: T | null) => string;
+  extractLabel?: (item: T | null) => string;
   label: string;
   pausable?: boolean;
   renderFrame: (item: T | null) => ReactNode;
-  renderLeftButton: (params: { dataTest: string; onClick: MouseEventHandler }) => ReactNode;
-  renderMenu: (params: {
-    current: T | null;
-    dataTest: string;
-    items: T[];
-    move: (index?: number) => void;
-  }) => ReactNode;
-  renderRightButton: (params: { dataTest: string; onClick: MouseEventHandler }) => ReactNode;
+  renderLeftButton?: (params: { dataTest: string; onClick: MouseEventHandler }) => ReactNode;
+  renderMenu?: (params: CarouselMenuProps<T>) => ReactNode;
+  renderRightButton?: (params: { dataTest: string; onClick: MouseEventHandler }) => ReactNode;
 }
 
 export interface CarouselState<T> {

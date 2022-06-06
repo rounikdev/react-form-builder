@@ -1,29 +1,72 @@
-import { memo } from 'react';
+import { memo, MouseEventHandler } from 'react';
 
 import { useClass } from '@rounik/react-custom-hooks';
 
+import { IconChevronLeft, IconChevronRight } from '../icons';
+
+import { CarouselButton, CarouselMenu } from './components';
+import { defaultExtractId, defaultExtractLabel, defaultRenderFrame } from './helpers';
 import { useCarousel } from './hooks';
-import { CarouselProps } from './types';
-import { defaultExtractId, defaultRenderFrame } from './helpers';
+import { CarouselMenuProps, CarouselProps } from './types';
 
 import styles from './Carousel.scss';
 
 const defaultHandler = () => {};
+
+const defaultRenderLeftButton = ({
+  dataTest,
+  onClick
+}: {
+  dataTest: string;
+  onClick: MouseEventHandler;
+}) => {
+  return (
+    <CarouselButton
+      dataTest={dataTest}
+      isLeft
+      onClick={onClick}
+      label="moveLeft"
+      text={<IconChevronLeft action />}
+    />
+  );
+};
+
+const defaultRenderRightButton = ({
+  dataTest,
+  onClick
+}: {
+  dataTest: string;
+  onClick: MouseEventHandler;
+}) => {
+  return (
+    <CarouselButton
+      dataTest={dataTest}
+      onClick={onClick}
+      label="moveRight"
+      text={<IconChevronRight action />}
+    />
+  );
+};
+
+const defaultRenderMenu = <T,>(params: CarouselMenuProps<T>) => {
+  return <CarouselMenu {...params} />;
+};
 
 export const BaseCarousel = <T,>({
   auto = false,
   className,
   dataTest,
   extractId = defaultExtractId,
+  extractLabel = defaultExtractLabel,
   items = [],
   interval = 1000,
   keepDirection = true,
   label,
   pausable = false,
   renderFrame = defaultRenderFrame,
-  renderLeftButton = defaultRenderFrame,
-  renderMenu = defaultRenderFrame,
-  renderRightButton = defaultRenderFrame,
+  renderLeftButton = defaultRenderLeftButton,
+  renderMenu = defaultRenderMenu,
+  renderRightButton = defaultRenderRightButton,
   startIndex = 0,
   toLeft = false
 }: CarouselProps<T>) => {
@@ -52,7 +95,10 @@ export const BaseCarousel = <T,>({
   return (
     <div
       aria-label={label}
-      className={useClass([styles.Container, className], [className])}
+      className={useClass(
+        [styles.Container, pausable && styles.Pausable, className],
+        [className, pausable]
+      )}
       data-test={`${dataTest}-carousel`}
       onBlur={pausable ? onMouseOutHandler : defaultHandler}
       onFocus={pausable ? onMouseOverHandler : defaultHandler}
@@ -68,7 +114,7 @@ export const BaseCarousel = <T,>({
         dataTest,
         onClick: moveRight
       })}
-      {renderMenu({ current: state.current, dataTest, items, move })}
+      {renderMenu({ current: state.current, dataTest, extractId, extractLabel, items, move })}
       <div
         className={useClass([styles.Track, state.trackStyle], [state.trackStyle])}
         data-test={`${dataTest}-carousel-track`}

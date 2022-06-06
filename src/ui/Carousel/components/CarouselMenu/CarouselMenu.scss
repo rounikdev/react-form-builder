@@ -1,0 +1,27 @@
+.Container {
+  position: absolute;
+  bottom: var(--offset-medium);
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.Button {
+  width: var(--offset-large);
+  height: var(--offset-small);
+  margin-right: var(--offset-small);
+  padding: 0;
+  background-color: var(--color-border);
+  transition: all var(--transition-normal) ease-in-out;
+  cursor: pointer;
+
+  &:focus,
+  &:hover {
+    background-color: var(--color-background-focus);
+  }
+
+  &.Current {
+    background-color: var(--color-ok);
+  }
+}

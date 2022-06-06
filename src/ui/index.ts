@@ -1,6 +1,7 @@
 export * from './Accordion';
 export * from './Animator';
 export * from './Button/Button';
+export * from './Carousel';
 export * from './ErrorField/ErrorField';
 export * from './icons';
 export * from './Image/Image';

@@ -1,6 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const defaultExtractId = (item: any) => item?.id;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const defaultExtractLabel = (item: any) => item?.label;
+
 export const defaultRenderFrame = () => null;
 
 export const getNextIndex = (current: number, last: number, toLeft?: boolean): number => {
