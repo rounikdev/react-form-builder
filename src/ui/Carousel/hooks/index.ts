@@ -90,11 +90,23 @@ export const useCarousel = <T>({
         trackStyle: ''
       }));
 
-      startAutoMove(50);
-    } else {
+      if (auto) {
+        startAutoMove(50);
+      } else {
+        requestAnimationFrame(() => {
+          let newIndex = state.currentIndex - 1;
+
+          if (newIndex < 0) {
+            newIndex = items.length - 1;
+          }
+
+          move(newIndex);
+        });
+      }
+    } else if (auto) {
       scheduledMove.current = 'left';
     }
-  }, [startAutoMove]);
+  }, [auto, items.length, move, startAutoMove, state.currentIndex]);
 
   const moveRight = useCallback(() => {
     if (!transitioning.current) {
@@ -104,11 +116,23 @@ export const useCarousel = <T>({
         trackStyle: styles.ToRight
       }));
 
-      startAutoMove(50);
-    } else {
+      if (auto) {
+        startAutoMove(50);
+      } else {
+        requestAnimationFrame(() => {
+          let newIndex = state.currentIndex + 1;
+
+          if (newIndex > items.length - 1) {
+            newIndex = 0;
+          }
+
+          move(newIndex);
+        });
+      }
+    } else if (auto) {
       scheduledMove.current = 'right';
     }
-  }, [startAutoMove, styles.ToRight]);
+  }, [auto, items.length, move, startAutoMove, state.currentIndex, styles.ToRight]);
 
   const onTransitionEndHandler = useCallback(() => {
     setState((currentState) => {
@@ -193,6 +217,16 @@ export const useCarousel = <T>({
 
     startAutoMove();
   }, [startAutoMove, toLeft]);
+
+  useUpdate(() => {
+    if (!auto) {
+      scheduledMove.current = null;
+
+      if (timeoutId.current) {
+        GlobalModel.clearRAFTimeout(timeoutId.current);
+      }
+    }
+  }, [auto]);
 
   useUnmount(() => {
     if (timeoutId.current) {

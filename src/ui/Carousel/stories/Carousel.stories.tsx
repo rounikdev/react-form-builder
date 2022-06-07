@@ -15,16 +15,22 @@ export default {
   component: Carousel
 } as ComponentMeta<typeof Carousel>;
 
-const renderFrame = (item: Picture | null) => {
-  return !!item ? <Image {...item} /> : null;
+const renderFrame = ({ dataTest, item }: { dataTest: string; item: Picture | null }) => {
+  return !!item ? <Image dataTest={dataTest} {...item} /> : null;
 };
 
 const Carousels: FC = () => {
+  const [auto, setAuto] = useState(false);
+
   const [toLeft, setToLeft] = useState(true);
 
   const [pausable, setPausable] = useState(true);
 
   const [imagesData, setImagesData] = useState(images);
+
+  const toggleAuto = useCallback(() => {
+    setAuto((current) => !current);
+  }, []);
 
   const changeDirection = useCallback(() => {
     setToLeft((currentToLeft) => !currentToLeft);
@@ -40,6 +46,12 @@ const Carousels: FC = () => {
 
   return (
     <article>
+      <Button
+        className={styles.Button}
+        dataTest="change-auto"
+        onClick={toggleAuto}
+        text={auto ? 'Auto' : 'Manual'}
+      />
       <Button
         className={styles.Button}
         dataTest="change-direction"
@@ -59,7 +71,7 @@ const Carousels: FC = () => {
         text={imagesData === images ? 'images' : 'images2'}
       />
       <Carousel
-        auto
+        auto={auto}
         className={styles.Carousel}
         dataTest="animals"
         extractLabel={(item) => item?.alt ?? ''}

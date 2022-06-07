@@ -53,7 +53,7 @@ const defaultRenderMenu = <T,>(params: CarouselMenuProps<T>) => {
 };
 
 export const BaseCarousel = <T,>({
-  auto = false,
+  auto,
   className,
   dataTest,
   extractId = defaultExtractId,
@@ -62,13 +62,13 @@ export const BaseCarousel = <T,>({
   interval = 1000,
   keepDirection = true,
   label,
-  pausable = false,
+  pausable,
   renderFrame = defaultRenderFrame,
   renderLeftButton = defaultRenderLeftButton,
   renderMenu = defaultRenderMenu,
   renderRightButton = defaultRenderRightButton,
   startIndex = 0,
-  toLeft = false
+  toLeft
 }: CarouselProps<T>) => {
   const {
     move,
@@ -127,14 +127,14 @@ export const BaseCarousel = <T,>({
               data-test={`${dataTest}-carousel-frame-current`}
               key={extractId(state.current)}
             >
-              {renderFrame(state.current)}
+              {renderFrame({ dataTest: extractId(state.current), item: state.current })}
             </div>
             <div
               className={styles.Frame}
               data-test={`${dataTest}-carousel-frame-next`}
               key={extractId(state.next)}
             >
-              {renderFrame(state.next)}
+              {renderFrame({ dataTest: extractId(state.next), item: state.next })}
             </div>
           </>
         ) : (
@@ -144,14 +144,14 @@ export const BaseCarousel = <T,>({
               data-test={`${dataTest}-carousel-frame-current`}
               key={extractId(state.next)}
             >
-              {renderFrame(state.next)}
+              {renderFrame({ dataTest: extractId(state.next), item: state.next })}
             </div>
             <div
               className={styles.Frame}
               data-test={`${dataTest}-carousel-frame-next`}
               key={extractId(state.current)}
             >
-              {renderFrame(state.current)}
+              {renderFrame({ dataTest: extractId(state.current), item: state.current })}
             </div>
           </>
         )}

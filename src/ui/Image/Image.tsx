@@ -2,7 +2,7 @@ import { CSSProperties, FC, memo, useCallback, useMemo, useState } from 'react';
 
 import { useUpdateOnly } from '@rounik/react-custom-hooks';
 
-import { Stylable } from '../../types';
+import { Stylable, Testable } from '../../types';
 
 const getImageStyle = (naturalHeight: number, naturalWidth: number): CSSProperties => {
   let dimension = 'width';
@@ -17,7 +17,7 @@ const getImageStyle = (naturalHeight: number, naturalWidth: number): CSSProperti
   };
 };
 
-interface ImageProps extends Stylable {
+interface ImageProps extends Stylable, Testable {
   alt: string;
   src: string;
 }
@@ -29,7 +29,7 @@ interface ImageState {
 
 const defaultState: ImageState = { error: false, style: { width: '100%', opacity: 0 } };
 
-export const Image: FC<ImageProps> = memo(({ alt, className, src }) => {
+export const Image: FC<ImageProps> = memo(({ alt, className, dataTest, src }) => {
   const [state, setState] = useState<ImageState>(defaultState);
 
   const showImage = useMemo(() => src && !state.error, [src, state.error]);
@@ -57,13 +57,14 @@ export const Image: FC<ImageProps> = memo(({ alt, className, src }) => {
     <img
       alt={alt}
       className={className}
+      data-test={`${dataTest}-image`}
       onError={onErrorHandler}
       onLoad={onLoadHandler}
       src={src}
       style={state.style}
     />
   ) : (
-    <div style={state.style} />
+    <div data-test={`${dataTest}-image-error`} style={state.style} />
   );
 });
 

@@ -32,7 +32,7 @@ export interface CarouselProps<T> extends Stylable, Testable, Omit<UseCarouselCo
   extractLabel?: (item: T | null) => string;
   label: string;
   pausable?: boolean;
-  renderFrame: (item: T | null) => ReactNode;
+  renderFrame: ({ dataTest, item }: { dataTest: string; item: T | null }) => ReactNode;
   renderLeftButton?: (params: { dataTest: string; onClick: MouseEventHandler }) => ReactNode;
   renderMenu?: (params: CarouselMenuProps<T>) => ReactNode;
   renderRightButton?: (params: { dataTest: string; onClick: MouseEventHandler }) => ReactNode;
