@@ -1,7 +1,7 @@
 .Container {
   display: inline-block;
   width: 100%;
-  transition: all var(--transition-fast) ease-in-out var(--transition-faster);
+  transition: all var(--transition) ease-in-out;
 
   &.Opened {
     margin: var(--offset-small) 0;
@@ -18,7 +18,7 @@
   display: inline-block;
   width: 100%;
   overflow: hidden;
-  transition: height var(--transition-normal) ease-in-out;
+  transition: height var(--transition) ease-in-out;
 
   &.Open {
     overflow: initial;

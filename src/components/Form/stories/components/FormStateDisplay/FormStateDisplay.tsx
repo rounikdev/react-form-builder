@@ -21,7 +21,7 @@ const FormStateDisplay = () => {
     ? createPortal(
         <div>
           {Object.keys(errors).length ? (
-            <div style={{ color: 'red' }}>
+            <div style={{ color: '#b01717' }}>
               <h3>Errors:</h3>
               <pre data-test="form-errors">{JSON.stringify(errors, null, 2)}</pre>
               <div style={{ color: 'initial' }}>

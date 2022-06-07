@@ -34,13 +34,14 @@
   --color-button: #f7f7f7;
   --color-button-disabled: #050505;
   --color-success: #47a112;
+  --color-warn: #cc4646;
 
   // Buttons: they should have box-shadow when active
   --color-button-primary-background: #525252; // color: --color-button
   --color-button-primary-background-disabled: #999999; // color: --color-button-disabled
 
   // This one goes with a border:
-  --color-button-secondary-background: #f7f7f7; // color: --color-font
+  --color-button-secondary-background: #d1d1d1; // color: --color-font
   --color-button-secondary-background-disabled: #808080; // color: --color-label
 
   // ********* Borders ****************

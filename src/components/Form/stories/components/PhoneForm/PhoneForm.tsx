@@ -1,7 +1,7 @@
 import { FC, memo } from 'react';
 
 import { FormObject, FormUser } from '@components';
-import { Button, TextInput } from '@ui';
+import { Button, Text } from '@ui';
 
 import { Phone, phoneValidator } from '../../data';
 
@@ -19,14 +19,14 @@ export const PhoneForm: FC<PhoneFormProps> = memo(
     return (
       <div className={styles.Container} key={phone.id}>
         <FormObject name={`${phoneIndex}`}>
-          <TextInput
+          <Text
             dataTest={`id-phone-${userIndex}-${phoneIndex}`}
             hidden
             id={`id-phone-${userIndex}-${phoneIndex}`}
             initialValue={phone.id}
             name="id"
           />
-          <TextInput
+          <Text
             className={styles.Input}
             dataTest={`phone-value-${userIndex}-${phoneIndex}`}
             id={`phone-value-${userIndex}-${phoneIndex}`}

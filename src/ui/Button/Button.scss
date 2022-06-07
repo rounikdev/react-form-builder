@@ -1,41 +1,26 @@
 .Container {
-  height: 3.8rem;
-  padding: 0 1rem;
-  color: #2e2e2e;
-  font-size: 1.2rem;
-  background-color: #a7d982;
+  margin: var(--offset-small);
+  padding: var(--offset-small) var(--offset-medium);
+  color: var(--color-button);
+  font-size: var(--font-small);
+  background-color: var(--color-button-primary-background);
   border: none;
-  border-radius: 0.3rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
   outline: none;
   cursor: pointer;
-  transition: all 250ms ease-in-out;
-
-  &:not(:last-of-type) {
-    margin-right: 1rem;
-  }
-
-  &:focus {
-    color: #2e2e2e !important;
-    background-color: #d9e3eb !important;
-  }
+  transition: all var(--transition) ease-in-out;
 
   &:hover {
-    background-color: darken(#a7d982, 10%);
+    box-shadow: var(--box-shadow-active);
   }
 
   &.Edit {
-    background-color: #ef7c47;
-
-    &:hover {
-      background-color: darken(#ef7c47, 10%);
-    }
+    color: var(--color-font);
+    background-color: var(--color-button-secondary-background);
   }
 
   &.Warn {
-    background-color: #f37895;
-
-    &:hover {
-      background-color: darken(#f37895, 10%);
-    }
+    background-color: var(--color-warn);
   }
 }

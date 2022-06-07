@@ -1,7 +1,7 @@
 import { FC, memo } from 'react';
 
 import { FormArray, FormObject, FormUser } from '@components';
-import { Button, TextInput } from '@ui';
+import { Button, Text } from '@ui';
 
 import { createPhone, nameValidator, User } from '../../data';
 import { PhoneForm } from '../PhoneForm/PhoneForm';
@@ -63,14 +63,14 @@ export const UserForm: FC<UserFormProps> = memo(({ removeUser, user, userIndex }
               }}
             </FormUser>
           </div>
-          <TextInput
+          <Text
             dataTest={`id-user-${userIndex}`}
             hidden
             id={`id-user-${userIndex}`}
             initialValue={user.id}
             name="id"
           />
-          <TextInput
+          <Text
             className={styles.Input}
             dataTest={`first-name-${userIndex}`}
             id={`first-name-${userIndex}`}
@@ -79,7 +79,7 @@ export const UserForm: FC<UserFormProps> = memo(({ removeUser, user, userIndex }
             name="firstName"
             validator={nameValidator}
           />
-          <TextInput
+          <Text
             className={styles.Input}
             dataTest={`last-name-${userIndex}`}
             id={`last-name-${userIndex}`}
