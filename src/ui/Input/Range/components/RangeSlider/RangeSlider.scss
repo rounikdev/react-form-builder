@@ -4,7 +4,7 @@ $trackHeight: 6px;
   position: absolute;
   width: var(--offset-medium);
   height: var(--offset-medium);
-  background-color: var(--color-border);
+  background-color: var(--color-selected-background);
   border-radius: var(--border-radius);
   transform: translate(-50%, calc(-50% + $trackHeight / 2));
   box-shadow: var(--box-shadow);
@@ -13,12 +13,13 @@ $trackHeight: 6px;
 
   &:focus,
   &:active {
+    z-index: 1;
     background-color: var(--color-label);
     box-shadow: var(--box-shadow-active);
     outline: none;
 
     .Value {
-      color: var(--color-background-focus);
+      color: var(--color-button);
       font-weight: bold;
       background-color: var(--color-success);
     }

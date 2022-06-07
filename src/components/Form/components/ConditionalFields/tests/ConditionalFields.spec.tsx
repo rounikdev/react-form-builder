@@ -18,9 +18,9 @@ describe('HeightTransitionBox', () => {
   it('Renders the field on condition', () => {
     mount(
       <FormRoot dataTest="test">
-        <Text dataTest={fieldNameA} id={fieldNameA} name={fieldNameA} />
+        <Text dataTest={fieldNameA} disabled={false} id={fieldNameA} name={fieldNameA} />
         <ConditionalFields condition={(formData) => formData[fieldNameA]?.length > 0}>
-          <Text dataTest={fieldNameB} id={fieldNameB} name={fieldNameB} />
+          <Text dataTest={fieldNameB} disabled={false} id={fieldNameB} name={fieldNameB} />
         </ConditionalFields>
       </FormRoot>
     );
@@ -35,13 +35,13 @@ describe('HeightTransitionBox', () => {
   it('Has `HeightTransitionBox` with no children when `animate` prop is passed', () => {
     mount(
       <FormRoot dataTest="test">
-        <Text dataTest={fieldNameA} id={fieldNameA} name={fieldNameA} />
+        <Text dataTest={fieldNameA} disabled={false} id={fieldNameA} name={fieldNameA} />
         <ConditionalFields
           animate
           animateDataTest="test"
           condition={(formData) => formData[fieldNameA]?.length > 0}
         >
-          <Text dataTest={fieldNameB} id={fieldNameB} name={fieldNameB} />
+          <Text dataTest={fieldNameB} disabled={false} id={fieldNameB} name={fieldNameB} />
         </ConditionalFields>
       </FormRoot>
     );
@@ -53,13 +53,13 @@ describe('HeightTransitionBox', () => {
   it('Has `HeightTransitionBox` with children when `animate` props is passed', () => {
     mount(
       <FormRoot dataTest="test">
-        <Text dataTest={fieldNameA} id={fieldNameA} name={fieldNameA} />
+        <Text dataTest={fieldNameA} disabled={false} id={fieldNameA} name={fieldNameA} />
         <ConditionalFields
           animate
           animateDataTest="test"
           condition={(formData) => formData[fieldNameA]?.length === 0}
         >
-          <Text dataTest={fieldNameB} id={fieldNameB} name={fieldNameB} />
+          <Text dataTest={fieldNameB} disabled={false} id={fieldNameB} name={fieldNameB} />
         </ConditionalFields>
       </FormRoot>
     );
@@ -79,13 +79,13 @@ describe('HeightTransitionBox', () => {
 
     mount(
       <FormRoot dataTest="test">
-        <Text dataTest={fieldNameA} id={fieldNameA} name={fieldNameA} />
+        <Text dataTest={fieldNameA} disabled={false} id={fieldNameA} name={fieldNameA} />
         <ConditionalFields
           animate
           animateDataTest="test"
           condition={(formData) => formData[fieldNameA]?.length === 0}
         >
-          <Text dataTest={fieldNameB} id={fieldNameB} name={fieldNameB} />
+          <Text dataTest={fieldNameB} disabled={false} id={fieldNameB} name={fieldNameB} />
         </ConditionalFields>
       </FormRoot>
     );
@@ -96,14 +96,14 @@ describe('HeightTransitionBox', () => {
   it('Has `HeightTransitionBox` with children when `hidden` props is passed', () => {
     mount(
       <FormRoot dataTest="test">
-        <Text dataTest={fieldNameA} id={fieldNameA} name={fieldNameA} />
+        <Text dataTest={fieldNameA} disabled={false} id={fieldNameA} name={fieldNameA} />
         <ConditionalFields
           animate
           animateDataTest="test"
           hidden
           condition={(formData) => formData[fieldNameA]?.length === 0}
         >
-          <Text dataTest={fieldNameB} id={fieldNameB} name={fieldNameB} />
+          <Text dataTest={fieldNameB} disabled={false} id={fieldNameB} name={fieldNameB} />
         </ConditionalFields>
       </FormRoot>
     );

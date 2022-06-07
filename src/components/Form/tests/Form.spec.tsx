@@ -30,19 +30,28 @@ describe('FormDemo', () => {
 
     cy.get('[data-test^="user-"').should('have.length', initialUsers.length);
 
-    cy.get('[data-test="first-name-0"]').should('have.value', initialUsers[1].firstName);
-    cy.get('[data-test="last-name-0"]').should('have.value', initialUsers[1].lastName);
+    cy.get('[data-test="first-name-0-input"]').should('have.value', initialUsers[1].firstName);
+    cy.get('[data-test="last-name-0-input"]').should('have.value', initialUsers[1].lastName);
     cy.get('[data-test^="phone-value-0-"').should('have.length', initialUsers[1].phones.length);
-    cy.get('[data-test="phone-value-0-0"]').should('have.value', initialUsers[1].phones[0].value);
+    cy.get('[data-test="phone-value-0-0-input"]').should(
+      'have.value',
+      initialUsers[1].phones[0].value
+    );
 
     // Cancel:
     cy.get('[data-test="cancel-form"').click();
 
-    cy.get('[data-test="first-name-0"]').should('have.value', initialUsers[0].firstName);
-    cy.get('[data-test="last-name-0"]').should('have.value', initialUsers[0].lastName);
+    cy.get('[data-test="first-name-0-input"]').should('have.value', initialUsers[0].firstName);
+    cy.get('[data-test="last-name-0-input"]').should('have.value', initialUsers[0].lastName);
     cy.get('[data-test^="phone-value-0-"').should('have.length', initialUsers[0].phones.length);
-    cy.get('[data-test="phone-value-0-0"]').should('have.value', initialUsers[0].phones[0].value);
-    cy.get('[data-test="phone-value-0-1"]').should('have.value', initialUsers[0].phones[1].value);
+    cy.get('[data-test="phone-value-0-0-input"]').should(
+      'have.value',
+      initialUsers[0].phones[0].value
+    );
+    cy.get('[data-test="phone-value-0-1-input"]').should(
+      'have.value',
+      initialUsers[0].phones[1].value
+    );
 
     cy.get('[data-test="users-form"').invoke('attr', 'data-pristine').should('equal', 'false');
   });
@@ -70,19 +79,28 @@ describe('FormDemo', () => {
 
     cy.get('[data-test^="user-"').should('have.length', initialUsers.length);
 
-    cy.get('[data-test="first-name-0"]').should('have.value', initialUsers[1].firstName);
-    cy.get('[data-test="last-name-0"]').should('have.value', initialUsers[1].lastName);
+    cy.get('[data-test="first-name-0-input"]').should('have.value', initialUsers[1].firstName);
+    cy.get('[data-test="last-name-0-input"]').should('have.value', initialUsers[1].lastName);
     cy.get('[data-test^="phone-value-0-"').should('have.length', initialUsers[1].phones.length);
-    cy.get('[data-test="phone-value-0-0"]').should('have.value', initialUsers[1].phones[0].value);
+    cy.get('[data-test="phone-value-0-0-input"]').should(
+      'have.value',
+      initialUsers[1].phones[0].value
+    );
 
     // Reset:
     cy.get('[data-test="reset"').click();
 
-    cy.get('[data-test="first-name-0"]').should('have.value', initialUsers[0].firstName);
-    cy.get('[data-test="last-name-0"]').should('have.value', initialUsers[0].lastName);
+    cy.get('[data-test="first-name-0-input"]').should('have.value', initialUsers[0].firstName);
+    cy.get('[data-test="last-name-0-input"]').should('have.value', initialUsers[0].lastName);
     cy.get('[data-test^="phone-value-0-"').should('have.length', initialUsers[0].phones.length);
-    cy.get('[data-test="phone-value-0-0"]').should('have.value', initialUsers[0].phones[0].value);
-    cy.get('[data-test="phone-value-0-1"]').should('have.value', initialUsers[0].phones[1].value);
+    cy.get('[data-test="phone-value-0-0-input"]').should(
+      'have.value',
+      initialUsers[0].phones[0].value
+    );
+    cy.get('[data-test="phone-value-0-1-input"]').should(
+      'have.value',
+      initialUsers[0].phones[1].value
+    );
 
     cy.get('[data-test="users-form"').invoke('attr', 'data-pristine').should('equal', 'true');
   });
@@ -109,23 +127,26 @@ describe('FormDemo', () => {
     cy.get('[data-test="edit-user-0-phones"').click();
 
     // Update field in the most nested form:
-    cy.get('[data-test="phone-value-0-0"]').clear();
-    cy.get('[data-test="phone-value-0-0"]').type(updatedPhone);
+    cy.get('[data-test="phone-value-0-0-input"]').clear();
+    cy.get('[data-test="phone-value-0-0-input"]').type(updatedPhone);
     cy.get('[data-test="save-user-0-phones"]').click();
 
     // Update field in the upper form:
-    cy.get('[data-test="first-name-0"]').clear();
-    cy.get('[data-test="first-name-0"]').type(updatedFirstName);
+    cy.get('[data-test="first-name-0-input"]').clear();
+    cy.get('[data-test="first-name-0-input"]').type(updatedFirstName);
     cy.get('[data-test="save-user-0"]').click();
 
     // Save the form:
     cy.get('[data-test="save-form"]').click();
 
-    cy.get('[data-test="first-name-0"]').should('have.value', updatedFirstName);
-    cy.get('[data-test="last-name-0"]').should('have.value', initialUsers[0].lastName);
+    cy.get('[data-test="first-name-0-input"]').should('have.value', updatedFirstName);
+    cy.get('[data-test="last-name-0-input"]').should('have.value', initialUsers[0].lastName);
     cy.get('[data-test^="phone-value-0-"').should('have.length', initialUsers[0].phones.length);
-    cy.get('[data-test="phone-value-0-0"]').should('have.value', updatedPhone);
-    cy.get('[data-test="phone-value-0-1"]').should('have.value', initialUsers[0].phones[1].value);
+    cy.get('[data-test="phone-value-0-0-input"]').should('have.value', updatedPhone);
+    cy.get('[data-test="phone-value-0-1-input"]').should(
+      'have.value',
+      initialUsers[0].phones[1].value
+    );
 
     cy.get('[data-test="users-form"').invoke('attr', 'data-pristine').should('equal', 'false');
   });
@@ -152,25 +173,31 @@ describe('FormDemo', () => {
     cy.get('[data-test="edit-user-0-phones"').click();
 
     // Update field in the most nested form:
-    cy.get('[data-test="phone-value-0-0"]').clear();
-    cy.get('[data-test="phone-value-0-0"]').type(updatedPhone);
+    cy.get('[data-test="phone-value-0-0-input"]').clear();
+    cy.get('[data-test="phone-value-0-0-input"]').type(updatedPhone);
 
     // Cancel on that level:
     cy.get('[data-test="cancel-user-0-phones"]').click();
 
     // Update field in the upper form:
-    cy.get('[data-test="first-name-0"]').clear();
-    cy.get('[data-test="first-name-0"]').type(updatedFirstName);
+    cy.get('[data-test="first-name-0-input"]').clear();
+    cy.get('[data-test="first-name-0-input"]').type(updatedFirstName);
     cy.get('[data-test="save-user-0"]').click();
 
     // Save the form:
     cy.get('[data-test="save-form"]').click();
 
-    cy.get('[data-test="first-name-0"]').should('have.value', updatedFirstName);
-    cy.get('[data-test="last-name-0"]').should('have.value', initialUsers[0].lastName);
+    cy.get('[data-test="first-name-0-input"]').should('have.value', updatedFirstName);
+    cy.get('[data-test="last-name-0-input"]').should('have.value', initialUsers[0].lastName);
     cy.get('[data-test^="phone-value-0-"').should('have.length', initialUsers[0].phones.length);
-    cy.get('[data-test="phone-value-0-0"]').should('have.value', initialUsers[0].phones[0].value);
-    cy.get('[data-test="phone-value-0-1"]').should('have.value', initialUsers[0].phones[1].value);
+    cy.get('[data-test="phone-value-0-0-input"]').should(
+      'have.value',
+      initialUsers[0].phones[0].value
+    );
+    cy.get('[data-test="phone-value-0-1-input"]').should(
+      'have.value',
+      initialUsers[0].phones[1].value
+    );
 
     cy.get('[data-test="users-form"').invoke('attr', 'data-pristine').should('equal', 'false');
   });
@@ -197,13 +224,13 @@ describe('FormDemo', () => {
     cy.get('[data-test="edit-user-0-phones"').click();
 
     // Update field in the most nested form:
-    cy.get('[data-test="phone-value-0-0"]').clear();
-    cy.get('[data-test="phone-value-0-0"]').type(updatedPhone);
+    cy.get('[data-test="phone-value-0-0-input"]').clear();
+    cy.get('[data-test="phone-value-0-0-input"]').type(updatedPhone);
     cy.get('[data-test="save-user-0-phones"]').click();
 
     // Update field in the upper form:
-    cy.get('[data-test="first-name-0"]').clear();
-    cy.get('[data-test="first-name-0"]').type(updatedFirstName);
+    cy.get('[data-test="first-name-0-input"]').clear();
+    cy.get('[data-test="first-name-0-input"]').type(updatedFirstName);
 
     // Cancel on the upper level:
     cy.get('[data-test="cancel-user-0"]').click();
@@ -211,11 +238,17 @@ describe('FormDemo', () => {
     // Save the form:
     cy.get('[data-test="save-form"]').click();
 
-    cy.get('[data-test="first-name-0"]').should('have.value', initialUsers[0].firstName);
-    cy.get('[data-test="last-name-0"]').should('have.value', initialUsers[0].lastName);
+    cy.get('[data-test="first-name-0-input"]').should('have.value', initialUsers[0].firstName);
+    cy.get('[data-test="last-name-0-input"]').should('have.value', initialUsers[0].lastName);
     cy.get('[data-test^="phone-value-0-"').should('have.length', initialUsers[0].phones.length);
-    cy.get('[data-test="phone-value-0-0"]').should('have.value', initialUsers[0].phones[0].value);
-    cy.get('[data-test="phone-value-0-1"]').should('have.value', initialUsers[0].phones[1].value);
+    cy.get('[data-test="phone-value-0-0-input"]').should(
+      'have.value',
+      initialUsers[0].phones[0].value
+    );
+    cy.get('[data-test="phone-value-0-1-input"]').should(
+      'have.value',
+      initialUsers[0].phones[1].value
+    );
 
     cy.get('[data-test="users-form"').invoke('attr', 'data-pristine').should('equal', 'false');
   });
@@ -242,23 +275,29 @@ describe('FormDemo', () => {
     cy.get('[data-test="edit-user-0-phones"').click();
 
     // Update field in the most nested form:
-    cy.get('[data-test="phone-value-0-0"]').clear();
-    cy.get('[data-test="phone-value-0-0"]').type(updatedPhone);
+    cy.get('[data-test="phone-value-0-0-input"]').clear();
+    cy.get('[data-test="phone-value-0-0-input"]').type(updatedPhone);
     cy.get('[data-test="save-user-0-phones"]').click();
 
     // Update field in the upper form:
-    cy.get('[data-test="first-name-0"]').clear();
-    cy.get('[data-test="first-name-0"]').type(updatedFirstName);
+    cy.get('[data-test="first-name-0-input"]').clear();
+    cy.get('[data-test="first-name-0-input"]').type(updatedFirstName);
     cy.get('[data-test="save-user-0"]').click();
 
     // Save the form:
     cy.get('[data-test="cancel-form"]').click();
 
-    cy.get('[data-test="first-name-0"]').should('have.value', initialUsers[0].firstName);
-    cy.get('[data-test="last-name-0"]').should('have.value', initialUsers[0].lastName);
+    cy.get('[data-test="first-name-0-input"]').should('have.value', initialUsers[0].firstName);
+    cy.get('[data-test="last-name-0-input"]').should('have.value', initialUsers[0].lastName);
     cy.get('[data-test^="phone-value-0-"').should('have.length', initialUsers[0].phones.length);
-    cy.get('[data-test="phone-value-0-0"]').should('have.value', initialUsers[0].phones[0].value);
-    cy.get('[data-test="phone-value-0-1"]').should('have.value', initialUsers[0].phones[1].value);
+    cy.get('[data-test="phone-value-0-0-input"]').should(
+      'have.value',
+      initialUsers[0].phones[0].value
+    );
+    cy.get('[data-test="phone-value-0-1-input"]').should(
+      'have.value',
+      initialUsers[0].phones[1].value
+    );
 
     cy.get('[data-test="users-form"').invoke('attr', 'data-pristine').should('equal', 'false');
   });

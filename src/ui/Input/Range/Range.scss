@@ -18,7 +18,7 @@ $trackHeight: 6px;
   width: 100%;
   height: $trackHeight;
   margin: var(--offset-large) 0;
-  background-color: var(--color-border);
+  background-color: var(--color-selected-background);
   border-radius: var(--border-radius);
   cursor: pointer;
 
