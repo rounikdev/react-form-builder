@@ -21,11 +21,11 @@ export const Text: FC<TextProps> = memo(
     hidden,
     id,
     initialValue,
-    label,
+    label = '',
     name,
     onBlurSideEffect,
     pattern,
-    placeholder,
+    placeholder = '',
     required,
     requiredLabel = 'required',
     sideEffect,
@@ -67,8 +67,8 @@ export const Text: FC<TextProps> = memo(
     return (
       <div className={containerClassName} style={{ display: hidden ? 'none' : 'flex' }}>
         <label className={styles.Label} htmlFor={id}>
-          {translate(label || '') as string}
-          {required ? <span className={styles.Required}>{requiredLabel}</span> : null}
+          {translate(label)}
+          {required ? <span className={styles.Required}>{translate(requiredLabel)}</span> : null}
         </label>
         <div className={styles.InputWrap}>
           <input
@@ -86,7 +86,7 @@ export const Text: FC<TextProps> = memo(
               onChangeHandler(event.target.value);
             }}
             onFocus={onFocusHandler}
-            placeholder={translate(placeholder || '') as string}
+            placeholder={translate(placeholder) as string}
             ref={fieldRef as MutableRefObject<HTMLInputElement>}
             type={type}
             value={value}
