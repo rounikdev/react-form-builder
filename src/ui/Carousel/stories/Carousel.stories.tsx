@@ -45,7 +45,7 @@ const Carousels: FC = () => {
   }, []);
 
   return (
-    <article>
+    <div>
       <Button
         className={styles.Button}
         dataTest="change-auto"
@@ -84,7 +84,7 @@ const Carousels: FC = () => {
         startIndex={1}
         toLeft={toLeft}
       />
-    </article>
+    </div>
   );
 };
 

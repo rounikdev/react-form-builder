@@ -104,8 +104,12 @@ export const BaseCarousel = <T,>({
       onFocus={pausable ? onMouseOverHandler : defaultHandler}
       onMouseOver={pausable ? onMouseOverHandler : defaultHandler}
       onMouseOut={pausable ? onMouseOutHandler : defaultHandler}
+      role="region"
       tabIndex={0}
     >
+      <h2 aria-label={extractLabel(state.current)} aria-live="polite" className={styles.Current}>
+        {extractLabel(state.current)}
+      </h2>
       {renderLeftButton({
         dataTest,
         onClick: moveLeft

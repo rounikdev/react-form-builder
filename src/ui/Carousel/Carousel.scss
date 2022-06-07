@@ -45,3 +45,10 @@
   width: 50%;
   height: 100%;
 }
+
+.Current {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
