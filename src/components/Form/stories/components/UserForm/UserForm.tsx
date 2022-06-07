@@ -63,31 +63,33 @@ export const UserForm: FC<UserFormProps> = memo(({ removeUser, user, userIndex }
               }}
             </FormUser>
           </div>
-          <Text
-            dataTest={`id-user-${userIndex}`}
-            hidden
-            id={`id-user-${userIndex}`}
-            initialValue={user.id}
-            name="id"
-          />
-          <Text
-            className={styles.Input}
-            dataTest={`first-name-${userIndex}`}
-            id={`first-name-${userIndex}`}
-            initialValue={user.firstName}
-            label="First Name"
-            name="firstName"
-            validator={nameValidator}
-          />
-          <Text
-            className={styles.Input}
-            dataTest={`last-name-${userIndex}`}
-            id={`last-name-${userIndex}`}
-            initialValue={user.lastName}
-            label="Last Name"
-            name="lastName"
-            validator={nameValidator}
-          />
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Text
+              dataTest={`id-user-${userIndex}`}
+              hidden
+              id={`id-user-${userIndex}`}
+              initialValue={user.id}
+              name="id"
+            />
+            <Text
+              className={styles.Input}
+              dataTest={`first-name-${userIndex}`}
+              id={`first-name-${userIndex}`}
+              initialValue={user.firstName}
+              label="First Name"
+              name="firstName"
+              validator={nameValidator}
+            />
+            <Text
+              className={styles.Input}
+              dataTest={`last-name-${userIndex}`}
+              id={`last-name-${userIndex}`}
+              initialValue={user.lastName}
+              label="Last Name"
+              name="lastName"
+              validator={nameValidator}
+            />
+          </div>
           <FormArray factory={createPhone} initialValue={user.phones} localEdit name="phones">
             {([phones, addPhone, removePhone]) => {
               return (

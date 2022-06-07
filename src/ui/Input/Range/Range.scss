@@ -19,7 +19,7 @@ $trackHeight: 6px;
   height: $trackHeight;
   margin: var(--offset-large) 0;
   background-color: var(--color-border);
-  border-radius: var(--border-radius-normal);
+  border-radius: var(--border-radius);
   cursor: pointer;
 
   &::before {
@@ -35,5 +35,5 @@ $trackHeight: 6px;
 .Bar {
   position: absolute;
   height: $trackHeight;
-  background-color: var(--color-ok);
+  background-color: var(--color-success);
 }

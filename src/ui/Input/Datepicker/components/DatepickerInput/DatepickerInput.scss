@@ -22,13 +22,13 @@
   border-left: none;
   border-top-right-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
-  box-shadow: var(----box-shadow);
+  box-shadow: var(--box-shadow);
   transition: all var(--transition-normal) ease-in-out;
   outline: none;
   appearance: none;
   cursor: pointer;
 
   &:focus {
-    box-shadow: var(----box-shadow-active);
+    box-shadow: var(--box-shadow-active);
   }
 }

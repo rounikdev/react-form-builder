@@ -23,13 +23,13 @@
     background-color: transparent;
     border: none;
     border-radius: var(--border-radius);
-    box-shadow: var(----box-shadow);
+    box-shadow: var(--box-shadow);
     transition: all var(--transition) ease-in-out;
     cursor: pointer;
 
     &:focus {
       color: var(--color-background-focus);
-      box-shadow: var(----box-shadow-active);
+      box-shadow: var(--box-shadow-active);
       outline: none;
     }
   }
