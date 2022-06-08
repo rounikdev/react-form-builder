@@ -6,48 +6,79 @@
     box-sizing: border-box;
   }
 
-  // color:
-  --color-border: #9b9b9b;
-  --color-border-active: #1c1c1c;
-  --color-font: #363636;
-  --color-font-secondary: #9b9b9bd3;
-  --color-label: #363636;
-  --color-error: red;
-  --color-ok: green;
-  --color-background-focus: #f5f5f5;
+  // ********* Colors ****************
+
+  // Inputs:
+  --color-border: #525252;
+  --color-border-focus: #1c1c1c;
+  --color-border-error: #b01717;
+  --color-border-disabled: #6d6d6d;
+
+  --color-input-background: #ffffff;
+  --color-input-background-focus: #f7f7f7;
+  --color-input-background-error: #ffcccc;
+  --color-input-background-disabled: #dddbdb;
+
+  // Main:
+  --color-background: #ffffff;
+
+  // Color:
+  --color-card-background: #f5f5f5;
+  --color-hover-background: #4e4e4e;
+  --color-selected-background: #868686;
+
+  // Fonts:
+  --color-font: #1c1c1c;
+  --color-error: #b01717;
+  --color-label: #444444;
+  --color-button: #f7f7f7;
+  --color-button-disabled: #050505;
+  --color-success: #47a112;
+  --color-warn: #cc4646;
+
+  // Buttons: they should have box-shadow when active
+  --color-button-primary-background: #525252; // color: --color-button
+  --color-button-primary-background-disabled: #999999; // color: --color-button-disabled
+
+  // This one goes with a border:
+  --color-button-secondary-background: #d1d1d1; // color: --color-font
+  --color-button-secondary-background-disabled: #808080; // color: --color-label
+
+  // ********* Borders ****************
 
   // border-width
-  --border-width-normal: 0.1rem;
-  --border-width-large: 0.2rem;
+  --border-width: 0.1rem;
 
   // border-radius:
-  --border-radius-small: 0.2rem;
-  --border-radius-normal: 0.4rem;
-  --border-radius-medium: 0.6rem;
-  --border-radius-large: 0.8rem;
+  --border-radius: 0.4rem;
+
+  // ********* Fonts ****************
 
   // font-size:
-  --font-base: 10px;
   --font-tiny: 1.2rem;
   --font-small: 1.4rem;
-  --font-normal: 1.6rem;
-  --font-medium: 2rem;
+  --font-medium: 1.6rem;
+  --font-large: 1.8rem;
+
+  // ********* Offsets ****************
 
   // margin, padding:
   --offset-tiny: 0.4rem;
-  --offset-small: 1rem;
-  --offset-normal: 1.6rem;
-  --offset-medium: 2rem;
-  --offset-large: 3rem;
+  --offset-small: 0.8rem;
+  --offset-medium: 1.6rem;
+  --offset-large: 2.4rem;
+
+  // ********* Effects ****************
 
   // transition:
-  --transition-faster: 100ms;
-  --transition-fast: 200ms;
-  --transition-normal: 300ms;
-  --transition-slow: 500ms;
+  --transition: 300ms;
+
+  // box-shadow:
+  --box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  --box-shadow-active: 0 0.3rem 1rem rgba(0, 0, 0, 0.3);
 }
 
-$baseFontSize: var(--font-base);
+$baseFontSize: 10px;
 
 :export {
   baseFontSize: $baseFontSize;

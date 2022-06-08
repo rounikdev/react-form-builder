@@ -43,8 +43,8 @@ export const Checkbox: FC<CheckboxProps> = memo(
     const isError = useMemo(() => touched && !focused && !valid, [focused, touched, valid]);
 
     const containerClass = useClass(
-      [styles.Container, className, disabled && styles.Disabled, isError && styles.Error],
-      [className, disabled, isError]
+      [styles.Container, className, isError && styles.Error],
+      [className, isError]
     );
 
     const inputClass = useClass(
@@ -81,7 +81,6 @@ export const Checkbox: FC<CheckboxProps> = memo(
               htmlFor={id}
               title={label}
             >
-              {required ? '*' : null}
               {label}
             </label>
           ) : null}

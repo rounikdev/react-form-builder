@@ -4,3 +4,5 @@ export * from './useDatepicker';
 export * from './useRadioGroup';
 export * from './useRange';
 export * from './useTextInput';
+
+export * from './types';

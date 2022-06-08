@@ -10,7 +10,7 @@
   overflow: hidden;
   background-color: var(--color-background-focus);
   border: 0.1rem solid var(--color-border);
-  border-radius: var(--border-radius-normal);
+  border-radius: var(--border-radius);
   will-change: transform;
 
   &:focus {
@@ -53,7 +53,7 @@
   .Weekday {
     display: inline-block;
     width: calc(100% / 7);
-    font-size: var(--font-normal);
+    font-size: var(--font-medium);
     text-align: center;
   }
 
@@ -67,11 +67,11 @@
 }
 
 .FromLeftEnter {
-  animation: fromLeftEnter var(--transition-normal) ease-in-out;
+  animation: fromLeftEnter var(--transition) ease-in-out;
 }
 
 .FromLeftExit {
-  animation: fromLeftExit var(--transition-normal) ease-in-out;
+  animation: fromLeftExit var(--transition) ease-in-out;
 }
 
 @keyframes fromLeftEnter {
@@ -93,11 +93,11 @@
 }
 
 .FromRightEnter {
-  animation: fromRightEnter var(--transition-normal) ease-in-out;
+  animation: fromRightEnter var(--transition) ease-in-out;
 }
 
 .FromRightExit {
-  animation: fromRightExit var(--transition-normal) ease-in-out;
+  animation: fromRightExit var(--transition) ease-in-out;
 }
 
 @keyframes fromRightEnter {

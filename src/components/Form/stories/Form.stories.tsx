@@ -1,7 +1,7 @@
 import { FC, StrictMode } from 'react';
 import { Story, Meta } from '@storybook/react';
 
-import { Button, TextInput } from '@ui';
+import { Button, Text } from '@ui';
 
 import { ConditionalFields, FormArray, FormRoot, FormUser } from '../components';
 
@@ -63,7 +63,7 @@ const Template: Story<FC> = () => {
             </FormArray>
             <ConditionalFields hidden condition={(formData) => formData?.users?.length > 2}>
               <div className={styles.Passwords}>
-                <TextInput
+                <Text
                   className={styles.PasswordInput}
                   dataTest="password"
                   disabled={false}
@@ -73,7 +73,7 @@ const Template: Story<FC> = () => {
                   name="password"
                   validator={passwordValidator}
                 />
-                <TextInput
+                <Text
                   className={styles.PasswordInput}
                   dataTest="repeat-password"
                   disabled={false}

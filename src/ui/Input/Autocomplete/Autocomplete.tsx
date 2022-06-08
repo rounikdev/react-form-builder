@@ -118,7 +118,12 @@ const BaseAutocomplete = <T,>({
               })}
           </ul>
         ) : null}
-        <label data-test={`${dataTest}-label`} id={`${id}-label`} htmlFor={`${id}-textbox`}>
+        <label
+          className={styles.Label}
+          data-test={`${dataTest}-label`}
+          id={`${id}-label`}
+          htmlFor={`${id}-textbox`}
+        >
           {label}
         </label>
         <input

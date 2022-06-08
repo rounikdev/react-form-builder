@@ -24,10 +24,10 @@
 
 .Icon {
   fill: transparent;
-  stroke: var(--color-border-active);
+  stroke: var(--color-border);
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 2;
-  transition: all var(--transition-normal) ease-in-out;
+  transition: all var(--transition) ease-in-out;
   transform: scale(0.8);
 }

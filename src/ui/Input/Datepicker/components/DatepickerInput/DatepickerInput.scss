@@ -7,8 +7,8 @@
   padding-left: var(--offset-small);
   font-size: var(--offset-medium);
   border: 1px solid var(--color-border);
-  border-top-left-radius: var(--border-radius-normal);
-  border-bottom-left-radius: var(--border-radius-normal);
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
   cursor: pointer;
 
   &:focus {
@@ -20,15 +20,15 @@
   background-color: transparent;
   border: 1px solid var(--color-border);
   border-left: none;
-  border-top-right-radius: var(--border-radius-normal);
-  border-bottom-right-radius: var(--border-radius-normal);
-  box-shadow: 0 0 0 rgba(0, 0, 0, 0.3);
+  border-top-right-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
   transition: all var(--transition-normal) ease-in-out;
   outline: none;
   appearance: none;
   cursor: pointer;
 
   &:focus {
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--box-shadow-active);
   }
 }

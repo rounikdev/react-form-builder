@@ -12,19 +12,18 @@
   font-size: var(--font-small);
 
   .Required {
-    color: var(--color-border);
     font-size: var(--font-tiny);
   }
 }
 
 .CalendarEnter {
   transform-origin: top right;
-  animation: scaleIn var(--transition-normal) ease-in-out forwards;
+  animation: scaleIn var(--transition) ease-in-out forwards;
 }
 
 .CalendarExit {
   transform-origin: top right;
-  animation: scaleOut var(--transition-normal) ease-in-out forwards;
+  animation: scaleOut var(--transition) ease-in-out forwards;
 }
 
 @keyframes scaleIn {

@@ -12,6 +12,7 @@ import styles from './Text.scss';
 
 export const Text: FC<TextProps> = memo(
   ({
+    autoComplete = 'off',
     className,
     dataTest,
     dependencyExtractor,
@@ -20,20 +21,22 @@ export const Text: FC<TextProps> = memo(
     hidden,
     id,
     initialValue,
-    label,
+    label = '',
     name,
     onBlurSideEffect,
     pattern,
-    placeholder,
+    placeholder = '',
     required,
+    requiredLabel = 'required',
     sideEffect,
-    type,
+    type = 'text',
     validator
   }) => {
     const {
       errors,
       fieldRef,
       focused,
+      isEdit,
       onBlurHandler,
       onChangeHandler,
       onFocusHandler,
@@ -54,28 +57,28 @@ export const Text: FC<TextProps> = memo(
 
     const isError = useMemo(() => !focused && touched && !valid, [focused, touched, valid]);
 
-    const containerClass = useClass([styles.Container, className], [className]);
+    const containerClassName = useClass([styles.Container, className], [className]);
 
-    const inputClass = useClass(
+    const inputClassName = useClass(
       [styles.Input, pattern && styles.WithMask, isError && styles.Error],
       [isError, pattern]
     );
 
     return (
-      <div className={containerClass} style={{ display: hidden ? 'none' : 'flex' }}>
-        <label data-test={`${dataTest}-label`} className={styles.Label} htmlFor={id}>
-          {label}
-          <span className={styles.Required}>{required ? 'required' : null}</span>
+      <div className={containerClassName} style={{ display: hidden ? 'none' : 'flex' }}>
+        <label className={styles.Label} htmlFor={id}>
+          {translate(label)}
+          {required ? <span className={styles.Required}>{translate(requiredLabel)}</span> : null}
         </label>
         <div className={styles.InputWrap}>
           <input
             aria-hidden={hidden}
             aria-invalid={!valid}
             aria-required={required}
-            autoComplete="off"
-            className={inputClass}
+            autoComplete={autoComplete}
+            className={inputClassName}
             data-test={`${dataTest}-input`}
-            disabled={disabled}
+            disabled={typeof disabled === 'boolean' ? disabled : !isEdit}
             id={id}
             name={name}
             onBlur={onBlurHandler}
@@ -83,13 +86,13 @@ export const Text: FC<TextProps> = memo(
               onChangeHandler(event.target.value);
             }}
             onFocus={onFocusHandler}
-            placeholder={translate(placeholder || '') as string}
+            placeholder={translate(placeholder) as string}
             ref={fieldRef as MutableRefObject<HTMLInputElement>}
-            type={type || 'text'}
+            type={type}
             value={value}
           />
           {pattern ? (
-            <Mask className={inputClass} focused={focused} pattern={pattern} value={value} />
+            <Mask className={inputClassName} focused={focused} pattern={pattern} value={value} />
           ) : null}
         </div>
         <ErrorField errors={errors} isError={isError} />

@@ -22,14 +22,14 @@
     color: var(--color-border);
     background-color: transparent;
     border: none;
-    border-radius: var(--border-radius-normal);
-    box-shadow: 0 0 0 rgba(0, 0, 0, 0.3);
-    transition: all var(--transition-normal) ease-in-out;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: all var(--transition) ease-in-out;
     cursor: pointer;
 
     &:focus {
       color: var(--color-background-focus);
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+      box-shadow: var(--box-shadow-active);
       outline: none;
     }
   }
