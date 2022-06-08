@@ -30,4 +30,8 @@
   stroke-width: 2;
   transition: all var(--transition) ease-in-out;
   transform: scale(0.8);
+
+  &.Light {
+    stroke: var(--color-button);
+  }
 }

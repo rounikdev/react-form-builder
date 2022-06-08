@@ -1,6 +1,8 @@
-import { CSSProperties, FC, memo, useCallback, useState } from 'react';
+import { CSSProperties, FC, memo, useCallback, useMemo, useState } from 'react';
 
-import { Stylable } from '../../types';
+import { useUpdateOnly } from '@rounik/react-custom-hooks';
+
+import { Stylable, Testable } from '../../types';
 
 const getImageStyle = (naturalHeight: number, naturalWidth: number): CSSProperties => {
   let dimension = 'width';
@@ -10,29 +12,60 @@ const getImageStyle = (naturalHeight: number, naturalWidth: number): CSSProperti
   }
 
   return {
-    [dimension]: '100%'
+    [dimension]: '100%',
+    opacity: 1
   };
 };
 
-interface ImageProps extends Stylable {
+interface ImageProps extends Stylable, Testable {
   alt: string;
   src: string;
 }
 
-export const Image: FC<ImageProps> = memo(({ alt, className, src }) => {
-  const [state, setState] = useState({
-    style: { width: '100%' } as CSSProperties
-  });
+interface ImageState {
+  error: boolean;
+  style: CSSProperties;
+}
+
+const defaultState: ImageState = { error: false, style: { width: '100%', opacity: 0 } };
+
+export const Image: FC<ImageProps> = memo(({ alt, className, dataTest, src }) => {
+  const [state, setState] = useState<ImageState>(defaultState);
+
+  const showImage = useMemo(() => src && !state.error, [src, state.error]);
 
   const onLoadHandler = useCallback(({ target: { naturalHeight, naturalWidth } }) => {
-    setState({
+    setState((currentState) => ({
+      ...currentState,
       style: getImageStyle(naturalHeight, naturalWidth)
-    });
+    }));
   }, []);
 
-  return src ? (
-    <img alt={alt} className={className} onLoad={onLoadHandler} src={src} style={state.style} />
-  ) : null;
+  const onErrorHandler = useCallback(() => {
+    setState((currentState) => ({
+      ...currentState,
+      error: true,
+      style: { width: '100%', height: '100%' }
+    }));
+  }, []);
+
+  useUpdateOnly(() => {
+    setState(() => defaultState);
+  }, [src]);
+
+  return showImage ? (
+    <img
+      alt={alt}
+      className={className}
+      data-test={`${dataTest}-image`}
+      onError={onErrorHandler}
+      onLoad={onLoadHandler}
+      src={src}
+      style={state.style}
+    />
+  ) : (
+    <div data-test={`${dataTest}-image-error`} style={state.style} />
+  );
 });
 
 Image.displayName = 'Image';
