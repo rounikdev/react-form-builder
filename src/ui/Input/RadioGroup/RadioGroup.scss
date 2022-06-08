@@ -29,11 +29,12 @@
       transition: all var(--transition) ease-in-out;
 
       &:checked + .Label .LabelCircle::after {
-        display: block;
+        opacity: 1;
       }
 
       &:focus + .Label .LabelCircle {
-        border-color: var(--color-border-focus);
+        background-color: var(--color-input-background-focus);
+        box-shadow: var(--box-shadow-inset);
       }
 
       &:disabled + .Label {
@@ -74,9 +75,9 @@
 
         &::after {
           content: "";
-          display: none;
-          width: var(--offset-medium);
-          height: var(--offset-medium);
+          width: 65%;
+          height: 65%;
+          opacity: 0;
           background-color: var(--color-font);
           border-radius: 50%;
           transition: all var(--transition) ease-in-out;

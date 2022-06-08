@@ -5,6 +5,7 @@
   &,
   * {
     box-sizing: border-box;
+    outline: none;
 
     &:not(.Input) {
       user-select: none;
@@ -39,8 +40,8 @@
     transition: all var(--transition) ease-in-out;
 
     &:focus {
-      border: var(--border-width) solid var(--color-border-focus);
       background-color: var(--color-input-background-focus);
+      box-shadow: var(--box-shadow-inset);
 
       &.WithMask {
         background-color: transparent;

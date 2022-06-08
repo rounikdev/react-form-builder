@@ -78,6 +78,7 @@
   // box-shadow:
   --box-shadow: 0 0 0 rgba(0, 0, 0, 0);
   --box-shadow-active: 0 0.3rem 1rem rgba(0, 0, 0, 0.3);
+  --box-shadow-inset: inset 0 0 0 0.1rem rgba(0, 0, 0, 0.7);
 }
 
 $baseFontSize: 10px;
