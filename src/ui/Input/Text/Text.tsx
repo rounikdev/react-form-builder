@@ -7,6 +7,7 @@ import { Mask } from '../../Mask/Mask';
 import { TextProps } from './types';
 
 import { ErrorField } from '../../ErrorField/ErrorField';
+import { LabelField } from '../../LabelField/LabelField';
 
 import styles from './Text.scss';
 
@@ -21,13 +22,13 @@ export const Text: FC<TextProps> = memo(
     hidden,
     id,
     initialValue,
-    label = '',
+    label,
     name,
     onBlurSideEffect,
     pattern,
     placeholder = '',
     required,
-    requiredLabel = 'required',
+    requiredLabel,
     sideEffect,
     type = 'text',
     validator
@@ -66,10 +67,7 @@ export const Text: FC<TextProps> = memo(
 
     return (
       <div className={containerClassName} style={{ display: hidden ? 'none' : 'flex' }}>
-        <label className={styles.Label} htmlFor={id}>
-          {translate(label)}
-          {required ? <span className={styles.Required}>{translate(requiredLabel)}</span> : null}
-        </label>
+        <LabelField id={id} label={label} required={required} requiredLabel={requiredLabel} />
         <div className={styles.InputWrap}>
           <input
             aria-hidden={hidden}
@@ -100,3 +98,5 @@ export const Text: FC<TextProps> = memo(
     );
   }
 );
+
+Text.displayName = 'Text';
