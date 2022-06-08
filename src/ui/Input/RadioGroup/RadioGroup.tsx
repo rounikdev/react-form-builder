@@ -2,8 +2,8 @@ import { FC, memo, MutableRefObject, useMemo } from 'react';
 
 import { useClass } from '@rounik/react-custom-hooks';
 
-import { useRadioGroup } from '../../useRadioGroup/useRadioGroup';
-import { RadioGroupLabel, RadioGroupValue } from '../../useRadioGroup/types';
+import { useRadioGroup } from '@components';
+import { RadioGroupLabel, RadioGroupValue } from '../../../components';
 import { RadioGroupProps } from './types';
 
 import styles from './RadioGroup.scss';
@@ -13,6 +13,7 @@ export const RadioGroup: FC<RadioGroupProps> = memo(
     className,
     dataTest,
     dependencyExtractor,
+    direction = 'Column',
     disabled,
     groupLabel,
     id,
@@ -45,17 +46,17 @@ export const RadioGroup: FC<RadioGroupProps> = memo(
 
     const containerClassName = useClass([className, styles.Container], [className]);
 
-    const radioClassName = useClass([disabled && styles.Disabled, styles.Input], [disabled]);
-
-    const radioLabelClasses = useClass(
-      [disabled && styles.Disabled, focused && styles.Focus, isError && styles.Error, styles.Label],
-      [disabled, focused, isError]
+    const innerContainerClassName = useClass(
+      [direction && styles[direction], styles.InnerContainer],
+      [direction]
     );
+
+    const labelCircleClassName = useClass([styles.LabelCircle, isError && styles.Error], [isError]);
 
     return (
       <div className={containerClassName} data-test={`${dataTest}-radio-group`} role="radiogroup">
         {groupLabel ? <h3>{groupLabel}</h3> : null}
-        <div className={styles.InnerContainer}>
+        <div className={innerContainerClassName}>
           {enhancedOptions.map((option, index) => {
             return (
               <div className={styles.RadioContainer} key={index}>
@@ -63,7 +64,7 @@ export const RadioGroup: FC<RadioGroupProps> = memo(
                   aria-invalid={!valid}
                   aria-required={required}
                   checked={option.checked}
-                  className={radioClassName}
+                  className={styles.Input}
                   data-test={`${dataTest}-${index}-radio-option`}
                   disabled={disabled}
                   id={`${id}-radio-option-${index}`}
@@ -76,12 +77,13 @@ export const RadioGroup: FC<RadioGroupProps> = memo(
                   value={option.inputValue}
                 />
                 <label
-                  className={radioLabelClasses}
+                  className={styles.Label}
                   data-test={`${dataTest}-${index}-radio-option-label`}
                   htmlFor={`${id}-radio-option-${index}`}
                   title={option.title}
                 >
-                  {option.label}
+                  <span className={labelCircleClassName} />
+                  <span className={styles.LabelText}>{option.label}</span>
                 </label>
               </div>
             );

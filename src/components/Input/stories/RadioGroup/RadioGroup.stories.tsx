@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { FormRoot, FormUser } from '@components';
 
-import { RadioGroup as RadioGroupInput } from './RadioGroup';
+import { RadioGroup as RadioGroupInput } from '@ui';
 
 export default {
   component: RadioGroupInput,
@@ -11,7 +11,7 @@ export default {
 } as ComponentMeta<typeof RadioGroupInput>;
 
 const Template: ComponentStory<typeof RadioGroupInput> = (args): JSX.Element => (
-  <div style={{ width: '40rem' }}>
+  <div style={{ width: '60rem' }}>
     <FormRoot dataTest="root-form">
       <FormUser>
         {() => {

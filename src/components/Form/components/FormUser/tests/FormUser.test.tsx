@@ -18,6 +18,7 @@ describe('FormUser', () => {
               <>
                 <Text
                   dataTest="idNumber"
+                  disabled={false}
                   expandError
                   id="idNumber"
                   label="idNumber"
