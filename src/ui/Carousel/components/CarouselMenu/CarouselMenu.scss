@@ -1,0 +1,43 @@
+.Container {
+  position: absolute;
+  bottom: var(--offset-medium);
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  border-radius: var(--border-radius);
+}
+
+.Button {
+  width: var(--offset-large);
+  height: var(--offset-small);
+  margin: 0;
+  margin-bottom: var(---offset-small);
+  padding: 0;
+  background-color: var(--color-button-primary-background);
+  transform: scale(1);
+  transition: all var(--transition) ease-in-out;
+  cursor: pointer;
+
+  &:not(:last-child) {
+    margin-right: var(--offset-medium);
+  }
+
+  &:hover,
+  &:focus {
+    &:not(:disabled) {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+  }
+
+  &:active {
+    &:not(:disabled) {
+      opacity: 1;
+      transform: scale(0.98);
+    }
+  }
+  &.Current {
+    background-color: var(--color-success);
+  }
+}
