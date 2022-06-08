@@ -10,7 +10,7 @@ interface ButtonProps extends Stylable, Testable {
   disabled?: boolean;
   label?: string;
   onClick: MouseEventHandler;
-  text: string | ReactNode;
+  text: ReactNode;
   type?: 'button' | 'submit';
   variant?: 'Edit' | 'Warn';
 }
