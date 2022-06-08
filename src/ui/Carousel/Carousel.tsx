@@ -26,7 +26,7 @@ const defaultRenderLeftButton = ({
       isLeft
       onClick={onClick}
       label="moveLeft"
-      text={<IconChevronLeft action />}
+      text={<IconChevronLeft action light />}
     />
   );
 };
@@ -43,7 +43,7 @@ const defaultRenderRightButton = ({
       dataTest={dataTest}
       onClick={onClick}
       label="moveRight"
-      text={<IconChevronRight action />}
+      text={<IconChevronRight action light />}
     />
   );
 };

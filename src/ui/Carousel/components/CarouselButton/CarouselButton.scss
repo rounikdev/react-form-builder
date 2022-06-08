@@ -7,17 +7,16 @@
   align-items: center;
   width: 4rem;
   height: 4rem;
-  opacity: 0.3;
-  background-color: var(--color-background-focus);
+  opacity: 0.2;
+  background-color: var(--color-button-primary-background);
   border-radius: 50%;
   transform: scale(1) translateY(-50%);
-  transition: all var(--transition-normal) ease-in-out;
+  transition: all var(--transition) ease-in-out;
 
   &:hover,
   &:focus {
     &:not(:disabled) {
       opacity: 1;
-      background-color: var(--color-background-focus);
       transform: scale(1.04) translateY(-50%);
     }
   }
@@ -25,7 +24,6 @@
   &:active {
     &:not(:disabled) {
       opacity: 1;
-      background-color: var(--color-background-focus);
       transform: scale(0.98) translateY(-50%);
     }
   }

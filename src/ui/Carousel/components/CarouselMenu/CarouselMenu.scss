@@ -5,23 +5,39 @@
   display: flex;
   justify-content: center;
   width: 100%;
+  border-radius: var(--border-radius);
 }
 
 .Button {
   width: var(--offset-large);
   height: var(--offset-small);
-  margin-right: var(--offset-small);
+  margin: 0;
+  margin-bottom: var(---offset-small);
   padding: 0;
-  background-color: var(--color-border);
-  transition: all var(--transition-normal) ease-in-out;
+  background-color: var(--color-button-primary-background);
+  transform: scale(1);
+  transition: all var(--transition) ease-in-out;
   cursor: pointer;
 
-  &:focus,
-  &:hover {
-    background-color: var(--color-background-focus);
+  &:not(:last-child) {
+    margin-right: var(--offset-medium);
   }
 
+  &:hover,
+  &:focus {
+    &:not(:disabled) {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+  }
+
+  &:active {
+    &:not(:disabled) {
+      opacity: 1;
+      transform: scale(0.98);
+    }
+  }
   &.Current {
-    background-color: var(--color-ok);
+    background-color: var(--color-success);
   }
 }

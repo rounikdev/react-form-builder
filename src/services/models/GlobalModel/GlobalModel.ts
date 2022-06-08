@@ -146,4 +146,10 @@ export class GlobalModel {
   static removeNonDigitFromString = (rawValue: string): string => rawValue.replace(/\D/g, '');
 
   static classer = (list: (boolean | undefined | string)[]) => list.filter(Boolean).join(' ');
+
+  static executeOnNextPaint = (callback: () => void | (() => Promise<void>)) => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(callback);
+    });
+  };
 }

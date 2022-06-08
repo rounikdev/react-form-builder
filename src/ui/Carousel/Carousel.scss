@@ -1,16 +1,20 @@
 .Container {
   position: relative;
   overflow: hidden;
-  background-color: var(--color-border-active);
-  border-radius: var(--border-radius-normal);
-  border: 0 solid var(--color-background-focus);
-  transition: border var(--transition-normal) ease-in-out;
+  background-color: var(--color-background);
+  border: 0 solid var(--color-background);
+  border-radius: var(--border-radius);
+  transition: border var(--transition) ease-in-out;
 
   &.Pausable {
     &:focus,
     &:hover {
-      border: 1px solid var(--color-background-focus);
+      border: 1px solid var(--color-border-focus);
     }
+  }
+
+  &:focus {
+    outline: none;
   }
 }
 
@@ -24,7 +28,7 @@
 
   &.MoveToLeft {
     transform: translate(-50%, 0);
-    transition: transform var(--transition-normal) ease-in-out;
+    transition: transform var(--transition) ease-in-out;
   }
 
   &.ToRight {
@@ -33,7 +37,7 @@
 
   &.MoveToRight {
     transform: translate(0, 0);
-    transition: transform var(--transition-normal) ease-in-out;
+    transition: transform var(--transition) ease-in-out;
   }
 }
 

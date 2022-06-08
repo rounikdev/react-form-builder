@@ -93,7 +93,7 @@ export const useCarousel = <T>({
       if (auto) {
         startAutoMove(50);
       } else {
-        requestAnimationFrame(() => {
+        GlobalModel.executeOnNextPaint(() => {
           let newIndex = state.currentIndex - 1;
 
           if (newIndex < 0) {
@@ -119,7 +119,7 @@ export const useCarousel = <T>({
       if (auto) {
         startAutoMove(50);
       } else {
-        requestAnimationFrame(() => {
+        GlobalModel.executeOnNextPaint(() => {
           let newIndex = state.currentIndex + 1;
 
           if (newIndex > items.length - 1) {
