@@ -36,6 +36,7 @@ describe('ErrorField', () => {
     cy.get('li').should('have.length', 1).contains('Error');
 
     cy.get('[data-test="toggle-btn"]').click();
+    cy.wait(500);
     cy.get('[data-test="test-errors"]').should('not.exist');
   });
 });
