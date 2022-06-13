@@ -41,5 +41,6 @@ Basic.args = {
   renderOption: ({ item, ref }) => (
     <Option dataTest={item.id} id={item.id} key={item.id} ref={ref} text={item.label} />
   ),
+  required: true,
   validator: fruitsValidator
 };

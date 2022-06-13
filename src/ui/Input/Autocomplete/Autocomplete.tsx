@@ -5,6 +5,7 @@ import { useClass } from '@rounik/react-custom-hooks';
 import { useAutocomplete } from '@components';
 
 import { ErrorField } from '../../ErrorField/ErrorField';
+import { LabelField } from '../../LabelField/LabelField';
 
 import { AutocompleteProps } from './types';
 import { List } from './components';
@@ -29,6 +30,8 @@ const BaseAutocomplete = <T,>({
   onBlur,
   onFocus,
   renderOption,
+  required,
+  requiredLabel,
   rowsToDisplay = 4,
   sideEffect,
   validator
@@ -118,14 +121,7 @@ const BaseAutocomplete = <T,>({
               })}
           </ul>
         ) : null}
-        <label
-          className={styles.Label}
-          data-test={`${dataTest}-label`}
-          id={`${id}-label`}
-          htmlFor={`${id}-textbox`}
-        >
-          {label}
-        </label>
+        <LabelField id={id} label={label} required={required} requiredLabel={requiredLabel} />
         <input
           autoComplete="off"
           {...(focusedId ? { 'aria-activedescendant': `${focusedId}-option` } : {})}
@@ -133,7 +129,7 @@ const BaseAutocomplete = <T,>({
           className={useClass([styles.Input, isError && styles.Error], [isError])}
           data-test={`${dataTest}-input`}
           disabled={disabled}
-          id={`${id}-textbox`}
+          id={id}
           onChange={(event) => {
             setSearch(event.target.value);
           }}

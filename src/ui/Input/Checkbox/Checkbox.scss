@@ -48,12 +48,12 @@
       cursor: pointer;
 
       &:checked + .Checkmark::after {
-        display: block;
+        opacity: 1;
       }
 
       &:focus + .Checkmark {
-        background-color: var(--color-background-focus);
-        border-color: var(--color-border-focus);
+        background-color: var(--color-input-background-focus);
+        box-shadow: var(--box-shadow-inset);
       }
 
       &:disabled {
@@ -86,12 +86,13 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        display: none;
-        width: var(--offset-medium);
-        height: var(--offset-medium);
-        border-radius: var(--border-radius);
+        width: 65%;
+        height: 65%;
+        opacity: 0;
+        border-radius: calc(var(--border-radius) / 2);
         background-color: var(--color-font);
         transform: translate(-50%, -50%);
+        transition: all var(--transition) ease-in-out;
       }
     }
   }

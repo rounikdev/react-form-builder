@@ -3,15 +3,14 @@
   z-index: -1;
   top: 0;
   left: 0;
-  display: flex;
+  display: none;
   align-items: center;
   width: 100%;
   background-color: var(--color-background-focus);
-  opacity: 0;
   transition: opacity var(--transition-normal) ease-in-out;
 
   &.Focused {
-    opacity: 1;
+    display: flex;
   }
 
   .MaskTxt {

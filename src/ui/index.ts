@@ -6,5 +6,6 @@ export * from './ErrorField/ErrorField';
 export * from './icons';
 export * from './Image/Image';
 export * from './Input';
+export * from './LabelField/LabelField';
 export * from './Mask/Mask';
 export * from './TabTrap';
