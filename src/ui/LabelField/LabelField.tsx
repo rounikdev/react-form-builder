@@ -29,6 +29,7 @@ export const LabelField: FC<LabelFieldProps> = memo(
             className={labelClassName}
             data-test={`${dataTest}-label`}
             htmlFor={id}
+            id={`${id}-label`}
             title={translate(label) as string}
           >
             {translate(label)}

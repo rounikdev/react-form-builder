@@ -53,4 +53,23 @@ describe('LabelField', () => {
       .should('have.class', styles.Required)
       .and('have.class', styles.NoLabelTruncate);
   });
+
+  it('With `noLabelTruncate` and no `required`', () => {
+    mount(
+      <LabelField
+        dataTest="text"
+        id="text"
+        label="Text"
+        noLabelTruncate
+        requiredLabel="Required text"
+      />
+    );
+
+    cy.get('[data-test="text-label"')
+      .should('exist')
+      .should('have.class', styles.Label)
+      .and('have.class', styles.NoLabelTruncate);
+
+    cy.get('[data-test="text-required"').should('not.exist');
+  });
 });

@@ -129,7 +129,7 @@ const BaseAutocomplete = <T,>({
           className={useClass([styles.Input, isError && styles.Error], [isError])}
           data-test={`${dataTest}-input`}
           disabled={disabled}
-          id={`${id}-textbox`}
+          id={id}
           onChange={(event) => {
             setSearch(event.target.value);
           }}
