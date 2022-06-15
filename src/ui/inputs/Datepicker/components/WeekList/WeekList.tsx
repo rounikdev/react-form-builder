@@ -1,8 +1,7 @@
 import { FC, memo } from 'react';
 
 import { useDatepickerContext } from '@core';
-
-import { Testable } from '../../../../../types';
+import { Testable } from '@types';
 
 import { Day } from '../Day/Day';
 

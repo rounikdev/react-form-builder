@@ -85,5 +85,56 @@ $baseFontSize: 10px;
 
 :export {
   baseFontSize: $baseFontSize;
+
   colorBorder: var(--color-border);
+  colorBorderFocus: var(--color-border-focus);
+  colorBorderError: var(--color-border-error);
+  colorBorderDisabled: var(--color-border-disabled);
+
+  colorInputBackground: var(--color-input-background);
+  colorInputBackgroundFocus: var(--color-input-background-focus);
+  colorInputBackgroundError: var(--color-input-background-error);
+  colorInputBackgroundDisabled: var(--color-input-background-disabled);
+
+  colorBackground: var(--color-background);
+
+  colorCardBackground: var(--color-card-background);
+  colorHoverBackground: var(--color-hover-background);
+  colorSelectedBackground: var(--color-selected-background);
+
+  colorFont: var(--color-font);
+  colorError: var(--color-error);
+  colorLabel: var(--color-label);
+  colorButton: var(--color-button);
+  colorButtonDisabled: var(--color-button-disabled);
+  colorSuccess: var(--color-success);
+  colorWarn: var(--color-warn);
+
+  colorButtonPrimaryBackground: var(--color-button-primary-background);
+  colorButtonPrimaryBackgroundDisabled: var(--color-button-primary-background-disabled);
+
+  colorButtonSecondaryBackground: var(--color-button-secondary-background);
+  colorButtonSecondaryBackgroundDisabled: var(--color-button-secondary-background-disabled);
+
+  borderWidth: var(--border-width);
+
+  borderRadius: var(--border-radius);
+
+  fontTiny: var(--font-tiny);
+  fontSmall: var(--font-small);
+  fontMedium: var(--font-medium);
+  fontLarge: var(--font-large);
+
+  offsetTiny: var(--offset-tiny);
+  offsetSmall: var(--offset-small);
+  offsetMedium: var(--offset-medium);
+  offsetLarge: var(--offset-large);
+  offsetXL: var(--offset-xl);
+  offsetXXL: var(--offset-xxl);
+
+  transition: var(--transition);
+
+  boxShadow: var(--box-shadow);
+  boxShadowActive: var(--box-shadow-active);
+  boxShadowInset: var(--box-shadow-inset);
 }

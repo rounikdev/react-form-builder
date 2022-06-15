@@ -14,11 +14,14 @@
     "noImplicitReturns": true,
     "outDir": "./out/",
     "paths": {
-      "@root/*": ["./*"],
       "@core": ["./core"],
       "@core/*": ["./core/*"],
       "@services": ["./services"],
       "@services/*": ["./services/*"],
+      "@styles": ["./styles"],
+      "@styles/*": ["./styles/*"],
+      "@types": ["./types"],
+      "@types/*": ["./types/*"],
       "@ui": ["./ui"],
       "@ui/*": ["./ui/*"]
     },

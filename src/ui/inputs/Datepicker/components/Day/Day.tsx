@@ -3,8 +3,7 @@ import { FC, memo, useCallback, useMemo, useRef } from 'react';
 import { useClass, useUpdate } from '@rounik/react-custom-hooks';
 
 import { areSameDay, canBeSelected, useDatepickerContext } from '@core';
-
-import { Testable } from '../../../../../types';
+import { Testable } from '@types';
 
 import styles from './Day.scss';
 

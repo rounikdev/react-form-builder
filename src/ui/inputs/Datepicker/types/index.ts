@@ -1,4 +1,4 @@
-import { Field, FormStateEntryValue } from '../../../../core';
+import { Field, FormStateEntryValue } from '@core';
 
 export interface DatepickerProps extends Field<Date | undefined> {
   initialValue?: Date;

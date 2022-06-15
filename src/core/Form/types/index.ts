@@ -1,6 +1,6 @@
 import { Dispatch, FocusEventHandler, MutableRefObject, ReactNode, SetStateAction } from 'react';
 
-import { Animatable, Disableable, Stylable, Testable } from '../../../types';
+import { Animatable, Disableable, Stylable, Testable } from '@types';
 
 import { TranslationSubstitute } from '../../Translation/types';
 

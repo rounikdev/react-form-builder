@@ -13,6 +13,7 @@ import externals from 'rollup-plugin-node-externals';
 import postcss from 'rollup-plugin-postcss';
 import renameNodeModules from 'rollup-plugin-rename-node-modules';
 import { terser } from 'rollup-plugin-terser';
+import ttypescript from 'ttypescript';
 import typescript from 'rollup-plugin-typescript2';
 import visualizer from 'rollup-plugin-visualizer';
 
@@ -66,7 +67,9 @@ export default [
       terser(),
       typescript({
         tsconfig: 'tsconfig.build.json',
-        useTsconfigDeclarationDir: true
+        useTsconfigDeclarationDir: true,
+        // https://github.com/ezolenko/rollup-plugin-typescript2/issues/201
+        typescript: ttypescript
       }),
       visualizer({
         filename: 'bundle-analysis.html'

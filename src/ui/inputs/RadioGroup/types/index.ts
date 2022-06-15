@@ -4,7 +4,7 @@ import {
   RadioGroupLabel,
   RadioGroupOption,
   RadioGroupValue
-} from '../../../../core';
+} from '@core';
 
 export interface RadioGroupProps extends Omit<Field<RadioGroupValue>, 'initialValue'> {
   direction?: 'Row' | 'Column';

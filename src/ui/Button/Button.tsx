@@ -2,7 +2,7 @@ import { FC, memo, MouseEventHandler, ReactNode } from 'react';
 
 import { useClass } from '@rounik/react-custom-hooks';
 
-import { Stylable, Testable } from '../../types';
+import { Stylable, Testable } from '@types';
 
 import styles from './Button.scss';
 

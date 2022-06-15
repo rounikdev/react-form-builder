@@ -1,4 +1,5 @@
-import { Pattern } from '../../../core';
+import { Pattern } from '@core';
+
 import { RAFIdInfo } from './types';
 
 export class GlobalModel {

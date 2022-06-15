@@ -2,8 +2,8 @@ import { FC, memo, MutableRefObject, useMemo } from 'react';
 
 import { useClass } from '@rounik/react-custom-hooks';
 
-import { useRadioGroup } from '@core';
-import { RadioGroupLabel, RadioGroupValue } from '../../../core';
+import { RadioGroupLabel, RadioGroupValue, useRadioGroup } from '@core';
+
 import { RadioGroupProps } from './types';
 
 import styles from './RadioGroup.scss';

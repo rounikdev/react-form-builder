@@ -1,7 +1,7 @@
 import { FC, memo } from 'react';
 
 import { useRangeContext } from '@core';
-import { GlobalModel } from '@services';
+import { GlobalModel } from '@services/models/GlobalModel';
 
 import styles from './RangeLabels.scss';
 

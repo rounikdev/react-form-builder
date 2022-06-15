@@ -1,7 +1,7 @@
 import { ReactNode, RefObject } from 'react';
 
-import { Field, TranslationSubstitute } from '../../../../core';
-import { Stylable, Testable } from '../../../../types';
+import { Field, TranslationSubstitute } from '@core';
+import { Stylable, Testable } from '@types';
 
 export interface ListProps<T> extends Testable {
   id: string;

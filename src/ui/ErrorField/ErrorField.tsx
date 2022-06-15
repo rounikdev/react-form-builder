@@ -1,6 +1,6 @@
 import { FC, memo } from 'react';
 
-import { HeightTransitionBox, useTranslation, ValidationError } from '../../core';
+import { HeightTransitionBox, useTranslation, ValidationError } from '@core';
 
 import styles from './ErrorField.scss';
 

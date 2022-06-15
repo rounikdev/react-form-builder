@@ -1,6 +1,6 @@
 import { ReactNode, MouseEventHandler } from 'react';
 
-import { Stylable, Testable } from '../../../types';
+import { Stylable, Testable } from '@types';
 export interface UseCarouselConfig<T> {
   auto?: boolean;
   interval?: number;

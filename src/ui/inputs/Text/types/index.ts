@@ -1,4 +1,4 @@
-import { Field, InputOnBlurSideEffect } from '../../../../core';
+import { Field, InputOnBlurSideEffect } from '@core';
 
 export interface TextProps extends Omit<Field<string>, 'initialValue'> {
   autoComplete?: string;

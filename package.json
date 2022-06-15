@@ -1,6 +1,6 @@
 {
   "name": "@rounik/react-form-builder",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "React form builder with field hooks for building custom design systems",
   "keywords": [
     "design system",
@@ -89,6 +89,7 @@
     "@types/react-router-dom": "5.3.3",
     "@typescript-eslint/eslint-plugin": "5.28.0",
     "@typescript-eslint/parser": "5.28.0",
+    "@zerollup/ts-transform-paths": "1.7.18",
     "autoprefixer": "10.4.7",
     "babel-jest": "28.1.1",
     "babel-loader": "8.2.5",
@@ -131,6 +132,7 @@
     "rollup-plugin-visualizer": "5.6.0",
     "sass": "1.52.3",
     "sass-loader": "13.0.0",
+    "ttypescript": "1.5.13",
     "typescript": "4.6.4",
     "typescript-plugin-css-modules": "3.4.0",
     "typings-for-css-modules-loader": "1.7.0",

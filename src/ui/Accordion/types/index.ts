@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { Stylable, Testable } from '../../../types';
+import { Stylable, Testable } from '@types';
 
 export interface AccordionContext {
   closeInGroup: (id: string) => void;

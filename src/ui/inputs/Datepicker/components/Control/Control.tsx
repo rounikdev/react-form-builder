@@ -1,6 +1,6 @@
 import { FocusEventHandler, forwardRef, memo, MouseEvent, ReactNode } from 'react';
 
-import { Stylable, Testable } from '../../../../../types';
+import { Stylable, Testable } from '@types';
 
 interface DatepickerControlProps extends Stylable, Testable {
   describedBy?: string;

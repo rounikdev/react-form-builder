@@ -11,7 +11,7 @@ import {
 import { useUpdate } from '@rounik/react-custom-hooks';
 
 import { useRangeContext } from '@core';
-import { Testable } from '../../../../../types';
+import { Testable } from '@types';
 
 import styles from './RangeSlider.scss';
 

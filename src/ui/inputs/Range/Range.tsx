@@ -2,8 +2,7 @@ import { FC, memo } from 'react';
 
 import { useClass } from '@rounik/react-custom-hooks';
 
-import { useRange } from '@core';
-import { Field, RangeOptions, RangeValue } from '../../../core';
+import { Field, RangeOptions, RangeValue, useRange } from '@core';
 
 import { RangeLabels, RangeSlider } from './components';
 
