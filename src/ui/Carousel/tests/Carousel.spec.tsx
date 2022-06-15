@@ -22,22 +22,22 @@ describe('Carousel', () => {
     cy.get('[data-test="1-image"]').should('be.visible');
 
     // Can't click before transition is done:
-    cy.wait(350);
+    cy.wait(500);
     cy.get('[data-test="animals-carousel-left-button"]').trigger('click');
 
     cy.get('[data-test="8-image-error"]').should('be.visible');
 
-    cy.wait(350);
+    cy.wait(500);
     cy.get('[data-test="animals-carousel-left-button"]').trigger('click');
 
     cy.get('[data-test="7-image"]').should('be.visible');
 
-    cy.wait(350);
+    cy.wait(500);
     cy.get('[data-test="animals-carousel-right-button"]').trigger('click');
 
     cy.get('[data-test="8-image-error"]').should('be.visible');
 
-    cy.wait(350);
+    cy.wait(500);
     cy.get('[data-test="animals-carousel-right-button"]').trigger('click');
 
     cy.get('[data-test="1-image"]').should('be.visible');
