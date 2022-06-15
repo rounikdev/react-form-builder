@@ -11,7 +11,7 @@ import {
   RenderOptions
 } from '@testing-library/react';
 
-import { useField } from '@components';
+import { useField } from '@core';
 
 import { ShowHideProps, TestButtonProps, TestInputProps } from './types';
 

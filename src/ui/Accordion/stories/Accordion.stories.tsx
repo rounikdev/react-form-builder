@@ -3,7 +3,7 @@ import { Story, Meta } from '@storybook/react';
 
 import { useMount, useUnmount } from '@rounik/react-custom-hooks';
 
-import { Image } from '../../Image/Image';
+import { Image } from '@ui/Image/Image';
 
 import { AccordionGroup } from '../AccordionGroup';
 import { Accordion } from '../Accordion';

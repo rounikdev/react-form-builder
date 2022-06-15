@@ -2,7 +2,7 @@ import { FC, memo } from 'react';
 
 import { useClass } from '@rounik/react-custom-hooks';
 
-import { Button } from '../../../Button/Button';
+import { Button } from '@ui/Button/Button';
 
 import { CarouselButtonProps } from '../../types';
 

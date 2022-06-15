@@ -2,7 +2,7 @@ import { CSSProperties, FC, memo, useCallback, useMemo, useState } from 'react';
 
 import { useUpdateOnly } from '@rounik/react-custom-hooks';
 
-import { Stylable, Testable } from '../../types';
+import { Stylable, Testable } from '@types';
 
 const getImageStyle = (naturalHeight: number, naturalWidth: number): CSSProperties => {
   let dimension = 'width';

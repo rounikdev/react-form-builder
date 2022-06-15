@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { Stylable } from '../../../types';
+import { Stylable } from '@types';
 
 export interface AnimatorProps extends Stylable {
   shouldAnimate?: (currentChildren: ReactNode, newChildren: ReactNode) => boolean;

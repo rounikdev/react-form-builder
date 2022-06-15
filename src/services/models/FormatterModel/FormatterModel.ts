@@ -1,6 +1,5 @@
-import { Formatter, OldNewValue, Pattern } from '../../../components';
-
-import { GlobalModel } from '../GlobalModel/GlobalModel';
+import { Formatter, OldNewValue, Pattern } from '@core';
+import { GlobalModel } from '@services/models/GlobalModel';
 
 export class FormatterModel {
   static composeFormatters = <T>(...formatters: (Formatter<T> | undefined)[]): Formatter<T> => {

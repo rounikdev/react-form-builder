@@ -1,7 +1,7 @@
 import { FocusEventHandler, MouseEventHandler } from 'react';
 
-import { DependencyExtractor, Formatter, Validator } from '@components';
-import { Testable } from '@root/types';
+import { DependencyExtractor, Formatter, Validator } from '@core';
+import { Testable } from '@types';
 
 export interface ShowHideProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

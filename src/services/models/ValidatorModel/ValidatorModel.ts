@@ -1,4 +1,4 @@
-import { FormStateEntryValue, Validator, ValidityCheck } from '../../../components';
+import { FormStateEntryValue, Validator, ValidityCheck } from '@core';
 
 import { FormatterModel } from '../FormatterModel';
 
