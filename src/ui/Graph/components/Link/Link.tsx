@@ -8,6 +8,7 @@ export const Link: FC<LinkProps> = ({ link }) => {
   return (
     <g>
       <line
+        markerEnd="url(#triangle)"
         x1={link.source.x}
         y1={link.source.y}
         x2={link.target.x}

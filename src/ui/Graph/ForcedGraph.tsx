@@ -55,6 +55,20 @@ export const ForcedGraph: FC<ForcedGraphProps> = memo(
           ref={svgRef}
           width={width}
         >
+          <defs>
+            <marker
+              id="triangle"
+              viewBox="0 0 10 10"
+              refX="30"
+              refY="5"
+              markerUnits="strokeWidth"
+              markerWidth="10"
+              markerHeight="10"
+              orient="auto"
+            >
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#f00" />
+            </marker>
+          </defs>
           <g transform={`matrix(${transformMatrix.join(' ')})`}>
             <g>
               {(graph.links as any).map((link: any, index: number) => (

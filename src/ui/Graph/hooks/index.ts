@@ -163,6 +163,7 @@ export const useForceGraph = ({
 
   return {
     animatedNodes,
+    movedNode,
     onMouseMoveHandler,
     onWheelHandler,
     setMovedNode,

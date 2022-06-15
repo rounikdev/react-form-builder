@@ -36,3 +36,11 @@ export interface ForcedGraphProps extends UseForceGraphProps {
   height: number;
   width: number;
 }
+
+export interface CanvasCamera {
+  pan: {
+    x: number;
+    y: number;
+  };
+  zoom: number;
+}
