@@ -1,6 +1,6 @@
 import { FocusEventHandler, MouseEventHandler } from 'react';
 
-import { DependencyExtractor, Formatter, Validator } from '@components';
+import { DependencyExtractor, Formatter, Validator } from '@core';
 import { Testable } from '@root/types';
 
 export interface ShowHideProps {

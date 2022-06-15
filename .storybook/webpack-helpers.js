@@ -3,10 +3,7 @@ const path = require('path');
 
 // Resolves:
 const aliases = {
-  '@components': path.resolve(__dirname, '..', 'src', 'components'),
-  '@managers': path.resolve(__dirname, '..', 'src', 'managers'),
-  '@pages': path.resolve(__dirname, '..', 'src', 'pages'),
-  '@providers': path.resolve(__dirname, '..', 'src', 'providers'),
+  '@core': path.resolve(__dirname, '..', 'src', 'core'),
   '@root': path.resolve(__dirname, '..', 'src'),
   '@services': path.resolve(__dirname, '..', 'src', 'services'),
   '@ui': path.resolve(__dirname, '..', 'src', 'ui')

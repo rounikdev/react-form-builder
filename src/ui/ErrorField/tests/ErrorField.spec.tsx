@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { mount } from '@cypress/react';
 
-import { ValidationError } from '../../../components';
+import { ValidationError } from '../../../core';
 
 import { ErrorField } from '../ErrorField';
 

@@ -1,4 +1,4 @@
-import { Formatter, OldNewValue, Pattern } from '../../../components';
+import { Formatter, OldNewValue, Pattern } from '../../../core';
 
 import { GlobalModel } from '../GlobalModel/GlobalModel';
 

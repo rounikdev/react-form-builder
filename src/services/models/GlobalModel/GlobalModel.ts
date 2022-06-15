@@ -1,4 +1,4 @@
-import { Pattern } from '../../../components';
+import { Pattern } from '../../../core';
 import { RAFIdInfo } from './types';
 
 export class GlobalModel {

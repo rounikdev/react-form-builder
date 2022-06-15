@@ -2,7 +2,7 @@ import { FC, memo } from 'react';
 
 import { useClass } from '@rounik/react-custom-hooks';
 
-import { useTranslation } from '@components';
+import { useTranslation } from '@core';
 
 import { LabelFieldProps } from './types';
 
