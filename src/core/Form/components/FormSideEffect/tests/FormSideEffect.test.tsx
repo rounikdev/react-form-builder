@@ -3,7 +3,8 @@ import userEvent from '@testing-library/user-event';
 
 import { TestTextInput, testRender } from '@services/utils';
 
-import { FormRoot } from '../..';
+import { FormRoot } from '@core/Form/components';
+
 import { FormSideEffect } from '../FormSideEffect';
 
 interface TestFormWithFormSideEffectProps {

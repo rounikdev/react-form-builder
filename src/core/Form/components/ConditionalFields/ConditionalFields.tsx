@@ -2,10 +2,10 @@ import { CSSProperties, FC, memo, useEffect, useMemo, useRef, useState } from 'r
 
 import { GlobalModel } from '@services';
 
-import { HeightTransitionBox, HeightTransitionProvider } from '../../../HeightTransitionBox';
+import { HeightTransitionBox, HeightTransitionProvider } from '@core/HeightTransitionBox';
 
-import { useFormRoot } from '../../providers';
-import { ConditionalFieldsProps } from '../../types';
+import { useFormRoot } from '@core/Form/providers';
+import { ConditionalFieldsProps } from '@core/Form/types';
 
 const ENABLE_SCROLL_SCROLL_RAF_TIMEOUT = 600; // ms
 const SCROLL_RAF_TIMEOUT = 300; // ms

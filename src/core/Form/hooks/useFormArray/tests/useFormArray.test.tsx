@@ -3,10 +3,10 @@ import { act, renderHook } from '@testing-library/react-hooks';
 
 import { useMount } from '@rounik/react-custom-hooks';
 
-import { FormRoot } from '../../../components';
-import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '../../../constants';
-import { useFormRoot } from '../../../providers';
-import { FormStateEntryValue } from '../../../types';
+import { FormRoot } from '@core/Form/components';
+import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '@core/Form/constants';
+import { useFormRoot } from '@core/Form/providers';
+import { FormStateEntryValue } from '@core/Form/types';
 
 import { useFormArray } from '../useFormArray';
 

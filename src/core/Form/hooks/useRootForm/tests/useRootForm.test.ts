@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react-hooks';
 
-import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '../../../constants';
-import { FormStateEntryValue } from '../../../types';
+import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '@core/Form/constants';
+import { FormStateEntryValue } from '@core/Form/types';
 
 import { useRootForm } from '../useRootForm';
 

@@ -1,4 +1,4 @@
-import { UseFieldConfig, UseFieldReturnType } from '../../../Form';
+import { UseFieldConfig, UseFieldReturnType } from '@core/Form/types';
 
 export interface UseCheckboxInput extends Omit<UseFieldConfig<boolean>, 'initialValue'> {
   initialValue?: boolean;

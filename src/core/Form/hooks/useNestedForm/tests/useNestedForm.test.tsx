@@ -3,11 +3,10 @@ import { act, renderHook } from '@testing-library/react-hooks';
 
 import { useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
 
-import { FormObject, FormRoot } from '../../../components';
-import { useFormRoot } from '../../../providers';
-import { FormRootProviderContext, ResetFlag } from '../../../types';
-
-import { useForm } from '../../useForm/useForm';
+import { FormObject, FormRoot } from '@core/Form/components';
+import { useFormRoot } from '@core/Form/providers';
+import { FormRootProviderContext, ResetFlag } from '@core/Form/types';
+import { useForm } from '@core/Form/hooks/useForm/useForm';
 
 import { useNestedForm } from '../useNestedForm';
 

@@ -1,11 +1,11 @@
 import { memo, PropsWithChildren, useMemo } from 'react';
 
-import { FormContextInstance } from '../../context';
-import { useFormArray, useFormReducer, useNestedForm } from '../../hooks';
-import { FormEditProvider } from '../../providers';
-import { formArrayReducer } from '../../reducers';
-import { flattenFormArrayState } from '../../services';
-import { FormContext, FormArrayProps } from '../../types';
+import { FormContextInstance } from '@core/Form/context';
+import { useFormArray, useFormReducer, useNestedForm } from '@core/Form/hooks';
+import { FormEditProvider } from '@core/Form/providers';
+import { formArrayReducer } from '@core/Form/reducers';
+import { flattenFormArrayState } from '@core/Form/services';
+import { FormContext, FormArrayProps } from '@core/Form/types';
 
 const BaseFormArray = <T,>({
   children,

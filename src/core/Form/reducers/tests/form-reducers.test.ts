@@ -1,4 +1,4 @@
-import { initialFormContext } from '../../context';
+import { initialFormContext } from '@core/Form/context';
 
 import {
   formRemoveFromArrayActionReducer,

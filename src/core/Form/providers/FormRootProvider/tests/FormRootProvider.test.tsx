@@ -2,9 +2,9 @@ import { FC, FocusEventHandler, MutableRefObject, useEffect } from 'react';
 
 import { ShowHide, testRender } from '@services/utils';
 
-import { FormObject, FormRoot } from '../../../components';
-import { useField, useForm } from '../../../hooks';
-import { Formatter, DependencyExtractor, Validator } from '../../../types';
+import { FormObject, FormRoot } from '@core/Form/components';
+import { useField, useForm } from '@core/Form/hooks';
+import { Formatter, DependencyExtractor, Validator } from '@core/Form/types';
 
 import { FormRootProvider, useFormRoot } from '../FormRootProvider';
 

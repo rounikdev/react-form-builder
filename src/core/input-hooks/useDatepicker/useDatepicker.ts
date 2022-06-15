@@ -7,8 +7,8 @@ import {
   useUpdateOnly
 } from '@rounik/react-custom-hooks';
 
-import { useField } from '../../Form';
-import { useFormRoot } from '../../Form/providers';
+import { useField } from '@core/Form/hooks';
+import { useFormRoot } from '@core/Form/providers';
 
 import { monthNames } from './constants';
 import { datepickerContext } from './context';

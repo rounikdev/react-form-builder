@@ -1,6 +1,6 @@
 import { createContext, FC, memo, useContext } from 'react';
 
-import { FormRootProviderContext, FormRootProviderProps } from '../../types';
+import { FormRootProviderContext, FormRootProviderProps } from '@core/Form/types';
 
 const FormRootContext = createContext<FormRootProviderContext>({
   errors: {},

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { UseFieldConfig, UseFieldReturnType } from '../../../Form';
+import { UseFieldConfig, UseFieldReturnType } from '@core/Form/types';
 
 import { ExtractorFromSingleOption } from '../../types';
 

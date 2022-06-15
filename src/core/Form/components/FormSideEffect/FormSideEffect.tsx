@@ -2,9 +2,9 @@ import { FC, useEffect } from 'react';
 
 import { useUpdatedRef } from '@rounik/react-custom-hooks';
 
-import { useForm } from '../../hooks';
-import { useFormRoot } from '../../providers';
-import { FormSideEffectProps } from '../../types';
+import { useForm } from '@core/Form/hooks';
+import { useFormRoot } from '@core/Form/providers';
+import { FormSideEffectProps } from '@core/Form/types';
 
 export const FormSideEffect: FC<FormSideEffectProps> = ({ dependencyExtractor, effect }) => {
   const { methods } = useForm();

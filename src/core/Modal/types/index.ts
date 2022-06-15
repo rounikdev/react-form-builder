@@ -8,7 +8,7 @@ import {
   RefObject
 } from 'react';
 
-import { FormStateEntryValue } from '../../Form/types';
+import { FormStateEntryValue } from '@core/Form/types';
 
 export type ModalId = string;
 

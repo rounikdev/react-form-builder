@@ -1,6 +1,6 @@
 import { ChangeEvent, FocusEvent, FocusEventHandler, MouseEvent, RefObject } from 'react';
 
-import { FormStateEntryValue, UseFieldConfig, ValidationError } from '../../../Form';
+import { FormStateEntryValue, UseFieldConfig, ValidationError } from '@core/Form/types';
 
 export interface DatepickerState {
   focusedDate: string;

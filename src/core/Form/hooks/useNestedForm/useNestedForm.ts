@@ -2,9 +2,9 @@ import { useCallback, useState } from 'react';
 
 import { useUnmount, useUpdate, useUpdatedRef, useUpdateOnly } from '@rounik/react-custom-hooks';
 
-import { useFormEditContext, useFormRoot } from '../../providers';
-import { ForceValidateFlag, FormStateEntryValue } from '../../types';
-import { useForm } from '../useForm/useForm';
+import { useForm } from '@core/Form/hooks/useForm/useForm';
+import { useFormEditContext, useFormRoot } from '@core/Form/providers';
+import { ForceValidateFlag, FormStateEntryValue } from '@core/Form/types';
 
 interface UseNestedFormArgs {
   name: string;

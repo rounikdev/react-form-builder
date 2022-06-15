@@ -2,8 +2,7 @@ import { useCallback, useRef, useState } from 'react';
 
 import { useMount, useUnmount, useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
 
-import { GlobalModel } from '@services';
-import { RAFIdInfo } from '../../../services';
+import { GlobalModel, RAFIdInfo } from '@services';
 
 import { getNextIndex } from '../helpers';
 import { CarouselState, UseCarouselConfig } from '../types';

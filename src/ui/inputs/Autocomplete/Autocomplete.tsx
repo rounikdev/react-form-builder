@@ -4,8 +4,8 @@ import { useClass } from '@rounik/react-custom-hooks';
 
 import { useAutocomplete } from '@core';
 
-import { ErrorField } from '../../ErrorField/ErrorField';
-import { LabelField } from '../../LabelField/LabelField';
+import { ErrorField } from '@ui/ErrorField/ErrorField';
+import { LabelField } from '@ui/LabelField/LabelField';
 
 import { AutocompleteProps } from './types';
 import { List } from './components';

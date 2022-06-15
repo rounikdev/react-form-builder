@@ -5,10 +5,10 @@ import userEvent from '@testing-library/user-event';
 
 import { ShowHide, testRender } from '@services/utils';
 
-import { FormObject, FormRoot } from '../../../components';
-import { useFormRoot } from '../../../providers';
-import { Formatter, DependencyExtractor, Validator } from '../../../types';
-import { useForm } from '../../useForm/useForm';
+import { FormObject, FormRoot } from '@core/Form/components';
+import { useFormRoot } from '@core/Form/providers';
+import { Formatter, DependencyExtractor, Validator } from '@core/Form/types';
+import { useForm } from '@core/Form/hooks/useForm/useForm';
 
 import { useField } from '../useField';
 

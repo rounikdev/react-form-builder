@@ -2,7 +2,7 @@ import { FC, useMemo, useState } from 'react';
 import { waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { testRender } from '../../../utils';
+import { testRender } from '@services/utils';
 
 import { GlobalModel } from '../GlobalModel';
 

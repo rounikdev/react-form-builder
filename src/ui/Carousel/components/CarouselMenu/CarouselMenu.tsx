@@ -2,7 +2,7 @@ import { memo } from 'react';
 
 import { GlobalModel } from '@services';
 
-import { Button } from '../../../Button/Button';
+import { Button } from '@ui/Button/Button';
 
 import { CarouselMenuProps } from '../../types';
 

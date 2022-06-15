@@ -1,6 +1,6 @@
 import { Dispatch, FocusEventHandler, MouseEventHandler, RefObject, SetStateAction } from 'react';
 
-import { UseFieldConfig } from '../../..';
+import { UseFieldConfig } from '@core/Form/types';
 
 export type RangeOptions = number[];
 

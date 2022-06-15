@@ -1,14 +1,14 @@
 import { useCallback, useMemo, useReducer } from 'react';
 
-import { initialFormContext } from '../../context';
-import { FormActions } from '../../reducers';
+import { initialFormContext } from '@core/Form/context';
+import { FormActions } from '@core/Form/reducers';
 import {
   FormContextReducer,
   FormRemovePayload,
   FormSetPayload,
   FormState,
   FormStateEntry
-} from '../../types';
+} from '@core/Form/types';
 
 export const useFormReducer = ({
   flattenState,

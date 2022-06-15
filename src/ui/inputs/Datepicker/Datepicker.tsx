@@ -4,9 +4,9 @@ import { useClass } from '@rounik/react-custom-hooks';
 
 import { useDatepicker, useTranslation } from '@core';
 
-import { Animator } from '../../Animator';
-import { ErrorField } from '../../ErrorField/ErrorField';
-import { TabTrap } from '../../TabTrap';
+import { Animator } from '@ui/Animator';
+import { ErrorField } from '@ui/ErrorField/ErrorField';
+import { TabTrap } from '@ui/TabTrap';
 
 import { Calendar, DatepickerInput } from './components';
 import { DatepickerProps } from './types';

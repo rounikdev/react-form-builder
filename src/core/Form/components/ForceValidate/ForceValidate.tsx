@@ -2,8 +2,8 @@ import { FC, memo } from 'react';
 
 import { useUpdate } from '@rounik/react-custom-hooks';
 
-import { useForm } from '../../hooks';
-import { ForceValidateFlag } from '../../types';
+import { useForm } from '@core/Form/hooks';
+import { ForceValidateFlag } from '@core/Form/types';
 
 export const ForceValidate: FC<{
   shouldForceValidate: ForceValidateFlag | undefined;

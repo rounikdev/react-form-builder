@@ -2,12 +2,12 @@ import { FC, memo, useCallback, useMemo } from 'react';
 
 import { useClass, useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
 
-import { FormContextInstance } from '../../context';
-import { useFormReducer, useRootForm } from '../../hooks';
-import { FormEditProvider, FormRootProvider } from '../../providers';
-import { formObjectReducer } from '../../reducers';
-import { flattenFormObjectState } from '../../services';
-import { FormContext, FormRootProps } from '../../types';
+import { FormContextInstance } from '@core/Form/context';
+import { useFormReducer, useRootForm } from '@core/Form/hooks';
+import { FormEditProvider, FormRootProvider } from '@core/Form/providers';
+import { formObjectReducer } from '@core/Form/reducers';
+import { flattenFormObjectState } from '@core/Form/services';
+import { FormContext, FormRootProps } from '@core/Form/types';
 
 import styles from './FormRoot.scss';
 

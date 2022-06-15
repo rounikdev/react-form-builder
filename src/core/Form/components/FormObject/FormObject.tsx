@@ -1,11 +1,11 @@
 import { FC, memo, useMemo } from 'react';
 
-import { FormContextInstance } from '../../context';
-import { useFormReducer, useNestedForm } from '../../hooks';
-import { FormEditProvider } from '../../providers';
-import { formObjectReducer } from '../../reducers';
-import { flattenFormObjectState } from '../../services';
-import { FormContext, FormObjectProps } from '../../types';
+import { FormContextInstance } from '@core/Form/context';
+import { useFormReducer, useNestedForm } from '@core/Form/hooks';
+import { FormEditProvider } from '@core/Form/providers';
+import { formObjectReducer } from '@core/Form/reducers';
+import { flattenFormObjectState } from '@core/Form/services';
+import { FormContext, FormObjectProps } from '@core/Form/types';
 
 export const FormObject: FC<FormObjectProps> = memo(({ children, localEdit = false, name }) => {
   const { context, removeFromForm, setInForm, valid, value } = useFormReducer({

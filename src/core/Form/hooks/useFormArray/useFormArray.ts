@@ -4,8 +4,8 @@ import { useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { GlobalModel } from '@services';
 
-import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '../../constants';
-import { useFormRoot } from '../../providers';
+import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '@core/Form/constants';
+import { useFormRoot } from '@core/Form/providers';
 
 export const useFormArray = <T>({
   factory,

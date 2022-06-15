@@ -1,4 +1,5 @@
-import { GlobalModel } from '../../GlobalModel/GlobalModel';
+import { GlobalModel } from '@services/models/GlobalModel';
+
 import { FormatterModel } from '../FormatterModel';
 
 describe('FormatterModel', () => {

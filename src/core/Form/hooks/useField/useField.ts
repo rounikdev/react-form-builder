@@ -21,16 +21,15 @@ import {
 
 import { GlobalModel } from '@services';
 
-import { useFormEditContext, useFormRoot } from '../../providers';
+import { useForm } from '@core/Form/hooks/useForm/useForm';
+import { useFormEditContext, useFormRoot } from '@core/Form/providers';
 import {
   FormStateEntryValue,
   UseFieldConfig,
   UseFieldState,
   UseFieldReturnType,
   ValidityCheck
-} from '../../types';
-
-import { useForm } from '../useForm/useForm';
+} from '@core/Form/types';
 
 export const useField = <T>({
   dependencyExtractor,

@@ -1,8 +1,8 @@
 import { FC, memo } from 'react';
 
-import { useForm } from '../../hooks';
-import { useFormRoot } from '../../providers';
-import { FormUserProps } from '../../types';
+import { useForm } from '@core/Form/hooks';
+import { useFormRoot } from '@core/Form/providers';
+import { FormUserProps } from '@core/Form/types';
 
 export const FormUser: FC<FormUserProps> = memo(({ children }) => {
   const { isEdit, isParentEdit, localEdit, methods } = useForm();

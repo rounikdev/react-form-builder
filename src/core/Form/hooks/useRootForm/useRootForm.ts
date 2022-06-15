@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 
 import { useUpdate, useUpdatedRef } from '@rounik/react-custom-hooks';
 
-import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '../../constants';
+import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '@core/Form/constants';
 import {
   FieldErrors,
   FieldErrorsPayload,
@@ -10,7 +10,7 @@ import {
   FormStateEntryValue,
   ResetFlag,
   SetFieldValuePayload
-} from '../../types';
+} from '@core/Form/types';
 
 interface UseRootFormProps {
   formData: FormStateEntryValue;

@@ -1,5 +1,6 @@
 import { Provider, RefObject } from 'react';
-import { UseFieldConfig, UseFieldReturnType } from '../../../Form';
+
+import { UseFieldConfig, UseFieldReturnType } from '@core/Form/types';
 
 export interface AutocompleteContext {
   close: () => void;

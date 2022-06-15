@@ -3,7 +3,7 @@ import { FC, memo } from 'react';
 import { useDatepickerContext, useTranslation } from '@core';
 import { Testable } from '@types';
 
-import { IconCalendar } from '../../../../icons';
+import { IconCalendar } from '@ui/icons';
 
 import { Control } from '../Control/Control';
 

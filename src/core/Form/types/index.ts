@@ -2,7 +2,7 @@ import { Dispatch, FocusEventHandler, MutableRefObject, ReactNode, SetStateActio
 
 import { Animatable, Disableable, Stylable, Testable } from '@types';
 
-import { TranslationSubstitute } from '../../Translation/types';
+import { TranslationSubstitute } from '@core/Translation/types';
 
 export interface Field<T>
   extends Omit<UseFieldConfig<T>, 'initialValue'>,
