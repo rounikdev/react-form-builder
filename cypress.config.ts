@@ -8,7 +8,10 @@ export default defineConfig({
       webpackConfig: require('./.storybook/webpack.test.js')
     },
     excludeSpecPattern: '**/examples/**/*.js',
-    setupNodeEvents() {},
+    setupNodeEvents(on, config) {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      return require('./cypress/plugins/index.js')(on, config);
+    },
     specPattern: 'src/**/*.cy.{ts,tsx}'
   },
   e2e: {
