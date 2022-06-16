@@ -1,4 +1,4 @@
-import React from 'react';
+import { Story } from '@storybook/react';
 
 import { TranslationProvider } from '../src/core';
 import { BaseCSS } from '../src/ui';
@@ -6,7 +6,7 @@ import { BaseCSS } from '../src/ui';
 import { dictionaries } from '../src/core/Translation/tests/data';
 
 export const decorators = [
-  (StoryFn) => (
+  (StoryFn: Story) => (
     <TranslationProvider dictionaries={dictionaries} languageId={dictionaries.EN.id}>
       <BaseCSS />
       <StoryFn />

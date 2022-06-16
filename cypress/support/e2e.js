@@ -16,9 +16,3 @@
 import './commands';
 
 import '@cypress/code-coverage/support';
-
-import { setGlobalConfig } from '@storybook/testing-react';
-
-import { decorators } from '../../.storybook/preview';
-
-setGlobalConfig(decorators);

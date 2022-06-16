@@ -1,28 +1,12 @@
 {
   "all": true,
   "check-coverage": true,
-  "exclude": [
-    "**/*.spec.*",
-    "**/*.test.*",
-    "**/stories/**"
-  ],
-  "extension": [
-    ".ts",
-    ".tsx"
-  ],
-  "include": [
-    "src"
-  ],
+  "exclude": ["**/*.cy.*", "**/*.test.*", "**/stories/**"],
+  "extension": [".ts", ".tsx"],
+  "include": ["src"],
   "instrument": true,
   "report-dir": "nyc/coverage",
-  "reporter": [
-    "clover",
-    "cobertura",
-    "json",
-    "json-summary",
-    "lcov",
-    "text"
-  ],
+  "reporter": ["clover", "cobertura", "json", "json-summary", "lcov", "text"],
   "temp-dir": "nyc/temp",
   "branches": 70,
   "lines": 80,
