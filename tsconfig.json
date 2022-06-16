@@ -40,5 +40,5 @@
     "strictPropertyInitialization": true,
     "target": "ES2015"
   },
-  "exclude": ["node_modules"]
+  "exclude": ["cypress.config.ts", "node_modules"]
 }

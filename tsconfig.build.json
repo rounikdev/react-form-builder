@@ -17,6 +17,8 @@
     "target": "ES6"
   },
   "exclude": [
+    "cypress",
+    "cypress.config.ts",
     "dist",
     "instrumented",
     "jest-setup.ts",

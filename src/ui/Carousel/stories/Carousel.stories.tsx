@@ -1,8 +1,7 @@
 import { FC, StrictMode, useCallback, useState } from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import { Button } from '../../Button/Button';
-import { Image } from '../../Image/Image';
+import { Button, Image } from '@ui';
 
 import { Carousel } from '../Carousel';
 
