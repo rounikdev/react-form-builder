@@ -9,19 +9,3 @@
   overflow-y: hidden;
   transition: height var(--transition) ease-in-out;
 }
-
-.Scroller {
-  right: 0.2rem;
-  z-index: 1;
-  width: 0.4rem;
-  background-color: var(--color-background);
-  border: var(--border-width) solid;
-  border-radius: var(--border-radius);
-  opacity: 0.4;
-}
-
-.ScrollerContainer {
-  width: 100% !important;
-  border-bottom-left-radius: var(--border-radius);
-  border-bottom-right-radius: var(--border-radius);
-}

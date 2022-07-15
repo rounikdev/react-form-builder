@@ -1,5 +1,4 @@
 import { createRef, memo, RefObject, useMemo, useState } from 'react';
-import Scroll from 'react-scroll-component';
 
 import { useLastDiffValue, useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
 
@@ -21,15 +20,6 @@ export const List = <T,>({
   const [rowRefs, setRowRefs] = useState<RefObject<HTMLLIElement>[]>([]);
 
   const prevList = useLastDiffValue(list) || [];
-
-  const scrollerOptions = useMemo(() => {
-    return {
-      className: styles.ScrollerContainer,
-      direction: 'vertical',
-      height: style.maxHeight,
-      scrollerClass: styles.Scroller
-    };
-  }, [style.maxHeight]);
 
   const options = useMemo(() => {
     return listToRender.map((item, index) => {
@@ -72,9 +62,8 @@ export const List = <T,>({
       id={`${id}-listbox`}
       onTransitionEnd={() => {
         setStyle((prevStyle) => ({
-          ...prevStyle
-          // Remove native scroll
-          // overflowY: list.length > rowsToDisplay ? 'auto' : 'hidden'
+          ...prevStyle,
+          overflowY: list.length > rowsToDisplay ? 'auto' : 'hidden'
         }));
 
         if (list.length < prevList.length) {
@@ -84,7 +73,7 @@ export const List = <T,>({
       role="listbox"
       style={style}
     >
-      <Scroll {...scrollerOptions}>{options}</Scroll>
+      {options}
     </ul>
   );
 };
