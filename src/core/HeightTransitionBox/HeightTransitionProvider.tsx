@@ -1,6 +1,6 @@
 import { createContext, FC, memo, useContext, useMemo, useState } from 'react';
 
-import { HeightTransitionBoxContext } from './types';
+import { HeightTransitionBoxContext, HeightTransitionProviderProps } from './types';
 
 const initialContext: HeightTransitionBoxContext = {
   actions: {
@@ -15,7 +15,7 @@ export const useHeightTransition = (): HeightTransitionBoxContext => {
   return useContext(HeightTransitionContext);
 };
 
-export const HeightTransitionProvider: FC = memo(({ children }) => {
+export const HeightTransitionProvider: FC<HeightTransitionProviderProps> = memo(({ children }) => {
   const [state, setState] = useState(initialContext);
 
   const actions = useMemo(() => {

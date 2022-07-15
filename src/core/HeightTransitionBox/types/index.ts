@@ -19,3 +19,7 @@ export interface HeightTransitionBoxContext {
   actions: { forceUpdate: () => void };
   shouldForceUpdate: Record<string, unknown>;
 }
+
+export interface HeightTransitionProviderProps {
+  children: ReactNode;
+}

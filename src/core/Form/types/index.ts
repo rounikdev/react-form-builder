@@ -114,6 +114,7 @@ export interface FormRootProps extends Testable {
 }
 
 export interface FormObjectProps {
+  children: ReactNode;
   localEdit?: boolean;
   name: string;
 }
@@ -201,6 +202,7 @@ export interface FormRootProviderContext {
 }
 
 export interface FormRootProviderProps {
+  children: ReactNode;
   value: FormRootProviderContext;
 }
 

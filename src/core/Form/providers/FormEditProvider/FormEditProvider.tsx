@@ -1,10 +1,11 @@
-import { createContext, FC, memo, useContext, useMemo } from 'react';
+import { createContext, FC, memo, ReactNode, useContext, useMemo } from 'react';
 
 interface FormEditContextValue {
   isEdit: boolean;
 }
 
 interface FormEditProviderProps {
+  children: ReactNode;
   isEdit: boolean;
 }
 

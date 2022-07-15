@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export enum TranslationActions {
   SET_LANGUAGE = 'SET_LANGUAGE',
   UPDATE_DICTIONARIES = 'UPDATE_DICTIONARIES'
@@ -47,6 +49,7 @@ export interface TranslationContext {
 }
 
 export interface TranslationProviderProps {
+  children: ReactNode;
   languageId: string;
   dictionaries: Dictionaries;
 }
