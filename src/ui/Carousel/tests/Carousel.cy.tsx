@@ -19,6 +19,7 @@ describe('Carousel', () => {
 
     cy.get('[data-test="animals-carousel-left-button"]').trigger('click');
 
+    cy.wait(500);
     cy.get('[data-test="1-image"]').should('be.visible');
 
     // Can't click before transition is done:
