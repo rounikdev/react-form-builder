@@ -1,5 +1,5 @@
-import { FC, StrictMode } from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { FC, StrictMode } from 'react';
 
 import { FormRoot } from '@core';
 import { ValidatorModel } from '@services';
@@ -9,8 +9,8 @@ import { Datepicker } from '../Datepicker';
 import styles from './Datepicker.stories.scss';
 
 export default {
-  title: 'Components/inputs/Datepicker',
-  component: Datepicker
+  component: Datepicker,
+  title: 'Components/inputs/Datepicker'
 } as ComponentMeta<typeof Datepicker>;
 
 const Template: ComponentStory<FC> = () => (

@@ -3,7 +3,6 @@ import { memo, MouseEventHandler } from 'react';
 import { useClass } from '@rounik/react-custom-hooks';
 
 import { IconChevronLeft, IconChevronRight } from '../icons';
-
 import { CarouselButton, CarouselMenu } from './components';
 import { defaultExtractId, defaultExtractLabel, defaultRenderFrame } from './helpers';
 import { useCarousel } from './hooks';

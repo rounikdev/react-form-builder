@@ -1,10 +1,9 @@
-import { FC } from 'react';
 import { mount } from '@cypress/react';
+import { FC } from 'react';
 
 import { Translation } from '../components';
 import { useTranslation } from '../hooks';
 import { TranslationProvider } from '../providers';
-
 import { dictionaries, languages } from './data';
 
 const updatedTranslation = 'Название';

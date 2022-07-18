@@ -1,12 +1,12 @@
-import { FC } from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
+import { FC } from 'react';
 
 import { useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { FormObject, FormRoot } from '@core/Form/components';
+import { useForm } from '@core/Form/hooks/useForm/useForm';
 import { useFormRoot } from '@core/Form/providers';
 import { FormRootProviderContext, ResetFlag } from '@core/Form/types';
-import { useForm } from '@core/Form/hooks/useForm/useForm';
 
 import { useNestedForm } from '../useNestedForm';
 

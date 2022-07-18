@@ -1,5 +1,5 @@
-import { FC, useState } from 'react';
 import { mount } from '@cypress/react';
+import { FC, useState } from 'react';
 
 import { ValidationError } from '@core';
 

@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 
-import { ModalElement, ModalContext, ModalAction } from '../types';
-
 import * as actions from '../actions';
+import { ModalAction, ModalContext, ModalElement } from '../types';
 
 // Dispatch and SetStateAction not recognized when
 // import('react').Dispatch and import('react').SetStateAction

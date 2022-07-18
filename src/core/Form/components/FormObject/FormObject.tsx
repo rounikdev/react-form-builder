@@ -16,11 +16,11 @@ export const FormObject: FC<FormObjectProps> = memo(({ children, localEdit = fal
   const {
     cancel,
     edit,
-    isEdit,
-    isParentEdit,
     forceValidate,
     forceValidateFlag,
     getFieldId,
+    isEdit,
+    isParentEdit,
     reset,
     save
   } = useNestedForm({

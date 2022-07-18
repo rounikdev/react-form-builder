@@ -1,8 +1,8 @@
 import { UseFieldConfig, UseFieldReturnType } from '@core/Form/types';
 
 export type InputOnBlurSideEffect = ({
-  value,
-  setValue
+  setValue,
+  value
 }: {
   value: string;
   setValue?: (value: string) => void;

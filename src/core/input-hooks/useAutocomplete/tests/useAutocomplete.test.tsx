@@ -1,4 +1,5 @@
 import { act, renderHook } from '@testing-library/react-hooks';
+import { FC } from 'react';
 
 import { useMount } from '@rounik/react-custom-hooks';
 
@@ -7,7 +8,6 @@ import { useFormRoot } from '@core/Form/providers';
 import { keyEvent } from '@services/utils';
 
 import { useAutocomplete } from '../useAutocomplete';
-import { FC } from 'react';
 
 interface Fruit {
   ID: string;

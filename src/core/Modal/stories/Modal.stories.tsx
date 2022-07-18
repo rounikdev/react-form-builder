@@ -1,8 +1,8 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
+import { ModalBuilder } from '@core/Modal/components';
 import { useModal } from '@core/Modal/context';
 import { Provider } from '@core/Modal/provider';
-import { ModalBuilder } from '@core/Modal/components';
 import { ModalElement } from '@core/Modal/types';
 
 import { BackdropAnimate, ContainerAnimate } from './components';
@@ -23,7 +23,6 @@ const Playground = (args: ModalElement): JSX.Element => {
         onClick={() => {
           showModalById({
             ...args,
-            id: 'modal-1',
             content: (
               <p style={{ padding: '4rem', textAlign: 'center' }}>
                 <span style={{ fontSize: '2rem', fontWeight: 'bold' }}> Modal 1</span>
@@ -33,7 +32,6 @@ const Playground = (args: ModalElement): JSX.Element => {
                   onClick={() => {
                     showModalById({
                       ...args,
-                      id: 'modal-2',
                       animate: false,
                       content: (
                         <p style={{ padding: '4rem', textAlign: 'center' }}>
@@ -44,7 +42,7 @@ const Playground = (args: ModalElement): JSX.Element => {
                             onClick={() => {
                               showModalById({
                                 ...args,
-                                id: 'modal-3',
+                                clearPreceding: true,
                                 content: (
                                   <p style={{ padding: '4rem', textAlign: 'center' }}>
                                     <span style={{ fontSize: '2rem', fontWeight: 'bold' }}>
@@ -52,7 +50,7 @@ const Playground = (args: ModalElement): JSX.Element => {
                                     </span>
                                   </p>
                                 ),
-                                clearPreceding: true
+                                id: 'modal-3'
                               });
                             }}
                           >
@@ -60,14 +58,16 @@ const Playground = (args: ModalElement): JSX.Element => {
                           </button>
                         </p>
                       ),
-                      forceShow: true
+                      forceShow: true,
+                      id: 'modal-2'
                     });
                   }}
                 >
                   Force Show Modal 2
                 </button>
               </p>
-            )
+            ),
+            id: 'modal-1'
           });
         }}
       >

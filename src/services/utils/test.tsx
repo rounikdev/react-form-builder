@@ -1,5 +1,3 @@
-import { FC, JSXElementConstructor, MutableRefObject, ReactElement } from 'react';
-
 import {
   buildQueries,
   Matcher,
@@ -10,6 +8,7 @@ import {
   render,
   RenderOptions
 } from '@testing-library/react';
+import { FC, JSXElementConstructor, MutableRefObject, ReactElement } from 'react';
 
 import { useField } from '@core';
 

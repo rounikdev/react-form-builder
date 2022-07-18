@@ -1,21 +1,16 @@
 import { act, renderHook } from '@testing-library/react-hooks';
 
-import { useRadioGroup } from '../useRadioGroup';
+import { useField } from '@core/Form/hooks/useField/useField';
 
-let mockUseField: jest.Mock;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let originalUseField: any;
+import { useRadioGroup } from '../useRadioGroup';
 
 jest.mock('@core/Form/hooks/useField/useField', () => {
   const originalModule = jest.requireActual('@core/Form/hooks/useField/useField');
 
-  originalUseField = originalModule.useField;
-  mockUseField = jest.fn((...args) => args);
-
   return {
     __esModule: true,
     ...originalModule,
-    useField: mockUseField
+    useField: jest.fn((...args) => args)
   };
 });
 
@@ -37,33 +32,35 @@ describe('useRadioGroup', () => {
       ...useFieldArgs,
       options: [
         {
-          value: 'chocolate',
-          label: 'Chocolate'
+          label: 'Chocolate',
+          value: 'chocolate'
         },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' }
+        { label: 'Strawberry', value: 'strawberry' },
+        { label: 'Vanilla', value: 'vanilla' }
       ]
     };
 
     renderHook(() => useRadioGroup(useRadioGroupArgs));
 
-    expect(mockUseField).toBeCalledTimes(1);
-    expect(mockUseField.mock.calls[0][0]).toEqual(useFieldArgs);
+    expect(useField).toBeCalledTimes(1);
+    expect((useField as jest.Mock).mock.calls[0][0]).toEqual(useFieldArgs);
   });
 
   it('Returns correct props', async () => {
-    mockUseField.mockImplementation(originalUseField);
+    (useField as jest.Mock).mockImplementation(
+      jest.requireActual('@core/Form/hooks/useField/useField').useField
+    );
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const returnPropTypes: { [key: string]: any } = {
+      enhancedOptions: 'object',
+      errors: 'object',
       fieldRef: 'object',
+      focused: 'boolean',
+      isEdit: 'boolean',
       onBlurHandler: 'function',
       onChangeHandler: 'function',
       onFocusHandler: 'function',
-      enhancedOptions: 'object',
-      errors: 'object',
-      focused: 'boolean',
-      isEdit: 'boolean',
       touched: 'boolean',
       valid: 'boolean',
       validating: 'boolean',
@@ -76,11 +73,11 @@ describe('useRadioGroup', () => {
       name: 'test',
       options: [
         {
-          value: 'chocolate',
-          label: 'Chocolate'
+          label: 'Chocolate',
+          value: 'chocolate'
         },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' }
+        { label: 'Strawberry', value: 'strawberry' },
+        { label: 'Vanilla', value: 'vanilla' }
       ],
       sideEffect: jest.fn(),
       validator: jest.fn()
@@ -101,7 +98,9 @@ describe('useRadioGroup', () => {
   });
 
   it('Creates correct `enhancedOptions`', async () => {
-    mockUseField.mockImplementation(originalUseField);
+    (useField as jest.Mock).mockImplementation(
+      jest.requireActual('@core/Form/hooks/useField/useField').useField
+    );
 
     const useFieldArgs = {
       dependencyExtractor: jest.fn(),
@@ -115,11 +114,11 @@ describe('useRadioGroup', () => {
       ...useFieldArgs,
       options: [
         {
-          value: 'chocolate',
-          label: 'Chocolate'
+          label: 'Chocolate',
+          value: 'chocolate'
         },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' }
+        { label: 'Strawberry', value: 'strawberry' },
+        { label: 'Vanilla', value: 'vanilla' }
       ]
     };
 

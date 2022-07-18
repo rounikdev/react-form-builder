@@ -1,13 +1,12 @@
-import { FC, useState } from 'react';
 import { fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { FC, useState } from 'react';
 
 import { testRender } from '@services/utils';
 
-import { HeightTransitionBoxProps } from '../types';
-
-import { HeightTransitionProvider } from '../HeightTransitionProvider';
 import { HeightTransitionBox } from '../HeightTransitionBox';
+import { HeightTransitionProvider } from '../HeightTransitionProvider';
+import { HeightTransitionBoxProps } from '../types';
 
 const TestCmp: FC<
   HeightTransitionBoxProps & {

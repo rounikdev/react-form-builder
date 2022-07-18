@@ -1,6 +1,7 @@
 .Container {
   display: inline-block;
   width: 100%;
+
   transition: all var(--transition) ease-in-out;
 
   &.Opened {
@@ -15,9 +16,11 @@
 
 .Content {
   position: relative;
+
   display: inline-block;
   width: 100%;
   overflow: hidden;
+
   transition: height var(--transition) ease-in-out;
 
   &.Open {
@@ -27,5 +30,6 @@
 
 .Hidden {
   position: absolute;
+
   width: 100%;
 }

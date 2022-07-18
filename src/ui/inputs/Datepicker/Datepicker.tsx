@@ -3,7 +3,6 @@ import { FC, memo, ReactNode, useMemo } from 'react';
 import { useClass } from '@rounik/react-custom-hooks';
 
 import { useDatepicker, useTranslation } from '@core';
-
 import { Animator } from '@ui/Animator';
 import { ErrorField } from '@ui/ErrorField/ErrorField';
 import { TabTrap } from '@ui/TabTrap';
@@ -21,8 +20,8 @@ export const Datepicker: FC<DatepickerProps> = memo(
     className,
     dataTest,
     dependencyExtractor,
-    initialValue,
     id,
+    initialValue,
     label = '',
     maxDateExtractor,
     minDateExtractor,

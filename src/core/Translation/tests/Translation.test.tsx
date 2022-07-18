@@ -1,5 +1,5 @@
-import { FC } from 'react';
 import { act } from '@testing-library/react';
+import { FC } from 'react';
 
 import { useMount } from '@rounik/react-custom-hooks';
 
@@ -9,8 +9,7 @@ import { Translation } from '../components';
 import { useTranslation } from '../hooks';
 import { TranslationProvider } from '../providers';
 import { Dictionaries } from '../types';
-
-import { dictionaries, languages } from './data';
+import { languages, dictionaries as testDictionaries } from './data';
 
 interface LanguageSetterProps {
   languageId: string;
@@ -47,11 +46,11 @@ const DictionariesUpdater: FC<DictionariesUpdaterProps> = ({ dictionaries }) => 
 const updatedTranslation = 'Название';
 
 const newDictionaries = {
-  ...dictionaries,
+  ...testDictionaries,
   BG: {
-    ...dictionaries.BG,
+    ...testDictionaries.BG,
     data: {
-      ...dictionaries.BG.data,
+      ...testDictionaries.BG.data,
       name: updatedTranslation
     }
   }
@@ -112,7 +111,7 @@ describe('Translation', () => {
     const translationKey = 'name';
 
     const { getByDataTest } = testRender(
-      <TranslationProvider dictionaries={dictionaries} languageId={languageId}>
+      <TranslationProvider dictionaries={testDictionaries} languageId={languageId}>
         <p data-test="translation">
           <Translation text={translationKey} />
         </p>
@@ -128,7 +127,7 @@ describe('Translation', () => {
     const translationKey = 'name';
 
     const { getByDataTest } = testRender(
-      <TranslationProvider dictionaries={dictionaries} languageId={languageId}>
+      <TranslationProvider dictionaries={testDictionaries} languageId={languageId}>
         <p data-test="translation">
           <Translation text={translationKey} />
         </p>
@@ -136,7 +135,7 @@ describe('Translation', () => {
     );
 
     expect(getByDataTest('translation')).toHaveTextContent(
-      dictionaries[languageId].data[translationKey] as string
+      testDictionaries[languageId].data[translationKey] as string
     );
   });
 
@@ -148,7 +147,7 @@ describe('Translation', () => {
     const substitute = 'Иван';
 
     const { getByDataTest } = testRender(
-      <TranslationProvider dictionaries={dictionaries} languageId={languageId}>
+      <TranslationProvider dictionaries={testDictionaries} languageId={languageId}>
         <p data-test="translation">
           <Translation substitutes={[substitute]} text={translationKey} />
         </p>
@@ -166,7 +165,7 @@ describe('Translation', () => {
     const substitute = <b>Иван</b>;
 
     const { getByDataTest } = testRender(
-      <TranslationProvider dictionaries={dictionaries} languageId={languageId}>
+      <TranslationProvider dictionaries={testDictionaries} languageId={languageId}>
         <p data-test="translation">
           <Translation substitutes={[substitute]} text={translationKey} />
         </p>
@@ -187,7 +186,7 @@ describe('Translation', () => {
     jest.useFakeTimers();
 
     const { getByDataTest } = testRender(
-      <TranslationProvider dictionaries={dictionaries} languageId={languageId}>
+      <TranslationProvider dictionaries={testDictionaries} languageId={languageId}>
         <LanguageSetter languageId={newLanguageId} />
         <p data-test="translation">
           <Translation text={translationKey} />
@@ -196,7 +195,7 @@ describe('Translation', () => {
     );
 
     expect(getByDataTest('translation')).toHaveTextContent(
-      dictionaries[languageId].data[translationKey] as string
+      testDictionaries[languageId].data[translationKey] as string
     );
 
     act(() => {
@@ -204,7 +203,7 @@ describe('Translation', () => {
     });
 
     expect(getByDataTest('translation')).toHaveTextContent(
-      dictionaries[newLanguageId].data[translationKey] as string
+      testDictionaries[newLanguageId].data[translationKey] as string
     );
   });
 
@@ -216,7 +215,7 @@ describe('Translation', () => {
     jest.useFakeTimers();
 
     const { getByDataTest } = testRender(
-      <TranslationProvider dictionaries={dictionaries} languageId={languageId}>
+      <TranslationProvider dictionaries={testDictionaries} languageId={languageId}>
         <DictionariesUpdater dictionaries={newDictionaries} />
         <p data-test="translation">
           <Translation text={translationKey} />
@@ -225,7 +224,7 @@ describe('Translation', () => {
     );
 
     expect(getByDataTest('translation')).toHaveTextContent(
-      dictionaries[languageId].data[translationKey] as string
+      testDictionaries[languageId].data[translationKey] as string
     );
 
     act(() => {

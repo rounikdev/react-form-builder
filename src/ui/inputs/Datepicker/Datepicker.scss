@@ -1,5 +1,6 @@
 .Container {
   position: relative;
+
   display: flex;
   flex-direction: column;
 }
@@ -8,6 +9,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: calc(var(--offset-small) / 2);
+
   color: var(--color-label);
   font-size: var(--font-small);
 
@@ -18,32 +20,36 @@
 
 .CalendarEnter {
   transform-origin: top right;
-  animation: scaleIn var(--transition) ease-in-out forwards;
+
+  animation: scale-in var(--transition) ease-in-out forwards;
 }
 
 .CalendarExit {
   transform-origin: top right;
-  animation: scaleOut var(--transition) ease-in-out forwards;
+
+  animation: scale-out var(--transition) ease-in-out forwards;
 }
 
-@keyframes scaleIn {
+@keyframes scale-in {
   0% {
-    opacity: 0;
     transform: scale(0);
+    opacity: 0;
   }
+
   100% {
-    opacity: 1;
     transform: scale(1);
+    opacity: 1;
   }
 }
 
-@keyframes scaleOut {
+@keyframes scale-out {
   0% {
-    opacity: 1;
     transform: scale(1);
+    opacity: 1;
   }
+
   100% {
-    opacity: 0;
     transform: scale(0);
+    opacity: 0;
   }
 }

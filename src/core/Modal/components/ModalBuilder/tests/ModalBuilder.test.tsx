@@ -1,12 +1,11 @@
-import { FC } from 'react';
 import { fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { FC } from 'react';
 
 import { Modal } from '@core';
-import { appendModalToRoot, testRender } from '@services/utils';
-
-import { ModalElement, ModalTemplateProps } from '@core/Modal/types';
 import { Backdrop, Container } from '@core/Modal/stories/components';
+import { ModalElement, ModalTemplateProps } from '@core/Modal/types';
+import { appendModalToRoot, testRender } from '@services/utils';
 
 import { ModalBuilder } from '../ModalBuilder';
 
@@ -165,8 +164,8 @@ describe('Modal actions', () => {
 
     fireEvent.click(buttonShowModalById, {
       target: {
-        id: 'test',
-        hasDefaultClose: true
+        hasDefaultClose: true,
+        id: 'test'
       }
     });
 
@@ -192,8 +191,8 @@ describe('Modal actions', () => {
 
     fireEvent.click(buttonShowModalById, {
       target: {
-        id: 'test',
-        content: (props: ModalTemplateProps) => <TestModalContent {...props} />
+        content: (props: ModalTemplateProps) => <TestModalContent {...props} />,
+        id: 'test'
       }
     });
 
@@ -231,8 +230,8 @@ describe('Modal actions', () => {
 
     fireEvent.click(buttonShowModalById, {
       target: {
-        id: 'test',
-        hideBackdrop: true
+        hideBackdrop: true,
+        id: 'test'
       }
     });
 
@@ -254,8 +253,8 @@ describe('Modal actions', () => {
 
     fireEvent.click(buttonShowModalById, {
       target: {
-        id: 'test',
-        closeAutomatically: true
+        closeAutomatically: true,
+        id: 'test'
       }
     });
 

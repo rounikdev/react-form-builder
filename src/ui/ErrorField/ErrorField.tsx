@@ -27,3 +27,5 @@ export const ErrorField: FC<ErrorFieldProps> = memo(({ dataTest, errors, isError
     </HeightTransitionBox>
   );
 });
+
+ErrorField.displayName = 'ErrorField';

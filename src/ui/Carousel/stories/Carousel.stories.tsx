@@ -1,17 +1,16 @@
-import { FC, StrictMode, useCallback, useState } from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { FC, StrictMode, useCallback, useState } from 'react';
 
 import { Button, Image } from '@ui';
 
 import { Carousel } from '../Carousel';
-
 import { images, images2, Picture } from './data';
 
 import styles from './Carousel.stories.scss';
 
 export default {
-  title: 'Components/Carousel',
-  component: Carousel
+  component: Carousel,
+  title: 'Components/Carousel'
 } as ComponentMeta<typeof Carousel>;
 
 const renderFrame = ({ dataTest, item }: { dataTest: string; item: Picture | null }) => {

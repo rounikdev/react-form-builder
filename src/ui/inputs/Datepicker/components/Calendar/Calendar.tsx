@@ -2,7 +2,6 @@ import { FC, memo } from 'react';
 
 import { dayNames, useDatepickerContext, useTranslation } from '@core';
 import { Testable } from '@types';
-
 import { Animator } from '@ui/Animator';
 
 import { Controls } from '../Controls/Controls';

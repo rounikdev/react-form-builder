@@ -1,10 +1,9 @@
+import { Meta, Story } from '@storybook/react';
 import { FC, StrictMode } from 'react';
-import { Story, Meta } from '@storybook/react';
 
 import { Button, Text } from '@ui';
 
 import { ConditionalFields, FormArray, FormRoot, FormUser } from '../components';
-
 import { FormStateDisplay, SubmitButton, UserForm } from './components';
 import {
   createUser,

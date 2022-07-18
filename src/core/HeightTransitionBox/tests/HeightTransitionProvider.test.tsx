@@ -1,5 +1,5 @@
-import { FC } from 'react';
 import userEvent from '@testing-library/user-event';
+import { FC } from 'react';
 
 import { useUpdateOnly } from '@rounik/react-custom-hooks';
 

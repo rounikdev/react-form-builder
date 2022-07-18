@@ -1,6 +1,6 @@
-import { FC, useEffect } from 'react';
 import { fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { FC, useEffect } from 'react';
 
 import { useUpdateOnly } from '@rounik/react-custom-hooks';
 
@@ -8,7 +8,6 @@ import { ShowHide, testRender } from '@services/utils';
 
 import { FormArray, FormObject, FormRoot } from '../components';
 // import { initialFormContext } from '../context';
-
 import { useField, useForm } from '../hooks';
 // import { reducer } from '../reducers';
 import { Validator } from '../types';

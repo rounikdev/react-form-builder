@@ -1,14 +1,17 @@
 .Container {
   margin: var(--offset-small);
   padding: var(--offset-small) var(--offset-medium);
+
   color: var(--color-button);
   font-size: var(--font-small);
+
   background-color: var(--color-button-primary-background);
   border: none;
   border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
   outline: none;
+  box-shadow: var(--box-shadow);
   cursor: pointer;
+
   transition: all var(--transition) ease-in-out;
 
   &:focus,
@@ -18,6 +21,7 @@
 
   &.Edit {
     color: var(--color-font);
+
     background-color: var(--color-button-secondary-background);
   }
 

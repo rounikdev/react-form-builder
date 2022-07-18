@@ -145,8 +145,8 @@ export const useCarousel = <T>({
 
       return {
         ...currentState,
-        currentIndex: nextIndex,
         current: currentState.next,
+        currentIndex: nextIndex,
         next: items[getNextIndex(nextIndex, items.length - 1, currentState.toLeft)],
         trackStyle: currentState.toLeft ? '' : styles.ToRight
       };

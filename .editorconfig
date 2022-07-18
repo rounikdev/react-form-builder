@@ -8,7 +8,7 @@ continuation_indent_size = 2
 end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
-max_line_length = 120
+max_line_length = 100
 spaces_around_operators = true
 spaces_around_brackets = true
 

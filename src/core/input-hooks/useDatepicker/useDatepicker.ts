@@ -25,9 +25,9 @@ export const useDatepicker = ({
   dependencyExtractor,
   formatter,
   initialValue,
-  name,
   maxDateExtractor,
   minDateExtractor,
+  name,
   onBlur,
   onFocus,
   sideEffect,
@@ -73,10 +73,10 @@ export const useDatepicker = ({
     focusedDate: '',
     input: null,
     month: new Date().getMonth(),
-    today: new Date(),
-    toLeft: false,
     selected: undefined,
     show: false,
+    today: new Date(),
+    toLeft: false,
     year: new Date().getFullYear()
   });
 
@@ -182,8 +182,8 @@ export const useDatepicker = ({
         setState((currentState) => ({
           ...currentState,
           focusedDate: '',
-          show: false,
-          input: formatDateInput(date)
+          input: formatDateInput(date),
+          show: false
         }));
       }
     },
@@ -414,11 +414,11 @@ export const useDatepicker = ({
       focusCalendar,
       focused,
       hide,
+      inputBlurHandler,
+      inputChangeHandler,
       maxDate,
       minDate,
       monthName,
-      inputBlurHandler,
-      inputChangeHandler,
       onBlurHandler,
       onFocusHandler,
       openButtonRef,

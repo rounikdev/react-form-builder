@@ -2,29 +2,32 @@
   position: absolute;
   top: 50%;
   z-index: 1;
+
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 4rem;
   height: 4rem;
-  opacity: 0.2;
+
   background-color: var(--color-button-primary-background);
   border-radius: 50%;
   transform: scale(1) translateY(-50%);
+  opacity: 0.2;
+
   transition: all var(--transition) ease-in-out;
 
   &:hover,
   &:focus {
     &:not(:disabled) {
-      opacity: 1;
       transform: scale(1.04) translateY(-50%);
+      opacity: 1;
     }
   }
 
   &:active {
     &:not(:disabled) {
-      opacity: 1;
       transform: scale(0.98) translateY(-50%);
+      opacity: 1;
     }
   }
 

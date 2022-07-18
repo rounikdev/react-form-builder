@@ -3,12 +3,11 @@ import { LegacyRef, memo, RefObject, useMemo } from 'react';
 import { useClass } from '@rounik/react-custom-hooks';
 
 import { useAutocomplete } from '@core';
-
 import { ErrorField } from '@ui/ErrorField/ErrorField';
 import { LabelField } from '@ui/LabelField/LabelField';
 
-import { AutocompleteProps } from './types';
 import { List } from './components';
+import { AutocompleteProps } from './types';
 
 import styles from './Autocomplete.scss';
 

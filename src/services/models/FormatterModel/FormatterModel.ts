@@ -35,7 +35,7 @@ export class FormatterModel {
       }, '');
   };
 
-  static formatIntegerString = ({ rawValue = '', allowNegative = false }): string => {
+  static formatIntegerString = ({ allowNegative = false, rawValue = '' }): string => {
     let newValue = allowNegative
       ? GlobalModel.removeNonDigitFromNegativeString(rawValue)
       : GlobalModel.removeNonDigitFromString(rawValue);
@@ -50,8 +50,8 @@ export class FormatterModel {
   };
 
   static formatNumberToAmount = ({
-    value,
-    setValue
+    setValue,
+    value
   }: {
     value: string;
     setValue?: (newValue: string) => void;
@@ -92,7 +92,7 @@ export class FormatterModel {
   static removeFirstCharZeroFormatter: Formatter<string> = ({ newValue }) =>
     newValue[0] === '0' ? newValue.substring(1) : newValue;
 
-  static stringToAmountFormatter = ({ newValue: rawValue = '', allowNegative = false }): string => {
+  static stringToAmountFormatter = ({ allowNegative = false, newValue: rawValue = '' }): string => {
     let newValue = rawValue;
     const indexOfFirstDot = rawValue.indexOf('.');
 
@@ -101,7 +101,7 @@ export class FormatterModel {
       let decimalString = rawValue.substring(indexOfFirstDot + 1);
 
       integerString = allowNegative
-        ? FormatterModel.formatIntegerString({ rawValue: integerString, allowNegative: true })
+        ? FormatterModel.formatIntegerString({ allowNegative: true, rawValue: integerString })
         : FormatterModel.formatIntegerString({ rawValue: integerString });
       decimalString = GlobalModel.removeNonDigitFromString(decimalString);
       decimalString = decimalString.substring(0, 2);
@@ -115,7 +115,7 @@ export class FormatterModel {
       }
     } else {
       newValue = allowNegative
-        ? FormatterModel.formatIntegerString({ rawValue: newValue, allowNegative: true })
+        ? FormatterModel.formatIntegerString({ allowNegative: true, rawValue: newValue })
         : FormatterModel.formatIntegerString({ rawValue: newValue });
     }
 
@@ -125,7 +125,7 @@ export class FormatterModel {
   static stringToNegativeAmountFormatter: Formatter<string> = ({
     newValue: rawValue = ''
   }): string => {
-    return FormatterModel.stringToAmountFormatter({ newValue: rawValue, allowNegative: true });
+    return FormatterModel.stringToAmountFormatter({ allowNegative: true, newValue: rawValue });
   };
 
   static stringToPositiveAmountFormatter: Formatter<string> = ({

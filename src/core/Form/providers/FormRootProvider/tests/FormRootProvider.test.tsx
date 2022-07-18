@@ -1,10 +1,9 @@
 import { FC, FocusEventHandler, MutableRefObject, useEffect } from 'react';
 
-import { ShowHide, testRender } from '@services/utils';
-
 import { FormObject, FormRoot } from '@core/Form/components';
 import { useField, useForm } from '@core/Form/hooks';
-import { Formatter, DependencyExtractor, Validator } from '@core/Form/types';
+import { DependencyExtractor, Formatter, Validator } from '@core/Form/types';
+import { ShowHide, testRender } from '@services/utils';
 
 import { FormRootProvider, useFormRoot } from '../FormRootProvider';
 
@@ -162,8 +161,8 @@ describe('FormRootProvider and useFormRoot', () => {
     const errors = JSON.parse((await findByDataTest('errors')).textContent || '');
 
     expect(errors).toEqual({
-      name: [{ text: 'requiredField' }],
-      'address.street.name': [{ text: 'requiredField' }]
+      'address.street.name': [{ text: 'requiredField' }],
+      name: [{ text: 'requiredField' }]
     });
   });
 
@@ -191,8 +190,8 @@ describe('FormRootProvider and useFormRoot', () => {
     let errors = JSON.parse((await findByDataTest('errors')).textContent || '');
 
     expect(errors).toEqual({
-      name: [{ text: 'requiredField' }],
-      'address.street.name': [{ text: 'requiredField' }]
+      'address.street.name': [{ text: 'requiredField' }],
+      name: [{ text: 'requiredField' }]
     });
 
     rerender(<Component show={false} />);
@@ -230,8 +229,8 @@ describe('FormRootProvider and useFormRoot', () => {
     let errors = JSON.parse((await (await findByDataTest('errors')).textContent) || '');
 
     expect(errors).toEqual({
-      name: [{ text: 'requiredField' }],
-      'address.street.name': [{ text: 'requiredField' }]
+      'address.street.name': [{ text: 'requiredField' }],
+      name: [{ text: 'requiredField' }]
     });
 
     rerender(<Component show={false} />);

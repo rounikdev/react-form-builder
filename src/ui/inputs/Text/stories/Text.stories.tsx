@@ -1,11 +1,11 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { Text as TextInput } from '../Text';
 
 export default {
   component: TextInput,
-  title: 'Components/inputs/Text',
-  parameters: { actions: { argTypesRegex: null } }
+  parameters: { actions: { argTypesRegex: null } },
+  title: 'Components/inputs/Text'
 } as ComponentMeta<typeof TextInput>;
 
 const Template: ComponentStory<typeof TextInput> = (args): JSX.Element => (
@@ -27,7 +27,9 @@ Text.args = {
   label: 'Text Label',
   name: 'text',
   onBlurSideEffect: ({ setValue }) => {
-    setValue && setValue('90');
+    if (setValue) {
+      setValue('90');
+    }
 
     return '90';
   },

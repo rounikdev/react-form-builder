@@ -1,12 +1,13 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { FormatterModel, ValidatorModel } from '@services';
+
 import { Text as TextInput } from '../Text';
 
 export default {
   component: TextInput,
-  title: 'Components/inputs/Text',
-  parameters: { actions: { argTypesRegex: null } }
+  parameters: { actions: { argTypesRegex: null } },
+  title: 'Components/inputs/Text'
 } as ComponentMeta<typeof TextInput>;
 
 const Template: ComponentStory<typeof TextInput> = (args): JSX.Element => (

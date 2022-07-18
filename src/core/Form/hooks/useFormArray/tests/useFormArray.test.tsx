@@ -1,5 +1,5 @@
-import { FC, ReactNode } from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
+import { FC, ReactNode } from 'react';
 
 import { useMount } from '@rounik/react-custom-hooks';
 
@@ -124,11 +124,11 @@ describe('useFormArray', () => {
     window.requestAnimationFrame = setTimeout;
 
     const { result } = renderHook(() => useFormArray({ factory, fieldId: 'users', initialValue }), {
-      wrapper: WrapperWithReset,
       initialProps: {
         resetKey: 'users',
         resetState: { users: initialValue }
-      }
+      },
+      wrapper: WrapperWithReset
     });
 
     act(() => {
@@ -156,11 +156,11 @@ describe('useFormArray', () => {
     window.requestAnimationFrame = setTimeout;
 
     const { result } = renderHook(() => useFormArray({ factory, fieldId: 'users', initialValue }), {
-      wrapper: WrapperWithReset,
       initialProps: {
         resetKey: ROOT_RESET_RECORD_KEY,
         resetState: { users: initialValue }
-      }
+      },
+      wrapper: WrapperWithReset
     });
 
     act(() => {
@@ -188,11 +188,11 @@ describe('useFormArray', () => {
     window.requestAnimationFrame = setTimeout;
 
     const { result } = renderHook(() => useFormArray({ factory, fieldId: 'users', initialValue }), {
-      wrapper: WrapperWithReset,
       initialProps: {
         resetKey: INITIAL_RESET_RECORD_KEY,
         resetState: { users: initialValue }
-      }
+      },
+      wrapper: WrapperWithReset
     });
 
     act(() => {
@@ -220,11 +220,11 @@ describe('useFormArray', () => {
     window.requestAnimationFrame = setTimeout;
 
     const { result } = renderHook(() => useFormArray({ factory, fieldId: 'users', initialValue }), {
-      wrapper: WrapperWithReset,
       initialProps: {
         resetKey: 'phones',
         resetState: { users: initialValue }
-      }
+      },
+      wrapper: WrapperWithReset
     });
 
     act(() => {

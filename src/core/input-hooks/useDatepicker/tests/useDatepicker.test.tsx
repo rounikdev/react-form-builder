@@ -1,5 +1,5 @@
-import { ChangeEvent, FC, FocusEvent, MouseEvent } from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
+import { ChangeEvent, FC, FocusEvent, MouseEvent } from 'react';
 
 import { useMount } from '@rounik/react-custom-hooks';
 
@@ -66,28 +66,28 @@ describe('useDatepicker', () => {
   it('helpers - canBeSelected', () => {
     const tests = [
       // No maxDate or minDate:
-      { date: today, maxDate: undefined, minDate: undefined, expected: true },
-      { date: null, maxDate: undefined, minDate: undefined, expected: false },
+      { date: today, expected: true, maxDate: undefined, minDate: undefined },
+      { date: null, expected: false, maxDate: undefined, minDate: undefined },
       // With minDate:
-      { date: today, maxDate: undefined, minDate: afterHour, expected: false },
-      { date: today, maxDate: undefined, minDate: tomorrow, expected: false },
-      { date: today, maxDate: undefined, minDate: afterMonth, expected: false },
-      { date: today, maxDate: undefined, minDate: afterYear, expected: false },
-      { date: tomorrow, maxDate: undefined, minDate: today, expected: true },
+      { date: today, expected: false, maxDate: undefined, minDate: afterHour },
+      { date: today, expected: false, maxDate: undefined, minDate: tomorrow },
+      { date: today, expected: false, maxDate: undefined, minDate: afterMonth },
+      { date: today, expected: false, maxDate: undefined, minDate: afterYear },
+      { date: tomorrow, expected: true, maxDate: undefined, minDate: today },
       // With maxDate:
-      { date: afterHour, maxDate: today, minDate: undefined, expected: false },
-      { date: tomorrow, maxDate: today, minDate: undefined, expected: false },
-      { date: afterMonth, maxDate: today, minDate: undefined, expected: false },
-      { date: afterYear, maxDate: today, minDate: undefined, expected: false },
-      { date: today, maxDate: afterHour, minDate: undefined, expected: true },
+      { date: afterHour, expected: false, maxDate: today, minDate: undefined },
+      { date: tomorrow, expected: false, maxDate: today, minDate: undefined },
+      { date: afterMonth, expected: false, maxDate: today, minDate: undefined },
+      { date: afterYear, expected: false, maxDate: today, minDate: undefined },
+      { date: today, expected: true, maxDate: afterHour, minDate: undefined },
       // With maxDate and minDate:
-      { date: afterHour, maxDate: tomorrow, minDate: today, expected: true },
-      { date: tomorrow, maxDate: tomorrow, minDate: today, expected: true },
-      { date: tomorrow, maxDate: afterMonth, minDate: today, expected: true },
-      { date: today, maxDate: afterMonth, minDate: tomorrow, expected: false }
+      { date: afterHour, expected: true, maxDate: tomorrow, minDate: today },
+      { date: tomorrow, expected: true, maxDate: tomorrow, minDate: today },
+      { date: tomorrow, expected: true, maxDate: afterMonth, minDate: today },
+      { date: today, expected: false, maxDate: afterMonth, minDate: tomorrow }
     ];
 
-    tests.forEach(({ date, maxDate, minDate, expected }) => {
+    tests.forEach(({ date, expected, maxDate, minDate }) => {
       expect(canBeSelected({ date, maxDate, minDate })).toBe(expected);
     });
   });

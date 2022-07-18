@@ -195,12 +195,12 @@ describe('useRootForm', () => {
 
     act(() => {
       result.current.registerFieldErrors({
-        fieldId,
         fieldErrors: [
           {
             text: error
           }
-        ]
+        ],
+        fieldId
       });
     });
 
@@ -208,8 +208,8 @@ describe('useRootForm', () => {
 
     act(() => {
       result.current.registerFieldErrors({
-        fieldId,
-        fieldErrors: []
+        fieldErrors: [],
+        fieldId
       });
     });
 

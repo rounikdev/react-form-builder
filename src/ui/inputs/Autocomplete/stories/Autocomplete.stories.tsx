@@ -5,18 +5,18 @@ import { FormRoot } from '@core';
 import { Autocomplete } from '../Autocomplete';
 import { Option } from '../components';
 import { AutocompleteProps } from '../types';
-
 import { Fruit, fruitsValidator, options } from './data';
 
 import styles from './Autocomplete.stories.scss';
 
 export default {
-  title: 'Components/inputs/Autocomplete',
-  component: Autocomplete
+  component: Autocomplete,
+  title: 'Components/inputs/Autocomplete'
 } as ComponentMeta<typeof Autocomplete>;
 
 const Template =
   <T,>(): Story<AutocompleteProps<T>> =>
+  // eslint-disable-next-line react/display-name
   (args) =>
     (
       <FormRoot dataTest="form-with-autocomplete">

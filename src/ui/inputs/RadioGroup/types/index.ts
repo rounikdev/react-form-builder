@@ -1,6 +1,6 @@
 import {
-  Field,
   ExtractorFromSingleOption,
+  Field,
   RadioGroupLabel,
   RadioGroupOption,
   RadioGroupValue

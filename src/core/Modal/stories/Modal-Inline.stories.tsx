@@ -1,13 +1,11 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { FormObject, FormRoot, useForm } from '@core/Form';
-
-import { Text as Input } from '@ui';
-
+import { ModalBuilder } from '@core/Modal/components';
 import { useModal } from '@core/Modal/context';
 import Modal from '@core/Modal/Inline';
 import { Provider } from '@core/Modal/provider';
-import { ModalBuilder } from '@core/Modal/components';
+import { Text as Input } from '@ui';
 
 import { Backdrop, BackdropAnimate, Container, ContainerAnimate } from './components';
 
@@ -16,7 +14,7 @@ export default {
   title: 'Components/Modal-Inline/Basic'
 } as ComponentMeta<typeof ModalBuilder>;
 
-const Step_3_FormFields = () => {
+const Step3FormFields = () => {
   const { methods } = useForm();
 
   return (
@@ -78,11 +76,11 @@ const Playground = (): JSX.Element => {
             <button
               onClick={() => {
                 showModalById({
-                  id: 'modal-2',
                   animate: true,
                   Backdrop: BackdropAnimate,
                   Container: ContainerAnimate,
                   forceShow: true,
+                  id: 'modal-2',
                   inline: true
                 });
               }}
@@ -97,10 +95,10 @@ const Playground = (): JSX.Element => {
         <button
           onClick={() => {
             showModalById({
-              id: 'modal-2',
               animate: true,
               Backdrop: BackdropAnimate,
               Container: ContainerAnimate,
+              id: 'modal-2',
               inline: true
             });
           }}
@@ -116,8 +114,8 @@ const Playground = (): JSX.Element => {
             <button
               onClick={() => {
                 showModalById({
-                  id: 'modal-3',
                   forceShow: true,
+                  id: 'modal-3',
                   inline: true
                 });
               }}
@@ -144,7 +142,7 @@ const Playground = (): JSX.Element => {
           <div style={{ padding: '4rem', textAlign: 'center' }}>
             <span style={{ fontSize: '2rem', fontWeight: 'bold' }}>Modal 3</span>
             <FormObject name="modal 3 form">
-              <Step_3_FormFields />
+              <Step3FormFields />
             </FormObject>
           </div>
         </Modal>

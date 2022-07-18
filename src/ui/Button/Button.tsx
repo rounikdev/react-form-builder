@@ -34,3 +34,5 @@ export const Button: FC<ButtonProps> = memo(
     );
   }
 );
+
+Button.displayName = 'Button';

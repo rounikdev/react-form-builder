@@ -18,8 +18,8 @@ export const flattenFormArrayState = (state: FormState): FormStateEntry => {
   return Object.entries(state).reduce(
     (obj, [, current]) => {
       return {
-        value: [...obj.value, current.value],
-        valid: obj.valid && current.valid
+        valid: obj.valid && current.valid,
+        value: [...obj.value, current.value]
       };
     },
     { valid: true as boolean, value: [] as unknown[] }

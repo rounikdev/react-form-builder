@@ -6,8 +6,8 @@ export type User = { firstName: string; id: string; lastName: string; phones: Ph
 
 export const initialUsers: User[] = [
   {
-    id: '1',
     firstName: 'Maria',
+    id: '1',
     lastName: 'Ignatova',
     phones: [
       { id: '1', value: '243567483' },
@@ -15,8 +15,8 @@ export const initialUsers: User[] = [
     ]
   },
   {
-    id: '2',
     firstName: 'Ivan',
+    id: '2',
     lastName: 'Ivanov',
     phones: [{ id: '1', value: '363567473' }]
   }

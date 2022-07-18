@@ -2,15 +2,18 @@
   position: absolute;
   right: 0;
   z-index: 1;
+
   display: flex;
   flex-direction: column;
   width: 32rem;
   height: 37rem;
   padding: var(--offset-small);
   overflow: hidden;
+
   background-color: var(--color-background);
   border: 0.1rem solid var(--color-border);
   border-radius: var(--border-radius);
+
   will-change: transform;
 
   &:focus {
@@ -19,25 +22,28 @@
 
   .ControlGroup {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
 
     .Month,
     .Year {
-      font-size: var(--offset-medium);
       font-weight: bold;
+      font-size: var(--offset-medium);
     }
 
     button {
       height: 100%;
-      font-size: 1.4rem;
+
       color: var(--color-border);
+      font-size: 1.4rem;
+
       background-color: transparent;
       border: none;
       cursor: pointer;
 
       &:focus {
         color: var(--color-background-focus);
+
         outline: none;
       }
     }
@@ -53,13 +59,14 @@
   .Weekday {
     display: inline-block;
     width: calc(100% / 7);
+
     font-size: var(--font-medium);
     text-align: center;
   }
 
   .WeekList {
-    flex: 1;
     display: flex;
+    flex: 1;
     flex-direction: column;
     justify-content: flex-start;
     width: 100%;
@@ -67,26 +74,28 @@
 }
 
 .FromLeftEnter {
-  animation: fromLeftEnter var(--transition) ease-in-out;
+  animation: from-left-enter var(--transition) ease-in-out;
 }
 
 .FromLeftExit {
-  animation: fromLeftExit var(--transition) ease-in-out;
+  animation: from-left-exit var(--transition) ease-in-out;
 }
 
-@keyframes fromLeftEnter {
+@keyframes from-left-enter {
   0% {
     transform: translateX(-100%);
   }
+
   100% {
     transform: translateX(0);
   }
 }
 
-@keyframes fromLeftExit {
+@keyframes from-left-exit {
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(100%);
   }
@@ -100,19 +109,21 @@
   animation: fromRightExit var(--transition) ease-in-out;
 }
 
-@keyframes fromRightEnter {
+@keyframes from-right-enter {
   0% {
     transform: translateX(100%);
   }
+
   100% {
     transform: translateX(0);
   }
 }
 
-@keyframes fromRightExit {
+@keyframes from-right-exit {
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-100%);
   }

@@ -2,22 +2,21 @@ import { Dictionaries } from '../types';
 
 export const dictionaries: Dictionaries = {
   BG: {
-    id: 'BG',
     data: {
       from: 'От',
       months: {
-        january: 'януари',
-        february: 'февруари',
-        march: 'март',
         april: 'април',
-        may: 'май',
-        june: 'юни',
-        july: 'юли',
         august: 'август',
-        september: 'септември',
-        october: 'октомври',
+        december: 'декември',
+        february: 'февруари',
+        january: 'януари',
+        july: 'юли',
+        june: 'юни',
+        march: 'март',
+        may: 'май',
         november: 'ноември',
-        december: 'декември'
+        october: 'октомври',
+        september: 'септември'
       },
       myNameIs: 'Казвам се {#1}.',
       name: 'Име',
@@ -25,33 +24,34 @@ export const dictionaries: Dictionaries = {
       requiredField: 'Задължително поле',
       to: 'До',
       weekdays: {
-        mo: 'пн',
-        tu: 'вт',
-        we: 'ср',
-        th: 'чт',
         fr: 'пт',
+        mo: 'пн',
         sa: 'сб',
-        su: 'нд'
+        su: 'нд',
+        th: 'чт',
+        tu: 'вт',
+        we: 'ср'
       }
     },
+    id: 'BG',
     label: 'Български'
   },
   EN: {
     data: {
       from: 'From',
       months: {
-        january: 'January',
-        february: 'February',
-        march: 'March',
         april: 'April',
-        may: 'May',
-        june: 'June',
-        july: 'July',
         august: 'August',
-        september: 'September',
-        october: 'October',
+        december: 'December',
+        february: 'February',
+        january: 'January',
+        july: 'July',
+        june: 'June',
+        march: 'March',
+        may: 'May',
         november: 'November',
-        december: 'December'
+        october: 'October',
+        september: 'September'
       },
       myNameIs: 'My name is {#1}.',
       name: 'Name',
@@ -59,13 +59,13 @@ export const dictionaries: Dictionaries = {
       requiredField: 'Required field',
       to: 'To',
       weekdays: {
-        mo: 'Mon',
-        tu: 'Tue',
-        we: 'Wed',
-        th: 'Thu',
         fr: 'Fri',
+        mo: 'Mon',
         sa: 'Sat',
-        su: 'Sun'
+        su: 'Sun',
+        th: 'Thu',
+        tu: 'Tue',
+        we: 'Wed'
       }
     },
     id: 'EN',

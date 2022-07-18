@@ -1,8 +1,8 @@
 import { mount } from '@cypress/react';
 import { composeStory } from '@storybook/testing-react';
 
-import Meta, { FormDemo as FormDemoStory } from '../stories/Form.stories';
 import { initialUsers } from '../stories/data';
+import Meta, { FormDemo as FormDemoStory } from '../stories/Form.stories';
 
 const FormDemo = composeStory(FormDemoStory, Meta);
 

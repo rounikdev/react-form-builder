@@ -17,16 +17,16 @@ export const TranslationProvider: FC<TranslationProviderProps> = memo(
       dictionaries
     });
 
-    const setLanguage = useCallback((languageId: string) => {
+    const setLanguage = useCallback((id: string) => {
       dispatch({
-        payload: languageId,
+        payload: id,
         type: TranslationActions.SET_LANGUAGE
       });
     }, []);
 
-    const updateDictionaries = useCallback((dictionaries: Dictionaries) => {
+    const updateDictionaries = useCallback((newDictionaries: Dictionaries) => {
       dispatch({
-        payload: dictionaries,
+        payload: newDictionaries,
         type: TranslationActions.UPDATE_DICTIONARIES
       });
     }, []);

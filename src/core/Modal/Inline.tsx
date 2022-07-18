@@ -3,16 +3,15 @@ import ReactDOM from 'react-dom';
 
 import { useUpdateOnly } from '@rounik/react-custom-hooks';
 
-import { ModalInlineProps } from './types';
-
-import { useModal } from './context';
 import { ModalBuilder } from './components';
+import { useModal } from './context';
+import { ModalInlineProps } from './types';
 
 export const Inline: FC<ModalInlineProps> = ({ alwaysRender, children, id }) => {
   const {
+    actions: { setModal },
     modalsToShow,
-    orderList,
-    actions: { setModal }
+    orderList
   } = useModal();
 
   const modalEl = document.querySelector('#modal') as HTMLElement;
@@ -23,8 +22,8 @@ export const Inline: FC<ModalInlineProps> = ({ alwaysRender, children, id }) => 
 
   useUpdateOnly(() => {
     if (orderList.length) {
-      orderList.forEach(({ id }) => {
-        setModal({ id });
+      orderList.forEach(({ id: elementId }) => {
+        setModal({ id: elementId });
       });
     }
   }, [orderList]);

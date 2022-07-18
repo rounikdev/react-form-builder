@@ -5,6 +5,7 @@
   &,
   * {
     box-sizing: border-box;
+
     outline: none;
 
     &:not(.Input) {
@@ -16,6 +17,7 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: calc(var(--offset-small) / 2);
+
     color: var(--color-label);
     font-size: var(--font-small);
 
@@ -25,18 +27,22 @@
   }
 
   .InputWrap {
-    width: 100%;
     position: relative;
+
+    width: 100%;
     overflow: hidden;
   }
 
   .Input {
     width: 100%;
     padding: var(--offset-medium);
+
     color: var(--color-font);
     font-size: var(--font-medium);
+
     border: var(--border-width) solid var(--color-border);
     border-radius: var(--border-radius);
+
     transition: all var(--transition) ease-in-out;
 
     &:focus {
@@ -50,6 +56,7 @@
 
     &:disabled {
       border: var(--border-width) dashed var(--color-border-disabled);
+      /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
       cursor: not-allowed;
     }
 

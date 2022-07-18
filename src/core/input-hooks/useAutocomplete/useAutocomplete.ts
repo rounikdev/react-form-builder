@@ -19,11 +19,11 @@ const initialContext: AutocompleteContext = {
     // default function
   },
   focused: '',
+  inputRef: { current: null },
   multi: false,
   open: () => {
     // default function
   },
-  inputRef: { current: null },
   opened: false,
   select: () => {
     // default function
@@ -231,9 +231,9 @@ export const useAutocomplete = <T>({
     return {
       close,
       focused: state.focused,
+      inputRef: fieldRef as RefObject<HTMLInputElement>,
       multi,
       open,
-      inputRef: fieldRef as RefObject<HTMLInputElement>,
       opened: state.show,
       select,
       selected: state.selected

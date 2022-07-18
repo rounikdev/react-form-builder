@@ -27,7 +27,10 @@ export const useTextInput: (args: UseTextInput) => UseTextInputReturnType = ({
   const onBlurHandler = useCallback(
     (event: FocusEvent<HTMLElement, Element>) => {
       props.onBlurHandler(event);
-      onBlurSideEffect && onBlurSideEffect({ value: props.value, setValue: props.onChangeHandler });
+
+      if (onBlurSideEffect) {
+        onBlurSideEffect({ setValue: props.onChangeHandler, value: props.value });
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [onBlurSideEffect, props.onBlurHandler, props.onChangeHandler, props.value]

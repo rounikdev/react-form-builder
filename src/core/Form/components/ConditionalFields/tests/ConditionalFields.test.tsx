@@ -1,8 +1,8 @@
 import { fireEvent, waitFor } from '@testing-library/react';
 
 import { FormRoot } from '@core';
-import { Text } from '@ui';
 import { testRender } from '@services/utils';
+import { Text } from '@ui';
 
 import { ConditionalFields } from '../ConditionalFields';
 

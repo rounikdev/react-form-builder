@@ -24,6 +24,7 @@ const typesOutputFolder = `${outputFolder}/dts`;
 export default [
   // Build the package and the d.ts files:
   {
+    external: ['react', 'react-dom', 'react-router', 'react-router-dom', 'typescript'],
     input: [`${sourceRoot}/index.ts`],
     output: [
       { dir: `${outputFolder}/cjs`, format: 'cjs', sourcemap: false },
@@ -67,15 +68,14 @@ export default [
       terser(),
       typescript({
         tsconfig: 'tsconfig.build.json',
-        useTsconfigDeclarationDir: true,
         // https://github.com/ezolenko/rollup-plugin-typescript2/issues/201
-        typescript: ttypescript
+        typescript: ttypescript,
+        useTsconfigDeclarationDir: true
       }),
       visualizer({
         filename: 'bundle-analysis.html'
       })
-    ],
-    external: ['react', 'react-dom', 'react-router', 'react-router-dom', 'typescript']
+    ]
   },
   // Combine all d.ts files into
   // a single `index.d.ts` file:

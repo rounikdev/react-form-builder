@@ -1,6 +1,6 @@
-import { FC, useMemo, useState } from 'react';
 import { waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { FC, useMemo, useState } from 'react';
 
 import { testRender } from '@services/utils';
 
@@ -9,89 +9,89 @@ import { GlobalModel } from '../GlobalModel';
 describe('GlobalModel', () => {
   it('isNotEmptyArray', () => {
     const test = [
-      { input: '', expected: false },
+      { expected: false, input: '' },
       {
-        input: 10,
-        expected: false
+        expected: false,
+        input: 10
       },
       {
-        input: false,
-        expected: false
+        expected: false,
+        input: false
       },
       {
-        input: Symbol(),
-        expected: false
+        expected: false,
+        input: Symbol()
       },
       {
-        input: {},
-        expected: false
+        expected: false,
+        input: {}
       },
       {
-        input: new Map(),
-        expected: false
+        expected: false,
+        input: new Map()
       },
       {
-        input: new Set(),
-        expected: false
+        expected: false,
+        input: new Set()
       },
       {
-        input: [],
-        expected: false
+        expected: false,
+        input: []
       },
       {
-        input: ['', 10],
-        expected: true
+        expected: true,
+        input: ['', 10]
       }
     ];
 
-    test.forEach(({ input, expected }) =>
+    test.forEach(({ expected, input }) =>
       expect(GlobalModel.isNotEmptyArray(input)).toBe(expected)
     );
   });
 
   it('isString', () => {
     const test = [
-      { input: '', expected: true },
-      { input: 'abc', expected: true },
+      { expected: true, input: '' },
+      { expected: true, input: 'abc' },
       {
-        input: new String(),
-        expected: true
+        expected: true,
+        input: new String()
       },
       {
-        input: 10,
-        expected: false
+        expected: false,
+        input: 10
       },
       {
-        input: true,
-        expected: false
+        expected: false,
+        input: true
       },
       {
-        input: Symbol(),
-        expected: false
+        expected: false,
+        input: Symbol()
       },
       {
-        input: {},
-        expected: false
+        expected: false,
+        input: {}
       },
       {
-        input: new Map(),
-        expected: false
+        expected: false,
+        input: new Map()
       },
       {
-        input: new Set(),
-        expected: false
+        expected: false,
+        input: new Set()
       },
       {
-        input: [],
-        expected: false
+        expected: false,
+        input: []
       },
       {
-        input: new Array('abc'),
-        expected: false
+        expected: false,
+        input: new Array('abc')
       }
     ];
 
-    test.forEach(({ input, expected }) => expect(GlobalModel.isString(input)).toBe(expected));
+    test.forEach(({ expected, input }) => expect(GlobalModel.isString(input)).toBe(expected));
   });
 
   it('deepClone', () => {
@@ -184,9 +184,12 @@ describe('GlobalModel', () => {
         () =>
           GlobalModel.debounceRAF(
             onChange
-              ? (value) => {
-                  onChange && onChange(value);
-                  setValue(value);
+              ? (newValue) => {
+                  if (onChange) {
+                    onChange(newValue);
+                  }
+
+                  setValue(newValue);
                 }
               : // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (null as any),
@@ -266,18 +269,18 @@ describe('GlobalModel', () => {
 
     const tests = [
       {
-        goForward: true,
         expected: 'ab | cd | ef',
+        goForward: true,
         value: 'abcdef'
       },
       {
-        goForward: false,
         expected: 'ab | cd | e',
+        goForward: false,
         value: 'abcde'
       }
     ];
 
-    tests.forEach(({ goForward, expected, value }) =>
+    tests.forEach(({ expected, goForward, value }) =>
       expect(GlobalModel.valueSplitter({ goForward, pattern, patternDelimiter, value })).toBe(
         expected
       )

@@ -27,20 +27,20 @@ export const FormRoot: FC<FormRootProps> = memo(
       focusField,
       forceValidate,
       forceValidateFlag,
-      isEdit,
       getFieldId,
+      isEdit,
       pristine,
       registerFieldErrors,
       reset,
-      resetRecords,
       resetFlag,
+      resetRecords,
       save,
       scrolledField,
       scrollFieldIntoView,
       setDirty,
       setFieldValue,
-      setResetRecords,
-      setResetFlag
+      setResetFlag,
+      setResetRecords
     } = useRootForm({
       formData: value
     });
@@ -116,8 +116,8 @@ export const FormRoot: FC<FormRootProps> = memo(
         scrollFieldIntoView,
         setDirty,
         setFieldValue,
-        setResetRecords,
-        setResetFlag
+        setResetFlag,
+        setResetRecords
       }),
       // eslint-disable-next-line react-hooks/exhaustive-deps
       []

@@ -2,24 +2,26 @@
   position: fixed;
   top: 0;
   left: 0;
+
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(rgba(241, 241, 144, 0.055), 0.4);
+
+  background-color: rgb(241 241 144 / 10%);
 }
 
 .EnterAnimation {
   transition: opacity 300ms;
-  animation: growOpacity 300ms;
+  animation: grow-opacity 300ms;
 }
 
 .ExitAnimation {
-  animation: shrinkOpacity 300ms;
+  animation: shrink-opacity 300ms;
 }
 
-@keyframes growOpacity {
+@keyframes grow-opacity {
   from {
     opacity: 0;
   }
@@ -29,7 +31,7 @@
   }
 }
 
-@keyframes shrinkOpacity {
+@keyframes shrink-opacity {
   from {
     opacity: 1;
   }

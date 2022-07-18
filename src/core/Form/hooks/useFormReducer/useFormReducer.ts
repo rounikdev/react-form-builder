@@ -19,7 +19,7 @@ export const useFormReducer = ({
 }) => {
   const [context, dispatch] = useReducer(reducer, initialFormContext);
 
-  const { value, valid } = useMemo(() => {
+  const { valid, value } = useMemo(() => {
     return flattenState(context.state);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context.state]);

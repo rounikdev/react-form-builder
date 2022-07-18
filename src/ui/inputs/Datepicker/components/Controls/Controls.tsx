@@ -2,7 +2,6 @@ import { FC, memo, Ref } from 'react';
 
 import { useDatepickerContext, useTranslation } from '@core';
 import { Testable } from '@types';
-
 import { IconChevronLeft, IconChevronRight } from '@ui/icons';
 import { useTabTrap } from '@ui/TabTrap';
 

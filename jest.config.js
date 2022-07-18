@@ -14,17 +14,16 @@ module.exports = {
     '!src/ui/**/*.*',
     '!src/styles/**/*.*'
   ],
+  coverageReporters: ['clover', 'cobertura', 'json', 'json-summary', 'lcov', 'text'],
   coverageThreshold: {
     global: {
-      branches: 95,
+      branches: 90,
       functions: 85,
       lines: 95,
       statements: 95
     }
   },
-  coverageReporters: ['clover', 'cobertura', 'json', 'json-summary', 'lcov', 'text'],
   globalSetup: './jest-global-setup.js',
-  reporters: ['default'],
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
     '^@core(.*)$': '<rootDir>/src/core$1',
@@ -33,6 +32,7 @@ module.exports = {
     '^@types(.*)$': '<rootDir>/src/types$1',
     '^@ui(.*)$': '<rootDir>/src/ui$1'
   },
+  reporters: ['default'],
   setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
   testEnvironment: 'jsdom',
   testPathIgnorePatterns: ['instrumented'],

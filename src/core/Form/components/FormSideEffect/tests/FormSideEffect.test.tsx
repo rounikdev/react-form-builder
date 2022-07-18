@@ -1,9 +1,8 @@
-import { FC } from 'react';
 import userEvent from '@testing-library/user-event';
-
-import { TestTextInput, testRender } from '@services/utils';
+import { FC } from 'react';
 
 import { FormRoot } from '@core/Form/components';
+import { testRender, TestTextInput } from '@services/utils';
 
 import { FormSideEffect } from '../FormSideEffect';
 

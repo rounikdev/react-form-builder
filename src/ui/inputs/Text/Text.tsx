@@ -3,7 +3,6 @@ import { FC, memo, MutableRefObject, useMemo } from 'react';
 import { useClass } from '@rounik/react-custom-hooks';
 
 import { useTextInput, useTranslation } from '@core';
-
 import { ErrorField } from '@ui/ErrorField/ErrorField';
 import { LabelField } from '@ui/LabelField/LabelField';
 import { Mask } from '@ui/Mask/Mask';

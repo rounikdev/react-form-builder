@@ -1,10 +1,11 @@
 .ControlGroup {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 
   .Label {
     position: absolute;
+
     width: 0;
     height: 0;
     overflow: hidden;
@@ -12,25 +13,29 @@
 
   .Month,
   .Year {
-    font-size: var(--offset-medium);
     font-weight: bold;
+    font-size: var(--offset-medium);
   }
 
   button {
     height: 100%;
-    font-size: 1.4rem;
+
     color: var(--color-border);
+    font-size: 1.4rem;
+
     background-color: transparent;
     border: none;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    transition: all var(--transition) ease-in-out;
     cursor: pointer;
+
+    transition: all var(--transition) ease-in-out;
 
     &:focus {
       color: var(--color-background-focus);
-      box-shadow: var(--box-shadow-active);
+
       outline: none;
+      box-shadow: var(--box-shadow-active);
     }
   }
 }

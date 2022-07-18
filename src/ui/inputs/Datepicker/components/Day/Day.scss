@@ -1,18 +1,22 @@
 .Container {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: calc(100% / 7);
   height: 100%;
-  line-height: var(--font-medium);
+
   font-size: var(--font-medium);
+  line-height: var(--font-medium);
   text-align: center;
+
   box-shadow: var(--box-shadow);
-  transition: all var(--transition) ease-in-out;
   cursor: pointer;
+
+  transition: all var(--transition) ease-in-out;
 
   &.Today {
     color: var(--color-background-focus);
+
     background-color: var(--color-selected-background);
     border-radius: var(--border-radius);
   }
@@ -27,32 +31,38 @@
 
   &.Selected {
     color: var(--color-background-focus);
+
     background-color: var(--color-success);
     border-radius: var(--border-radius);
   }
 
   &.NotSelectable {
-    opacity: 0.3;
     color: var(--color-error);
+
+    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
     cursor: not-allowed;
+    opacity: 0.3;
   }
 
   &.Focused,
   &:hover {
-    box-shadow: var(--box-shadow-active);
     border-radius: var(--border-radius);
     outline: none;
+    box-shadow: var(--box-shadow-active);
   }
 }
 
 .Button {
-  appearance: none;
   width: 100%;
   height: 100%;
+
   color: inherit;
   font-size: inherit;
+
   background-color: inherit;
   border: none;
   outline: none;
   cursor: inherit;
+
+  appearance: none;
 }

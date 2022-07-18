@@ -1,13 +1,12 @@
 /* eslint-disable testing-library/prefer-screen-queries */
-import { FC } from 'react';
 import { fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { FC } from 'react';
 
 import { Modal } from '@core';
-import { appendModalToRoot, testRender } from '@services/utils';
-
-import { ModalElement } from '@core/Modal/types';
 import { Backdrop, Container } from '@core/Modal/stories/components';
+import { ModalElement } from '@core/Modal/types';
+import { appendModalToRoot, testRender } from '@services/utils';
 
 const StateReader: FC = () => {
   const { modalsToShow, orderList } = Modal.useModal();
@@ -63,11 +62,11 @@ describe('Modal actions', () => {
 
     fireEvent.click(buttonShowModalById, {
       target: {
-        value: JSON.stringify({ id: 'test_1', forceShow: true })
+        value: JSON.stringify({ forceShow: true, id: 'test_1' })
       }
     });
     expect(
-      getByText(JSON.stringify({ test_1: { id: 'test_1', forceShow: true } }))
+      getByText(JSON.stringify({ test_1: { forceShow: true, id: 'test_1' } }))
     ).toBeInTheDocument();
 
     fireEvent.click(buttonHideModalById, {
@@ -79,11 +78,11 @@ describe('Modal actions', () => {
 
     fireEvent.click(buttonShowModalById, {
       target: {
-        value: JSON.stringify({ id: 'test_2', clearPreceding: true })
+        value: JSON.stringify({ clearPreceding: true, id: 'test_2' })
       }
     });
     expect(
-      getByText(JSON.stringify({ test_2: { id: 'test_2', clearPreceding: true } }))
+      getByText(JSON.stringify({ test_2: { clearPreceding: true, id: 'test_2' } }))
     ).toBeInTheDocument();
   });
 

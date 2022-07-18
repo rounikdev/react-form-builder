@@ -8,8 +8,7 @@
   display: flex;
 
   &.Row {
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
     gap: var(--offset-large);
   }
 
@@ -24,9 +23,12 @@
     .Input {
       position: absolute;
       z-index: 1;
+
       opacity: 0;
-      user-select: none;
+
       transition: all var(--transition) ease-in-out;
+
+      user-select: none;
 
       &:checked + .Label .LabelCircle::after {
         opacity: 1;
@@ -38,6 +40,7 @@
       }
 
       &:disabled + .Label {
+        /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
         cursor: not-allowed;
 
         .LabelCircle {
@@ -51,11 +54,14 @@
       display: flex;
       gap: var(--offset-small);
       overflow: hidden;
+
       color: var(--color-label);
       font-size: var(--font-small);
       text-overflow: ellipsis;
-      transition: all var(--transition) ease-in-out;
+
       cursor: pointer;
+
+      transition: all var(--transition) ease-in-out;
 
       .LabelText {
         flex: 1;
@@ -64,23 +70,28 @@
 
       .LabelCircle {
         display: flex;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
         width: var(--offset-large);
         height: var(--offset-large);
+
         background-color: var(--color-background);
         border: var(--border-width) solid var(--color-border);
         border-radius: 50%;
+
         transition: all var(--transition) ease-in-out;
 
         &::after {
-          content: "";
           width: 65%;
           height: 65%;
-          opacity: 0;
+
           background-color: var(--color-font);
           border-radius: 50%;
+          opacity: 0;
+
           transition: all var(--transition) ease-in-out;
+
+          content: "";
         }
 
         &.Error {

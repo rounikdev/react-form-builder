@@ -1,6 +1,6 @@
 :root {
-  font-family: Roboto Condensed, sans-serif;
   font-size: 10px;
+  font-family: Arial, Helvetica, sans-serif;
 
   * {
     box-sizing: border-box;
@@ -13,14 +13,13 @@
   --color-border-focus: #1c1c1c;
   --color-border-error: #b01717;
   --color-border-disabled: #6d6d6d;
-
-  --color-input-background: #ffffff;
+  --color-input-background: #fff;
   --color-input-background-focus: #f7f7f7;
-  --color-input-background-error: #ffcccc;
+  --color-input-background-error: #fcc;
   --color-input-background-disabled: #dddbdb;
 
   // Main:
-  --color-background: #ffffff;
+  --color-background: #fff;
 
   // Color:
   --color-card-background: #f5f5f5;
@@ -30,7 +29,7 @@
   // Fonts:
   --color-font: #1c1c1c;
   --color-error: #b01717;
-  --color-label: #444444;
+  --color-label: #444;
   --color-button: #f7f7f7;
   --color-button-disabled: #050505;
   --color-success: #47a112;
@@ -38,7 +37,7 @@
 
   // Buttons: they should have box-shadow when active
   --color-button-primary-background: #525252; // color: --color-button
-  --color-button-primary-background-disabled: #999999; // color: --color-button-disabled
+  --color-button-primary-background-disabled: #999; // color: --color-button-disabled
 
   // This one goes with a border:
   --color-button-secondary-background: #d1d1d1; // color: --color-font
@@ -76,9 +75,9 @@
   --transition: 300ms;
 
   // box-shadow:
-  --box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-  --box-shadow-active: 0 0.3rem 1rem rgba(0, 0, 0, 0.3);
-  --box-shadow-inset: inset 0 0 0 0.1rem rgba(0, 0, 0, 0.7);
+  --box-shadow: 0 0 0 rgb(0 0 0 / 0%);
+  --box-shadow-active: 0 0.3rem 1rem rgb(0 0 0 / 30%);
+  --box-shadow-inset: inset 0 0 0 0.1rem rgb(0 0 0 / 70%);
 }
 
 $baseFontSize: 10px;

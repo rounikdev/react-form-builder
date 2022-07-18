@@ -2,25 +2,30 @@ $trackHeight: 6px;
 
 .Container {
   position: absolute;
+
   width: var(--offset-medium);
   height: var(--offset-medium);
+
   background-color: var(--color-selected-background);
   border-radius: var(--border-radius);
-  transform: translate(-50%, calc(-50% + $trackHeight / 2));
   box-shadow: var(--box-shadow);
-  transition: box-shadow var(--transition) ease-in-out;
+  transform: translate(-50%, calc(-50% + $trackHeight / 2));
   cursor: pointer;
+
+  transition: box-shadow var(--transition) ease-in-out;
 
   &:focus,
   &:active {
     z-index: 1;
+
     background-color: var(--color-label);
-    box-shadow: var(--box-shadow-active);
     outline: none;
+    box-shadow: var(--box-shadow-active);
 
     .Value {
       color: var(--color-button);
       font-weight: bold;
+
       background-color: var(--color-success);
     }
   }
@@ -29,7 +34,9 @@ $trackHeight: 6px;
 .Value {
   display: inline-block;
   padding: 1rem;
+
   font-size: var(--font-medium);
+
   border-radius: var(--border-radius);
   transform: translate(calc(-50% + 1rem), -150%);
 }

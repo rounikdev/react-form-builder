@@ -1,8 +1,7 @@
 import { Dispatch, FocusEventHandler, MutableRefObject, ReactNode, SetStateAction } from 'react';
 
-import { Animatable, Disableable, Stylable, Testable } from '@types';
-
 import { TranslationSubstitute } from '@core/Translation/types';
+import { Animatable, Disableable, Stylable, Testable } from '@types';
 
 export interface Field<T>
   extends Omit<UseFieldConfig<T>, 'initialValue'>,
@@ -102,6 +101,7 @@ export interface FieldErrors {
 }
 
 export interface FormRootProps extends Testable {
+  children: ReactNode;
   className?: string;
   noValidate?: boolean;
   onChange?: (formState: {

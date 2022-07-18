@@ -1,7 +1,14 @@
 {
   "endOfLine": "auto",
-  "printWidth": 100,
-  "singleQuote": true,
+  "importOrder": [
+    "^@rounik(.*)$",
+    "^@core(.*)|^@core/(.*)|^@services(.*)|^@services/(.*)|^@styles(.*)|^@styles/(.*)|^@types(.*)|^@types/(.*)|^@ui(.*)|^@ui/(.*)",
+    "^[./].*(?<!\\.scss)$",
+    "\\.scss$"
+  ],
+  "importOrderCaseInsensitive": true,
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
   "overrides": [
     {
       "files": "*.scss",
@@ -10,5 +17,7 @@
       }
     }
   ],
+  "printWidth": 100,
+  "singleQuote": true,
   "trailingComma": "none"
 }

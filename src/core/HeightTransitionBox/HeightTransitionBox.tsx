@@ -51,7 +51,10 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
 
       const observerCallback = useCallback(() => {
         setRender({});
-        !isRoot && forceUpdate();
+
+        if (!isRoot) {
+          forceUpdate();
+        }
       }, [forceUpdate, isRoot]);
 
       useMutationObserver({
@@ -65,7 +68,9 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
       // Handles nested transitions like
       // ErrorFields of ConditionalFields
       useUpdateOnly(() => {
-        isRoot && observerCallback();
+        if (isRoot) {
+          observerCallback();
+        }
       }, [isRoot, observerCallback, shouldForceUpdate]);
 
       useUpdateOnly(() => {

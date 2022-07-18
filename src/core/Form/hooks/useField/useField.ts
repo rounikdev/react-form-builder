@@ -12,24 +12,23 @@ import {
   useBeforeFirstRender,
   useIsMounted,
   useLastDiffValue,
-  useUpdate,
-  useUpdateOnly,
-  useUpdatedRef,
   useMount,
-  useUnmount
+  useUnmount,
+  useUpdate,
+  useUpdatedRef,
+  useUpdateOnly
 } from '@rounik/react-custom-hooks';
-
-import { GlobalModel } from '@services';
 
 import { useForm } from '@core/Form/hooks/useForm/useForm';
 import { useFormEditContext, useFormRoot } from '@core/Form/providers';
 import {
   FormStateEntryValue,
   UseFieldConfig,
-  UseFieldState,
   UseFieldReturnType,
+  UseFieldState,
   ValidityCheck
 } from '@core/Form/types';
+import { GlobalModel } from '@services';
 
 export const useField = <T>({
   dependencyExtractor,

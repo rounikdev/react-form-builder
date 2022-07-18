@@ -1,36 +1,41 @@
 .Container {
   position: relative;
+
   overflow: hidden;
-  background-color: rgb(247, 167, 167);
+
+  background-color: rgb(247 167 167);
   border-radius: 0.8rem;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: rgb(0 0 0 / 35%) 0 5px 15px;
 
   .CloseBtn {
     position: absolute;
     top: 1rem;
     right: 1rem;
+
     display: flex;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+
     background-color: transparent;
     border: none;
     outline: none;
+    cursor: pointer;
+
     appearance: none;
     user-select: none;
-    cursor: pointer;
   }
 }
 
 .EnterAnimation {
-  animation: growBox 300ms;
+  animation: grow-box 300ms;
 }
 
 .ExitAnimation {
-  animation: shrinkBox 300ms;
+  animation: shrink-box 300ms;
 }
 
-@keyframes growBox {
+@keyframes grow-box {
   from {
     transform: translateY(100vh);
   }
@@ -40,7 +45,7 @@
   }
 }
 
-@keyframes shrinkBox {
+@keyframes shrink-box {
   from {
     transform: translateY(0);
   }

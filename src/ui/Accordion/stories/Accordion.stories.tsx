@@ -1,12 +1,12 @@
+import { Meta, Story } from '@storybook/react';
 import { FC, StrictMode, useState } from 'react';
-import { Story, Meta } from '@storybook/react';
 
 import { useMount, useUnmount } from '@rounik/react-custom-hooks';
 
 import { Image } from '@ui';
 
-import { AccordionGroup } from '../AccordionGroup';
 import { Accordion } from '../Accordion';
+import { AccordionGroup } from '../AccordionGroup';
 import { RenderHeaderArgs } from '../types';
 
 import styles from './AccordionStories.scss';
@@ -53,6 +53,7 @@ const Content: FC<{ id: string }> = ({ id }) => {
 
 const renderHeader =
   (label: string) =>
+  // eslint-disable-next-line react/display-name
   ({ close, disabled, id, isOpen, open }: RenderHeaderArgs) => {
     return (
       <div className={[styles.Header, isOpen && styles.Open].filter(Boolean).join(' ')}>
@@ -64,10 +65,18 @@ const renderHeader =
           className={styles.HeaderButton}
           id={`${id}-header`}
           onClick={() => {
-            isOpen ? close() : open();
+            if (isOpen) {
+              close();
+            } else {
+              open();
+            }
           }}
           onKeyPress={() => {
-            isOpen ? close() : open();
+            if (isOpen) {
+              close();
+            } else {
+              open();
+            }
           }}
         >
           {label}

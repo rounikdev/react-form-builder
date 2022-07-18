@@ -26,15 +26,15 @@ export const datepickerContext = createContext<DatepickerContext>({
   hide: () => {
     // default implementation
   },
-  maxDate: undefined,
-  minDate: undefined,
-  monthName: '',
   inputBlurHandler: () => {
     // default implementation
   },
   inputChangeHandler: () => {
     // default implementation
   },
+  maxDate: undefined,
+  minDate: undefined,
+  monthName: '',
   onBlurHandler: () => {
     // default implementation
   },
@@ -52,9 +52,9 @@ export const datepickerContext = createContext<DatepickerContext>({
     focusedDate: '',
     input: null,
     month: new Date().getMonth(),
+    show: false,
     today: new Date(),
     toLeft: false,
-    show: false,
     year: new Date().getFullYear()
   },
   toggle: () => {

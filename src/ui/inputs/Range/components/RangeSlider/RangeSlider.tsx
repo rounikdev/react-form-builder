@@ -62,7 +62,7 @@ export const RangeSlider: FC<RangeSliderProps> = memo(({ dataTest, label, limit,
       switch (code) {
         case 'ArrowRight':
           if (options) {
-            const option = options.find((option) => option > val);
+            const option = options.find((rangeOption) => rangeOption > val);
 
             if (typeof option !== 'undefined') {
               onChangeHandler({
@@ -80,7 +80,7 @@ export const RangeSlider: FC<RangeSliderProps> = memo(({ dataTest, label, limit,
           break;
         case 'ArrowLeft':
           if (options) {
-            const option = [...options].reverse().find((option) => option < val);
+            const option = [...options].reverse().find((rangeOption) => rangeOption < val);
 
             if (typeof option !== 'undefined') {
               onChangeHandler({
@@ -98,7 +98,7 @@ export const RangeSlider: FC<RangeSliderProps> = memo(({ dataTest, label, limit,
           break;
         case 'ArrowUp':
           if (options) {
-            const option = options.find((option) => option > val);
+            const option = options.find((rangeOption) => rangeOption > val);
 
             if (typeof option !== 'undefined') {
               onChangeHandler({
@@ -116,7 +116,7 @@ export const RangeSlider: FC<RangeSliderProps> = memo(({ dataTest, label, limit,
           break;
         case 'ArrowDown':
           if (options) {
-            const option = [...options].reverse().find((option) => option < val);
+            const option = [...options].reverse().find((rangeOption) => rangeOption < val);
 
             if (typeof option !== 'undefined') {
               onChangeHandler({

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { FormRoot, FormUser } from '@core';
 
@@ -24,11 +24,11 @@ const Template: ComponentStory<typeof RadioGroupInput> = (args): JSX.Element => 
 
 const options = [
   {
-    value: 'chocolate',
-    label: 'Chocolate'
+    label: 'Chocolate',
+    value: 'chocolate'
   },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' }
+  { label: 'Strawberry', value: 'strawberry' },
+  { label: 'Vanilla', value: 'vanilla' }
 ];
 
 export const RadioGroup = Template.bind({});

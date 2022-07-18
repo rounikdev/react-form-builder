@@ -1,7 +1,6 @@
 import { memo } from 'react';
 
 import { GlobalModel } from '@services';
-
 import { Button } from '@ui/Button/Button';
 
 import { CarouselMenuProps } from '../../types';

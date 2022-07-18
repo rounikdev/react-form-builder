@@ -1,10 +1,9 @@
-import { FC, StrictMode } from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { FC, StrictMode } from 'react';
 
 import { FormRoot, RangeValue } from '@core';
 
 import { Range } from '../Range';
-
 import {
   RANGE_INITIAL_VALUE,
   RANGE_OPTIONS,
@@ -15,8 +14,8 @@ import {
 import styles from './Range.stories.scss';
 
 export default {
-  title: 'Components/inputs/Range',
-  component: Range
+  component: Range,
+  title: 'Components/inputs/Range'
 } as ComponentMeta<typeof Range>;
 
 const rangeFormatter = ({ newValue }: { newValue: RangeValue }) => {

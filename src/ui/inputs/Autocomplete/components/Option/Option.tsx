@@ -9,7 +9,7 @@ import { OptionProps } from '../../types';
 import styles from './Option.scss';
 
 export const Option = memo(
-  forwardRef<HTMLLIElement, OptionProps>(({ className, dataTest, id, text, substitutes }, ref) => {
+  forwardRef<HTMLLIElement, OptionProps>(({ className, dataTest, id, substitutes, text }, ref) => {
     const { close, focused, multi, opened, select, selected } = useComboBox();
 
     const { translate } = useTranslation();

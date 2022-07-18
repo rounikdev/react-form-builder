@@ -1,6 +1,6 @@
-import { FC, MouseEvent } from 'react';
 import { fireEvent } from '@testing-library/react';
 import { act, renderHook } from '@testing-library/react-hooks';
+import { FC, MouseEvent } from 'react';
 
 import { testRender } from '@services/utils';
 

@@ -9,9 +9,9 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
   const {
     alwaysRender,
     animate,
+    Backdrop,
     children,
     closeAutomatically,
-    Backdrop,
     Container,
     content,
     hideBackdrop,
@@ -46,7 +46,11 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
 
   const onCloseHandler = useCallback(() => {
     hideModalById({ id });
-    onClose && onClose();
+
+    if (onClose) {
+      onClose();
+    }
+
     setIsClosed(true);
   }, [hideModalById, id, onClose]);
 
@@ -77,7 +81,9 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
 
   const onBackdropClick = useCallback(
     (event) => {
-      !preventModalBackdropClick && onBackdropCloseHandler(event);
+      if (!preventModalBackdropClick) {
+        onBackdropCloseHandler(event);
+      }
     },
     [onBackdropCloseHandler, preventModalBackdropClick]
   );
@@ -95,7 +101,7 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
     () => ({
       overflow,
       ...(alwaysRender
-        ? { visibility: visible ? 'visible' : 'hidden', opacity: visible ? 1 : 0 }
+        ? { opacity: visible ? 1 : 0, visibility: visible ? 'visible' : 'hidden' }
         : {}),
       ...(hideBackdrop ? { backgroundColor: 'transparent' } : {}),
       ...(!hasAnimation ? { animation: 'none' } : {})
@@ -106,7 +112,7 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
   const contentStyle: CSSProperties = useMemo(
     () => ({
       ...(alwaysRender
-        ? { visibility: visible ? 'visible' : 'hidden', opacity: visible ? 1 : 0 }
+        ? { opacity: visible ? 1 : 0, visibility: visible ? 'visible' : 'hidden' }
         : {}),
       ...(!hasAnimation ? { animation: 'none' } : {})
     }),
@@ -115,9 +121,9 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
 
   const backdropProps = useMemo(
     () => ({
-      onClick: onBackdropClick,
-      onAnimationStart: onAnimationStartHandler,
       onAnimationEnd: onAnimationEndHandler,
+      onAnimationStart: onAnimationStartHandler,
+      onClick: onBackdropClick,
       ref: backdropRef,
       style: backdropStyle
     }),
@@ -133,7 +139,9 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
 
   useMount(() => {
     if (!alwaysRender && onOpen) {
-      onOpen && onOpen();
+      if (onOpen) {
+        onOpen();
+      }
     }
   });
 

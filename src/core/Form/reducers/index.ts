@@ -1,9 +1,9 @@
 import {
   FormContext,
+  FormContextReducer,
   FormRemoveAction,
-  FormSetStateAction,
   FormSetAction,
-  FormContextReducer
+  FormSetStateAction
 } from '../types';
 
 export enum FormActions {

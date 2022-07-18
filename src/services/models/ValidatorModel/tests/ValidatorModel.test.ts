@@ -92,8 +92,8 @@ describe('ValidatorModel', () => {
           ],
           valid: false
         },
-        minLength: 5,
         message: 'notLessThanXCharacters',
+        minLength: 5,
         value: 'abcd'
       }
     ];
@@ -226,8 +226,8 @@ describe('ValidatorModel', () => {
           ],
           valid: false
         },
-        min: 100,
         message: 'notLessThanXNumber',
+        min: 100,
         value: '99'
       },
       {
@@ -240,8 +240,8 @@ describe('ValidatorModel', () => {
           ],
           valid: false
         },
-        min: 99.99,
         message: 'notLessThanXNumber',
+        min: 99.99,
         value: '99.98'
       }
     ];

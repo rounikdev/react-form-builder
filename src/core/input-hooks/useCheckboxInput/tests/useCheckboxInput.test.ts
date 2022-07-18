@@ -1,28 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { act, renderHook } from '@testing-library/react-hooks';
 
-import { useCheckboxInput } from '../useCheckboxInput';
+import { useField } from '@core/Form/hooks/useField/useField';
 
-let mockUseField: jest.Mock;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let originalUseField: any;
+import { useCheckboxInput } from '../useCheckboxInput';
 
 jest.mock('@core/Form/hooks/useField/useField', () => {
   const originalModule = jest.requireActual('@core/Form/hooks/useField/useField');
 
-  originalUseField = originalModule.useField;
-  mockUseField = jest.fn((...args) => args);
-
   return {
     __esModule: true,
     ...originalModule,
-    useField: mockUseField
+    useField: jest.fn((...args) => args)
   };
 });
 
 describe('useCheckboxInput', () => {
   beforeEach(() => {
-    mockUseField.mockImplementation(jest.fn((...args) => args));
+    (useField as jest.Mock).mockImplementation(jest.fn((...args) => args));
   });
 
   afterEach(() => {
@@ -40,22 +35,24 @@ describe('useCheckboxInput', () => {
 
     renderHook(() => useCheckboxInput(useFieldArg));
 
-    expect(mockUseField).toBeCalledTimes(1);
-    expect(mockUseField.mock.calls[0][0]).toEqual(useFieldArg);
+    expect(useField).toBeCalledTimes(1);
+    expect((useField as jest.Mock).mock.calls[0][0]).toEqual(useFieldArg);
   });
 
   it('Returns correct props', async () => {
-    mockUseField.mockImplementation(originalUseField);
+    (useField as jest.Mock).mockImplementation(
+      jest.requireActual('@core/Form/hooks/useField/useField').useField
+    );
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const returnPropTypes: { [key: string]: any } = {
+      errors: 'object',
       fieldRef: 'object',
+      focused: 'boolean',
+      isEdit: 'boolean',
       onBlurHandler: 'function',
       onChangeHandler: 'function',
       onFocusHandler: 'function',
-      errors: 'object',
-      focused: 'boolean',
-      isEdit: 'boolean',
       touched: 'boolean',
       valid: 'boolean',
       validating: 'boolean',

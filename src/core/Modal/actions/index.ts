@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 
-import { ModalElement, ModalContext } from '../types';
+import { ModalContext, ModalElement } from '../types';
 
 // Dispatch and SetStateAction not recognized when
 // import('react').Dispatch and import('react').SetStateAction
@@ -18,7 +18,7 @@ export const setModal: ModalStateAction = ({ id }, setState) => {
     const modal = orderList[modalIndex];
 
     const toDeleteList = Object.keys(modalsToShow).reduce<string[]>((accum, modalId) => {
-      if (orderList.findIndex((modal) => modal.id === modalId) === -1) {
+      if (orderList.findIndex((modalElement) => modalElement.id === modalId) === -1) {
         accum.push(modalId);
       }
 

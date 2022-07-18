@@ -2,8 +2,10 @@
 .Min,
 .Option {
   position: absolute;
+
   color: var(--color-font);
   font-size: var(--font-small);
+
   transform: translate(-50%, -200%);
 
   &.Selected {
@@ -13,5 +15,6 @@
 
 .Max {
   right: 0;
+
   transform: translate(50%, -200%);
 }

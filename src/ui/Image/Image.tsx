@@ -27,7 +27,7 @@ interface ImageState {
   style: CSSProperties;
 }
 
-const defaultState: ImageState = { error: false, style: { width: '100%', opacity: 0 } };
+const defaultState: ImageState = { error: false, style: { opacity: 0, width: '100%' } };
 
 export const Image: FC<ImageProps> = memo(({ alt, className, dataTest, src }) => {
   const [state, setState] = useState<ImageState>(defaultState);
@@ -45,7 +45,7 @@ export const Image: FC<ImageProps> = memo(({ alt, className, dataTest, src }) =>
     setState((currentState) => ({
       ...currentState,
       error: true,
-      style: { width: '100%', height: '100%' }
+      style: { height: '100%', width: '100%' }
     }));
   }, []);
 

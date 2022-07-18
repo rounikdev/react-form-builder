@@ -1,8 +1,8 @@
 import { mount } from '@cypress/react';
 import { composeStory } from '@storybook/testing-react';
 
-import Meta, { RangeDemo } from '../stories/Range.stories';
 import { RANGE_INITIAL_VALUE } from '../stories/data';
+import Meta, { RangeDemo } from '../stories/Range.stories';
 
 const RangeStory = composeStory(RangeDemo, Meta);
 

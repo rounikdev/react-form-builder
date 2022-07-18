@@ -1,9 +1,12 @@
 .Container {
   position: relative;
+
   overflow: hidden;
+
   background-color: var(--color-background);
   border: 0 solid var(--color-background);
   border-radius: var(--border-radius);
+
   transition: border var(--transition) ease-in-out;
 
   &.Pausable {
@@ -23,11 +26,14 @@
   align-items: center;
   width: 200%;
   height: 100%;
+
   transform: translate(0, 0);
+
   will-change: transform;
 
   &.MoveToLeft {
     transform: translate(-50%, 0);
+
     transition: transform var(--transition) ease-in-out;
   }
 
@@ -37,21 +43,24 @@
 
   &.MoveToRight {
     transform: translate(0, 0);
+
     transition: transform var(--transition) ease-in-out;
   }
 }
 
 .Frame {
   position: relative;
+
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 50%;
   height: 100%;
 }
 
 .Current {
   position: absolute;
+
   width: 0;
   height: 0;
   overflow: hidden;

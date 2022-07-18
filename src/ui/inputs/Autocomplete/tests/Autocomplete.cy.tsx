@@ -1,5 +1,5 @@
-import { FC } from 'react';
 import { mount } from '@cypress/react';
+import { FC } from 'react';
 
 import { FormRoot } from '@core';
 import { useFormRoot } from '@core/Form/providers';

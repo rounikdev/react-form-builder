@@ -3,14 +3,14 @@ import ReactDOM from 'react-dom';
 
 import { useUpdateOnly } from '@rounik/react-custom-hooks';
 
-import { useModal } from './context';
 import { ModalBuilder } from './components';
+import { useModal } from './context';
 
 const ModalArena: FC = () => {
   const {
+    actions: { setModal },
     modalsToShow,
-    orderList,
-    actions: { setModal }
+    orderList
   } = useModal();
 
   const modalEl = document.querySelector('#modal') as HTMLElement;

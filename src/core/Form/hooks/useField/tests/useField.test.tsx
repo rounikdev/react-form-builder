@@ -1,14 +1,13 @@
-import { FC, FocusEventHandler, MutableRefObject, useEffect } from 'react';
 import { fireEvent } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import userEvent from '@testing-library/user-event';
-
-import { ShowHide, testRender } from '@services/utils';
+import { FC, FocusEventHandler, MutableRefObject, useEffect } from 'react';
 
 import { FormObject, FormRoot } from '@core/Form/components';
-import { useFormRoot } from '@core/Form/providers';
-import { Formatter, DependencyExtractor, Validator } from '@core/Form/types';
 import { useForm } from '@core/Form/hooks/useForm/useForm';
+import { useFormRoot } from '@core/Form/providers';
+import { DependencyExtractor, Formatter, Validator } from '@core/Form/types';
+import { ShowHide, testRender } from '@services/utils';
 
 import { useField } from '../useField';
 

@@ -71,7 +71,9 @@ export const useAccordion = ({
   }, [isOpen, keepMounted]);
 
   useMount(() => {
-    isOpen && openInGroup(id);
+    if (isOpen) {
+      openInGroup(id);
+    }
   });
 
   useUnmount(() => {

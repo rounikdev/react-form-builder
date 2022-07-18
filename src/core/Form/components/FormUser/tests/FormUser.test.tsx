@@ -1,8 +1,8 @@
 import userEvent from '@testing-library/user-event';
 
 import { FormRoot, FormUser } from '@core';
-import { Text } from '@ui';
 import { testRender } from '@services/utils';
+import { Text } from '@ui';
 
 describe('FormUser', () => {
   it('Has display name', () => {

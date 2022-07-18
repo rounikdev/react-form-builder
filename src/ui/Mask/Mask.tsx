@@ -12,19 +12,19 @@ export interface IMaskProps {
 }
 
 export const Mask: FC<IMaskProps> = memo(({ className, focused, pattern, value }) => {
-  const maskTxt = useMemo(() => {
-    const maskTxt = Array.from(pattern).reduce((accum, char, index) => {
-      if (!value || !value[index]) {
-        accum += char;
-      } else {
-        accum += value[index];
-      }
+  const maskTxt = useMemo(
+    () =>
+      Array.from(pattern).reduce((accum, char, index) => {
+        if (!value || !value[index]) {
+          accum += char;
+        } else {
+          accum += value[index];
+        }
 
-      return accum;
-    }, '');
-
-    return maskTxt;
-  }, [pattern, value]);
+        return accum;
+      }, ''),
+    [pattern, value]
+  );
 
   return (
     <div
@@ -37,3 +37,5 @@ export const Mask: FC<IMaskProps> = memo(({ className, focused, pattern, value }
     </div>
   );
 });
+
+Mask.displayName = 'Mask';

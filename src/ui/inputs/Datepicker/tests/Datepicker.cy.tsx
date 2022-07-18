@@ -117,10 +117,10 @@ describe('Datepicker', () => {
 
     cy.focused().trigger('keyup', {
       code: 'Tab',
+      ctrlKey: false,
       keyCode: 9,
-      which: 9,
       shiftKey: false,
-      ctrlKey: false
+      which: 9
     });
 
     cy.get('[data-test="from-datepicker-previous-month"]').trigger('keydown', {

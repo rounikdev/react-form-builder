@@ -8,9 +8,14 @@
   "extends": [
     "airbnb-typescript/base",
     "plugin:@typescript-eslint/recommended",
+    "plugin:compat/recommended",
     "plugin:jest-dom/recommended",
+    // "plugin:jsx-a11y/recommended",
     "plugin:prettier/recommended",
-    "prettier"
+    "plugin:react-hooks/recommended",
+    "plugin:react/recommended",
+    "prettier",
+    "plugin:react/jsx-runtime"
   ],
   "globals": {},
   "parser": "@typescript-eslint/parser",
@@ -29,7 +34,10 @@
     "prettier",
     "react",
     "react-hooks",
-    "testing-library"
+    "sort-destructure-keys",
+    "sort-keys-fix",
+    "testing-library",
+    "unused-imports"
   ],
   "ignorePatterns": ["cypress.config.ts", "dist", "instrumented"],
   "overrides": [
@@ -47,57 +55,19 @@
         "endOfLine": "auto"
       }
     ],
-    "no-use-before-define": "off",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/naming-convention": "off",
-    "@typescript-eslint/no-shadow": "off",
-    "@typescript-eslint/no-unused-expressions": "off",
-    "@typescript-eslint/no-unused-vars": "warn",
-    "@typescript-eslint/no-use-before-define": ["error"],
-    "arrow-body-style": "off",
-    "arrow-parens": "off",
-    "comma-dangle": "off",
-    "consistent-return": "off",
-    "function-paren-newline": "off",
-    "func-names": "off",
-    "global-require": "off",
-    "implicit-arrow-linebreak": "off",
     "import/extensions": "off",
-    "import/no-cycle": "off",
-    "import/no-dynamic-require": "off",
     "import/no-extraneous-dependencies": "off",
-    "import/no-mutable-exports": "off",
-    "import/no-named-as-default": "off",
-    "import/no-unresolved": "off",
-    "import/prefer-default-export": "off",
-    "indent": "off",
-    "jsx-a11y/no-noninteractive-element-to-interactive-role": "off",
-    "linebreak-style": "off",
     "max-len": ["warn", { "code": 100 }],
-    "new-cap": "off",
-    "no-confusing-arrow": "off",
-    "no-console": "off",
-    "no-else-return": "off",
-    "no-nested-ternary": "off",
-    "no-param-reassign": "off",
-    "no-plusplus": "off",
-    "no-restricted-globals": "warn",
-    "no-shadow": "off",
-    "no-undef": "off",
-    "no-underscore-dangle": "off",
-    "no-unused-expressions": "off",
-    "no-unused-vars": "off",
-    "object-curly-newline": "off",
-    "operator-linebreak": "off",
-    "prefer-destructuring": "off",
-    "prefer-rest-params": "warn",
-    "react/prop-types": "off",
-    "react/jsx-curly-newline": "off",
-    "react/jsx-filename-extension": "off",
-    "react/jsx-props-no-spreading": "off",
-    "react/state-in-constructor": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
-    "space-before-function-paren": "off"
+    "react/prop-types": 0,
+    "sort-destructure-keys/sort-destructure-keys": [2, { "caseSensitive": false }],
+    "sort-keys-fix/sort-keys-fix": ["error", "asc", { "caseSensitive": false, "natural": false }],
+    "unused-imports/no-unused-imports": "error"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }

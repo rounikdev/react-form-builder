@@ -1,11 +1,11 @@
-import { memo, PropsWithChildren, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 
 import { FormContextInstance } from '@core/Form/context';
 import { useFormArray, useFormReducer, useNestedForm } from '@core/Form/hooks';
 import { FormEditProvider } from '@core/Form/providers';
 import { formArrayReducer } from '@core/Form/reducers';
 import { flattenFormArrayState } from '@core/Form/services';
-import { FormContext, FormArrayProps } from '@core/Form/types';
+import { FormArrayProps, FormContext } from '@core/Form/types';
 
 const BaseFormArray = <T,>({
   children,
@@ -13,7 +13,7 @@ const BaseFormArray = <T,>({
   initialValue,
   localEdit = false,
   name
-}: PropsWithChildren<FormArrayProps<T>>) => {
+}: FormArrayProps<T>) => {
   const { context, removeFromForm, setInForm, valid, value } = useFormReducer({
     flattenState: flattenFormArrayState,
     reducer: formArrayReducer
@@ -22,11 +22,11 @@ const BaseFormArray = <T,>({
   const {
     cancel,
     edit,
-    isEdit,
-    isParentEdit,
     forceValidate,
     forceValidateFlag,
     getFieldId,
+    isEdit,
+    isParentEdit,
     reset,
     save
   } = useNestedForm({

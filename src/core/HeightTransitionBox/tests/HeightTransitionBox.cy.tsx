@@ -1,10 +1,9 @@
-import { FC, useState } from 'react';
 import { mount } from '@cypress/react';
+import { FC, useState } from 'react';
 
-import { HeightTransitionBoxProps } from '../types';
-
-import { HeightTransitionProvider } from '../HeightTransitionProvider';
 import { HeightTransitionBox } from '../HeightTransitionBox';
+import { HeightTransitionProvider } from '../HeightTransitionProvider';
+import { HeightTransitionBoxProps } from '../types';
 
 const TestCmp: FC<
   HeightTransitionBoxProps & {

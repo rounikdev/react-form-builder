@@ -42,7 +42,7 @@ export const useRange = ({
     validator
   });
 
-  const { min, max } = useMemo(() => {
+  const { max, min } = useMemo(() => {
     const limits = {
       max: maximum,
       min: minimum

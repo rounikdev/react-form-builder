@@ -28,7 +28,7 @@ export const RadioGroup: FC<RadioGroupProps> = memo(
     validator,
     valueExtractor
   }) => {
-    const { fieldRef, focused, onBlurHandler, onFocusHandler, touched, valid, enhancedOptions } =
+    const { enhancedOptions, fieldRef, focused, onBlurHandler, onFocusHandler, touched, valid } =
       useRadioGroup<RadioGroupValue, RadioGroupLabel>({
         dependencyExtractor,
         initialValue,
