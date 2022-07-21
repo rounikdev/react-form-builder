@@ -818,4 +818,47 @@ describe('useField', () => {
     expect(await findByDataTest('input')).toHaveValue(changedValue);
     expect(getByDataTest('input')).toBeValid();
   });
+
+  it('Format with `dependencyValue`', async () => {
+    const parentFormName = 'user';
+    const name = 'firstName';
+    const dependencyName = 'lastName';
+    const valueA = 'abc';
+    const valueB = 'ABC';
+
+    const { getByDataTest } = testRender(
+      <FormRoot dataTest="root-form" onSubmit={jest.fn()}>
+        <FormObject name={parentFormName}>
+          <TestInput
+            name={name}
+            dependencyExtractor={(formData) => {
+              if (formData[parentFormName]) {
+                return formData[parentFormName][dependencyName];
+              } else {
+                return undefined;
+              }
+            }}
+            formatter={({ dependencyValue, newValue }) => {
+              let value: string = newValue;
+
+              if (dependencyValue) {
+                value = value.toUpperCase();
+              } else {
+                value = value.toLowerCase();
+              }
+
+              return value;
+            }}
+          />
+          <TestInput dataTestInput="dependency-input" name={dependencyName} />
+        </FormObject>
+      </FormRoot>
+    );
+
+    userEvent.type(getByDataTest('input'), valueA);
+    expect(getByDataTest('input')).toHaveValue(valueA);
+
+    userEvent.type(getByDataTest('dependency-input'), 'x');
+    expect(getByDataTest('input')).toHaveValue(valueB);
+  });
 });

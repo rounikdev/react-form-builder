@@ -45,6 +45,7 @@ export interface TranslationContext {
     key: string,
     substitutes?: TranslationSubstitute[]
   ) => string | TranslationSubstitute[];
+  translateToString: (key: string) => string;
   updateDictionaries: (dictionaries: Dictionaries) => void;
 }
 

@@ -50,6 +50,7 @@ describe('useCheckboxInput', () => {
       fieldRef: 'object',
       focused: 'boolean',
       isEdit: 'boolean',
+      isRequired: 'boolean',
       onBlurHandler: 'function',
       onChangeHandler: 'function',
       onFocusHandler: 'function',

@@ -16,7 +16,6 @@ export interface Field<T>
   label?: string;
   noLabelTruncate?: boolean;
   placeholder?: string;
-  required?: boolean;
   requiredLabel?: string;
   showOptionalLabel?: boolean;
 }
@@ -154,6 +153,7 @@ export interface UseFieldConfig<T> {
   name: string;
   onBlur?: FocusEventHandler<Element>;
   onFocus?: FocusEventHandler<Element>;
+  required?: boolean | ((dependencyValue: FormStateEntryValue) => boolean);
   sideEffect?: ({ methods, value }: { methods: FormContext['methods']; value: T }) => void;
   validator?: Validator<T>;
 }
@@ -172,6 +172,7 @@ export interface UseFieldReturnType<T> {
   fieldRef: MutableRefObject<HTMLElement | HTMLInputElement | null>;
   focused: boolean;
   isEdit: boolean;
+  isRequired: boolean;
   onBlurHandler: FocusEventHandler<HTMLElement>;
   onChangeHandler: (value: T) => Promise<void>;
   onFocusHandler: FocusEventHandler<HTMLElement>;
@@ -215,6 +216,7 @@ export interface FormSideEffectProps {
 }
 
 export interface OldNewValue<T> {
+  dependencyValue?: FormStateEntryValue;
   initial?: boolean;
   newValue: T;
   oldValue?: T;

@@ -44,6 +44,13 @@ export const TranslationProvider: FC<TranslationProviderProps> = memo(
       [state]
     );
 
+    const translateToString = useCallback(
+      (key: string) => {
+        return translate(key) as string;
+      },
+      [translate]
+    );
+
     const context = useMemo(() => {
       const { id, label } = state.dictionaries[state.currentLanguageId] || {};
 
@@ -60,9 +67,17 @@ export const TranslationProvider: FC<TranslationProviderProps> = memo(
         languages,
         setLanguage,
         translate,
+        translateToString,
         updateDictionaries
       };
-    }, [setLanguage, state, translate, updateDictionaries]);
+    }, [
+      setLanguage,
+      state.currentLanguageId,
+      state.dictionaries,
+      translate,
+      translateToString,
+      updateDictionaries
+    ]);
 
     return (
       <TranslationContextInstance.Provider value={context}>

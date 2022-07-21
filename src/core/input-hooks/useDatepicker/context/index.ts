@@ -32,6 +32,7 @@ export const datepickerContext = createContext<DatepickerContext>({
   inputChangeHandler: () => {
     // default implementation
   },
+  isRequired: false,
   maxDate: undefined,
   minDate: undefined,
   monthName: '',

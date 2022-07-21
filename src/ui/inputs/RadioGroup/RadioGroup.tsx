@@ -28,19 +28,28 @@ export const RadioGroup: FC<RadioGroupProps> = memo(
     validator,
     valueExtractor
   }) => {
-    const { enhancedOptions, fieldRef, focused, onBlurHandler, onFocusHandler, touched, valid } =
-      useRadioGroup<RadioGroupValue, RadioGroupLabel>({
-        dependencyExtractor,
-        initialValue,
-        inputValueExtractor,
-        labelExtractor,
-        name,
-        options,
-        sideEffect,
-        titleExtractor,
-        validator,
-        valueExtractor
-      });
+    const {
+      enhancedOptions,
+      fieldRef,
+      focused,
+      isRequired,
+      onBlurHandler,
+      onFocusHandler,
+      touched,
+      valid
+    } = useRadioGroup<RadioGroupValue, RadioGroupLabel>({
+      dependencyExtractor,
+      initialValue,
+      inputValueExtractor,
+      labelExtractor,
+      name,
+      options,
+      required,
+      sideEffect,
+      titleExtractor,
+      validator,
+      valueExtractor
+    });
 
     const isError = useMemo(() => touched && !focused && !valid, [focused, touched, valid]);
 
@@ -62,7 +71,7 @@ export const RadioGroup: FC<RadioGroupProps> = memo(
               <div className={styles.RadioContainer} key={index}>
                 <input
                   aria-invalid={!valid}
-                  aria-required={required}
+                  aria-required={isRequired}
                   checked={option.checked}
                   className={styles.Input}
                   data-test={`${dataTest}-${index}-radio-option`}

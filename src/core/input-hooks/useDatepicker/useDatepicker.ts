@@ -30,6 +30,7 @@ export const useDatepicker = ({
   name,
   onBlur,
   onFocus,
+  required,
   sideEffect,
   useEndOfDay,
   validator
@@ -37,6 +38,7 @@ export const useDatepicker = ({
   const {
     errors,
     focused,
+    isRequired,
     onBlurHandler,
     onChangeHandler,
     onFocusHandler,
@@ -51,6 +53,7 @@ export const useDatepicker = ({
     name,
     onBlur,
     onFocus,
+    required,
     sideEffect,
     validator
   });
@@ -416,6 +419,7 @@ export const useDatepicker = ({
       hide,
       inputBlurHandler,
       inputChangeHandler,
+      isRequired,
       maxDate,
       minDate,
       monthName,
@@ -444,12 +448,12 @@ export const useDatepicker = ({
       hide,
       inputBlurHandler,
       inputChangeHandler,
+      isRequired,
       maxDate,
       minDate,
       monthName,
       onBlurHandler,
       onFocusHandler,
-      openButtonRef,
       selectDate,
       setFocusedDate,
       state,

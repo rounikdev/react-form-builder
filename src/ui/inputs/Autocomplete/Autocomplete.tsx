@@ -43,6 +43,7 @@ const BaseAutocomplete = <T,>({
     filteredList,
     focused: isFocused,
     focusedId,
+    isRequired,
     onBlurHandler,
     onFocusHandler,
     open,
@@ -66,6 +67,7 @@ const BaseAutocomplete = <T,>({
     name,
     onBlur,
     onFocus,
+    required,
     sideEffect,
     validator
   });
@@ -120,7 +122,7 @@ const BaseAutocomplete = <T,>({
               })}
           </ul>
         ) : null}
-        <LabelField id={id} label={label} required={required} requiredLabel={requiredLabel} />
+        <LabelField id={id} label={label} required={isRequired} requiredLabel={requiredLabel} />
         <input
           autoComplete="off"
           {...(focusedId ? { 'aria-activedescendant': `${focusedId}-option` } : {})}

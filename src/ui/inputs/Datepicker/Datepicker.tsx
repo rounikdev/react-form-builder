@@ -38,6 +38,7 @@ export const Datepicker: FC<DatepickerProps> = memo(
       maxDateExtractor,
       minDateExtractor,
       name,
+      required,
       sideEffect,
       useEndOfDay,
       validator
@@ -59,7 +60,9 @@ export const Datepicker: FC<DatepickerProps> = memo(
         >
           <label className={styles.Label} data-test={`${dataTest}-datepicker-label`} htmlFor={id}>
             {translate(label)}
-            <span className={styles.Required}>{required ? translate('required') : null}</span>
+            <span className={styles.Required}>
+              {context.isRequired ? translate('required') : null}
+            </span>
           </label>
           <DatepickerInput dataTest={dataTest} id={id} placeholder={placeholder} />
           <Animator

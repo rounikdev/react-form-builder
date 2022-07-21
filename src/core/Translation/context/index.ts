@@ -9,6 +9,7 @@ export const initialTranslationContext: TranslationContext = {
     // default function
   },
   translate: (key) => key,
+  translateToString: (key) => key,
   updateDictionaries: () => {
     // default function
   }

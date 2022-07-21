@@ -25,22 +25,25 @@ export const useRange = ({
   onBlur,
   onFocus,
   options,
+  required,
   sideEffect,
   single,
   step,
   stepExtra,
   validator
 }: UseRangeArgs) => {
-  const { onBlurHandler, onChangeHandler, onFocusHandler, value } = useField<RangeValue>({
-    dependencyExtractor,
-    formatter,
-    initialValue,
-    name,
-    onBlur,
-    onFocus,
-    sideEffect,
-    validator
-  });
+  const { isRequired, onBlurHandler, onChangeHandler, onFocusHandler, value } =
+    useField<RangeValue>({
+      dependencyExtractor,
+      formatter,
+      initialValue,
+      name,
+      onBlur,
+      onFocus,
+      required,
+      sideEffect,
+      validator
+    });
 
   const { max, min } = useMemo(() => {
     const limits = {
@@ -235,6 +238,7 @@ export const useRange = ({
       barStyle,
       clientX,
       isMoving,
+      isRequired,
       limitFrom,
       limitTo,
       max,
@@ -259,6 +263,7 @@ export const useRange = ({
       barStyle,
       clientX,
       isMoving,
+      isRequired,
       limitFrom,
       limitTo,
       max,

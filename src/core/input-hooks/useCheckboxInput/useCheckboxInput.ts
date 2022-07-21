@@ -6,6 +6,7 @@ export const useCheckboxInput: (args: UseCheckboxInput) => UseCheckboxReturnType
   dependencyExtractor,
   initialValue,
   name,
+  required,
   sideEffect,
   validator
 }) => {
@@ -13,6 +14,7 @@ export const useCheckboxInput: (args: UseCheckboxInput) => UseCheckboxReturnType
     dependencyExtractor,
     initialValue: !!initialValue,
     name,
+    required,
     sideEffect,
     validator
   });
