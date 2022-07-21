@@ -58,11 +58,22 @@ export const useField = <T>({
 
   const fieldRef = useRef<HTMLElement | null>(null);
 
+  const dependency = useMemo(() => {
+    if (typeof dependencyExtractor === 'function' && formData) {
+      return dependencyExtractor(formData);
+    } else {
+      return undefined;
+    }
+  }, [dependencyExtractor, formData]);
+
+  const dependencyRef = useUpdatedRef(dependency);
+
   let stateValue = initialValue;
 
   useBeforeFirstRender(() => {
     if (formatter) {
       stateValue = formatter({
+        dependencyValue: dependency,
         newValue: initialValue
       });
     } else {
@@ -98,18 +109,14 @@ export const useField = <T>({
 
   const validateField = useCallback(async (value: T, dependencyValue?: FormStateEntryValue) => {
     let validityCheck: ValidityCheck;
-    let formattedValue: T;
 
-    if (value !== valueRef.current) {
-      formattedValue = formatterRef.current
-        ? formatterRef.current({
-            newValue: value,
-            oldValue: valueRef.current
-          })
-        : value;
-    } else {
-      formattedValue = valueRef.current;
-    }
+    const formattedValue = formatterRef.current
+      ? formatterRef.current({
+          dependencyValue,
+          newValue: value,
+          oldValue: valueRef.current
+        })
+      : value;
 
     setState((current) => ({
       ...current,
@@ -150,16 +157,6 @@ export const useField = <T>({
     }));
   }, [context.forceValidateFlag]);
 
-  const dependency = useMemo(() => {
-    if (typeof dependencyExtractor === 'function' && formData) {
-      return dependencyExtractor(formData);
-    } else {
-      return undefined;
-    }
-  }, [dependencyExtractor, formData]);
-
-  const dependencyRef = useUpdatedRef(dependency);
-
   const fieldId = useMemo(() => {
     const parentId = context.methods.getFieldId();
 
@@ -187,7 +184,9 @@ export const useField = <T>({
       focused: false,
       touched: false,
       validating: false,
-      value: formatter ? formatter({ newValue: resetValue, oldValue: undefined }) : resetValue
+      value: formatter
+        ? formatter({ dependencyValue: dependency, newValue: resetValue, oldValue: undefined })
+        : resetValue
     }));
   }, [resetFlag]);
 
@@ -227,7 +226,9 @@ export const useField = <T>({
     context.methods.setInForm({
       key: name,
       valid: state.valid,
-      value: formatter ? formatter({ newValue: state.value, oldValue: prevValue }) : state.value
+      value: formatter
+        ? formatter({ dependencyValue: dependency, newValue: state.value, oldValue: prevValue })
+        : state.value
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, state.valid, state.value]);

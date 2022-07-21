@@ -64,6 +64,28 @@ const Template: Story<FC> = () => {
               <div className={styles.Passwords}>
                 <Text
                   className={styles.PasswordInput}
+                  dataTest="age"
+                  disabled={false}
+                  id="age"
+                  label="Age"
+                  name="age"
+                  dependencyExtractor={(formData) => {
+                    return formData.password;
+                  }}
+                  formatter={({ dependencyValue, newValue }) => {
+                    let value: string = newValue;
+
+                    if (dependencyValue) {
+                      value = value.toUpperCase();
+                    } else {
+                      value = value.toLowerCase();
+                    }
+
+                    return value;
+                  }}
+                />
+                <Text
+                  className={styles.PasswordInput}
                   dataTest="password"
                   disabled={false}
                   id="password"

@@ -215,6 +215,7 @@ export interface FormSideEffectProps {
 }
 
 export interface OldNewValue<T> {
+  dependencyValue?: FormStateEntryValue;
   initial?: boolean;
   newValue: T;
   oldValue?: T;
