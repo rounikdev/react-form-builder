@@ -36,6 +36,7 @@ export interface DatepickerContext {
   monthName: string;
   inputBlurHandler: (event: FocusEvent) => void;
   inputChangeHandler: (event: ChangeEvent) => void;
+  isRequired: boolean;
   onBlurHandler: FocusEventHandler<HTMLElement>;
   onFocusHandler: FocusEventHandler<HTMLElement>;
   openButtonRef: RefObject<HTMLButtonElement>;

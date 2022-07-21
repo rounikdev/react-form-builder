@@ -83,6 +83,7 @@ const Template: Story<FC> = () => {
 
                     return value;
                   }}
+                  required={(password) => !!password}
                 />
                 <Text
                   className={styles.PasswordInput}

@@ -38,6 +38,7 @@ export const Text: FC<TextProps> = memo(
       fieldRef,
       focused,
       isEdit,
+      isRequired,
       onBlurHandler,
       onChangeHandler,
       onFocusHandler,
@@ -50,6 +51,7 @@ export const Text: FC<TextProps> = memo(
       initialValue,
       name,
       onBlurSideEffect,
+      required,
       sideEffect,
       validator
     });
@@ -67,12 +69,12 @@ export const Text: FC<TextProps> = memo(
 
     return (
       <div className={containerClassName} style={{ display: hidden ? 'none' : 'flex' }}>
-        <LabelField id={id} label={label} required={required} requiredLabel={requiredLabel} />
+        <LabelField id={id} label={label} required={isRequired} requiredLabel={requiredLabel} />
         <div className={styles.InputWrap}>
           <input
             aria-hidden={hidden}
             aria-invalid={!valid}
-            aria-required={required}
+            aria-required={isRequired}
             autoComplete={autoComplete}
             className={inputClassName}
             data-test={`${dataTest}-input`}

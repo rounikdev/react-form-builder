@@ -37,6 +37,7 @@ export const useField = <T>({
   name,
   onBlur,
   onFocus,
+  required,
   sideEffect,
   validator
 }: UseFieldConfig<T>): UseFieldReturnType<T> => {
@@ -106,6 +107,19 @@ export const useField = <T>({
   const formatterRef = useUpdatedRef(formatter);
 
   const validatorRef = useUpdatedRef(validator);
+
+  const isRequired = useMemo(() => {
+    if (typeof required === 'undefined') {
+      return false;
+    }
+
+    if (typeof required === 'boolean') {
+      return required;
+    }
+
+    return required(dependency);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [typeof dependency === 'bigint' ? dependency : JSON.stringify(dependency)]);
 
   const validateField = useCallback(async (value: T, dependencyValue?: FormStateEntryValue) => {
     let validityCheck: ValidityCheck;
@@ -312,6 +326,7 @@ export const useField = <T>({
   return {
     fieldRef,
     isEdit,
+    isRequired,
     onBlurHandler,
     onChangeHandler,
     onFocusHandler,

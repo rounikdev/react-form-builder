@@ -69,6 +69,7 @@ export const useAutocomplete = <T>({
   name,
   onBlur,
   onFocus,
+  required,
   sideEffect,
   validator
 }: UseAutocompleteArgs<T>): UseAutocompleteReturnType<T> => {
@@ -77,6 +78,7 @@ export const useAutocomplete = <T>({
     fieldRef,
     focused: isFocused,
     isEdit,
+    isRequired,
     onBlurHandler,
     onChangeHandler,
     onFocusHandler,
@@ -91,6 +93,7 @@ export const useAutocomplete = <T>({
     name,
     onBlur,
     onFocus,
+    required,
     sideEffect,
     validator
   });
@@ -299,6 +302,7 @@ export const useAutocomplete = <T>({
     focused: isFocused,
     focusedId: state.focused,
     isEdit,
+    isRequired,
     onBlurHandler: onBlurHandler as UseAutocompleteReturnType<T>['onBlurHandler'],
     onFocusHandler,
     open,

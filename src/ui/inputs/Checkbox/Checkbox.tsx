@@ -26,6 +26,7 @@ export const Checkbox: FC<CheckboxProps> = memo(
     const {
       fieldRef,
       focused,
+      isRequired,
       onBlurHandler,
       onChangeHandler,
       onFocusHandler,
@@ -36,6 +37,7 @@ export const Checkbox: FC<CheckboxProps> = memo(
       dependencyExtractor,
       initialValue,
       name,
+      required,
       sideEffect,
       validator
     });
@@ -58,7 +60,7 @@ export const Checkbox: FC<CheckboxProps> = memo(
           <input
             aria-hidden={hidden}
             aria-invalid={!valid}
-            aria-required={required}
+            aria-required={isRequired}
             checked={value}
             className={inputClass}
             data-test={`${dataTest}-input`}
