@@ -102,6 +102,8 @@ export const useField = <T>({
 
   const prevValue = useLastDiffValue(state.value);
 
+  const prevValueRef = useUpdatedRef(prevValue);
+
   const valueRef = useUpdatedRef(state.value);
 
   const formatterRef = useUpdatedRef(formatter);
@@ -121,48 +123,64 @@ export const useField = <T>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typeof dependency === 'bigint' ? dependency : JSON.stringify(dependency)]);
 
-  const validateField = useCallback(async (value: T, dependencyValue?: FormStateEntryValue) => {
-    let validityCheck: ValidityCheck;
+  const validateField = useCallback(
+    async (value: T, dependencyValue?: FormStateEntryValue, useDependency?: boolean) => {
+      let validityCheck: ValidityCheck;
+      let formattedValue: T;
 
-    const formattedValue = formatterRef.current
-      ? formatterRef.current({
-          dependencyValue,
-          newValue: value,
-          oldValue: valueRef.current
-        })
-      : value;
+      if (value !== valueRef.current || useDependency) {
+        let oldValue: T | undefined;
 
-    setState((current) => ({
-      ...current,
-      valid: false,
-      validating: true,
-      value: formattedValue
-    }));
+        if (value !== valueRef.current) {
+          oldValue = valueRef.current;
+        } else if (useDependency) {
+          oldValue = prevValueRef.current;
+        }
 
-    if (validatorRef.current) {
-      try {
-        validityCheck = await validatorRef.current(formattedValue, dependencyValue);
-      } catch (error) {
+        formattedValue = formatterRef.current
+          ? formatterRef.current({
+              dependencyValue,
+              newValue: value,
+              oldValue
+            })
+          : value;
+      } else {
+        formattedValue = value;
+      }
+
+      setState((current) => ({
+        ...current,
+        valid: false,
+        validating: true,
+        value: formattedValue
+      }));
+
+      if (validatorRef.current) {
+        try {
+          validityCheck = await validatorRef.current(formattedValue, dependencyValue);
+        } catch (error) {
+          validityCheck = {
+            errors: [{ text: 'errorValidating' }],
+            valid: false
+          };
+        }
+      } else {
         validityCheck = {
-          errors: [{ text: 'errorValidating' }],
-          valid: false
+          errors: [],
+          valid: true
         };
       }
-    } else {
-      validityCheck = {
-        errors: [],
-        valid: true
-      };
-    }
 
-    setState((current) => ({
-      ...current,
-      ...validityCheck,
-      validating: false,
-      value: formattedValue
-    }));
+      setState((current) => ({
+        ...current,
+        ...validityCheck,
+        validating: false,
+        value: formattedValue
+      }));
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    []
+  );
 
   useUpdateOnly(() => {
     setState((current) => ({
@@ -182,7 +200,7 @@ export const useField = <T>({
   // has changed. That's why we use
   // ref for the value:
   useEffect(() => {
-    validateField(valueRef.current, dependency);
+    validateField(state.value, dependency, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typeof dependency === 'bigint' ? dependency : JSON.stringify(dependency)]);
 
@@ -197,10 +215,7 @@ export const useField = <T>({
       ...current,
       focused: false,
       touched: false,
-      validating: false,
-      value: formatter
-        ? formatter({ dependencyValue: dependency, newValue: resetValue, oldValue: undefined })
-        : resetValue
+      validating: false
     }));
   }, [resetFlag]);
 
@@ -240,9 +255,7 @@ export const useField = <T>({
     context.methods.setInForm({
       key: name,
       valid: state.valid,
-      value: formatter
-        ? formatter({ dependencyValue: dependency, newValue: state.value, oldValue: prevValue })
-        : state.value
+      value: state.value
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, state.valid, state.value]);
