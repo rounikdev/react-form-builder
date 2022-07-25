@@ -199,6 +199,8 @@ describe('useFormArray', () => {
       result.current.add();
     });
 
+    expect(result.current.list.length).toEqual(2);
+
     act(() => {
       // Run reset in the Reset component
       jest.advanceTimersToNextTimer();
@@ -211,7 +213,7 @@ describe('useFormArray', () => {
       jest.runAllTimers();
     });
 
-    expect(result.current.list).toEqual([]);
+    expect(result.current.list).toEqual(initialValue);
   });
 
   it("Doesn't resets if not matching resetKey", () => {

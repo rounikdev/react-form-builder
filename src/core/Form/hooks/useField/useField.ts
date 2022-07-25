@@ -207,7 +207,8 @@ export const useField = <T>({
   useUpdateOnly(async () => {
     const fieldPath = fieldId.split('.');
 
-    const resetValue = GlobalModel.getNestedValue(resetRecords[resetFlag.resetKey], fieldPath);
+    const resetValue =
+      GlobalModel.getNestedValue(resetRecords[resetFlag.resetKey], fieldPath) ?? initialValue;
 
     await validateField(resetValue, dependency);
 

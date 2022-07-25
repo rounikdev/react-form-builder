@@ -46,7 +46,7 @@ export const useFormArray = <T>({
       const resetValue = (GlobalModel.getNestedValue(
         resetRecords[resetFlag.resetKey],
         fieldId.split('.')
-      ) || []) as T[];
+      ) ?? initialValue) as T[];
 
       // Reset array to prevent existing items
       // to read from the reset state with old names
