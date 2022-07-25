@@ -316,7 +316,6 @@ describe('Datepicker', () => {
     cy.get('body').trigger('keyup', { code: 'ArrowUp' });
     cy.get('body').trigger('keyup', { code: 'ArrowRight' });
     cy.get('body').trigger('keyup', { code: 'ArrowDown' });
-    cy.get('body').trigger('keyup', { code: 'ArrowDown' });
 
     // Select today:
     cy.focused().should('have.attr', 'data-date', todayLocaleDateString);
