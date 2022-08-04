@@ -186,7 +186,7 @@ export interface FormRootProviderContext {
   errors: FieldErrors;
   fieldToBeSet: SetFieldValuePayload;
   focusedField: string;
-  formData: FormState;
+  formData: FormStateEntryValue;
   methods: {
     focusField: (fieldId: string) => void;
     registerFieldErrors?: (payload: FieldErrorsPayload) => void;
