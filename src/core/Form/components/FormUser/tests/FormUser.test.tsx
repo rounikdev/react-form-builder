@@ -13,7 +13,7 @@ describe('FormUser', () => {
     const { findByDataTest, getByText } = testRender(
       <FormRoot dataTest="test">
         <FormUser>
-          {({ formData }) => {
+          {({ formRootContext: { formData } }) => {
             return (
               <>
                 <Text

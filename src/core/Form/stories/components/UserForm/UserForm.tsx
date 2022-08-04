@@ -21,7 +21,7 @@ export const UserForm: FC<UserFormProps> = memo(({ removeUser, user, userIndex }
         <FormObject name={`${userIndex}`} localEdit>
           <div className={styles.Controls}>
             <FormUser>
-              {({ isEdit, isParentEdit, methods }) => {
+              {({ formContext: { isEdit, isParentEdit, methods } }) => {
                 return isParentEdit ? (
                   <div>
                     {!isEdit ? (
@@ -95,7 +95,7 @@ export const UserForm: FC<UserFormProps> = memo(({ removeUser, user, userIndex }
               return (
                 <div className={styles.Phones}>
                   <FormUser>
-                    {({ isEdit, isParentEdit }) => {
+                    {({ formContext: { isEdit, isParentEdit } }) => {
                       return isParentEdit && isEdit ? (
                         <Button
                           className={styles.AddButton}
@@ -107,7 +107,7 @@ export const UserForm: FC<UserFormProps> = memo(({ removeUser, user, userIndex }
                     }}
                   </FormUser>
                   <FormUser>
-                    {({ isEdit, isParentEdit, methods }) => {
+                    {({ formContext: { isEdit, isParentEdit, methods } }) => {
                       return isParentEdit ? (
                         <div>
                           {!isEdit ? (

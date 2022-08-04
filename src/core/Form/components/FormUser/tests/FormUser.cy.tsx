@@ -8,7 +8,7 @@ describe('FormUser', () => {
     mount(
       <FormRoot dataTest="test">
         <FormUser>
-          {({ formData }) => {
+          {({ formRootContext: { formData } }) => {
             return (
               <>
                 <Text

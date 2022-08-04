@@ -19,7 +19,7 @@ const SubmitButton = () => {
       />
       <Button dataTest="reset" onClick={() => context.methods.reset()} text="Reset" />
       <FormUser>
-        {({ isEdit, methods }) => {
+        {({ formContext: { isEdit, methods } }) => {
           return (
             <div>
               {!isEdit ? (
