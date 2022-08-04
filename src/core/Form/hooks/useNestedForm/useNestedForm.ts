@@ -4,7 +4,7 @@ import { useUnmount, useUpdate, useUpdatedRef, useUpdateOnly } from '@rounik/rea
 
 import { useForm } from '@core/Form/hooks/useForm/useForm';
 import { useFormEditContext, useFormRoot } from '@core/Form/providers';
-import { ForceValidateFlag, FormStateEntryValue } from '@core/Form/types';
+import { ForceValidateFlag, FormStateEntry, FormStateEntryValue } from '@core/Form/types';
 
 interface UseNestedFormArgs {
   name: string;
@@ -86,7 +86,7 @@ export const useNestedForm = ({ name, valid, value }: UseNestedFormArgs) => {
       return {
         ...currentResetRecords,
         // Using just formData makes Form test hang:
-        [getFieldId()]: formDataRef.current
+        [getFieldId()]: formDataRef.current as unknown as FormStateEntry
       };
     });
 
