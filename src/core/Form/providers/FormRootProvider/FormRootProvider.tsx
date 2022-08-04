@@ -9,7 +9,7 @@ const FormRootContext = createContext<FormRootProviderContext>({
     value: undefined
   },
   focusedField: '',
-  formData: { valid: false, value: {} },
+  formData: {},
   methods: {
     focusField: () => {
       // default function

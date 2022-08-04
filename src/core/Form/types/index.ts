@@ -186,7 +186,7 @@ export interface FormRootProviderContext {
   errors: FieldErrors;
   fieldToBeSet: SetFieldValuePayload;
   focusedField: string;
-  formData: FormStateEntry;
+  formData: FormState;
   methods: {
     focusField: (fieldId: string) => void;
     registerFieldErrors?: (payload: FieldErrorsPayload) => void;
@@ -242,11 +242,8 @@ export interface ConditionalFieldsProps extends Animatable, Stylable {
 
 export interface FormUserProps {
   children: (props: {
-    formData: FormStateEntryValue;
-    isEdit: boolean;
-    isParentEdit: boolean;
-    localEdit: boolean;
-    methods: FormContext['methods'];
+    formContext: FormContext;
+    formRootContext: FormRootProviderContext;
   }) => JSX.Element | null;
 }
 

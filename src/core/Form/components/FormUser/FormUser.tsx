@@ -5,15 +5,12 @@ import { useFormRoot } from '@core/Form/providers';
 import { FormUserProps } from '@core/Form/types';
 
 export const FormUser: FC<FormUserProps> = memo(({ children }) => {
-  const { isEdit, isParentEdit, localEdit, methods } = useForm();
-  const { formData } = useFormRoot();
+  const formContext = useForm();
+  const formRootContext = useFormRoot();
 
   return children({
-    formData,
-    isEdit,
-    isParentEdit,
-    localEdit,
-    methods
+    formContext,
+    formRootContext
   });
 });
 

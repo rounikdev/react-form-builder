@@ -37,7 +37,7 @@ export const PhoneForm: FC<PhoneFormProps> = memo(
           />
         </FormObject>
         <FormUser>
-          {({ isEdit }) => {
+          {({ formContext: { isEdit } }) => {
             return isEdit ? (
               <Button
                 dataTest={`remove-phone-${userIndex}-${phoneIndex}`}

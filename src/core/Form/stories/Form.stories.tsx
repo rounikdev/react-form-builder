@@ -38,7 +38,7 @@ const Template: Story<FC> = () => {
                 return (
                   <>
                     <FormUser>
-                      {({ isEdit, isParentEdit }) => {
+                      {({ formContext: { isEdit, isParentEdit } }) => {
                         return isParentEdit && isEdit ? (
                           <div className={styles.AddUserContainer}>
                             <Button dataTest="add-user" onClick={addUser} text="Add User" />

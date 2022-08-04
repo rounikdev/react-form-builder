@@ -1,3 +1,3 @@
 export * from './components';
-export { useField, useForm } from './hooks';
+export { useField, useForm, useRootForm } from './hooks';
 export * from './types';
