@@ -9,7 +9,7 @@ import {
   ForceValidateFlag,
   FormStateEntryValue,
   ResetFlag,
-  SetFieldValuePayload
+  SetFieldsValuePayload
 } from '@core/Form/types';
 
 interface UseRootFormProps {
@@ -17,10 +17,7 @@ interface UseRootFormProps {
 }
 
 export const useRootForm = ({ formData }: UseRootFormProps) => {
-  const [fieldToBeSet, setFieldValue] = useState<SetFieldValuePayload>({
-    id: '',
-    value: undefined
-  });
+  const [fieldsToBeSet, setFieldsValueState] = useState<SetFieldsValuePayload>({});
 
   const [errors, setErrors] = useState<FieldErrors>({});
 
@@ -37,6 +34,12 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
   });
 
   const [resetRecords, setResetRecords] = useState<Record<string, FormStateEntryValue>>({});
+
+  const setFieldsValue = useCallback(
+    (value: SetFieldsValuePayload) =>
+      setFieldsValueState((prevState) => ({ ...prevState, ...value })),
+    []
+  );
 
   const forceValidate = useCallback(() => {
     setForceValidateFlag({});
@@ -128,7 +131,7 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
     cancel,
     edit,
     errors,
-    fieldToBeSet,
+    fieldsToBeSet,
     focusedField,
     focusField,
     forceValidate,
@@ -144,7 +147,7 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
     scrolledField,
     scrollFieldIntoView,
     setDirty,
-    setFieldValue,
+    setFieldsValue,
     setPristine,
     setResetFlag,
     setResetRecords

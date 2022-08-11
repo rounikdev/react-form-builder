@@ -64,7 +64,7 @@ describe('FormSideEffect', () => {
     expect(typeof mockEffect.mock.calls[0][1].methods.removeFromForm).toBe('function');
     expect(typeof mockEffect.mock.calls[0][1].methods.reset).toBe('function');
     expect(typeof mockEffect.mock.calls[0][1].methods.scrollFieldIntoView).toBe('function');
-    expect(typeof mockEffect.mock.calls[0][1].methods.setFieldValue).toBe('function');
+    expect(typeof mockEffect.mock.calls[0][1].methods.setFieldsValue).toBe('function');
     expect(typeof mockEffect.mock.calls[0][1].methods.setInForm).toBe('function');
   });
 });

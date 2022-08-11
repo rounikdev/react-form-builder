@@ -2,7 +2,7 @@ import { memo, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { useFormRoot } from '@core/Form/providers';
-import { Button } from '@ui';
+import { Button, Text } from '@ui';
 
 import styles from './FormStateDisplay.scss';
 
@@ -12,7 +12,7 @@ const FormStateDisplay = () => {
   const {
     errors,
     formData,
-    methods: { focusField, scrollFieldIntoView, setFieldValue }
+    methods: { focusField, scrollFieldIntoView, setFieldsValue }
   } = useFormRoot();
 
   const element = document.getElementById('form-state-display');
@@ -68,7 +68,7 @@ const FormStateDisplay = () => {
                   <Button
                     className={styles.Button}
                     dataTest={`set-field-value`}
-                    onClick={() => setFieldValue({ id: fieldIdInput, value: inputValue })}
+                    onClick={() => setFieldsValue({ [fieldIdInput]: inputValue })}
                     text="Set"
                   />
                 </div>
@@ -78,7 +78,7 @@ const FormStateDisplay = () => {
                       className={styles.Button}
                       dataTest={`set-field-value-${fieldId}`}
                       key={fieldId}
-                      onClick={() => setFieldValue({ id: fieldId, value: inputValue })}
+                      onClick={() => setFieldsValue({ [fieldId]: inputValue })}
                       text={fieldId}
                     />
                   );
@@ -91,6 +91,27 @@ const FormStateDisplay = () => {
             <h3>Form Data:</h3>
             <pre data-test="form-state">{JSON.stringify(formData, null, 2)}</pre>
           </div>
+
+          <Button
+            className={styles.Button}
+            dataTest={`set-multiple-field-value`}
+            onClick={() => setFieldsValue({ ['filed_0']: 'John Doe', ['filed_1']: 'Mary Poppins' })}
+            text="Set Multiple"
+          />
+          <Text
+            dataTest="field-0"
+            disabled={false}
+            id="field-0"
+            initialValue="John"
+            name="filed_0"
+          />
+          <Text
+            dataTest="field-1"
+            disabled={false}
+            id="field-1"
+            initialValue="Mary"
+            name="filed_1"
+          />
         </div>,
         element
       )

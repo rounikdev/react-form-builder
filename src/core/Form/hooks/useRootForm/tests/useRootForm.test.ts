@@ -11,7 +11,7 @@ describe('useRootForm', () => {
 
     const { result } = renderHook(() => useRootForm({ formData }));
 
-    expect(result.current.fieldToBeSet).toEqual({ id: '', value: undefined });
+    expect(result.current.fieldsToBeSet).toEqual({});
 
     expect(result.current.errors).toEqual({});
 

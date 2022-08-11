@@ -4,10 +4,7 @@ import { FormRootProviderContext, FormRootProviderProps } from '@core/Form/types
 
 const FormRootContext = createContext<FormRootProviderContext>({
   errors: {},
-  fieldToBeSet: {
-    id: '',
-    value: undefined
-  },
+  fieldsToBeSet: {},
   focusedField: '',
   formData: {},
   methods: {
@@ -21,7 +18,7 @@ const FormRootContext = createContext<FormRootProviderContext>({
     setDirty: () => {
       // default function
     },
-    setFieldValue: () => {
+    setFieldsValue: () => {
       // default function
     },
     setResetFlag: () => {
