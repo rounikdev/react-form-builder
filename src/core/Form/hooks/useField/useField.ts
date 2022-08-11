@@ -46,10 +46,10 @@ export const useField = <T>({
   const { isEdit } = useFormEditContext();
 
   const {
-    fieldToBeSet,
+    fieldsToBeSet,
     focusedField,
     formData,
-    methods: { focusField, registerFieldErrors, scrollFieldIntoView, setDirty, setFieldValue },
+    methods: { focusField, registerFieldErrors, scrollFieldIntoView, setDirty, setFieldsValue },
     resetFlag,
     resetRecords,
     scrolledField
@@ -295,13 +295,12 @@ export const useField = <T>({
 
   // Set value from the root form:
   useUpdate(() => {
-    if (fieldToBeSet.id === fieldId) {
+    if (fieldsToBeSet[fieldId] !== undefined) {
       setDirty();
-      validateField(fieldToBeSet.value, dependencyRef.current);
-
-      setFieldValue({ id: '', value: undefined });
+      validateField(fieldsToBeSet[fieldId], dependencyRef.current);
+      setFieldsValue({ [fieldId]: undefined });
     }
-  }, [fieldToBeSet]);
+  }, [fieldsToBeSet]);
 
   const onBlurHandler = useCallback(
     (event: FocusEvent) => {

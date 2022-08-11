@@ -22,7 +22,7 @@ export const FormRoot: FC<FormRootProps> = memo(
       cancel,
       edit,
       errors,
-      fieldToBeSet,
+      fieldsToBeSet,
       focusedField,
       focusField,
       forceValidate,
@@ -38,7 +38,7 @@ export const FormRoot: FC<FormRootProps> = memo(
       scrolledField,
       scrollFieldIntoView,
       setDirty,
-      setFieldValue,
+      setFieldsValue,
       setResetFlag,
       setResetRecords
     } = useRootForm({
@@ -80,7 +80,7 @@ export const FormRoot: FC<FormRootProps> = memo(
         reset,
         save,
         scrollFieldIntoView,
-        setFieldValue,
+        setFieldsValue,
         setInForm
       }),
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -90,7 +90,7 @@ export const FormRoot: FC<FormRootProps> = memo(
     const formContext = useMemo<FormContext>(() => {
       return {
         ...context,
-        fieldToBeSet,
+        fieldsToBeSet,
         focusedField,
         forceValidateFlag,
         isEdit,
@@ -100,7 +100,7 @@ export const FormRoot: FC<FormRootProps> = memo(
       };
     }, [
       context,
-      fieldToBeSet,
+      fieldsToBeSet,
       focusedField,
       forceValidateFlag,
       isEdit,
@@ -115,7 +115,7 @@ export const FormRoot: FC<FormRootProps> = memo(
         registerFieldErrors,
         scrollFieldIntoView,
         setDirty,
-        setFieldValue,
+        setFieldsValue,
         setResetFlag,
         setResetRecords
       }),
@@ -126,7 +126,7 @@ export const FormRoot: FC<FormRootProps> = memo(
     const formRootContext = useMemo(() => {
       return {
         errors,
-        fieldToBeSet,
+        fieldsToBeSet,
         focusedField,
         formData: value,
         methods: rootProviderMethods,
@@ -138,7 +138,7 @@ export const FormRoot: FC<FormRootProps> = memo(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
       errors,
-      fieldToBeSet,
+      fieldsToBeSet,
       focusedField,
       pristine,
       resetRecords,

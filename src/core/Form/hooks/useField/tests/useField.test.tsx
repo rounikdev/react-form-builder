@@ -714,7 +714,7 @@ describe('useField', () => {
       return (
         <button
           data-test="set-field-value"
-          onClick={() => methods.setFieldValue({ id: name, value: changedValue })}
+          onClick={() => methods.setFieldsValue({ [name]: changedValue })}
         ></button>
       );
     };
@@ -755,7 +755,7 @@ describe('useField', () => {
   });
 
   // eslint-disable-next-line max-len
-  it('Sets the value from the root form context with nested form. Validating with dependency.', async () => {
+  it.only('Sets the value from the root form context with nested form. Validating with dependency.', async () => {
     const initialValue = 'Ivan';
     const changedValue = 'Peter';
     const parentFormName = 'user';
@@ -769,9 +769,7 @@ describe('useField', () => {
       return (
         <button
           data-test="set-field-value"
-          onClick={() =>
-            methods.setFieldValue({ id: `${parentFormName}.${name}`, value: changedValue })
-          }
+          onClick={() => methods.setFieldsValue({ [`${parentFormName}.${name}`]: changedValue })}
         ></button>
       );
     };

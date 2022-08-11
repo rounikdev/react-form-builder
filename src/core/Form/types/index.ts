@@ -71,10 +71,7 @@ export interface FieldErrorsPayload {
   fieldId: string;
 }
 
-export interface SetFieldValuePayload {
-  id: string;
-  value?: FormStateEntryValue;
-}
+export type SetFieldsValuePayload = Record<string, FormStateEntryValue>;
 
 export interface FormContext {
   forceValidateFlag: ForceValidateFlag;
@@ -184,7 +181,7 @@ export interface UseFieldReturnType<T> {
 
 export interface FormRootProviderContext {
   errors: FieldErrors;
-  fieldToBeSet: SetFieldValuePayload;
+  fieldsToBeSet: SetFieldsValuePayload;
   focusedField: string;
   formData: FormStateEntryValue;
   methods: {
@@ -192,7 +189,7 @@ export interface FormRootProviderContext {
     registerFieldErrors?: (payload: FieldErrorsPayload) => void;
     scrollFieldIntoView: (fieldId: string) => void;
     setDirty: () => void;
-    setFieldValue: (payload: SetFieldValuePayload) => void;
+    setFieldsValue: (payload: SetFieldsValuePayload) => void;
     setResetFlag: Dispatch<SetStateAction<ResetFlag>>;
     setResetRecords: Dispatch<SetStateAction<Record<string, FormStateEntry>>>;
   };

@@ -35,12 +35,12 @@ interface ValueSetterProps {
 
 const ValueSetter: FC<ValueSetterProps> = ({ name, value }) => {
   const {
-    methods: { setFieldValue }
+    methods: { setFieldsValue }
   } = useFormRoot();
 
   useMount(() => {
     setTimeout(() => {
-      setFieldValue({ id: name, value });
+      setFieldsValue({ [name]: value });
     });
   });
 

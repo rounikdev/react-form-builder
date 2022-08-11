@@ -14,7 +14,7 @@ const extractLabel = (item: Fruit) => item.label ?? '';
 
 const ValueSetter: FC = () => {
   const {
-    methods: { setFieldValue }
+    methods: { setFieldsValue }
   } = useFormRoot();
 
   return (
@@ -22,7 +22,7 @@ const ValueSetter: FC = () => {
       <div
         data-test="set-single"
         onClick={() => {
-          setFieldValue({ id: 'fruits', value: [options[0]] });
+          setFieldsValue({ fruits: [options[0]] });
         }}
       >
         Set single
@@ -30,7 +30,7 @@ const ValueSetter: FC = () => {
       <div
         data-test="set-multiple"
         onClick={() => {
-          setFieldValue({ id: 'fruits', value: [options[0], options[1]] });
+          setFieldsValue({ fruits: [options[0], options[1]] });
         }}
       >
         Set multiple
@@ -38,7 +38,7 @@ const ValueSetter: FC = () => {
       <div
         data-test="set-different-multiple"
         onClick={() => {
-          setFieldValue({ id: 'fruits', value: [options[1], options[2]] });
+          setFieldsValue({ fruits: [options[1], options[2]] });
         }}
       >
         Set multiple
@@ -46,7 +46,7 @@ const ValueSetter: FC = () => {
       <div
         data-test="set-non-existing"
         onClick={() => {
-          setFieldValue({ id: 'fruits', value: [{ id: 'tomatoes', label: 'tomatoes' }] });
+          setFieldsValue({ fruits: [{ id: 'tomatoes', label: 'tomatoes' }] });
         }}
       >
         Set non existing
@@ -54,9 +54,8 @@ const ValueSetter: FC = () => {
       <div
         data-test="set-non-existing-multiple"
         onClick={() => {
-          setFieldValue({
-            id: 'fruits',
-            value: [
+          setFieldsValue({
+            fruits: [
               { id: 'tomatoes', label: 'tomatoes' },
               { id: 'apples', label: 'apples' }
             ]
