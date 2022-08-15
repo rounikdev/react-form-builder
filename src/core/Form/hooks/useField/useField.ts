@@ -182,19 +182,26 @@ export const useField = <T>({
     []
   );
 
-  useUpdateOnly(() => {
-    setState((current) => ({
-      ...current,
-      touched: true
-    }));
-  }, [context.forceValidateFlag]);
-
   const fieldId = useMemo(() => {
     const parentId = context.methods.getFieldId();
 
     return parentId ? `${parentId}.${name}` : name;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context.methods.getFieldId, name]);
+
+  useUpdateOnly(() => {
+    if (Object.keys(context.forceValidateFlag).length === 0) {
+      setState((current) => ({
+        ...current,
+        touched: true
+      }));
+    } else if (typeof context.forceValidateFlag[fieldId] === 'boolean') {
+      setState((current) => ({
+        ...current,
+        touched: context.forceValidateFlag[fieldId]
+      }));
+    }
+  }, [context.forceValidateFlag]);
 
   // Validate only when dependency
   // has changed. That's why we use
@@ -337,6 +344,7 @@ export const useField = <T>({
   );
 
   return {
+    fieldId,
     fieldRef,
     isEdit,
     isRequired,

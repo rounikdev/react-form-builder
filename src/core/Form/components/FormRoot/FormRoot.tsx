@@ -112,6 +112,7 @@ export const FormRoot: FC<FormRootProps> = memo(
     const rootProviderMethods = useMemo(
       () => ({
         focusField,
+        forceValidate,
         registerFieldErrors,
         scrollFieldIntoView,
         setDirty,

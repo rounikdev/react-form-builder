@@ -109,6 +109,34 @@ const Template: Story<FC> = () => {
               </div>
             </ConditionalFields>
             <SubmitButton />
+            <FormUser>
+              {({ formRootContext }) => {
+                return (
+                  <div>
+                    <Button
+                      dataTest="force-validate-selected"
+                      onClick={() => {
+                        formRootContext.methods.forceValidate({
+                          repeatPassword: true,
+                          'users.2.firstName': true
+                        });
+                      }}
+                      text="Force validate selected fields"
+                    />
+                    <Button
+                      dataTest="set-selected-to-un-touched"
+                      onClick={() => {
+                        formRootContext.methods.forceValidate({
+                          repeatPassword: false,
+                          'users.2.firstName': false
+                        });
+                      }}
+                      text="Make selected fields not-touched"
+                    />
+                  </div>
+                );
+              }}
+            </FormUser>
           </FormRoot>
         </div>
         <div className={styles.FormStateDisplay} id="form-state-display"></div>

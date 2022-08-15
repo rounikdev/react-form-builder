@@ -301,4 +301,26 @@ describe('FormDemo', () => {
 
     cy.get('[data-test="users-form"').invoke('attr', 'data-pristine').should('equal', 'false');
   });
+
+  it('Force validate selected fields and then set un-touched', () => {
+    mount(<FormDemo />);
+
+    // Enable edit
+    cy.get('[data-test="edit-form"').click();
+
+    cy.get('[data-test="add-user"]').click();
+
+    cy.get('[data-test="error-field-first-name-2-errors"]').should('not.exist');
+    cy.get('[data-test="error-field-repeat-password-errors"]').should('not.exist');
+
+    cy.get('[data-test="force-validate-selected"]').click();
+
+    cy.get('[data-test="error-field-first-name-2-errors"]').should('exist');
+    cy.get('[data-test="error-field-repeat-password-errors"]').should('exist');
+
+    cy.get('[data-test="set-selected-to-un-touched"]').click();
+
+    cy.get('[data-test="error-field-first-name-2-errors"]').should('not.exist');
+    cy.get('[data-test="error-field-repeat-password-errors"]').should('not.exist');
+  });
 });

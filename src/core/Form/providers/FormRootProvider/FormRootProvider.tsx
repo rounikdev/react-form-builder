@@ -11,6 +11,9 @@ const FormRootContext = createContext<FormRootProviderContext>({
     focusField: () => {
       // default function
     },
+    forceValidate: () => {
+      // default function
+    },
     registerFieldErrors: undefined,
     scrollFieldIntoView: () => {
       // default function
