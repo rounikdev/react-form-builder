@@ -4,7 +4,12 @@ import { useUnmount, useUpdate, useUpdatedRef, useUpdateOnly } from '@rounik/rea
 
 import { useForm } from '@core/Form/hooks/useForm/useForm';
 import { useFormEditContext, useFormRoot } from '@core/Form/providers';
-import { ForceValidateFlag, FormStateEntry, FormStateEntryValue } from '@core/Form/types';
+import {
+  ForceValidateFlag,
+  ForceValidateMethod,
+  FormStateEntry,
+  FormStateEntryValue
+} from '@core/Form/types';
 
 interface UseNestedFormArgs {
   name: string;
@@ -30,7 +35,10 @@ export const useNestedForm = ({ name, valid, value }: UseNestedFormArgs) => {
 
   const nameRef = useUpdatedRef(name);
 
-  const forceValidate = useCallback(() => setForceValidateFlag({}), []);
+  const forceValidate: ForceValidateMethod = useCallback(
+    (customForceValidateFlag = {}) => setForceValidateFlag(customForceValidateFlag),
+    []
+  );
 
   const getFieldId = useCallback(() => {
     const parentId = parentContext.methods.getFieldId();
@@ -108,7 +116,7 @@ export const useNestedForm = ({ name, valid, value }: UseNestedFormArgs) => {
   }, [valid, value]);
 
   useUpdateOnly(() => {
-    forceValidate();
+    forceValidate(parentContext.forceValidateFlag);
   }, [parentContext.forceValidateFlag]);
 
   /**

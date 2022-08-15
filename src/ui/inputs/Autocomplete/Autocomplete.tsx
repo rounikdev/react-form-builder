@@ -148,7 +148,7 @@ const BaseAutocomplete = <T,>({
           renderOption={renderOption}
           rowsToDisplay={rowsToDisplay}
         />
-        <ErrorField errors={errors} isError={isError} />
+        <ErrorField dataTest={`error-field-${dataTest}`} errors={errors} isError={isError} />
       </div>
     </Provider>
   );

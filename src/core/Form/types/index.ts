@@ -62,7 +62,9 @@ export interface FormState {
   [key: string]: FormStateEntry;
 }
 
-export type ForceValidateFlag = Record<string, unknown>;
+export type ForceValidateFlag = Record<string, boolean>;
+
+export type ForceValidateMethod = (customForceValidateFlag?: ForceValidateFlag) => void;
 
 export type ResetFlag = { resetKey: string };
 
@@ -81,7 +83,7 @@ export interface FormContext {
   methods: {
     cancel: () => void;
     edit: () => void;
-    forceValidate: () => void;
+    forceValidate: ForceValidateMethod;
     getFieldId: () => string;
     removeFromForm: (payload: FormRemovePayload) => void;
     reset: () => void;
@@ -166,6 +168,7 @@ export interface UseFieldState<T> {
 
 export interface UseFieldReturnType<T> {
   errors: ValidationError[];
+  fieldId: string;
   fieldRef: MutableRefObject<HTMLElement | HTMLInputElement | null>;
   focused: boolean;
   isEdit: boolean;
@@ -186,6 +189,7 @@ export interface FormRootProviderContext {
   formData: FormStateEntryValue;
   methods: {
     focusField: (fieldId: string) => void;
+    forceValidate: ForceValidateMethod;
     registerFieldErrors?: (payload: FieldErrorsPayload) => void;
     scrollFieldIntoView: (fieldId: string) => void;
     setDirty: () => void;

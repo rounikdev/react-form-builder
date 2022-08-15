@@ -7,6 +7,7 @@ import {
   FieldErrors,
   FieldErrorsPayload,
   ForceValidateFlag,
+  ForceValidateMethod,
   FormStateEntryValue,
   ResetFlag,
   SetFieldsValuePayload
@@ -41,8 +42,8 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
     []
   );
 
-  const forceValidate = useCallback(() => {
-    setForceValidateFlag({});
+  const forceValidate: ForceValidateMethod = useCallback((customForceValidateFlag = {}) => {
+    setForceValidateFlag(customForceValidateFlag);
   }, []);
 
   const [isEdit, setIsEdit] = useState(false);

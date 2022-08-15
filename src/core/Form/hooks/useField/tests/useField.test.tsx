@@ -755,7 +755,7 @@ describe('useField', () => {
   });
 
   // eslint-disable-next-line max-len
-  it.only('Sets the value from the root form context with nested form. Validating with dependency.', async () => {
+  it('Sets the value from the root form context with nested form. Validating with dependency.', async () => {
     const initialValue = 'Ivan';
     const changedValue = 'Peter';
     const parentFormName = 'user';

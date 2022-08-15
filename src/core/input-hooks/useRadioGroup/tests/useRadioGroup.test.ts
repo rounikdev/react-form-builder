@@ -55,6 +55,7 @@ describe('useRadioGroup', () => {
     const returnPropTypes: { [key: string]: any } = {
       enhancedOptions: 'object',
       errors: 'object',
+      fieldId: 'string',
       fieldRef: 'object',
       focused: 'boolean',
       isEdit: 'boolean',

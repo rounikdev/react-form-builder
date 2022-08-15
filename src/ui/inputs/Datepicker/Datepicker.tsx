@@ -76,7 +76,11 @@ export const Datepicker: FC<DatepickerProps> = memo(
               </TabTrap>
             ) : null}
           </Animator>
-          <ErrorField errors={context.errors} isError={isError} />
+          <ErrorField
+            dataTest={`error-field-${dataTest}`}
+            errors={context.errors}
+            isError={isError}
+          />
         </div>
       </Provider>
     );

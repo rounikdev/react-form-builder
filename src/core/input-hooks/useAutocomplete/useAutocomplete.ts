@@ -75,6 +75,7 @@ export const useAutocomplete = <T>({
 }: UseAutocompleteArgs<T>): UseAutocompleteReturnType<T> => {
   const {
     errors,
+    fieldId,
     fieldRef,
     focused: isFocused,
     isEdit,
@@ -297,6 +298,7 @@ export const useAutocomplete = <T>({
     close,
     context: contextValue,
     errors,
+    fieldId,
     fieldRef,
     filteredList,
     focused: isFocused,

@@ -49,6 +49,7 @@ describe('useTextInput', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const returnPropTypes: { [key: string]: any } = {
       errors: 'object',
+      fieldId: 'string',
       fieldRef: 'object',
       focused: 'boolean',
       isEdit: 'boolean',
