@@ -98,7 +98,7 @@ export const useAccordion = ({
 
   useLayoutEffect(() => {
     if (isOpen && height === 0 && hiddenContent.current) {
-      setHeight(hiddenContent.current.offsetHeight || height);
+      setHeight(hiddenContent.current.offsetHeight || 'auto');
     }
   }, [isOpen, height]);
 

@@ -99,6 +99,13 @@ const Template: Story<FC> = () => {
           Unmount bears
         </button>
         <AccordionGroup maxOpened={1}>
+          <Accordion dataTest="empty" id="empty" renderHeader={renderHeader('Empty')}>
+            {[].map(() => (
+              <div data-test="empty" key="a">
+                hi
+              </div>
+            ))}
+          </Accordion>
           <Accordion
             dataTest="cats"
             id="cats"
