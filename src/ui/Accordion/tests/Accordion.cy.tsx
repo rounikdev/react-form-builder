@@ -62,5 +62,8 @@ describe('Accordion', () => {
 
     // Unmount the third option:
     cy.get('[data-test="unmount-bears"]').click();
+
+    cy.get('[data-test="empty-header"]').click();
+    cy.get('#empty-content').should('have.attr', 'style', 'height: auto;');
   });
 });
