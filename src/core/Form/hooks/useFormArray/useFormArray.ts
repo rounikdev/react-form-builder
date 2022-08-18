@@ -1,6 +1,6 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useLayoutEffect, useState } from 'react';
 
-import { useUpdateOnly } from '@rounik/react-custom-hooks';
+import { useIsMounted } from '@rounik/react-custom-hooks';
 
 import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '@core/Form/constants';
 import { useFormRoot } from '@core/Form/providers';
@@ -36,8 +36,12 @@ export const useFormArray = <T>({
     [setDirty]
   );
 
-  useUpdateOnly(() => {
+  // TODO: create useLayoutUpdateOnly hook, based on useLayoutEffect
+  const isMounted = useIsMounted();
+
+  useLayoutEffect(() => {
     if (
+      isMounted.current &&
       resetFlag.resetKey &&
       (fieldId.indexOf(resetFlag.resetKey) === 0 ||
         resetFlag.resetKey === ROOT_RESET_RECORD_KEY ||
@@ -60,8 +64,9 @@ export const useFormArray = <T>({
 
       // Prevent UI from flickering because
       // the rerendering of the array:
-      requestAnimationFrame(() => setList(resetValue));
+      queueMicrotask(() => setList(resetValue));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resetFlag]);
 
   return { add, list, remove };
