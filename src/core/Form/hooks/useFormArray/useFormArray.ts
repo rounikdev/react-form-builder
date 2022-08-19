@@ -36,7 +36,7 @@ export const useFormArray = <T>({
     [setDirty]
   );
 
-  // TODO: create useLayoutUpdateOnly hook, based on useLayoutEffect
+  // TODO: create useLayoutUpdateOnly hook, based on useLayoutEffect in the hooks package
   const isMounted = useIsMounted();
 
   useLayoutEffect(() => {
