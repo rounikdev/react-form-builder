@@ -11,6 +11,8 @@
 }
 
 .Form {
+  position: relative;
+
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
@@ -50,4 +52,42 @@
 
   font-weight: bold;
   font-size: 1.4rem;
+}
+
+// ************** Form with nested modals ************ //
+.ContactsForm {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: none;
+
+  width: 100%;
+  padding: var(--offset-medium);
+
+  background-color: var(--color-card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow-active);
+
+  &.Opened {
+    display: initial;
+  }
+
+  .Contact {
+    display: flex;
+    align-items: center;
+
+    .Text {
+      flex: 1;
+      margin-right: var(--offset-medium);
+    }
+
+    .Checkbox {
+      width: 10rem;
+    }
+  }
+
+  .Actions {
+    margin-top: var(--offset-medium);
+  }
 }
