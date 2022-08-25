@@ -1,23 +1,29 @@
 import { memo } from 'react';
 
-import { FormUser, useForm } from '@core';
+import { FormUser, useForm, useFormRoot } from '@core';
 import { Button } from '@ui';
 
 import styles from './SubmitButton.scss';
 
 const SubmitButton = () => {
   const context = useForm();
+  const rootContext = useFormRoot();
 
   return (
     <div className={styles.Container}>
       <Button
         dataTest="submit"
-        onClick={context.methods.forceValidate}
+        onClick={() => context.methods.forceValidate()}
         type="submit"
         text="Submit"
         variant={context.valid ? undefined : 'Warn'}
       />
       <Button dataTest="reset" onClick={() => context.methods.reset()} text="Reset" />
+      <Button
+        dataTest="reset-list"
+        onClick={() => rootContext.methods.reset({ resetList: ['users.0.phones'] })}
+        text="Reset users.0.phones"
+      />
       <FormUser>
         {({ formContext: { isEdit, methods } }) => {
           return (

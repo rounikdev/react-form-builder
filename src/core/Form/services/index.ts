@@ -1,4 +1,5 @@
-import { FormState, FormStateEntry } from '../types';
+import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '../constants';
+import { FormState, FormStateEntry, ResetFlag } from '../types';
 
 export const flattenFormState = (obj: FormStateEntry, [k, v]: [string, FormStateEntry]) => {
   return {
@@ -23,5 +24,20 @@ export const flattenFormArrayState = (state: FormState): FormStateEntry => {
       };
     },
     { valid: true as boolean, value: [] as unknown[] }
+  );
+};
+
+export const shouldBeReset = ({
+  fieldId,
+  resetFlag
+}: {
+  fieldId: string;
+  resetFlag: ResetFlag;
+}) => {
+  return (
+    (resetFlag.resetKey && fieldId.indexOf(resetFlag.resetKey) === 0) ||
+    resetFlag.resetKey === ROOT_RESET_RECORD_KEY ||
+    resetFlag.resetKey === INITIAL_RESET_RECORD_KEY ||
+    resetFlag.resetList?.includes(fieldId)
   );
 };

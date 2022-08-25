@@ -111,10 +111,13 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
 
   const getFieldId = useCallback(() => '', []);
 
-  const reset = useCallback(() => {
-    setResetFlag({ resetKey: INITIAL_RESET_RECORD_KEY });
-
-    setPristine(true);
+  const reset = useCallback(({ resetList }: { resetList?: string[] } = {}) => {
+    if (resetList) {
+      setResetFlag({ resetKey: '', resetList });
+    } else {
+      setResetFlag({ resetKey: INITIAL_RESET_RECORD_KEY });
+      setPristine(true);
+    }
   }, []);
 
   // Store the initial reset state

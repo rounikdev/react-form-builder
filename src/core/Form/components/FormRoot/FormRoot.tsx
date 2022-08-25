@@ -114,6 +114,7 @@ export const FormRoot: FC<FormRootProps> = memo(
         focusField,
         forceValidate,
         registerFieldErrors,
+        reset,
         scrollFieldIntoView,
         setDirty,
         setFieldsValue,

@@ -19,8 +19,10 @@ import {
   useUpdateOnly
 } from '@rounik/react-custom-hooks';
 
+import { ROOT_RESET_RECORD_KEY } from '@core/Form/constants';
 import { useForm } from '@core/Form/hooks/useForm/useForm';
 import { useFormEditContext, useFormRoot } from '@core/Form/providers';
+import { shouldBeReset } from '@core/Form/services';
 import {
   FormStateEntryValue,
   UseFieldConfig,
@@ -214,17 +216,22 @@ export const useField = <T>({
   useUpdateOnly(async () => {
     const fieldPath = fieldId.split('.');
 
-    const resetValue =
-      GlobalModel.getNestedValue(resetRecords[resetFlag.resetKey], fieldPath) ?? initialValue;
+    if (shouldBeReset({ fieldId, resetFlag })) {
+      const resetValue =
+        GlobalModel.getNestedValue(
+          resetRecords[resetFlag.resetKey || ROOT_RESET_RECORD_KEY],
+          fieldPath
+        ) ?? initialValue;
 
-    await validateField(resetValue, dependency);
+      await validateField(resetValue, dependency);
 
-    setState((current) => ({
-      ...current,
-      focused: false,
-      touched: false,
-      validating: false
-    }));
+      setState((current) => ({
+        ...current,
+        focused: false,
+        touched: false,
+        validating: false
+      }));
+    }
   }, [resetFlag]);
 
   useUnmount(() => {
