@@ -58,6 +58,7 @@ describe('useTextInput', () => {
       onChangeHandler: 'function',
       onFocusHandler: 'function',
       touched: 'boolean',
+      updatedDependency: 'undefined',
       valid: 'boolean',
       validating: 'boolean',
       value: 'string'

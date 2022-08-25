@@ -177,6 +177,8 @@ export interface UseFieldReturnType<T> {
   onChangeHandler: (value: T) => Promise<void>;
   onFocusHandler: FocusEventHandler<HTMLElement>;
   touched: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  updatedDependency: any;
   valid: boolean;
   validating: boolean;
   value: T;
@@ -263,3 +265,10 @@ export interface FormUserProps {
 }
 
 export type Pattern = string;
+
+export interface UseFieldDependencyConfig<T> {
+  dependencyExtractor?: DependencyExtractor;
+  disabled?: boolean | ((dependencyValue: FormStateEntryValue) => boolean);
+  initialValue?: T | ((dependencyValue: FormStateEntryValue) => T);
+  label?: string | ((dependencyValue: FormStateEntryValue) => string);
+}
