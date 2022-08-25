@@ -213,7 +213,20 @@ export interface FormSideEffectProps {
   dependencyExtractor: (formData: FormStateEntryValue) => unknown[];
   effect: (
     dependencies: unknown[],
-    { methods }: { methods: FormContext['methods'] }
+    {
+      methods
+    }: {
+      methods: {
+        cancel: () => void;
+        edit: () => void;
+        forceValidate: ForceValidateMethod;
+        getFieldId: () => string;
+        removeFromForm: (payload: FormRemovePayload) => void;
+        reset: ({ resetList }: { resetList?: ResetFlag['resetList'] }) => void;
+        save: () => void;
+        setInForm: (payload: FormSetPayload) => void;
+      };
+    }
   ) => void | Promise<void>;
 }
 

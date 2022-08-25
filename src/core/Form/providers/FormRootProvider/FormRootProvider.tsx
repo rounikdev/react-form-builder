@@ -15,6 +15,9 @@ const FormRootContext = createContext<FormRootProviderContext>({
       // default function
     },
     registerFieldErrors: undefined,
+    reset: () => {
+      // default function
+    },
     scrollFieldIntoView: () => {
       // default function
     },
