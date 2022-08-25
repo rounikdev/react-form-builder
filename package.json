@@ -1,6 +1,6 @@
 {
   "name": "@rounik/react-form-builder",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "description": "React form builder with field hooks for building custom design systems",
   "keywords": [
     "design system",

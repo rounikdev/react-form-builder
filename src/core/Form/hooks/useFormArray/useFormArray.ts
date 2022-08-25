@@ -2,8 +2,9 @@ import { useCallback, useLayoutEffect, useState } from 'react';
 
 import { useIsMounted } from '@rounik/react-custom-hooks';
 
-import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '@core/Form/constants';
+import { ROOT_RESET_RECORD_KEY } from '@core/Form/constants';
 import { useFormRoot } from '@core/Form/providers';
+import { shouldBeReset } from '@core/Form/services';
 import { GlobalModel } from '@services';
 
 export const useFormArray = <T>({
@@ -40,15 +41,9 @@ export const useFormArray = <T>({
   const isMounted = useIsMounted();
 
   useLayoutEffect(() => {
-    if (
-      isMounted.current &&
-      resetFlag.resetKey &&
-      (fieldId.indexOf(resetFlag.resetKey) === 0 ||
-        resetFlag.resetKey === ROOT_RESET_RECORD_KEY ||
-        resetFlag.resetKey === INITIAL_RESET_RECORD_KEY)
-    ) {
+    if (isMounted.current && shouldBeReset({ fieldId, resetFlag })) {
       const resetValue = (GlobalModel.getNestedValue(
-        resetRecords[resetFlag.resetKey],
+        resetRecords[resetFlag.resetKey || ROOT_RESET_RECORD_KEY],
         fieldId.split('.')
       ) ?? initialValue) as T[];
 

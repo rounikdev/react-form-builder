@@ -66,7 +66,7 @@ export type ForceValidateFlag = Record<string, boolean>;
 
 export type ForceValidateMethod = (customForceValidateFlag?: ForceValidateFlag) => void;
 
-export type ResetFlag = { resetKey: string };
+export type ResetFlag = { resetKey: string; resetList?: string[] };
 
 export interface FieldErrorsPayload {
   fieldErrors: ValidationError[];
@@ -191,6 +191,7 @@ export interface FormRootProviderContext {
     focusField: (fieldId: string) => void;
     forceValidate: ForceValidateMethod;
     registerFieldErrors?: (payload: FieldErrorsPayload) => void;
+    reset: ({ resetList }: { resetList?: ResetFlag['resetList'] }) => void;
     scrollFieldIntoView: (fieldId: string) => void;
     setDirty: () => void;
     setFieldsValue: (payload: SetFieldsValuePayload) => void;

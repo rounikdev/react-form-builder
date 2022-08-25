@@ -47,7 +47,6 @@ export const useNestedForm = ({ name, valid, value }: UseNestedFormArgs) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, parentContext.methods.getFieldId]);
 
-  // TODO: Fix the nested reset issue
   const reset = useCallback(() => {
     setResetFlag({ resetKey: getFieldId() });
   }, [getFieldId, setResetFlag]);
