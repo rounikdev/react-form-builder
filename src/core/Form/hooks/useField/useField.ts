@@ -281,15 +281,17 @@ export const useField = <T>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, state.valid, state.value]);
 
-  const sideEffectRef = useUpdatedRef(sideEffect);
-
   // Execute side effect:
   useEffect(() => {
-    if (sideEffectRef.current) {
-      sideEffectRef.current({ methods: context.methods, value: state.value });
+    if (sideEffect) {
+      sideEffect({
+        dependencyValue: updatedDependency,
+        methods: context.methods,
+        value: state.value
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.value]);
+  }, [state.value, updatedDependency]);
 
   // Focus element from the root form:
   useUpdate(() => {
@@ -357,6 +359,7 @@ export const useField = <T>({
   );
 
   return {
+    dependencyValue: updatedDependency,
     fieldId,
     fieldRef,
     isEdit,
@@ -364,7 +367,6 @@ export const useField = <T>({
     onBlurHandler,
     onChangeHandler,
     onFocusHandler,
-    updatedDependency,
     ...state
   };
 };

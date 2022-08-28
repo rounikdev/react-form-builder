@@ -153,7 +153,15 @@ export interface UseFieldConfig<T> {
   onBlur?: FocusEventHandler<Element>;
   onFocus?: FocusEventHandler<Element>;
   required?: boolean | ((dependencyValue: FormStateEntryValue) => boolean);
-  sideEffect?: ({ methods, value }: { methods: FormContext['methods']; value: T }) => void;
+  sideEffect?: ({
+    dependencyValue,
+    methods,
+    value
+  }: {
+    dependencyValue: FormStateEntryValue;
+    methods: FormContext['methods'];
+    value: T;
+  }) => void;
   validator?: Validator<T>;
 }
 
@@ -167,6 +175,7 @@ export interface UseFieldState<T> {
 }
 
 export interface UseFieldReturnType<T> {
+  dependencyValue: FormStateEntryValue;
   errors: ValidationError[];
   fieldId: string;
   fieldRef: MutableRefObject<HTMLElement | HTMLInputElement | null>;
@@ -177,8 +186,6 @@ export interface UseFieldReturnType<T> {
   onChangeHandler: (value: T) => Promise<void>;
   onFocusHandler: FocusEventHandler<HTMLElement>;
   touched: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  updatedDependency: any;
   valid: boolean;
   validating: boolean;
   value: T;
@@ -267,8 +274,14 @@ export interface FormUserProps {
 export type Pattern = string;
 
 export interface UseFieldDependencyConfig<T> {
-  dependencyExtractor?: DependencyExtractor;
+  dependencyValue: FormStateEntryValue;
   disabled?: boolean | ((dependencyValue: FormStateEntryValue) => boolean);
   initialValue?: T | ((dependencyValue: FormStateEntryValue) => T);
   label?: string | ((dependencyValue: FormStateEntryValue) => string);
+  onChangeHandler?: (value: T) => Promise<void>;
+}
+
+export interface UseFieldDependencyReturnType {
+  disabled: boolean;
+  label: string;
 }

@@ -53,6 +53,7 @@ describe('useRadioGroup', () => {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const returnPropTypes: { [key: string]: any } = {
+      dependencyValue: 'undefined',
       enhancedOptions: 'object',
       errors: 'object',
       fieldId: 'string',
@@ -64,7 +65,6 @@ describe('useRadioGroup', () => {
       onChangeHandler: 'function',
       onFocusHandler: 'function',
       touched: 'boolean',
-      updatedDependency: 'undefined',
       valid: 'boolean',
       validating: 'boolean',
       value: 'string'
