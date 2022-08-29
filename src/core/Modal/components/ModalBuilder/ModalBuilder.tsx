@@ -38,6 +38,7 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
 
   const [isClosed, setIsClosed] = useState(false);
   const [overflow, setOverflow] = useState('hidden');
+  const [opacity, setOpacity] = useState(1);
 
   const hasAnimation = useMemo(
     () => animate || (animate === undefined && baseAnimate),
@@ -76,8 +77,12 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
   const onAnimationEndHandler = useCallback(async () => {
     await setOverflow('auto');
 
+    if (isClosed) {
+      setOpacity(0);
+    }
+
     clearModalsToShow();
-  }, [clearModalsToShow]);
+  }, [clearModalsToShow, isClosed]);
 
   const onBackdropClick = useCallback(
     (event) => {
@@ -102,21 +107,21 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
       overflow,
       ...(alwaysRender
         ? { opacity: visible ? 1 : 0, visibility: visible ? 'visible' : 'hidden' }
-        : {}),
+        : { opacity }),
       ...(hideBackdrop ? { backgroundColor: 'transparent' } : {}),
       ...(!hasAnimation ? { animation: 'none' } : {})
     }),
-    [alwaysRender, hasAnimation, hideBackdrop, overflow, visible]
+    [alwaysRender, hasAnimation, hideBackdrop, opacity, overflow, visible]
   );
 
   const contentStyle: CSSProperties = useMemo(
     () => ({
       ...(alwaysRender
         ? { opacity: visible ? 1 : 0, visibility: visible ? 'visible' : 'hidden' }
-        : {}),
+        : { opacity }),
       ...(!hasAnimation ? { animation: 'none' } : {})
     }),
-    [alwaysRender, hasAnimation, visible]
+    [alwaysRender, hasAnimation, opacity, visible]
   );
 
   const backdropProps = useMemo(

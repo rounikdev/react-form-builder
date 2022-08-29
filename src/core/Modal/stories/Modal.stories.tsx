@@ -43,7 +43,7 @@ const Playground = (args: ModalElement): JSX.Element => {
                               showModalById({
                                 ...args,
                                 clearPreceding: true,
-                                content: (
+                                content: () => (
                                   <p style={{ padding: '4rem', textAlign: 'center' }}>
                                     <span style={{ fontSize: '2rem', fontWeight: 'bold' }}>
                                       Modal 3

@@ -26,7 +26,7 @@ export interface ModalBackdropProps {
 }
 
 export interface ModalContainerProps {
-  children: ReactNode;
+  children: ReactNode | ((args: ModalBackdropProps & { close: () => void }) => ReactNode);
   id: ModalId;
   isClosed: boolean;
   onCloseHandler: MouseEventHandler<HTMLButtonElement>;
@@ -39,7 +39,7 @@ export interface ModalElement {
   closeAutomatically?: boolean;
   Backdrop?: FC<ModalBackdropProps>;
   Container?: FC<ModalContainerProps>;
-  content?: ReactNode;
+  content?: ReactNode | ((args: ModalBackdropProps & { close: () => void }) => ReactNode);
   forceShow?: boolean;
   hideBackdrop?: boolean;
   id: ModalId;
