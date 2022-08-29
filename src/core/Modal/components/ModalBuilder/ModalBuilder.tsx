@@ -77,7 +77,10 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
   const onAnimationEndHandler = useCallback(async () => {
     await setOverflow('auto');
 
+    console.log('1 onAnimationEndHandler');
+
     if (isClosed) {
+      console.log('2 onAnimationEndHandler isClosed');
       setOpacity(0);
     }
 
@@ -171,6 +174,8 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
       clearModalsToShow();
     }
   }, [clearModalsToShow, hasAnimation]);
+
+  console.log('3 backdropProps: ', backdropProps);
 
   return BackdropTag ? (
     <BackdropTag id={id} isClosed={isClosed} props={backdropProps}>
