@@ -24,7 +24,10 @@ export interface UseAutocompleteArgs<T>
 }
 
 export interface UseAutocompleteReturnType<T>
-  extends Omit<UseFieldReturnType<T>, 'onChangeHandler' | 'value' | 'onBlurHandler'> {
+  extends Omit<
+    UseFieldReturnType<T>,
+    'onChangeHandler' | 'value' | 'onBlurHandler' | 'dependencyValue'
+  > {
   close: AutocompleteContext['close'];
   context: AutocompleteContext;
   filteredList: T[];
