@@ -70,7 +70,7 @@ const TestInput: FC<TestInputProps<string>> = ({
   sideEffect,
   validator
 }) => {
-  const { fieldRef, ...state } = useField<string>({
+  const { dependencyValue, fieldRef, ...state } = useField<string>({
     dependencyExtractor,
     formatter,
     initialValue: initialValue || '',

@@ -46,6 +46,7 @@ describe('useCheckboxInput', () => {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const returnPropTypes: { [key: string]: any } = {
+      dependencyValue: 'undefined',
       errors: 'object',
       fieldId: 'string',
       fieldRef: 'object',
