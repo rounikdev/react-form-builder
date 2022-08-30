@@ -69,14 +69,20 @@ export const useField = <T>({
     }
   }, [dependencyExtractor, formData]);
 
-  const dependencyRef = useUpdatedRef(dependency);
+  const updatedDependency = useMemo(
+    () => dependency,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [typeof dependency === 'bigint' ? dependency : JSON.stringify(dependency)]
+  );
+
+  const dependencyRef = useUpdatedRef(updatedDependency);
 
   let stateValue = initialValue;
 
   useBeforeFirstRender(() => {
     if (formatter) {
       stateValue = formatter({
-        dependencyValue: dependency,
+        dependencyValue: updatedDependency,
         newValue: initialValue
       });
     } else {
@@ -121,9 +127,9 @@ export const useField = <T>({
       return required;
     }
 
-    return required(dependency);
+    return required(updatedDependency);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [typeof dependency === 'bigint' ? dependency : JSON.stringify(dependency)]);
+  }, [updatedDependency]);
 
   const validateField = useCallback(
     async (value: T, dependencyValue?: FormStateEntryValue, useDependency?: boolean) => {
@@ -205,13 +211,13 @@ export const useField = <T>({
     }
   }, [context.forceValidateFlag]);
 
-  // Validate only when dependency
+  // Validate only when updatedDependency
   // has changed. That's why we use
   // ref for the value:
   useEffect(() => {
-    validateField(state.value, dependency, true);
+    validateField(state.value, updatedDependency, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [typeof dependency === 'bigint' ? dependency : JSON.stringify(dependency)]);
+  }, [updatedDependency]);
 
   useUpdateOnly(async () => {
     const fieldPath = fieldId.split('.');
@@ -223,7 +229,7 @@ export const useField = <T>({
           fieldPath
         ) ?? initialValue;
 
-      await validateField(resetValue, dependency);
+      await validateField(resetValue, updatedDependency);
 
       setState((current) => ({
         ...current,
@@ -275,15 +281,17 @@ export const useField = <T>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, state.valid, state.value]);
 
-  const sideEffectRef = useUpdatedRef(sideEffect);
-
   // Execute side effect:
   useEffect(() => {
-    if (sideEffectRef.current) {
-      sideEffectRef.current({ methods: context.methods, value: state.value });
+    if (sideEffect) {
+      sideEffect({
+        dependencyValue: updatedDependency,
+        methods: context.methods,
+        value: state.value
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.value]);
+  }, [state.value, updatedDependency]);
 
   // Focus element from the root form:
   useUpdate(() => {
@@ -338,10 +346,10 @@ export const useField = <T>({
     (val) => {
       setDirty();
 
-      return validateField(val, dependency);
+      return validateField(val, updatedDependency);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [typeof dependency === 'bigint' ? dependency : JSON.stringify(dependency), validateField]
+    [updatedDependency, validateField]
   );
 
   const onFocusHandler = useCallback(
@@ -357,6 +365,7 @@ export const useField = <T>({
   );
 
   return {
+    dependencyValue: updatedDependency,
     fieldId,
     fieldRef,
     isEdit,

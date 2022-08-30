@@ -39,7 +39,7 @@ export interface ModalElement {
   closeAutomatically?: boolean;
   Backdrop?: FC<ModalBackdropProps>;
   Container?: FC<ModalContainerProps>;
-  content?: ReactNode;
+  content?: ReactNode | ((args: ModalBackdropProps & { close: () => void }) => ReactNode);
   forceShow?: boolean;
   hideBackdrop?: boolean;
   id: ModalId;
