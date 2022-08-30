@@ -105,6 +105,7 @@ export interface FormRootProps extends Testable {
   noValidate?: boolean;
   onChange?: (formState: {
     errors: FieldErrors;
+    pristine: boolean;
     valid: boolean;
     value: FormStateEntryValue;
   }) => void;

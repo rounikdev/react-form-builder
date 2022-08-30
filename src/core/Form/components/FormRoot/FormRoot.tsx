@@ -60,9 +60,9 @@ export const FormRoot: FC<FormRootProps> = memo(
 
     useUpdate(() => {
       if (onChange) {
-        onChange({ errors, valid, value });
+        onChange({ errors, pristine, valid, value });
       }
-    }, [errors, valid, value]);
+    }, [errors, pristine, valid, value]);
 
     useUpdateOnly(() => {
       if (pristine && onReset) {

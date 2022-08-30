@@ -27,10 +27,11 @@ const Template: Story<FC> = () => {
           <FormRoot
             className={styles.Form}
             dataTest="users"
-            onSubmit={console.log}
+            onChange={console.log}
             onReset={() => {
               console.log('Form reset');
             }}
+            onSubmit={console.log}
           >
             <FormStateDisplay />
             <FormArray factory={createUser} initialValue={initialUsers} name="users">

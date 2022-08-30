@@ -5,6 +5,17 @@ import { useMount, useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
 import { useModal } from '@core/Modal/context';
 import { ModalBuilderProps } from '@core/Modal/types';
 
+const DEFAULT_ANIMATION_PROPERTIES: CSSProperties = {
+  animationDelay: '0s',
+  animationDirection: 'normal',
+  animationDuration: '0s',
+  animationFillMode: 'none',
+  animationIterationCount: 1,
+  animationName: 'none',
+  animationPlayState: 'running',
+  animationTimingFunction: 'ease'
+};
+
 export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
   const {
     alwaysRender,
@@ -38,7 +49,6 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
 
   const [isClosed, setIsClosed] = useState(false);
   const [overflow, setOverflow] = useState('hidden');
-  const [opacity, setOpacity] = useState(1);
 
   const hasAnimation = useMemo(
     () => animate || (animate === undefined && baseAnimate),
@@ -77,12 +87,8 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
   const onAnimationEndHandler = useCallback(async () => {
     await setOverflow('auto');
 
-    if (isClosed) {
-      setOpacity(0);
-    }
-
     clearModalsToShow();
-  }, [clearModalsToShow, isClosed]);
+  }, [clearModalsToShow]);
 
   const onBackdropClick = useCallback(
     (event) => {
@@ -104,24 +110,26 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
 
   const backdropStyle: CSSProperties = useMemo(
     () => ({
+      animationFillMode: isClosed ? 'forwards' : 'none',
       overflow,
       ...(alwaysRender
         ? { opacity: visible ? 1 : 0, visibility: visible ? 'visible' : 'hidden' }
-        : { opacity }),
+        : {}),
       ...(hideBackdrop ? { backgroundColor: 'transparent' } : {}),
-      ...(!hasAnimation ? { animation: 'none' } : {})
+      ...(!hasAnimation ? DEFAULT_ANIMATION_PROPERTIES : {})
     }),
-    [alwaysRender, hasAnimation, hideBackdrop, opacity, overflow, visible]
+    [alwaysRender, hasAnimation, hideBackdrop, isClosed, overflow, visible]
   );
 
   const contentStyle: CSSProperties = useMemo(
     () => ({
+      animationFillMode: isClosed ? 'forwards' : 'none',
       ...(alwaysRender
         ? { opacity: visible ? 1 : 0, visibility: visible ? 'visible' : 'hidden' }
-        : { opacity }),
-      ...(!hasAnimation ? { animation: 'none' } : {})
+        : {}),
+      ...(!hasAnimation ? DEFAULT_ANIMATION_PROPERTIES : {})
     }),
-    [alwaysRender, hasAnimation, opacity, visible]
+    [alwaysRender, hasAnimation, isClosed, visible]
   );
 
   const backdropProps = useMemo(
