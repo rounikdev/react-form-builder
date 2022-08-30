@@ -30,6 +30,7 @@ const BaseFormArray = <T,>({
     getFieldId,
     isEdit,
     isParentEdit,
+    nestedIsValid,
     reset,
     save,
     touched,
@@ -66,9 +67,9 @@ const BaseFormArray = <T,>({
       isParentEdit,
       localEdit,
       methods,
-      valid
+      valid: valid && nestedIsValid
     };
-  }, [context, forceValidateFlag, isEdit, isParentEdit, localEdit, methods, valid]);
+  }, [context, forceValidateFlag, isEdit, isParentEdit, localEdit, methods, nestedIsValid, valid]);
 
   const { add, list, remove } = useFormArray<T>({
     factory,

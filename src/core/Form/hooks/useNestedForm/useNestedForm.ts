@@ -49,6 +49,8 @@ export const useNestedForm = <T>({
 
   const [touched, setTouched] = useState(false);
 
+  const [nestedIsValid, setNestedIsValid] = useState(false);
+
   const formDataRef = useUpdatedRef(formData);
 
   const nameRef = useUpdatedRef(name);
@@ -164,6 +166,8 @@ export const useNestedForm = <T>({
 
     setErrors(validityCheck.errors);
 
+    setNestedIsValid(validityCheck.valid);
+
     parentContext.methods.setInForm({
       key: name,
       valid: valid && validityCheck.valid,
@@ -236,6 +240,7 @@ export const useNestedForm = <T>({
     getFieldId,
     isEdit,
     isParentEdit,
+    nestedIsValid,
     reset,
     save,
     touched,

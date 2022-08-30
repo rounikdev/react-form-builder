@@ -115,8 +115,10 @@ export interface FormRootProps extends Testable {
 
 export interface FormObjectProps {
   children: ReactNode;
+  dependencyExtractor?: DependencyExtractor;
   localEdit?: boolean;
   name: string;
+  validator?: Validator<FormStateEntryValue>;
 }
 
 export type FormArrayChildrenArguments<T> = [
