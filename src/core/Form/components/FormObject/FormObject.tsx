@@ -17,6 +17,7 @@ export const FormObject: FC<FormObjectProps> = memo(
     const {
       cancel,
       edit,
+      errors,
       forceValidate,
       forceValidateFlag,
       getFieldId,
@@ -55,6 +56,7 @@ export const FormObject: FC<FormObjectProps> = memo(
       return {
         ...context,
         forceValidateFlag,
+        formOnlyErrors: errors,
         isEdit: localEdit ? isEdit : isEdit || isParentEdit,
         isParentEdit,
         localEdit,
@@ -64,6 +66,7 @@ export const FormObject: FC<FormObjectProps> = memo(
       };
     }, [
       context,
+      errors,
       forceValidateFlag,
       isEdit,
       isParentEdit,

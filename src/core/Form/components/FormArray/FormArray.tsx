@@ -63,6 +63,7 @@ const BaseFormArray = <T,>({
     return {
       ...context,
       forceValidateFlag,
+      formOnlyErrors: errors,
       isEdit: localEdit ? isEdit : isEdit || isParentEdit,
       isParentEdit,
       localEdit,
@@ -72,6 +73,7 @@ const BaseFormArray = <T,>({
     };
   }, [
     context,
+    errors,
     forceValidateFlag,
     isEdit,
     isParentEdit,

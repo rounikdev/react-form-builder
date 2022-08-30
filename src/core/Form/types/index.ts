@@ -77,6 +77,7 @@ export type SetFieldsValuePayload = Record<string, FormStateEntryValue>;
 
 export interface FormContext {
   forceValidateFlag: ForceValidateFlag;
+  formOnlyErrors: ValidationError[];
   isEdit: boolean;
   isParentEdit: boolean;
   localEdit: boolean;

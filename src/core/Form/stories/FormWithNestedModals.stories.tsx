@@ -54,6 +54,30 @@ const contactValidator: Validator<Contact> = (contact) => {
   return validityCheck;
 };
 
+const contactListValidator: Validator<Contact[]> = (contacts) => {
+  let validityCheck: ValidityCheck = {
+    errors: [],
+    valid: true
+  };
+
+  let primaryCount = 0;
+
+  contacts.forEach((contact) => {
+    if (contact.isPrimary) {
+      primaryCount++;
+    }
+  });
+
+  if (primaryCount !== 1) {
+    validityCheck = {
+      errors: [{ text: `Should have one and primary contact` }],
+      valid: false
+    };
+  }
+
+  return validityCheck;
+};
+
 const Template: Story<FC> = () => {
   return (
     <StrictMode>
@@ -82,8 +106,13 @@ const Template: Story<FC> = () => {
               label="Last Name"
               name="lastName"
             />
-            <FormArray factory={contactFactory} initialValue={initialContacts} name="contacts">
-              {([contacts, addContact, removeContact]) => {
+            <FormArray
+              factory={contactFactory}
+              initialValue={initialContacts}
+              name="contacts"
+              validator={contactListValidator}
+            >
+              {([contacts, addContact, removeContact, arrayErrors, arrayTouched]) => {
                 return (
                   <FormUser>
                     {({
@@ -170,6 +199,11 @@ const Template: Story<FC> = () => {
                               </div>
                             );
                           })}
+                          <ErrorField
+                            dataTest="contacts-list"
+                            errors={arrayErrors}
+                            isError={arrayErrors.length > 0 && arrayTouched}
+                          />
                           <div className={styles.Actions}>
                             <Button
                               dataTest="add-contact"
