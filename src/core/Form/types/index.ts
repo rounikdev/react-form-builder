@@ -92,6 +92,7 @@ export interface FormContext {
     touchParent: () => void;
   };
   state: FormState;
+  touched: boolean;
   valid: boolean;
 }
 

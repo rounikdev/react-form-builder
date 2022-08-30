@@ -25,6 +25,7 @@ export const FormObject: FC<FormObjectProps> = memo(
       nestedIsValid,
       reset,
       save,
+      touched,
       touchParent
     } = useNestedForm({
       dependencyExtractor,
@@ -58,6 +59,7 @@ export const FormObject: FC<FormObjectProps> = memo(
         isParentEdit,
         localEdit,
         methods,
+        touched,
         valid: valid && nestedIsValid
       };
     }, [
@@ -68,6 +70,7 @@ export const FormObject: FC<FormObjectProps> = memo(
       localEdit,
       methods,
       nestedIsValid,
+      touched,
       valid
     ]);
 

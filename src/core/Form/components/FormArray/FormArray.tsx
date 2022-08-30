@@ -67,9 +67,20 @@ const BaseFormArray = <T,>({
       isParentEdit,
       localEdit,
       methods,
+      touched,
       valid: valid && nestedIsValid
     };
-  }, [context, forceValidateFlag, isEdit, isParentEdit, localEdit, methods, nestedIsValid, valid]);
+  }, [
+    context,
+    forceValidateFlag,
+    isEdit,
+    isParentEdit,
+    localEdit,
+    methods,
+    nestedIsValid,
+    touched,
+    valid
+  ]);
 
   const { add, list, remove } = useFormArray<T>({
     factory,

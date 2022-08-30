@@ -73,6 +73,11 @@
     display: initial;
   }
 
+  .ContactContainer {
+    display: flex;
+    flex-direction: column;
+  }
+
   .Contact {
     display: flex;
     align-items: center;

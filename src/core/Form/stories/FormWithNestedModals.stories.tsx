@@ -1,9 +1,9 @@
 import { Meta, Story } from '@storybook/react';
 import { FC, StrictMode } from 'react';
 
-import { FormArray, FormObject, FormRoot, FormUser } from '@core';
+import { FormArray, FormObject, FormRoot, FormUser, Validator, ValidityCheck } from '@core';
 import { GlobalModel } from '@services';
-import { Button, Checkbox, Text } from '@ui';
+import { Button, Checkbox, ErrorField, Text } from '@ui';
 
 import { FormStateDisplay } from './components';
 
@@ -37,6 +37,22 @@ const initialContacts: Contact[] = [
     phone: '0897654321'
   }
 ];
+
+const contactValidator: Validator<Contact> = (contact) => {
+  let validityCheck: ValidityCheck = {
+    errors: [],
+    valid: true
+  };
+
+  if (!contact.email && !contact.phone) {
+    validityCheck = {
+      errors: [{ text: `Enter email and/or phone` }],
+      valid: false
+    };
+  }
+
+  return validityCheck;
+};
 
 const Template: Story<FC> = () => {
   return (
@@ -73,9 +89,11 @@ const Template: Story<FC> = () => {
                     {({
                       formContext: {
                         isEdit,
-                        methods: { cancel, edit, save }
+                        methods: { cancel, edit, getFieldId, save },
+                        touched,
+                        valid
                       },
-                      formRootContext: { formData }
+                      formRootContext: { errors, formData }
                     }) => (
                       <>
                         <div className={styles.AddUserContainer}>
@@ -99,49 +117,56 @@ const Template: Story<FC> = () => {
                         >
                           {contacts.map((contact, contactIndex) => {
                             return (
-                              <div className={styles.Contact} key={contact.id}>
-                                <FormObject name={`${contactIndex}`}>
-                                  <Text
-                                    className={styles.Text}
-                                    dataTest={`contact-email-${contactIndex}`}
-                                    disabled={false}
-                                    id={`contact-email-${contactIndex}`}
-                                    initialValue={contact.email}
-                                    label="Email"
-                                    name="email"
-                                  />
-                                  <Text
-                                    dataTest={`contact-id-${contactIndex}`}
-                                    hidden
-                                    id={`contact-id-${contactIndex}`}
-                                    initialValue={contact.id}
-                                    label="Id"
-                                    name="id"
-                                  />
-                                  <Text
-                                    className={styles.Text}
-                                    dataTest={`contact-phone-${contactIndex}`}
-                                    disabled={false}
-                                    id={`contact-phone-${contactIndex}`}
-                                    initialValue={contact.phone}
-                                    label="Phone"
-                                    name="phone"
-                                  />
-                                  <Checkbox
-                                    className={styles.Checkbox}
-                                    dataTest={`contact-is-primary-${contactIndex}`}
-                                    disabled={false}
-                                    id={`contact-is-primary-${contactIndex}`}
-                                    initialValue={contact.isPrimary}
-                                    label="Is Primary"
-                                    name="isPrimary"
-                                  />
-                                  <Button
-                                    dataTest={`remove-contact-${contactIndex}`}
-                                    onClick={() => removeContact(contactIndex)}
-                                    text="-"
-                                  />
-                                </FormObject>
+                              <div className={styles.ContactContainer} key={contact.id}>
+                                <div className={styles.Contact}>
+                                  <FormObject name={`${contactIndex}`} validator={contactValidator}>
+                                    <Text
+                                      className={styles.Text}
+                                      dataTest={`contact-email-${contactIndex}`}
+                                      disabled={false}
+                                      id={`contact-email-${contactIndex}`}
+                                      initialValue={contact.email}
+                                      label="Email"
+                                      name="email"
+                                    />
+                                    <Text
+                                      dataTest={`contact-id-${contactIndex}`}
+                                      hidden
+                                      id={`contact-id-${contactIndex}`}
+                                      initialValue={contact.id}
+                                      label="Id"
+                                      name="id"
+                                    />
+                                    <Text
+                                      className={styles.Text}
+                                      dataTest={`contact-phone-${contactIndex}`}
+                                      disabled={false}
+                                      id={`contact-phone-${contactIndex}`}
+                                      initialValue={contact.phone}
+                                      label="Phone"
+                                      name="phone"
+                                    />
+                                    <Checkbox
+                                      className={styles.Checkbox}
+                                      dataTest={`contact-is-primary-${contactIndex}`}
+                                      disabled={false}
+                                      id={`contact-is-primary-${contactIndex}`}
+                                      initialValue={contact.isPrimary}
+                                      label="Is Primary"
+                                      name="isPrimary"
+                                    />
+                                    <Button
+                                      dataTest={`remove-contact-${contactIndex}`}
+                                      onClick={() => removeContact(contactIndex)}
+                                      text="-"
+                                    />
+                                  </FormObject>
+                                </div>
+                                <ErrorField
+                                  dataTest={`contact-${contactIndex}`}
+                                  errors={errors[`${getFieldId()}.${contactIndex}`] ?? []}
+                                  isError={touched}
+                                />
                               </div>
                             );
                           })}
@@ -156,7 +181,9 @@ const Template: Story<FC> = () => {
                               onClick={cancel}
                               text="Cancel"
                             />
-                            <Button dataTest="save-edit-contacts" onClick={save} text="Save" />
+                            {valid ? (
+                              <Button dataTest="save-edit-contacts" onClick={save} text="Save" />
+                            ) : null}
                           </div>
                         </div>
                       </>

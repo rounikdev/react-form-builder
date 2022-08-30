@@ -35,6 +35,7 @@ export const initialFormContext: FormContext = {
     }
   },
   state: {},
+  touched: false,
   valid: false
 };
 
