@@ -22,7 +22,8 @@ export const FormObject: FC<FormObjectProps> = memo(({ children, localEdit = fal
     isEdit,
     isParentEdit,
     reset,
-    save
+    save,
+    touchParent
   } = useNestedForm({
     name,
     valid,
@@ -38,7 +39,8 @@ export const FormObject: FC<FormObjectProps> = memo(({ children, localEdit = fal
       removeFromForm,
       reset,
       save,
-      setInForm
+      setInForm,
+      touchParent
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [cancel, edit, getFieldId, reset, save]

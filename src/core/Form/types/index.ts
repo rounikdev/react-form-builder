@@ -89,6 +89,7 @@ export interface FormContext {
     reset: () => void;
     save: () => void;
     setInForm: (payload: FormSetPayload) => void;
+    touchParent: () => void;
   };
   state: FormState;
   valid: boolean;
@@ -117,14 +118,22 @@ export interface FormObjectProps {
   name: string;
 }
 
-export type FormArrayChildrenArguments<T> = [T[], () => void, (index: number) => void];
+export type FormArrayChildrenArguments<T> = [
+  T[],
+  () => void,
+  (index: number) => void,
+  ValidationError[],
+  boolean
+];
 
 export interface FormArrayProps<T> {
   children: (items: FormArrayChildrenArguments<T>) => ReactNode;
+  dependencyExtractor?: DependencyExtractor;
   factory: () => T;
   initialValue?: T[];
   localEdit?: boolean;
   name: string;
+  validator?: Validator<T[]>;
 }
 
 export interface ValidationError {

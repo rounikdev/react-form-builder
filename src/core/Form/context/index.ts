@@ -29,6 +29,9 @@ export const initialFormContext: FormContext = {
     },
     setInForm: () => {
       // default function
+    },
+    touchParent: () => {
+      // default function
     }
   },
   state: {},

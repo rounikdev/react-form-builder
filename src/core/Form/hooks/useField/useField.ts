@@ -316,6 +316,12 @@ export const useField = <T>({
     }
   }, [fieldsToBeSet]);
 
+  useUpdate(() => {
+    if (state.touched) {
+      context.methods.touchParent();
+    }
+  }, [state.touched]);
+
   const onBlurHandler = useCallback(
     (event: FocusEvent) => {
       setState((current) => ({ ...current, focused: false, touched: true }));

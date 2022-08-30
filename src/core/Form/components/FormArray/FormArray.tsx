@@ -9,10 +9,12 @@ import { FormArrayProps, FormContext } from '@core/Form/types';
 
 const BaseFormArray = <T,>({
   children,
+  dependencyExtractor,
   factory,
   initialValue,
   localEdit = false,
-  name
+  name,
+  validator
 }: FormArrayProps<T>) => {
   const { context, removeFromForm, setInForm, valid, value } = useFormReducer({
     flattenState: flattenFormArrayState,
@@ -22,16 +24,21 @@ const BaseFormArray = <T,>({
   const {
     cancel,
     edit,
+    errors,
     forceValidate,
     forceValidateFlag,
     getFieldId,
     isEdit,
     isParentEdit,
     reset,
-    save
-  } = useNestedForm({
+    save,
+    touched,
+    touchParent
+  } = useNestedForm<T>({
+    dependencyExtractor,
     name,
     valid,
+    validator,
     value
   });
 
@@ -44,7 +51,8 @@ const BaseFormArray = <T,>({
       removeFromForm,
       reset,
       save,
-      setInForm
+      setInForm,
+      touchParent
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [cancel, edit, getFieldId, reset, save]
@@ -71,7 +79,7 @@ const BaseFormArray = <T,>({
   return (
     <FormEditProvider isEdit={formContext.isEdit}>
       <FormContextInstance.Provider value={formContext}>
-        {children([list, add, remove])}
+        {children([list, add, remove, errors, touched])}
       </FormContextInstance.Provider>
     </FormEditProvider>
   );
