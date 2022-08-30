@@ -77,14 +77,17 @@ export type SetFieldsValuePayload = Record<string, FormStateEntryValue>;
 
 export interface FormContext {
   forceValidateFlag: ForceValidateFlag;
+  focused: boolean;
   formOnlyErrors: ValidationError[];
   isEdit: boolean;
   isParentEdit: boolean;
   localEdit: boolean;
   methods: {
+    blurParent: () => void;
     cancel: () => void;
     edit: () => void;
     forceValidate: ForceValidateMethod;
+    focusParent: () => void;
     getFieldId: () => string;
     removeFromForm: (payload: FormRemovePayload) => void;
     reset: () => void;
@@ -128,6 +131,7 @@ export type FormArrayChildrenArguments<T> = [
   () => void,
   (index: number) => void,
   ValidationError[],
+  boolean,
   boolean
 ];
 

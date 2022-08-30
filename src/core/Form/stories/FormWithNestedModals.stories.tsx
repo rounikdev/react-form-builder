@@ -112,17 +112,16 @@ const Template: Story<FC> = () => {
               name="contacts"
               validator={contactListValidator}
             >
-              {([contacts, addContact, removeContact, arrayErrors, arrayTouched]) => {
+              {([contacts, addContact, removeContact, arrayErrors, arrayTouched, arrayFocused]) => {
                 return (
                   <FormUser>
                     {({
                       formContext: {
                         isEdit,
-                        methods: { cancel, edit, getFieldId, save },
-                        touched,
+                        methods: { cancel, edit, save },
                         valid
                       },
-                      formRootContext: { errors, formData }
+                      formRootContext: { formData }
                     }) => (
                       <>
                         <div className={styles.AddUserContainer}>
@@ -189,20 +188,36 @@ const Template: Story<FC> = () => {
                                       onClick={() => removeContact(contactIndex)}
                                       text="-"
                                     />
+                                    <FormUser>
+                                      {({
+                                        formContext: {
+                                          focused,
+                                          formOnlyErrors,
+                                          touched: contactTouched
+                                        }
+                                      }) => {
+                                        return (
+                                          <ErrorField
+                                            dataTest={`contact-${contactIndex}`}
+                                            errors={formOnlyErrors}
+                                            isError={
+                                              formOnlyErrors.length > 0 &&
+                                              contactTouched &&
+                                              !focused
+                                            }
+                                          />
+                                        );
+                                      }}
+                                    </FormUser>
                                   </FormObject>
                                 </div>
-                                <ErrorField
-                                  dataTest={`contact-${contactIndex}`}
-                                  errors={errors[`${getFieldId()}.${contactIndex}`] ?? []}
-                                  isError={touched}
-                                />
                               </div>
                             );
                           })}
                           <ErrorField
                             dataTest="contacts-list"
                             errors={arrayErrors}
-                            isError={arrayErrors.length > 0 && arrayTouched}
+                            isError={arrayErrors.length > 0 && arrayTouched && !arrayFocused}
                           />
                           <div className={styles.Actions}>
                             <Button

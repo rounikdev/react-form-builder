@@ -47,6 +47,8 @@ export const useNestedForm = <T>({
 
   const [errors, setErrors] = useState<ValidationError[]>([]);
 
+  const [focused, setFocused] = useState(false);
+
   const [touched, setTouched] = useState(false);
 
   const [nestedIsValid, setNestedIsValid] = useState(false);
@@ -135,6 +137,14 @@ export const useNestedForm = <T>({
     cleanFromResetState();
   }, [cleanFromResetState]);
 
+  const blurParent = useCallback(() => {
+    setFocused(false);
+  }, []);
+
+  const focusParent = useCallback(() => {
+    setFocused(true);
+  }, []);
+
   const touchParent = useCallback(() => {
     setTouched(true);
   }, []);
@@ -192,6 +202,14 @@ export const useNestedForm = <T>({
     };
   }, [getFieldId]);
 
+  useUpdate(() => {
+    if (focused) {
+      parentContext.methods.focusParent();
+    } else {
+      parentContext.methods.blurParent();
+    }
+  }, [focused]);
+
   useUpdateOnly(() => {
     const fieldId = getFieldId();
 
@@ -232,9 +250,12 @@ export const useNestedForm = <T>({
   useUnmount(clear);
 
   return {
+    blurParent,
     cancel,
     edit,
     errors,
+    focused,
+    focusParent,
     forceValidate,
     forceValidateFlag,
     getFieldId,

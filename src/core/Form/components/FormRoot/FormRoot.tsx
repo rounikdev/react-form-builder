@@ -72,9 +72,11 @@ export const FormRoot: FC<FormRootProps> = memo(
 
     const methods = useMemo(
       () => ({
+        blurParent: defaultTouchParent,
         cancel,
         edit,
         focusField,
+        focusParent: defaultTouchParent,
         forceValidate,
         getFieldId,
         registerFieldErrors,
@@ -94,6 +96,7 @@ export const FormRoot: FC<FormRootProps> = memo(
       return {
         ...context,
         fieldsToBeSet,
+        focused: false,
         focusedField,
         forceValidateFlag,
         isEdit,

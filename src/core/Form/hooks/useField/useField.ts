@@ -337,6 +337,8 @@ export const useField = <T>({
       if (typeof onBlur === 'function') {
         onBlur(event);
       }
+
+      context.methods.blurParent();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [onBlur]
@@ -359,6 +361,8 @@ export const useField = <T>({
       if (typeof onFocus === 'function') {
         onFocus(event);
       }
+
+      context.methods.focusParent();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [onFocus]

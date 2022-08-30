@@ -15,9 +15,12 @@ export const FormObject: FC<FormObjectProps> = memo(
     });
 
     const {
+      blurParent,
       cancel,
       edit,
       errors,
+      focused,
+      focusParent,
       forceValidate,
       forceValidateFlag,
       getFieldId,
@@ -38,8 +41,10 @@ export const FormObject: FC<FormObjectProps> = memo(
 
     const methods = useMemo(
       () => ({
+        blurParent,
         cancel,
         edit,
+        focusParent,
         forceValidate,
         getFieldId,
         removeFromForm,
@@ -55,6 +60,7 @@ export const FormObject: FC<FormObjectProps> = memo(
     const formContext = useMemo<FormContext>(() => {
       return {
         ...context,
+        focused,
         forceValidateFlag,
         formOnlyErrors: errors,
         isEdit: localEdit ? isEdit : isEdit || isParentEdit,
@@ -67,6 +73,7 @@ export const FormObject: FC<FormObjectProps> = memo(
     }, [
       context,
       errors,
+      focused,
       forceValidateFlag,
       isEdit,
       isParentEdit,

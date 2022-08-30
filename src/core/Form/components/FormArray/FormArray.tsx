@@ -22,9 +22,12 @@ const BaseFormArray = <T,>({
   });
 
   const {
+    blurParent,
     cancel,
     edit,
     errors,
+    focused,
+    focusParent,
     forceValidate,
     forceValidateFlag,
     getFieldId,
@@ -45,8 +48,10 @@ const BaseFormArray = <T,>({
 
   const methods = useMemo(
     () => ({
+      blurParent,
       cancel,
       edit,
+      focusParent,
       forceValidate,
       getFieldId,
       removeFromForm,
@@ -62,6 +67,7 @@ const BaseFormArray = <T,>({
   const formContext = useMemo<FormContext>(() => {
     return {
       ...context,
+      focused,
       forceValidateFlag,
       formOnlyErrors: errors,
       isEdit: localEdit ? isEdit : isEdit || isParentEdit,
@@ -74,6 +80,7 @@ const BaseFormArray = <T,>({
   }, [
     context,
     errors,
+    focused,
     forceValidateFlag,
     isEdit,
     isParentEdit,
@@ -93,7 +100,7 @@ const BaseFormArray = <T,>({
   return (
     <FormEditProvider isEdit={formContext.isEdit}>
       <FormContextInstance.Provider value={formContext}>
-        {children([list, add, remove, errors, touched])}
+        {children([list, add, remove, errors, touched, focused])}
       </FormContextInstance.Provider>
     </FormEditProvider>
   );
