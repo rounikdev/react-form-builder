@@ -123,9 +123,15 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
     );
 
     expect(mockOnChange).toHaveBeenCalledTimes(2);
-    expect(mockOnChange.mock.calls[0][0]).toEqual({ errors: {}, valid: true, value: {} });
+    expect(mockOnChange.mock.calls[0][0]).toEqual({
+      errors: {},
+      pristine: true,
+      valid: true,
+      value: {}
+    });
     expect(mockOnChange.mock.calls[1][0]).toEqual({
       errors: {},
+      pristine: true,
       valid: true,
       value: { firstName: 'Ivan' }
     });
@@ -601,6 +607,7 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
           }
         ]
       },
+      pristine: true,
       valid: false,
       value: { user: { info: { firstName: '' } } }
     });
