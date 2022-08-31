@@ -1,7 +1,7 @@
 import { FC, memo } from 'react';
 
-import { FormArray, FormObject, FormUser } from '@core';
-import { Button, Text } from '@ui';
+import { FormArray, FormObject, FormUser, ValidityCheck } from '@core';
+import { Button, ErrorField, Text } from '@ui';
 
 import { createPhone, nameValidator, User } from '../../data';
 import { PhoneForm } from '../PhoneForm/PhoneForm';
@@ -90,8 +90,36 @@ export const UserForm: FC<UserFormProps> = memo(({ removeUser, user, userIndex }
               validator={nameValidator}
             />
           </div>
-          <FormArray factory={createPhone} initialValue={user.phones} localEdit name="phones">
-            {([phones, addPhone, removePhone]) => {
+          <FormArray
+            dependencyExtractor={(formData) => {
+              return formData?.users?.length ?? 0;
+            }}
+            factory={createPhone}
+            initialValue={user.phones}
+            localEdit
+            name="phones"
+            validator={async (phones, usersLength) => {
+              let validityCheck: ValidityCheck = {
+                errors: [],
+                valid: true
+              };
+
+              await new Promise((resolve) => {
+                setTimeout(() => {
+                  if (phones.length < usersLength) {
+                    validityCheck = {
+                      errors: [{ text: `Enter at least ${usersLength} phones` }],
+                      valid: false
+                    };
+                  }
+                  resolve(null);
+                }, 1000);
+              });
+
+              return validityCheck;
+            }}
+          >
+            {([phones, addPhone, removePhone, errors, touched]) => {
               return (
                 <div className={styles.Phones}>
                   <FormUser>
@@ -155,6 +183,11 @@ export const UserForm: FC<UserFormProps> = memo(({ removeUser, user, userIndex }
                         />
                       );
                     })}
+                    <ErrorField
+                      dataTest={`errors-user-${userIndex}-phones`}
+                      errors={errors}
+                      isError={touched}
+                    />
                   </div>
                 </div>
               );

@@ -77,20 +77,26 @@ export type SetFieldsValuePayload = Record<string, FormStateEntryValue>;
 
 export interface FormContext {
   forceValidateFlag: ForceValidateFlag;
+  focused: boolean;
+  formOnlyErrors: ValidationError[];
   isEdit: boolean;
   isParentEdit: boolean;
   localEdit: boolean;
   methods: {
+    blurParent: () => void;
     cancel: () => void;
     edit: () => void;
     forceValidate: ForceValidateMethod;
+    focusParent: () => void;
     getFieldId: () => string;
     removeFromForm: (payload: FormRemovePayload) => void;
     reset: () => void;
     save: () => void;
     setInForm: (payload: FormSetPayload) => void;
+    touchParent: () => void;
   };
   state: FormState;
+  touched: boolean;
   valid: boolean;
 }
 
@@ -114,18 +120,29 @@ export interface FormRootProps extends Testable {
 
 export interface FormObjectProps {
   children: ReactNode;
+  dependencyExtractor?: DependencyExtractor;
   localEdit?: boolean;
   name: string;
+  validator?: Validator<FormStateEntryValue>;
 }
 
-export type FormArrayChildrenArguments<T> = [T[], () => void, (index: number) => void];
+export type FormArrayChildrenArguments<T> = [
+  T[],
+  () => void,
+  (index: number) => void,
+  ValidationError[],
+  boolean,
+  boolean
+];
 
 export interface FormArrayProps<T> {
   children: (items: FormArrayChildrenArguments<T>) => ReactNode;
+  dependencyExtractor?: DependencyExtractor;
   factory: () => T;
   initialValue?: T[];
   localEdit?: boolean;
   name: string;
+  validator?: Validator<T[]>;
 }
 
 export interface ValidationError {

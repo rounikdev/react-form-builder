@@ -9,10 +9,12 @@ import { FormArrayProps, FormContext } from '@core/Form/types';
 
 const BaseFormArray = <T,>({
   children,
+  dependencyExtractor,
   factory,
   initialValue,
   localEdit = false,
-  name
+  name,
+  validator
 }: FormArrayProps<T>) => {
   const { context, removeFromForm, setInForm, valid, value } = useFormReducer({
     flattenState: flattenFormArrayState,
@@ -20,31 +22,43 @@ const BaseFormArray = <T,>({
   });
 
   const {
+    blurParent,
     cancel,
     edit,
+    errors,
+    focused,
+    focusParent,
     forceValidate,
     forceValidateFlag,
     getFieldId,
     isEdit,
     isParentEdit,
+    nestedIsValid,
     reset,
-    save
-  } = useNestedForm({
+    save,
+    touched,
+    touchParent
+  } = useNestedForm<T>({
+    dependencyExtractor,
     name,
     valid,
+    validator,
     value
   });
 
   const methods = useMemo(
     () => ({
+      blurParent,
       cancel,
       edit,
+      focusParent,
       forceValidate,
       getFieldId,
       removeFromForm,
       reset,
       save,
-      setInForm
+      setInForm,
+      touchParent
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [cancel, edit, getFieldId, reset, save]
@@ -53,14 +67,29 @@ const BaseFormArray = <T,>({
   const formContext = useMemo<FormContext>(() => {
     return {
       ...context,
+      focused,
       forceValidateFlag,
+      formOnlyErrors: errors,
       isEdit: localEdit ? isEdit : isEdit || isParentEdit,
       isParentEdit,
       localEdit,
       methods,
-      valid
+      touched,
+      valid: valid && nestedIsValid
     };
-  }, [context, forceValidateFlag, isEdit, isParentEdit, localEdit, methods, valid]);
+  }, [
+    context,
+    errors,
+    focused,
+    forceValidateFlag,
+    isEdit,
+    isParentEdit,
+    localEdit,
+    methods,
+    nestedIsValid,
+    touched,
+    valid
+  ]);
 
   const { add, list, remove } = useFormArray<T>({
     factory,
@@ -71,7 +100,7 @@ const BaseFormArray = <T,>({
   return (
     <FormEditProvider isEdit={formContext.isEdit}>
       <FormContextInstance.Provider value={formContext}>
-        {children([list, add, remove])}
+        {children([list, add, remove, errors, touched, focused])}
       </FormContextInstance.Provider>
     </FormEditProvider>
   );

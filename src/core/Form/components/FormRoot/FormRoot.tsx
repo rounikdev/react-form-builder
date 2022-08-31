@@ -11,6 +11,8 @@ import { FormContext, FormRootProps } from '@core/Form/types';
 
 import styles from './FormRoot.scss';
 
+const defaultTouchParent = () => {};
+
 export const FormRoot: FC<FormRootProps> = memo(
   ({ children, className, dataTest, noValidate = true, onChange, onReset, onSubmit }) => {
     const { context, removeFromForm, setInForm, valid, value } = useFormReducer({
@@ -70,9 +72,11 @@ export const FormRoot: FC<FormRootProps> = memo(
 
     const methods = useMemo(
       () => ({
+        blurParent: defaultTouchParent,
         cancel,
         edit,
         focusField,
+        focusParent: defaultTouchParent,
         forceValidate,
         getFieldId,
         registerFieldErrors,
@@ -81,7 +85,8 @@ export const FormRoot: FC<FormRootProps> = memo(
         save,
         scrollFieldIntoView,
         setFieldsValue,
-        setInForm
+        setInForm,
+        touchParent: defaultTouchParent
       }),
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [cancel, edit, save, reset]
@@ -91,6 +96,7 @@ export const FormRoot: FC<FormRootProps> = memo(
       return {
         ...context,
         fieldsToBeSet,
+        focused: false,
         focusedField,
         forceValidateFlag,
         isEdit,

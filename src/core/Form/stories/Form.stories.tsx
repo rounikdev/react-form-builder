@@ -27,7 +27,6 @@ const Template: Story<FC> = () => {
           <FormRoot
             className={styles.Form}
             dataTest="users"
-            onChange={console.log}
             onReset={() => {
               console.log('Form reset');
             }}
