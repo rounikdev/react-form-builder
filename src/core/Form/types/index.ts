@@ -149,7 +149,7 @@ export interface Validator<A> {
 export interface UseFieldConfig<T> {
   dependencyExtractor?: DependencyExtractor;
   formatter?: Formatter<T>;
-  initialValue: T;
+  initialValue: T | ((dependencyValue: FormStateEntryValue) => T);
   name: string;
   onBlur?: FocusEventHandler<Element>;
   onFocus?: FocusEventHandler<Element>;

@@ -588,7 +588,7 @@ describe('useField', () => {
     expect(stateC.value).toBe(formatter({ newValue: initialValue, oldValue: initialValue }));
   });
 
-  it("Doesn't update the value when the initialValue provided inline is updated", () => {
+  it('Updates the value when the initialValue provided inline is updated', () => {
     const name = 'firstName';
     const initialValueA = 'Ivan';
     const initialValueB = 'Maria';
@@ -603,7 +603,7 @@ describe('useField', () => {
 
     rerender({ initialValue: initialValueB });
 
-    expect(result.current.value).toBe(initialValueA);
+    expect(result.current.value).toBe(initialValueB);
     expect(result.current.valid).toBe(true);
   });
 

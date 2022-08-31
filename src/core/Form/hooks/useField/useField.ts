@@ -12,7 +12,6 @@ import {
   useBeforeFirstRender,
   useIsMounted,
   useLastDiffValue,
-  useMount,
   useUnmount,
   useUpdate,
   useUpdatedRef,
@@ -75,18 +74,31 @@ export const useField = <T>({
     [typeof dependency === 'bigint' ? dependency : JSON.stringify(dependency)]
   );
 
-  const dependencyRef = useUpdatedRef(updatedDependency);
+  const updatedInitialValue = useMemo(() => {
+    if (typeof initialValue === 'function') {
+      return (initialValue as (dependencyValue: FormStateEntryValue) => T)(updatedDependency);
+    } else {
+      return initialValue;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    updatedDependency,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    ...(typeof initialValue !== 'function'
+      ? [typeof initialValue === 'bigint' ? initialValue : JSON.stringify(initialValue)]
+      : [])
+  ]);
 
-  let stateValue = initialValue;
+  let stateValue = updatedInitialValue;
 
   useBeforeFirstRender(() => {
     if (formatter) {
       stateValue = formatter({
         dependencyValue: updatedDependency,
-        newValue: initialValue
+        newValue: updatedInitialValue
       });
     } else {
-      stateValue = initialValue;
+      stateValue = updatedInitialValue;
     }
   });
 
@@ -267,9 +279,9 @@ export const useField = <T>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fieldId]);
 
-  useMount(() => {
-    validateField(initialValue, dependencyRef.current);
-  });
+  useUpdate(() => {
+    validateField(updatedInitialValue, updatedDependency);
+  }, [updatedInitialValue]);
 
   // Update parent Form state:
   useEffect(() => {
@@ -319,7 +331,7 @@ export const useField = <T>({
   useUpdate(() => {
     if (fieldsToBeSet[fieldId] !== undefined) {
       setDirty();
-      validateField(fieldsToBeSet[fieldId], dependencyRef.current);
+      validateField(fieldsToBeSet[fieldId], updatedDependency);
       setFieldsValue({ [fieldId]: undefined });
     }
   }, [fieldsToBeSet]);
