@@ -1,7 +1,6 @@
 import { fireEvent } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
-import userEvent from '@testing-library/user-event';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
 import { FormRoot } from '@core/Form/components';
 import { useField } from '@core/Form/hooks';
@@ -23,22 +22,19 @@ const TextField: FC<TextFieldProps<string>> = ({
   dependencyExtractor,
   disabled,
   id,
-  initialValue,
   label,
   name
 }) => {
   const { dependencyValue, onChangeHandler, value } = useField({
     dependencyExtractor,
-    initialValue: typeof initialValue === 'function' ? '' : initialValue,
+    initialValue: '',
     name
   });
 
   const built = useFieldDependency({
     dependencyValue,
     disabled,
-    initialValue,
-    label,
-    onChangeHandler
+    label
   });
 
   return (
@@ -58,23 +54,18 @@ const TextField: FC<TextFieldProps<string>> = ({
 
 describe('useFieldDependency', () => {
   it('Provides `disabled` and `label`', () => {
-    const mockOnChange = jest.fn();
-
     const { result } = renderHook(() =>
       useFieldDependency({
         dependencyValue: null,
         disabled: false,
-        initialValue: '',
-        label: '',
-        onChangeHandler: mockOnChange
+        label: ''
       })
     );
 
     expect(result.current).toEqual({ disabled: false, label: '' });
-    expect(mockOnChange).toBeCalledTimes(1);
   });
 
-  it('Generates `disabled`, `label` and `value` based on dependency', () => {
+  it('Generates `disabled`, `label` and `required` based on dependency', () => {
     const firstNameValue = 'John';
 
     const { getByDataTest, getByLabelText } = testRender(
@@ -85,7 +76,6 @@ describe('useFieldDependency', () => {
           dependencyExtractor={(formData) => ({ firstName: formData.firstName })}
           disabled={({ firstName }) => firstName === firstNameValue}
           id="last-name"
-          initialValue={({ firstName }) => firstName}
           label={({ firstName }) => firstName}
           name="lastName"
         />
@@ -97,37 +87,8 @@ describe('useFieldDependency', () => {
     });
 
     expect(getByDataTest('last-name')).toBeDisabled();
-    expect(getByDataTest('last-name')).toHaveValue(firstNameValue);
 
     // eslint-disable-next-line testing-library/prefer-screen-queries
     expect(getByLabelText(firstNameValue)).toBeInTheDocument();
-  });
-
-  it('Generates `value` based on `initialValue` update', () => {
-    const lastNameValue = 'Doe';
-
-    const TestComponent: FC = () => {
-      const [initialValue, setInitialValue] = useState('');
-
-      return (
-        <>
-          <button data-test="update-button" onClick={() => setInitialValue(lastNameValue)}>
-            Update initial value
-          </button>
-          <TextField
-            dataTest="last-name"
-            id="last-name"
-            initialValue={initialValue}
-            name="lastName"
-          />
-        </>
-      );
-    };
-
-    const { getByDataTest } = testRender(<TestComponent />);
-
-    userEvent.click(getByDataTest('update-button'));
-
-    expect(getByDataTest('last-name')).toHaveValue(lastNameValue);
   });
 });

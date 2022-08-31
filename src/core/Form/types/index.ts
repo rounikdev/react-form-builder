@@ -294,9 +294,7 @@ export type Pattern = string;
 export interface UseFieldDependencyConfig<T> {
   dependencyValue: FormStateEntryValue;
   disabled?: boolean | ((dependencyValue: FormStateEntryValue) => boolean);
-  initialValue?: T | ((dependencyValue: FormStateEntryValue) => T);
   label?: string | ((dependencyValue: FormStateEntryValue) => string);
-  onChangeHandler?: (value: T) => Promise<void>;
 }
 
 export interface UseFieldDependencyReturnType {

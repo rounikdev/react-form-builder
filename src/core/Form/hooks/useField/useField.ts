@@ -74,20 +74,19 @@ export const useField = <T>({
     [typeof dependency === 'bigint' ? dependency : JSON.stringify(dependency)]
   );
 
-  const updatedInitialValue = useMemo(() => {
-    if (typeof initialValue === 'function') {
-      return (initialValue as (dependencyValue: FormStateEntryValue) => T)(updatedDependency);
-    } else {
-      return initialValue;
-    }
+  const builtInitialValue = useMemo(
+    () =>
+      typeof initialValue === 'function'
+        ? (initialValue as (dependencyValue: FormStateEntryValue) => T)(updatedDependency)
+        : initialValue,
+    [updatedDependency, initialValue]
+  );
+
+  const updatedInitialValue = useMemo(
+    () => builtInitialValue,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    updatedDependency,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    ...(typeof initialValue !== 'function'
-      ? [typeof initialValue === 'bigint' ? initialValue : JSON.stringify(initialValue)]
-      : [])
-  ]);
+    [typeof builtInitialValue === 'bigint' ? builtInitialValue : JSON.stringify(builtInitialValue)]
+  );
 
   let stateValue = updatedInitialValue;
 
@@ -239,7 +238,7 @@ export const useField = <T>({
         GlobalModel.getNestedValue(
           resetRecords[resetFlag.resetKey || ROOT_RESET_RECORD_KEY],
           fieldPath
-        ) ?? initialValue;
+        ) ?? updatedInitialValue;
 
       await validateField(resetValue, updatedDependency);
 

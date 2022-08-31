@@ -1,13 +1,14 @@
 import { fireEvent } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import userEvent from '@testing-library/user-event';
-import { FC, FocusEventHandler, MutableRefObject, useEffect } from 'react';
+import { FC, FocusEventHandler, MutableRefObject, useEffect, useState } from 'react';
 
 import { FormObject, FormRoot } from '@core/Form/components';
 import { useForm } from '@core/Form/hooks/useForm/useForm';
 import { useFormRoot } from '@core/Form/providers';
-import { DependencyExtractor, Formatter, Validator } from '@core/Form/types';
+import { DependencyExtractor, Formatter, FormStateEntryValue, Validator } from '@core/Form/types';
 import { ShowHide, testRender } from '@services/utils';
+import { Text } from '@ui';
 
 import { useField } from '../useField';
 
@@ -16,7 +17,7 @@ interface TestInputProps<T> {
   dataTestState?: string;
   dependencyExtractor?: DependencyExtractor;
   formatter?: Formatter<T>;
-  initialValue?: T;
+  initialValue?: T | ((dependencyValue: FormStateEntryValue) => T);
   name: string;
   onBlur?: FocusEventHandler<HTMLElement>;
   onFocus?: FocusEventHandler<HTMLElement>;
@@ -858,5 +859,50 @@ describe('useField', () => {
 
     userEvent.type(getByDataTest('dependency-input'), 'x');
     expect(getByDataTest('input')).toHaveValue(valueB);
+  });
+
+  it('Generates `value` based on dependency', () => {
+    const firstNameValue = 'John';
+
+    const { getByDataTest } = testRender(
+      <FormRoot dataTest="test">
+        <Text dataTest="first-name" id="first-name" name="firstName" />
+        <TestInput
+          dataTestInput="last-name"
+          dependencyExtractor={(formData) => ({ firstName: formData.firstName })}
+          initialValue={({ firstName }) => firstName}
+          name="lastName"
+        />
+      </FormRoot>
+    );
+
+    fireEvent.change(getByDataTest('first-name-input'), {
+      target: { value: firstNameValue }
+    });
+
+    expect(getByDataTest('last-name')).toHaveValue(firstNameValue);
+  });
+
+  it('Generates `value` based on `initialValue` update', () => {
+    const lastNameValue = 'Doe';
+
+    const TestComponent: FC = () => {
+      const [initialValue, setInitialValue] = useState('');
+
+      return (
+        <>
+          <button data-test="update-button" onClick={() => setInitialValue(lastNameValue)}>
+            Update initial value
+          </button>
+          <TestInput dataTestInput="last-name" initialValue={initialValue} name="lastName" />
+        </>
+      );
+    };
+
+    const { getByDataTest } = testRender(<TestComponent />);
+
+    userEvent.click(getByDataTest('update-button'));
+
+    expect(getByDataTest('last-name')).toHaveValue('Doe');
   });
 });
