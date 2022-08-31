@@ -47,6 +47,7 @@ export const Range: FC<RangeProps> = memo(
       dependencyExtractor,
       formatter,
       initialValue,
+      label,
       max,
       min,
       name,
@@ -95,12 +96,17 @@ export const Range: FC<RangeProps> = memo(
             {context.single ? null : (
               <RangeSlider
                 dataTest={dataTest}
-                label={label}
+                label={context.label}
                 limit={context.limitFrom}
                 name="from"
               />
             )}
-            <RangeSlider dataTest={dataTest} label={label} limit={context.limitTo} name="to" />
+            <RangeSlider
+              dataTest={dataTest}
+              label={context.label}
+              limit={context.limitTo}
+              name="to"
+            />
           </div>
         </div>
       </Provider>

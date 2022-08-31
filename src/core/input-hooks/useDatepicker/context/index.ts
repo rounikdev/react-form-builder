@@ -33,6 +33,7 @@ export const datepickerContext = createContext<DatepickerContext>({
     // default implementation
   },
   isRequired: false,
+  label: '',
   maxDate: undefined,
   minDate: undefined,
   monthName: '',

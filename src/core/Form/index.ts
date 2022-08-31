@@ -1,4 +1,4 @@
 export * from './components';
-export { useField, useForm } from './hooks';
+export { useField, useFieldDependency, useForm } from './hooks';
 export { useFormRoot } from './providers';
 export * from './types';

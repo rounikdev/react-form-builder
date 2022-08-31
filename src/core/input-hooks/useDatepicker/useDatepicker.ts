@@ -7,7 +7,7 @@ import {
   useUpdateOnly
 } from '@rounik/react-custom-hooks';
 
-import { useField } from '@core/Form/hooks';
+import { useField, useFieldDependency } from '@core/Form/hooks';
 import { useFormRoot } from '@core/Form/providers';
 
 import { monthNames } from './constants';
@@ -25,6 +25,7 @@ export const useDatepicker = ({
   dependencyExtractor,
   formatter,
   initialValue,
+  label,
   maxDateExtractor,
   minDateExtractor,
   name,
@@ -36,9 +37,9 @@ export const useDatepicker = ({
   validator
 }: UseDatepickerArgs) => {
   const {
+    dependencyValue,
     errors,
     focused,
-    isRequired,
     onBlurHandler,
     onChangeHandler,
     onFocusHandler,
@@ -53,10 +54,11 @@ export const useDatepicker = ({
     name,
     onBlur,
     onFocus,
-    required,
     sideEffect,
     validator
   });
+
+  const dependantData = useFieldDependency({ dependencyValue, label, required });
 
   const { formData } = useFormRoot();
 
@@ -419,7 +421,8 @@ export const useDatepicker = ({
       hide,
       inputBlurHandler,
       inputChangeHandler,
-      isRequired,
+      isRequired: dependantData.required,
+      label: dependantData.label,
       maxDate,
       minDate,
       monthName,
@@ -442,13 +445,14 @@ export const useDatepicker = ({
       changeYear,
       clearInput,
       dateInput,
+      dependantData.label,
+      dependantData.required,
       errors,
       focusCalendar,
       focused,
       hide,
       inputBlurHandler,
       inputChangeHandler,
-      isRequired,
       maxDate,
       minDate,
       monthName,

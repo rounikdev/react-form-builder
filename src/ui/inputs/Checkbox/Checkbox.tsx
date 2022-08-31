@@ -2,7 +2,7 @@ import { FC, memo, MutableRefObject, useMemo } from 'react';
 
 import { useClass } from '@rounik/react-custom-hooks';
 
-import { useCheckboxInput } from '@core';
+import { useCheckboxInput, useFieldDependency } from '@core';
 
 import { CheckboxProps } from './types';
 
@@ -24,9 +24,9 @@ export const Checkbox: FC<CheckboxProps> = memo(
     validator
   }) => {
     const {
+      dependencyValue,
       fieldRef,
       focused,
-      isRequired,
       onBlurHandler,
       onChangeHandler,
       onFocusHandler,
@@ -37,10 +37,11 @@ export const Checkbox: FC<CheckboxProps> = memo(
       dependencyExtractor,
       initialValue,
       name,
-      required,
       sideEffect,
       validator
     });
+
+    const dependantData = useFieldDependency({ dependencyValue, disabled, label, required });
 
     const isError = useMemo(() => touched && !focused && !valid, [focused, touched, valid]);
 
@@ -60,11 +61,11 @@ export const Checkbox: FC<CheckboxProps> = memo(
           <input
             aria-hidden={hidden}
             aria-invalid={!valid}
-            aria-required={isRequired}
+            aria-required={dependantData.required}
             checked={value}
             className={inputClass}
             data-test={`${dataTest}-input`}
-            disabled={disabled}
+            disabled={dependantData.disabled}
             id={id}
             name={name}
             onBlur={onBlurHandler}
@@ -81,7 +82,7 @@ export const Checkbox: FC<CheckboxProps> = memo(
               className={styles.Label}
               data-test={`${dataTest}-label`}
               htmlFor={id}
-              title={label}
+              title={dependantData.label}
             >
               {label}
             </label>

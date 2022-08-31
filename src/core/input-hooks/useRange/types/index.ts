@@ -1,6 +1,6 @@
 import { Dispatch, FocusEventHandler, MouseEventHandler, RefObject, SetStateAction } from 'react';
 
-import { UseFieldConfig } from '@core/Form/types';
+import { FormStateEntryValue, UseFieldConfig } from '@core/Form/types';
 
 export type RangeOptions = number[];
 
@@ -12,7 +12,9 @@ export interface RangeValue {
 export interface UseRangeArgs extends UseFieldConfig<RangeValue> {
   max?: number;
   min?: number;
+  label?: string | ((dependencyValue: FormStateEntryValue) => string);
   options?: RangeOptions;
+  required?: boolean | ((dependencyValue: FormStateEntryValue) => boolean);
   single?: boolean;
   step: number;
   stepExtra: number;

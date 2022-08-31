@@ -10,7 +10,7 @@ import {
 
 import { useMount, useUpdate } from '@rounik/react-custom-hooks';
 
-import { useField } from '@core/Form/hooks';
+import { useField, useFieldDependency } from '@core/Form/hooks';
 
 import { rangeContext } from './context';
 import { RangeValue, UseRangeArgs } from './types';
@@ -19,6 +19,7 @@ export const useRange = ({
   dependencyExtractor,
   formatter,
   initialValue,
+  label,
   max: maximum,
   min: minimum,
   name,
@@ -32,7 +33,7 @@ export const useRange = ({
   stepExtra,
   validator
 }: UseRangeArgs) => {
-  const { isRequired, onBlurHandler, onChangeHandler, onFocusHandler, value } =
+  const { dependencyValue, onBlurHandler, onChangeHandler, onFocusHandler, value } =
     useField<RangeValue>({
       dependencyExtractor,
       formatter,
@@ -40,10 +41,11 @@ export const useRange = ({
       name,
       onBlur,
       onFocus,
-      required,
       sideEffect,
       validator
     });
+
+  const dependantData = useFieldDependency({ dependencyValue, label, required });
 
   const { max, min } = useMemo(() => {
     const limits = {
@@ -225,7 +227,7 @@ export const useRange = ({
   });
 
   useUpdate(() => {
-    if (options) {
+    if (options && typeof initialValue !== 'function') {
       onChangeHandler({
         from: limitToOptions(initialValue.from),
         to: limitToOptions(initialValue.to)
@@ -238,7 +240,8 @@ export const useRange = ({
       barStyle,
       clientX,
       isMoving,
-      isRequired,
+      isRequired: dependantData.required,
+      label: dependantData.label,
       limitFrom,
       limitTo,
       max,
@@ -262,8 +265,9 @@ export const useRange = ({
     [
       barStyle,
       clientX,
+      dependantData.label,
+      dependantData.required,
       isMoving,
-      isRequired,
       limitFrom,
       limitTo,
       max,

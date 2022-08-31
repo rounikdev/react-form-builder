@@ -1,21 +1,19 @@
 import { Dispatch, FocusEventHandler, MutableRefObject, ReactNode, SetStateAction } from 'react';
 
 import { TranslationSubstitute } from '@core/Translation/types';
-import { Animatable, Disableable, Stylable, Testable } from '@types';
+import { Animatable, Stylable, Testable } from '@types';
 
-export interface Field<T>
-  extends Omit<UseFieldConfig<T>, 'initialValue'>,
-    Disableable,
-    Stylable,
-    Testable {
+export interface Field<T> extends Omit<UseFieldConfig<T>, 'initialValue'>, Stylable, Testable {
   autoComplete?: string;
+  disabled?: boolean | ((dependencyValue: FormStateEntryValue) => boolean);
   expandError?: boolean;
   hidden?: boolean;
   hideRequiredLabel?: boolean;
   id: string;
-  label?: string;
+  label?: string | ((dependencyValue: FormStateEntryValue) => string);
   noLabelTruncate?: boolean;
   placeholder?: string;
+  required?: boolean | ((dependencyValue: FormStateEntryValue) => boolean);
   requiredLabel?: string;
   showOptionalLabel?: boolean;
 }
@@ -170,7 +168,6 @@ export interface UseFieldConfig<T> {
   name: string;
   onBlur?: FocusEventHandler<Element>;
   onFocus?: FocusEventHandler<Element>;
-  required?: boolean | ((dependencyValue: FormStateEntryValue) => boolean);
   sideEffect?: ({
     dependencyValue,
     methods,
@@ -199,7 +196,6 @@ export interface UseFieldReturnType<T> {
   fieldRef: MutableRefObject<HTMLElement | HTMLInputElement | null>;
   focused: boolean;
   isEdit: boolean;
-  isRequired: boolean;
   onBlurHandler: FocusEventHandler<HTMLElement>;
   onChangeHandler: (value: T) => Promise<void>;
   onFocusHandler: FocusEventHandler<HTMLElement>;
@@ -291,13 +287,15 @@ export interface FormUserProps {
 
 export type Pattern = string;
 
-export interface UseFieldDependencyConfig<T> {
+export interface UseFieldDependencyConfig {
   dependencyValue: FormStateEntryValue;
   disabled?: boolean | ((dependencyValue: FormStateEntryValue) => boolean);
   label?: string | ((dependencyValue: FormStateEntryValue) => string);
+  required?: boolean | ((dependencyValue: FormStateEntryValue) => boolean);
 }
 
 export interface UseFieldDependencyReturnType {
   disabled: boolean;
   label: string;
+  required: boolean;
 }

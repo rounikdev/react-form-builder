@@ -10,7 +10,6 @@ export const useTextInput: (args: UseTextInput) => UseTextInputReturnType = ({
   initialValue,
   name,
   onBlurSideEffect,
-  required,
   sideEffect,
   validator
 }) => {
@@ -21,7 +20,6 @@ export const useTextInput: (args: UseTextInput) => UseTextInputReturnType = ({
       ? onBlurSideEffect({ value: initialValue ?? '' })
       : initialValue ?? '',
     name,
-    required,
     sideEffect,
     validator
   });

@@ -1,6 +1,6 @@
 import { Provider, RefObject } from 'react';
 
-import { UseFieldConfig, UseFieldReturnType } from '@core/Form/types';
+import { FormStateEntryValue, UseFieldConfig, UseFieldReturnType } from '@core/Form/types';
 
 export interface AutocompleteContext {
   close: () => void;
@@ -21,17 +21,16 @@ export interface UseAutocompleteArgs<T>
   list: T[];
   multi?: boolean;
   onBlur?: () => void;
+  required?: boolean | ((dependencyValue: FormStateEntryValue) => boolean);
 }
 
 export interface UseAutocompleteReturnType<T>
-  extends Omit<
-    UseFieldReturnType<T>,
-    'onChangeHandler' | 'value' | 'onBlurHandler' | 'dependencyValue'
-  > {
+  extends Omit<UseFieldReturnType<T>, 'onChangeHandler' | 'value' | 'onBlurHandler'> {
   close: AutocompleteContext['close'];
   context: AutocompleteContext;
   filteredList: T[];
   focusedId: string;
+  isRequired: boolean;
   onBlurHandler: () => void;
   open: AutocompleteContext['open'];
   Provider: Provider<AutocompleteContext>;

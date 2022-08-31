@@ -2,7 +2,7 @@ import { LegacyRef, memo, RefObject, useMemo } from 'react';
 
 import { useClass } from '@rounik/react-custom-hooks';
 
-import { useAutocomplete } from '@core';
+import { useAutocomplete, useFieldDependency } from '@core';
 import { ErrorField } from '@ui/ErrorField/ErrorField';
 import { LabelField } from '@ui/LabelField/LabelField';
 
@@ -38,12 +38,12 @@ const BaseAutocomplete = <T,>({
   const {
     close,
     context,
+    dependencyValue,
     errors,
     fieldRef,
     filteredList,
     focused: isFocused,
     focusedId,
-    isRequired,
     onBlurHandler,
     onFocusHandler,
     open,
@@ -71,6 +71,8 @@ const BaseAutocomplete = <T,>({
     sideEffect,
     validator
   });
+
+  const dependantData = useFieldDependency({ dependencyValue, disabled, label, required });
 
   const isError = useMemo(
     () => !isFocused && touched && !valid && !disabled,
@@ -122,14 +124,19 @@ const BaseAutocomplete = <T,>({
               })}
           </ul>
         ) : null}
-        <LabelField id={id} label={label} required={isRequired} requiredLabel={requiredLabel} />
+        <LabelField
+          id={id}
+          label={dependantData.label}
+          required={dependantData.required}
+          requiredLabel={requiredLabel}
+        />
         <input
           autoComplete="off"
           {...(focusedId ? { 'aria-activedescendant': `${focusedId}-option` } : {})}
           {...(show ? { 'aria-controls': `${id}-listbox` } : {})}
           className={useClass([styles.Input, isError && styles.Error], [isError])}
           data-test={`${dataTest}-input`}
-          disabled={disabled}
+          disabled={dependantData.disabled}
           id={id}
           onChange={(event) => {
             setSearch(event.target.value);
