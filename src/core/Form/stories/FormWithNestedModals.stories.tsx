@@ -1,9 +1,9 @@
 import { Meta, Story } from '@storybook/react';
 import { FC, StrictMode } from 'react';
 
-import { FormArray, FormObject, FormRoot, FormUser } from '@core';
+import { FormArray, FormObject, FormRoot, FormUser, Validator, ValidityCheck } from '@core';
 import { GlobalModel } from '@services';
-import { Button, Checkbox, Text } from '@ui';
+import { Button, Checkbox, ErrorField, Text } from '@ui';
 
 import { FormStateDisplay } from './components';
 
@@ -38,6 +38,46 @@ const initialContacts: Contact[] = [
   }
 ];
 
+const contactValidator: Validator<Contact> = (contact) => {
+  let validityCheck: ValidityCheck = {
+    errors: [],
+    valid: true
+  };
+
+  if (!contact.email && !contact.phone) {
+    validityCheck = {
+      errors: [{ text: `Enter email and/or phone` }],
+      valid: false
+    };
+  }
+
+  return validityCheck;
+};
+
+const contactListValidator: Validator<Contact[]> = (contacts) => {
+  let validityCheck: ValidityCheck = {
+    errors: [],
+    valid: true
+  };
+
+  let primaryCount = 0;
+
+  contacts.forEach((contact) => {
+    if (contact.isPrimary) {
+      primaryCount++;
+    }
+  });
+
+  if (primaryCount !== 1) {
+    validityCheck = {
+      errors: [{ text: `Should have one and primary contact` }],
+      valid: false
+    };
+  }
+
+  return validityCheck;
+};
+
 const Template: Story<FC> = () => {
   return (
     <StrictMode>
@@ -66,14 +106,20 @@ const Template: Story<FC> = () => {
               label="Last Name"
               name="lastName"
             />
-            <FormArray factory={contactFactory} initialValue={initialContacts} name="contacts">
-              {([contacts, addContact, removeContact]) => {
+            <FormArray
+              factory={contactFactory}
+              initialValue={initialContacts}
+              name="contacts"
+              validator={contactListValidator}
+            >
+              {([contacts, addContact, removeContact, arrayErrors, arrayTouched, arrayFocused]) => {
                 return (
                   <FormUser>
                     {({
                       formContext: {
                         isEdit,
-                        methods: { cancel, edit, save }
+                        methods: { cancel, edit, save },
+                        valid
                       },
                       formRootContext: { formData }
                     }) => (
@@ -99,52 +145,80 @@ const Template: Story<FC> = () => {
                         >
                           {contacts.map((contact, contactIndex) => {
                             return (
-                              <div className={styles.Contact} key={contact.id}>
-                                <FormObject name={`${contactIndex}`}>
-                                  <Text
-                                    className={styles.Text}
-                                    dataTest={`contact-email-${contactIndex}`}
-                                    disabled={false}
-                                    id={`contact-email-${contactIndex}`}
-                                    initialValue={contact.email}
-                                    label="Email"
-                                    name="email"
-                                  />
-                                  <Text
-                                    dataTest={`contact-id-${contactIndex}`}
-                                    hidden
-                                    id={`contact-id-${contactIndex}`}
-                                    initialValue={contact.id}
-                                    label="Id"
-                                    name="id"
-                                  />
-                                  <Text
-                                    className={styles.Text}
-                                    dataTest={`contact-phone-${contactIndex}`}
-                                    disabled={false}
-                                    id={`contact-phone-${contactIndex}`}
-                                    initialValue={contact.phone}
-                                    label="Phone"
-                                    name="phone"
-                                  />
-                                  <Checkbox
-                                    className={styles.Checkbox}
-                                    dataTest={`contact-is-primary-${contactIndex}`}
-                                    disabled={false}
-                                    id={`contact-is-primary-${contactIndex}`}
-                                    initialValue={contact.isPrimary}
-                                    label="Is Primary"
-                                    name="isPrimary"
-                                  />
-                                  <Button
-                                    dataTest={`remove-contact-${contactIndex}`}
-                                    onClick={() => removeContact(contactIndex)}
-                                    text="-"
-                                  />
-                                </FormObject>
+                              <div className={styles.ContactContainer} key={contact.id}>
+                                <div className={styles.Contact}>
+                                  <FormObject name={`${contactIndex}`} validator={contactValidator}>
+                                    <Text
+                                      className={styles.Text}
+                                      dataTest={`contact-email-${contactIndex}`}
+                                      disabled={false}
+                                      id={`contact-email-${contactIndex}`}
+                                      initialValue={contact.email}
+                                      label="Email"
+                                      name="email"
+                                    />
+                                    <Text
+                                      dataTest={`contact-id-${contactIndex}`}
+                                      hidden
+                                      id={`contact-id-${contactIndex}`}
+                                      initialValue={contact.id}
+                                      label="Id"
+                                      name="id"
+                                    />
+                                    <Text
+                                      className={styles.Text}
+                                      dataTest={`contact-phone-${contactIndex}`}
+                                      disabled={false}
+                                      id={`contact-phone-${contactIndex}`}
+                                      initialValue={contact.phone}
+                                      label="Phone"
+                                      name="phone"
+                                    />
+                                    <Checkbox
+                                      className={styles.Checkbox}
+                                      dataTest={`contact-is-primary-${contactIndex}`}
+                                      disabled={false}
+                                      id={`contact-is-primary-${contactIndex}`}
+                                      initialValue={contact.isPrimary}
+                                      label="Is Primary"
+                                      name="isPrimary"
+                                    />
+                                    <Button
+                                      dataTest={`remove-contact-${contactIndex}`}
+                                      onClick={() => removeContact(contactIndex)}
+                                      text="-"
+                                    />
+                                    <FormUser>
+                                      {({
+                                        formContext: {
+                                          focused,
+                                          formOnlyErrors,
+                                          touched: contactTouched
+                                        }
+                                      }) => {
+                                        return (
+                                          <ErrorField
+                                            dataTest={`contact-${contactIndex}`}
+                                            errors={formOnlyErrors}
+                                            isError={
+                                              formOnlyErrors.length > 0 &&
+                                              contactTouched &&
+                                              !focused
+                                            }
+                                          />
+                                        );
+                                      }}
+                                    </FormUser>
+                                  </FormObject>
+                                </div>
                               </div>
                             );
                           })}
+                          <ErrorField
+                            dataTest="contacts-list"
+                            errors={arrayErrors}
+                            isError={arrayErrors.length > 0 && arrayTouched && !arrayFocused}
+                          />
                           <div className={styles.Actions}>
                             <Button
                               dataTest="add-contact"
@@ -156,7 +230,9 @@ const Template: Story<FC> = () => {
                               onClick={cancel}
                               text="Cancel"
                             />
-                            <Button dataTest="save-edit-contacts" onClick={save} text="Save" />
+                            {valid ? (
+                              <Button dataTest="save-edit-contacts" onClick={save} text="Save" />
+                            ) : null}
                           </div>
                         </div>
                       </>

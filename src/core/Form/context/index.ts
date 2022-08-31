@@ -3,15 +3,23 @@ import { createContext } from 'react';
 import { FormContext } from '../types';
 
 export const initialFormContext: FormContext = {
+  focused: false,
   forceValidateFlag: {},
+  formOnlyErrors: [],
   isEdit: false,
   isParentEdit: false,
   localEdit: false,
   methods: {
+    blurParent: () => {
+      // default function
+    },
     cancel: () => {
       // default function
     },
     edit: () => {
+      // default function
+    },
+    focusParent: () => {
       // default function
     },
     forceValidate: () => {
@@ -29,9 +37,13 @@ export const initialFormContext: FormContext = {
     },
     setInForm: () => {
       // default function
+    },
+    touchParent: () => {
+      // default function
     }
   },
   state: {},
+  touched: false,
   valid: false
 };
 

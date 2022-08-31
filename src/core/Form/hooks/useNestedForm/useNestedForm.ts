@@ -1,26 +1,40 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { useUnmount, useUpdate, useUpdatedRef, useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { useForm } from '@core/Form/hooks/useForm/useForm';
 import { useFormEditContext, useFormRoot } from '@core/Form/providers';
+import { shouldBeReset } from '@core/Form/services';
 import {
+  DependencyExtractor,
   ForceValidateFlag,
   ForceValidateMethod,
   FormStateEntry,
-  FormStateEntryValue
+  FormStateEntryValue,
+  ValidationError,
+  Validator,
+  ValidityCheck
 } from '@core/Form/types';
 
-interface UseNestedFormArgs {
+interface UseNestedFormArgs<T> {
+  dependencyExtractor?: DependencyExtractor;
   name: string;
   valid: boolean;
+  validator?: Validator<T[]>;
   value: FormStateEntryValue;
 }
 
-export const useNestedForm = ({ name, valid, value }: UseNestedFormArgs) => {
+export const useNestedForm = <T>({
+  dependencyExtractor,
+  name,
+  valid,
+  validator,
+  value
+}: UseNestedFormArgs<T>) => {
   const {
     formData,
-    methods: { setResetFlag, setResetRecords }
+    methods: { registerFieldErrors, setResetFlag, setResetRecords },
+    resetFlag
   } = useFormRoot();
 
   const parentContext = useForm();
@@ -31,9 +45,25 @@ export const useNestedForm = ({ name, valid, value }: UseNestedFormArgs) => {
 
   const [isEdit, setIsEdit] = useState(false);
 
+  const [errors, setErrors] = useState<ValidationError[]>([]);
+
+  const [focused, setFocused] = useState(false);
+
+  const [touched, setTouched] = useState(false);
+
+  const [nestedIsValid, setNestedIsValid] = useState(false);
+
   const formDataRef = useUpdatedRef(formData);
 
   const nameRef = useUpdatedRef(name);
+
+  const dependency = useMemo(() => {
+    if (typeof dependencyExtractor === 'function' && formData) {
+      return dependencyExtractor(formData);
+    } else {
+      return undefined;
+    }
+  }, [dependencyExtractor, formData]);
 
   const forceValidate: ForceValidateMethod = useCallback(
     (customForceValidateFlag = {}) => setForceValidateFlag(customForceValidateFlag),
@@ -49,6 +79,7 @@ export const useNestedForm = ({ name, valid, value }: UseNestedFormArgs) => {
 
   const reset = useCallback(() => {
     setResetFlag({ resetKey: getFieldId() });
+    setTouched(false);
   }, [getFieldId, setResetFlag]);
 
   const clear = useCallback(() => {
@@ -106,13 +137,88 @@ export const useNestedForm = ({ name, valid, value }: UseNestedFormArgs) => {
     cleanFromResetState();
   }, [cleanFromResetState]);
 
-  useUpdate(() => {
+  const blurParent = useCallback(() => {
+    setFocused(false);
+  }, []);
+
+  const focusParent = useCallback(() => {
+    setFocused(true);
+  }, []);
+
+  const touchParent = useCallback(() => {
+    setTouched(true);
+  }, []);
+
+  useUpdate(async () => {
+    let validityCheck: ValidityCheck;
+
+    if (validator) {
+      parentContext.methods.setInForm({
+        key: name,
+        valid: false,
+        value
+      });
+
+      try {
+        validityCheck = await validator(value, dependency);
+      } catch (error) {
+        validityCheck = {
+          errors: [{ text: 'errorValidating' }],
+          valid: false
+        };
+      }
+    } else {
+      validityCheck = {
+        errors: [],
+        valid: true
+      };
+    }
+
+    setErrors(validityCheck.errors);
+
+    setNestedIsValid(validityCheck.valid);
+
     parentContext.methods.setInForm({
       key: name,
-      valid,
+      valid: valid && validityCheck.valid,
       value
     });
-  }, [valid, value]);
+  }, [typeof dependency === 'bigint' ? dependency : JSON.stringify(dependency), valid, value]);
+
+  // Update form errors state on errors update:
+  useUpdate(() => {
+    if (registerFieldErrors) {
+      registerFieldErrors({ fieldErrors: errors, fieldId: getFieldId() });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [errors, getFieldId]);
+
+  // Remove from form errors state on unmount:
+  useUpdate(() => {
+    return () => {
+      if (registerFieldErrors) {
+        registerFieldErrors({ fieldErrors: [], fieldId: getFieldId() });
+      }
+    };
+  }, [getFieldId]);
+
+  useUpdate(() => {
+    if (focused) {
+      parentContext.methods.focusParent();
+    } else {
+      parentContext.methods.blurParent();
+    }
+  }, [focused]);
+
+  useUpdateOnly(() => {
+    const fieldId = getFieldId();
+
+    if (Object.keys(parentContext.forceValidateFlag).length === 0) {
+      setTouched(true);
+    } else if (typeof parentContext.forceValidateFlag[fieldId] === 'boolean') {
+      setTouched(parentContext.forceValidateFlag[fieldId]);
+    }
+  }, [parentContext.forceValidateFlag]);
 
   useUpdateOnly(() => {
     forceValidate(parentContext.forceValidateFlag);
@@ -129,17 +235,36 @@ export const useNestedForm = ({ name, valid, value }: UseNestedFormArgs) => {
     }
   }, [isParentEdit]);
 
+  useUpdateOnly(() => {
+    if (touched) {
+      parentContext.methods.touchParent();
+    }
+  }, [touched]);
+
+  useUpdateOnly(() => {
+    if (shouldBeReset({ fieldId: getFieldId(), resetFlag })) {
+      setTouched(false);
+    }
+  }, [resetFlag]);
+
   useUnmount(clear);
 
   return {
+    blurParent,
     cancel,
     edit,
+    errors,
+    focused,
+    focusParent,
     forceValidate,
     forceValidateFlag,
     getFieldId,
     isEdit,
     isParentEdit,
+    nestedIsValid,
     reset,
-    save
+    save,
+    touched,
+    touchParent
   };
 };
