@@ -96,3 +96,12 @@
     margin-top: var(--offset-medium);
   }
 }
+
+.FormUseFieldDependency {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: flex-start;
+}

@@ -48,7 +48,7 @@ export const Text: FC<TextProps> = memo(
     } = useTextInput({
       dependencyExtractor,
       formatter,
-      initialValue,
+      initialValue: typeof initialValue === 'undefined' ? '' : initialValue,
       name,
       onBlurSideEffect,
       sideEffect,
@@ -84,7 +84,9 @@ export const Text: FC<TextProps> = memo(
             autoComplete={autoComplete}
             className={inputClassName}
             data-test={`${dataTest}-input`}
-            disabled={typeof disabled === 'boolean' ? disabled : !isEdit}
+            disabled={
+              typeof dependantData.disabled === 'boolean' ? dependantData.disabled : !isEdit
+            }
             id={id}
             name={name}
             onBlur={onBlurHandler}

@@ -6,10 +6,9 @@ import {
   RadioGroupValue
 } from '@core';
 
-export interface RadioGroupProps extends Omit<Field<RadioGroupValue>, 'initialValue'> {
+export interface RadioGroupProps extends Field<RadioGroupValue> {
   direction?: 'Row' | 'Column';
   groupLabel?: string;
-  initialValue?: RadioGroupValue;
   inputValueExtractor?: ExtractorFromSingleOption<RadioGroupOption, string>;
   labelExtractor?: ExtractorFromSingleOption<RadioGroupOption, RadioGroupLabel>;
   options: RadioGroupOption[];

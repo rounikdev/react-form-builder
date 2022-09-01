@@ -1,4 +1,4 @@
-import { FocusEvent, useCallback } from 'react';
+import { FocusEvent, useCallback, useMemo } from 'react';
 
 import { useField } from '@core/Form';
 
@@ -13,11 +13,19 @@ export const useTextInput: (args: UseTextInput) => UseTextInputReturnType = ({
   sideEffect,
   validator
 }) => {
+  const builtInitialValue = useMemo(() => {
+    if (typeof initialValue === 'function') {
+      return initialValue({});
+    } else {
+      return initialValue;
+    }
+  }, [initialValue]);
+
   const props = useField<string>({
     dependencyExtractor,
     formatter,
     initialValue: onBlurSideEffect
-      ? onBlurSideEffect({ value: initialValue ?? '' })
+      ? onBlurSideEffect({ value: builtInitialValue ?? '' })
       : initialValue ?? '',
     name,
     sideEffect,

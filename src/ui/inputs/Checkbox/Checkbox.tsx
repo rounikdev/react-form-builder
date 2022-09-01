@@ -35,7 +35,7 @@ export const Checkbox: FC<CheckboxProps> = memo(
       value
     } = useCheckboxInput({
       dependencyExtractor,
-      initialValue,
+      initialValue: typeof initialValue === 'undefined' ? false : initialValue,
       name,
       sideEffect,
       validator

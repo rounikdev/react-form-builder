@@ -11,7 +11,7 @@ export const useCheckboxInput: (args: UseCheckboxInput) => UseCheckboxReturnType
 }) => {
   return useField<boolean>({
     dependencyExtractor,
-    initialValue: !!initialValue,
+    initialValue,
     name,
     sideEffect,
     validator

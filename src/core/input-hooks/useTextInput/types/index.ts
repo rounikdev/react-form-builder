@@ -8,8 +8,7 @@ export type InputOnBlurSideEffect = ({
   setValue?: (value: string) => void;
 }) => string;
 
-export interface UseTextInput extends Omit<UseFieldConfig<string>, 'initialValue'> {
-  initialValue?: string;
+export interface UseTextInput extends UseFieldConfig<string> {
   onBlurSideEffect?: InputOnBlurSideEffect;
 }
 

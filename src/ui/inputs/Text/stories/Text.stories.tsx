@@ -23,7 +23,7 @@ Text.args = {
   formatter: ({ newValue }: { newValue: string }) => newValue,
   hidden: false,
   id: 'text',
-  initialValue: 'Text',
+  initialValue: () => 'Text',
   label: 'Text Label',
   name: 'text',
   onBlurSideEffect: ({ setValue }) => {

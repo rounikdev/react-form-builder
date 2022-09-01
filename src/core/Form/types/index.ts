@@ -10,6 +10,7 @@ export interface Field<T> extends Omit<UseFieldConfig<T>, 'initialValue'>, Styla
   hidden?: boolean;
   hideRequiredLabel?: boolean;
   id: string;
+  initialValue?: T | ((dependencyValue: FormStateEntryValue) => T);
   label?: string | ((dependencyValue: FormStateEntryValue) => string);
   noLabelTruncate?: boolean;
   placeholder?: string;
