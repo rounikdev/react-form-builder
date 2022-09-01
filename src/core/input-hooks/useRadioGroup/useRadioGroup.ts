@@ -28,7 +28,6 @@ export const useRadioGroup = <T, R>({
   labelExtractor = defaultLabelExtractor,
   name,
   options,
-  required,
   sideEffect,
   titleExtractor = defaultTitleExtractor,
   validator,
@@ -38,7 +37,6 @@ export const useRadioGroup = <T, R>({
     dependencyExtractor,
     initialValue,
     name,
-    required,
     sideEffect,
     validator
   });

@@ -21,7 +21,7 @@ Checkbox.args = {
   disabled: false,
   hideRequiredLabel: false,
   id: 'checkbox',
-  initialValue: false,
+  initialValue: () => true,
   label: 'Checkbox Label',
   name: 'checkbox',
   required: true,

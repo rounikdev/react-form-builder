@@ -14,8 +14,10 @@ export interface DatepickerState {
 }
 
 export interface UseDatepickerArgs extends UseFieldConfig<Date | undefined> {
+  label?: string | ((dependencyValue: FormStateEntryValue) => string);
   maxDateExtractor?: (formValue: FormStateEntryValue) => Date | undefined;
   minDateExtractor?: (formValue: FormStateEntryValue) => Date | undefined;
+  required?: boolean | ((dependencyValue: FormStateEntryValue) => boolean);
   useEndOfDay?: boolean;
 }
 
@@ -31,6 +33,7 @@ export interface DatepickerContext {
   focusCalendar: () => void;
   focused: boolean;
   hide: () => void;
+  label: string;
   maxDate?: Date;
   minDate?: Date;
   monthName: string;

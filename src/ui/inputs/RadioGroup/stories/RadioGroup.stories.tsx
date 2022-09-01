@@ -38,7 +38,7 @@ RadioGroup.args = {
   disabled: false,
   groupLabel: 'Radio Group Label',
   id: 'radio-group',
-  initialValue: `${options[2].value} value`,
+  initialValue: () => `${options[1].value} value`,
   inputValueExtractor: (option: any) => `${option.value} value`,
   labelExtractor: (option: any) => `${option.label} label`,
   name: 'radio-group',

@@ -1,8 +1,7 @@
 import { Field, InputOnBlurSideEffect } from '@core';
 
-export interface TextProps extends Omit<Field<string>, 'initialValue'> {
+export interface TextProps extends Field<string> {
   autoComplete?: string;
-  initialValue?: string;
   onBlurSideEffect?: InputOnBlurSideEffect;
   pattern?: string;
   type?: string;

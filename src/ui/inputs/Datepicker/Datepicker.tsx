@@ -35,6 +35,7 @@ export const Datepicker: FC<DatepickerProps> = memo(
     const { context, Provider } = useDatepicker({
       dependencyExtractor,
       initialValue,
+      label,
       maxDateExtractor,
       minDateExtractor,
       name,
@@ -59,7 +60,7 @@ export const Datepicker: FC<DatepickerProps> = memo(
           ref={context.containerRef}
         >
           <label className={styles.Label} data-test={`${dataTest}-datepicker-label`} htmlFor={id}>
-            {translate(label)}
+            {translate(context.label)}
             <span className={styles.Required}>
               {context.isRequired ? translate('required') : null}
             </span>

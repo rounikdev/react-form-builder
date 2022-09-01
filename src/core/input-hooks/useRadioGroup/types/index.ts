@@ -7,8 +7,7 @@ export type RadioGroupLabel = any;
 export type RadioGroupOption = any;
 export type RadioGroupValue = any;
 
-export interface UseRadioGroup extends Omit<UseFieldConfig<RadioGroupValue>, 'initialValue'> {
-  initialValue?: RadioGroupValue;
+export interface UseRadioGroup extends UseFieldConfig<RadioGroupValue> {
   inputValueExtractor?: ExtractorFromSingleOption<RadioGroupOption, string>;
   labelExtractor?: ExtractorFromSingleOption<RadioGroupOption, RadioGroupLabel>;
   options: RadioGroupValue[];

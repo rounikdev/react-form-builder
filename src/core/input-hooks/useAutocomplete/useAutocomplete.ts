@@ -10,7 +10,7 @@ import {
 
 import { useKeyboardEvent, useOnOutsideClick, useUpdateOnly } from '@rounik/react-custom-hooks';
 
-import { useField } from '@core/Form';
+import { useField, useFieldDependency } from '@core/Form';
 
 import { AutocompleteContext, UseAutocompleteArgs, UseAutocompleteReturnType } from './types';
 
@@ -74,12 +74,12 @@ export const useAutocomplete = <T>({
   validator
 }: UseAutocompleteArgs<T>): UseAutocompleteReturnType<T> => {
   const {
+    dependencyValue,
     errors,
     fieldId,
     fieldRef,
     focused: isFocused,
     isEdit,
-    isRequired,
     onBlurHandler,
     onChangeHandler,
     onFocusHandler,
@@ -94,10 +94,11 @@ export const useAutocomplete = <T>({
     name,
     onBlur,
     onFocus,
-    required,
     sideEffect,
     validator
   });
+
+  const dependantData = useFieldDependency({ dependencyValue, required });
 
   const [state, setState] = useState({
     focused: '',
@@ -297,6 +298,7 @@ export const useAutocomplete = <T>({
   return {
     close,
     context: contextValue,
+    dependencyValue,
     errors,
     fieldId,
     fieldRef,
@@ -304,7 +306,7 @@ export const useAutocomplete = <T>({
     focused: isFocused,
     focusedId: state.focused,
     isEdit,
-    isRequired,
+    isRequired: dependantData.required,
     onBlurHandler: onBlurHandler as UseAutocompleteReturnType<T>['onBlurHandler'],
     onFocusHandler,
     open,

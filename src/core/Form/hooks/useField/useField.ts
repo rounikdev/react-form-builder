@@ -12,7 +12,6 @@ import {
   useBeforeFirstRender,
   useIsMounted,
   useLastDiffValue,
-  useMount,
   useUnmount,
   useUpdate,
   useUpdatedRef,
@@ -39,7 +38,6 @@ export const useField = <T>({
   name,
   onBlur,
   onFocus,
-  required,
   sideEffect,
   validator
 }: UseFieldConfig<T>): UseFieldReturnType<T> => {
@@ -75,18 +73,30 @@ export const useField = <T>({
     [typeof dependency === 'bigint' ? dependency : JSON.stringify(dependency)]
   );
 
-  const dependencyRef = useUpdatedRef(updatedDependency);
+  const builtInitialValue = useMemo(
+    () =>
+      typeof initialValue === 'function'
+        ? (initialValue as (dependencyValue: FormStateEntryValue) => T)(updatedDependency)
+        : initialValue,
+    [updatedDependency, initialValue]
+  );
 
-  let stateValue = initialValue;
+  const updatedInitialValue = useMemo(
+    () => builtInitialValue,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [typeof builtInitialValue === 'bigint' ? builtInitialValue : JSON.stringify(builtInitialValue)]
+  );
+
+  let stateValue = updatedInitialValue;
 
   useBeforeFirstRender(() => {
     if (formatter) {
       stateValue = formatter({
         dependencyValue: updatedDependency,
-        newValue: initialValue
+        newValue: updatedInitialValue
       });
     } else {
-      stateValue = initialValue;
+      stateValue = updatedInitialValue;
     }
   });
 
@@ -117,19 +127,6 @@ export const useField = <T>({
   const formatterRef = useUpdatedRef(formatter);
 
   const validatorRef = useUpdatedRef(validator);
-
-  const isRequired = useMemo(() => {
-    if (typeof required === 'undefined') {
-      return false;
-    }
-
-    if (typeof required === 'boolean') {
-      return required;
-    }
-
-    return required(updatedDependency);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [updatedDependency]);
 
   const validateField = useCallback(
     async (value: T, dependencyValue?: FormStateEntryValue, useDependency?: boolean) => {
@@ -227,7 +224,7 @@ export const useField = <T>({
         GlobalModel.getNestedValue(
           resetRecords[resetFlag.resetKey || ROOT_RESET_RECORD_KEY],
           fieldPath
-        ) ?? initialValue;
+        ) ?? updatedInitialValue;
 
       await validateField(resetValue, updatedDependency);
 
@@ -267,9 +264,9 @@ export const useField = <T>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fieldId]);
 
-  useMount(() => {
-    validateField(initialValue, dependencyRef.current);
-  });
+  useUpdate(() => {
+    validateField(updatedInitialValue, updatedDependency);
+  }, [updatedInitialValue]);
 
   // Update parent Form state:
   useEffect(() => {
@@ -319,7 +316,7 @@ export const useField = <T>({
   useUpdate(() => {
     if (fieldsToBeSet[fieldId] !== undefined) {
       setDirty();
-      validateField(fieldsToBeSet[fieldId], dependencyRef.current);
+      validateField(fieldsToBeSet[fieldId], updatedDependency);
       setFieldsValue({ [fieldId]: undefined });
     }
   }, [fieldsToBeSet]);
@@ -373,7 +370,6 @@ export const useField = <T>({
     fieldId,
     fieldRef,
     isEdit,
-    isRequired,
     onBlurHandler,
     onChangeHandler,
     onFocusHandler,

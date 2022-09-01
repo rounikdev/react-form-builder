@@ -2,7 +2,7 @@ import { FC, memo, MutableRefObject, useMemo } from 'react';
 
 import { useClass } from '@rounik/react-custom-hooks';
 
-import { RadioGroupLabel, RadioGroupValue, useRadioGroup } from '@core';
+import { RadioGroupLabel, RadioGroupValue, useFieldDependency, useRadioGroup } from '@core';
 
 import { RadioGroupProps } from './types';
 
@@ -29,10 +29,10 @@ export const RadioGroup: FC<RadioGroupProps> = memo(
     valueExtractor
   }) => {
     const {
+      dependencyValue,
       enhancedOptions,
       fieldRef,
       focused,
-      isRequired,
       onBlurHandler,
       onFocusHandler,
       touched,
@@ -44,12 +44,13 @@ export const RadioGroup: FC<RadioGroupProps> = memo(
       labelExtractor,
       name,
       options,
-      required,
       sideEffect,
       titleExtractor,
       validator,
       valueExtractor
     });
+
+    const dependantData = useFieldDependency({ dependencyValue, disabled, required });
 
     const isError = useMemo(() => touched && !focused && !valid, [focused, touched, valid]);
 
@@ -71,11 +72,11 @@ export const RadioGroup: FC<RadioGroupProps> = memo(
               <div className={styles.RadioContainer} key={index}>
                 <input
                   aria-invalid={!valid}
-                  aria-required={isRequired}
+                  aria-required={dependantData.required}
                   checked={option.checked}
                   className={styles.Input}
                   data-test={`${dataTest}-${index}-radio-option`}
-                  disabled={disabled}
+                  disabled={dependantData.disabled}
                   id={`${id}-radio-option-${index}`}
                   name={name}
                   onBlur={onBlurHandler}

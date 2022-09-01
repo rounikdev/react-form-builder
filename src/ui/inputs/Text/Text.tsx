@@ -2,7 +2,7 @@ import { FC, memo, MutableRefObject, useMemo } from 'react';
 
 import { useClass } from '@rounik/react-custom-hooks';
 
-import { useTextInput, useTranslation } from '@core';
+import { useFieldDependency, useTextInput, useTranslation } from '@core';
 import { ErrorField } from '@ui/ErrorField/ErrorField';
 import { LabelField } from '@ui/LabelField/LabelField';
 import { Mask } from '@ui/Mask/Mask';
@@ -34,11 +34,11 @@ export const Text: FC<TextProps> = memo(
     validator
   }) => {
     const {
+      dependencyValue,
       errors,
       fieldRef,
       focused,
       isEdit,
-      isRequired,
       onBlurHandler,
       onChangeHandler,
       onFocusHandler,
@@ -48,13 +48,14 @@ export const Text: FC<TextProps> = memo(
     } = useTextInput({
       dependencyExtractor,
       formatter,
-      initialValue,
+      initialValue: typeof initialValue === 'undefined' ? '' : initialValue,
       name,
       onBlurSideEffect,
-      required,
       sideEffect,
       validator
     });
+
+    const dependantData = useFieldDependency({ dependencyValue, disabled, label, required });
 
     const { translate } = useTranslation();
 
@@ -69,16 +70,23 @@ export const Text: FC<TextProps> = memo(
 
     return (
       <div className={containerClassName} style={{ display: hidden ? 'none' : 'flex' }}>
-        <LabelField id={id} label={label} required={isRequired} requiredLabel={requiredLabel} />
+        <LabelField
+          id={id}
+          label={dependantData.label}
+          required={dependantData.required}
+          requiredLabel={requiredLabel}
+        />
         <div className={styles.InputWrap}>
           <input
             aria-hidden={hidden}
             aria-invalid={!valid}
-            aria-required={isRequired}
+            aria-required={dependantData.required}
             autoComplete={autoComplete}
             className={inputClassName}
             data-test={`${dataTest}-input`}
-            disabled={typeof disabled === 'boolean' ? disabled : !isEdit}
+            disabled={
+              typeof dependantData.disabled === 'boolean' ? dependantData.disabled : !isEdit
+            }
             id={id}
             name={name}
             onBlur={onBlurHandler}
