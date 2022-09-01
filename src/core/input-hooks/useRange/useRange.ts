@@ -10,7 +10,7 @@ import {
 
 import { useMount, useUpdate } from '@rounik/react-custom-hooks';
 
-import { useField, useFieldDependency } from '@core/Form/hooks';
+import { FormStateEntryValue, useField, useFieldDependency } from '@core';
 
 import { rangeContext } from './context';
 import { RangeValue, UseRangeArgs } from './types';
@@ -227,10 +227,15 @@ export const useRange = ({
   });
 
   useUpdate(() => {
+    const builtInitialValue =
+      typeof initialValue === 'function'
+        ? (initialValue as (dependencyValue: FormStateEntryValue) => RangeValue)(dependencyValue)
+        : initialValue;
+
     if (options && typeof initialValue !== 'function') {
       onChangeHandler({
-        from: limitToOptions(initialValue.from),
-        to: limitToOptions(initialValue.to)
+        from: limitToOptions(builtInitialValue.from),
+        to: limitToOptions(builtInitialValue.to)
       });
     }
   }, [initialValue]);
