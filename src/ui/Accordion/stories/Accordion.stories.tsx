@@ -87,6 +87,8 @@ const renderHeader =
 
 const Template: Story<FC> = () => {
   const [mountBears, setMountBears] = useState(true);
+  const [openedCats, setOpenedCats] = useState(true);
+
   return (
     <StrictMode>
       <div className={styles.Container}>
@@ -97,6 +99,14 @@ const Template: Story<FC> = () => {
           }}
         >
           Unmount bears
+        </button>
+        <button
+          data-test="opened-cats"
+          onClick={() => {
+            setOpenedCats((prevState) => !prevState);
+          }}
+        >
+          Open cats
         </button>
         <AccordionGroup maxOpened={1}>
           <Accordion dataTest="empty" id="empty" renderHeader={renderHeader('Empty')}>
@@ -110,7 +120,7 @@ const Template: Story<FC> = () => {
             dataTest="cats"
             id="cats"
             keepMounted
-            opened={true}
+            opened={openedCats}
             renderHeader={renderHeader('Cats')}
           >
             <Content id="cats-content" />
