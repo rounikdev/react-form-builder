@@ -57,7 +57,6 @@ const getInitialValue = <T>({ extractId, multi, options, value }: GetInitialValu
 };
 
 // TODO: Filter the value for non existing options on options change
-
 export const useAutocomplete = <T>({
   dependencyExtractor,
   extractId,

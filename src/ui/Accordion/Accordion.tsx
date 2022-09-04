@@ -1,6 +1,6 @@
 import { FC, memo, useCallback, useState } from 'react';
 
-import { useClass, useUpdateOnly } from '@rounik/react-custom-hooks';
+import { useClass } from '@rounik/react-custom-hooks';
 
 import { useAccordion } from './hooks';
 import { AccordionProps } from './types';
@@ -16,6 +16,7 @@ export const Accordion: FC<AccordionProps> = memo(
     excludeFromGroup,
     id,
     keepMounted,
+    onChange,
     opened,
     renderHeader
   }) => {
@@ -34,6 +35,7 @@ export const Accordion: FC<AccordionProps> = memo(
       excludeFromGroup,
       id,
       keepMounted,
+      onChange,
       opened
     });
 
@@ -54,14 +56,6 @@ export const Accordion: FC<AccordionProps> = memo(
         element = <div key="cache">{content}</div>;
       }
     }
-
-    useUpdateOnly(() => {
-      if (opened) {
-        open();
-      } else {
-        close();
-      }
-    }, [opened]);
 
     return (
       <div

@@ -13,6 +13,7 @@ export const useAccordion = ({
   excludeFromGroup,
   id,
   keepMounted,
+  onChange,
   opened
 }: UseAccordionArgs) => {
   const { closeInGroup, openedControlledAccordions, openInGroup } = useAccordionGroup();
@@ -96,11 +97,31 @@ export const useAccordion = ({
     }
   }, [excludeFromGroup, openedControlledAccordions]);
 
+  useUpdateOnly(() => {
+    if (opened === isOpen) {
+      return;
+    }
+
+    if (opened) {
+      open();
+    } else {
+      close();
+    }
+  }, [opened]);
+
   useLayoutEffect(() => {
     if (isOpen && height === 0 && hiddenContent.current) {
       setHeight(hiddenContent.current.offsetHeight || 'auto');
     }
   }, [isOpen, height]);
+
+  // Use to synchronize with the outer
+  // controlling state if such exists:
+  useUpdate(() => {
+    if (onChange) {
+      onChange({ id, opened: !!isOpen });
+    }
+  }, [isOpen]);
 
   return {
     close,

@@ -106,7 +106,7 @@ const Template: Story<FC> = () => {
             setOpenedCats((prevState) => !prevState);
           }}
         >
-          Open cats
+          {openedCats ? 'Close Cats!' : 'Open Cats!'}
         </button>
         <AccordionGroup maxOpened={1}>
           <Accordion dataTest="empty" id="empty" renderHeader={renderHeader('Empty')}>
@@ -120,6 +120,9 @@ const Template: Story<FC> = () => {
             dataTest="cats"
             id="cats"
             keepMounted
+            onChange={({ opened }) => {
+              setOpenedCats(opened);
+            }}
             opened={openedCats}
             renderHeader={renderHeader('Cats')}
           >

@@ -22,10 +22,12 @@ export interface UseAccordionArgs {
   excludeFromGroup?: boolean;
   id: string;
   keepMounted?: boolean;
+  onChange?: ({ id, opened }: { id: string; opened: boolean }) => void | Promise<void>;
   opened?: boolean;
 }
 
 export interface AccordionProps extends UseAccordionArgs, Stylable, Testable {
+  onChange?: UseAccordionArgs['onChange'];
   renderHeader: (params: RenderHeaderArgs) => ReactNode;
 }
 
