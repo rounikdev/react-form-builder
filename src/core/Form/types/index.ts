@@ -103,16 +103,24 @@ export interface FieldErrors {
   [key: string]: ValidationError[];
 }
 
+export interface FormData {
+  errors: FieldErrors;
+  pristine: boolean;
+  valid: boolean;
+  value: FormStateEntryValue;
+}
+
+export type FormStorageContextType = {
+  removeFormData: ({ formId }: { formData: FormData; formId: string }) => void;
+  setFormData: ({ formData, formId }: { formData: FormData; formId: string }) => void;
+  state: Record<string, FormData>;
+};
+
 export interface FormRootProps extends Testable {
   children: ReactNode;
   className?: string;
   noValidate?: boolean;
-  onChange?: (formState: {
-    errors: FieldErrors;
-    pristine: boolean;
-    valid: boolean;
-    value: FormStateEntryValue;
-  }) => void;
+  onChange?: (formState: FormData) => void;
   onReset?: () => void;
   onSubmit?: (formState: FormStateEntry) => void;
 }
