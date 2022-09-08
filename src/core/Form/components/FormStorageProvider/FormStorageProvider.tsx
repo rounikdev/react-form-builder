@@ -34,7 +34,7 @@ interface FormStorageProviderProps {
 export const FormStorageProvider: FC<FormStorageProviderProps> = memo(({ children }) => {
   const [state, setState] = useState<FormStorageContextType['state']>({});
 
-  const removeFormData = useCallback(({ formId }: { formData: FormData; formId: string }) => {
+  const removeFormData = useCallback(({ formId }: { formId: string }) => {
     setState((currentState) => {
       const newState = { ...currentState };
 
