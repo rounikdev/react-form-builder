@@ -45,15 +45,11 @@ export const useField = <T>({
 
   const { isEdit } = useFormEditContext();
 
-  const {
-    fieldsToBeSet,
-    focusedField,
-    formData,
-    methods: { focusField, registerFieldErrors, scrollFieldIntoView, setDirty, setFieldsValue },
-    resetFlag,
-    resetRecords,
-    scrolledField
-  } = useFormRoot();
+  const { fieldsToBeSet, focusedField, formData, methods, resetFlag, resetRecords, scrolledField } =
+    useFormRoot();
+
+  const { focusField, registerFieldErrors, scrollFieldIntoView, setDirty, setFieldsValue } =
+    methods;
 
   const isMounted = useIsMounted();
 
@@ -70,7 +66,7 @@ export const useField = <T>({
   const updatedDependency = useMemo(
     () => dependency,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [typeof dependency === 'bigint' ? dependency : JSON.stringify(dependency)]
+    [GlobalModel.createStableDependency(dependency)]
   );
 
   const builtInitialValue = useMemo(
@@ -84,7 +80,7 @@ export const useField = <T>({
   const updatedInitialValue = useMemo(
     () => builtInitialValue,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [typeof builtInitialValue === 'bigint' ? builtInitialValue : JSON.stringify(builtInitialValue)]
+    [GlobalModel.createStableDependency(builtInitialValue)]
   );
 
   let stateValue = updatedInitialValue;
@@ -283,7 +279,7 @@ export const useField = <T>({
     if (sideEffect) {
       sideEffect({
         dependencyValue: updatedDependency,
-        methods: context.methods,
+        methods: { form: context.methods, root: methods },
         value: state.value
       });
     }

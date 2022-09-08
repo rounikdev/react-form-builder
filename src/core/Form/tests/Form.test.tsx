@@ -102,7 +102,7 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
     expect(validity).toBe(`${valid}`);
   });
 
-  it('onChange prop is called with the correct argument', async () => {
+  it('onChange prop is not called if no changes', async () => {
     const fieldName = 'firstName';
     const valid = true;
     const value = 'Ivan';
@@ -122,19 +122,7 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
       </ShowHide>
     );
 
-    expect(mockOnChange).toHaveBeenCalledTimes(2);
-    expect(mockOnChange.mock.calls[0][0]).toEqual({
-      errors: {},
-      pristine: true,
-      valid: true,
-      value: {}
-    });
-    expect(mockOnChange.mock.calls[1][0]).toEqual({
-      errors: {},
-      pristine: true,
-      valid: true,
-      value: { firstName: 'Ivan' }
-    });
+    expect(mockOnChange).toHaveBeenCalledTimes(0);
   });
 
   it('No state is updated if same value and valid are provided', async () => {
@@ -595,7 +583,9 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
 
     const { findByDataTest } = testRender(<Component />);
 
-    await findByDataTest('input');
+    const input = await findByDataTest('input');
+
+    userEvent.type(input, 'a');
 
     const lastCall = mockOnChange.mock.calls.pop();
 
@@ -607,9 +597,9 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
           }
         ]
       },
-      pristine: true,
+      pristine: false,
       valid: false,
-      value: { user: { info: { firstName: '' } } }
+      value: { user: { info: { firstName: 'a' } } }
     });
   });
 });

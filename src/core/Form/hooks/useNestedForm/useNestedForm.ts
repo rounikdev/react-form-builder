@@ -15,6 +15,7 @@ import {
   Validator,
   ValidityCheck
 } from '@core/Form/types';
+import { GlobalModel } from '@services';
 
 interface UseNestedFormArgs<T> {
   dependencyExtractor?: DependencyExtractor;
@@ -183,7 +184,7 @@ export const useNestedForm = <T>({
       valid: valid && validityCheck.valid,
       value
     });
-  }, [typeof dependency === 'bigint' ? dependency : JSON.stringify(dependency), valid, value]);
+  }, [GlobalModel.createStableDependency(dependency), valid, value]);
 
   // Update form errors state on errors update:
   useUpdate(() => {

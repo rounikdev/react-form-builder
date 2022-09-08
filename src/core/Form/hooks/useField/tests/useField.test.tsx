@@ -630,11 +630,11 @@ describe('useField', () => {
 
     const firstCall = sideEffectMock.mock.calls[0];
     expect(typeof firstCall[0].methods).toBe('object');
-    expect(typeof firstCall[0].methods.forceValidate).toBe('function');
-    expect(typeof firstCall[0].methods.getFieldId).toBe('function');
-    expect(typeof firstCall[0].methods.removeFromForm).toBe('function');
-    expect(typeof firstCall[0].methods.reset).toBe('function');
-    expect(typeof firstCall[0].methods.setInForm).toBe('function');
+    expect(typeof firstCall[0].methods.form.forceValidate).toBe('function');
+    expect(typeof firstCall[0].methods.form.getFieldId).toBe('function');
+    expect(typeof firstCall[0].methods.form.removeFromForm).toBe('function');
+    expect(typeof firstCall[0].methods.form.reset).toBe('function');
+    expect(typeof firstCall[0].methods.form.setInForm).toBe('function');
     expect(firstCall[0].value).toEqual(initialValue);
 
     const lastCall = sideEffectMock.mock.calls.pop();
