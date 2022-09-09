@@ -4,4 +4,5 @@ export * from './FormArray/FormArray';
 export * from './FormObject/FormObject';
 export * from './FormRoot/FormRoot';
 export * from './FormSideEffect/FormSideEffect';
+export * from './FormStorageProvider';
 export * from './FormUser/FormUser';

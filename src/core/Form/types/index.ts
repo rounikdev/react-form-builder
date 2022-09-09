@@ -22,6 +22,9 @@ export interface Field<T> extends Omit<UseFieldConfig<T>, 'initialValue'>, Styla
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type FormStateEntryValue = any | any[];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Dependency = any;
+
 export interface FormSetPayload {
   key: string;
   valid: boolean;
@@ -103,16 +106,24 @@ export interface FieldErrors {
   [key: string]: ValidationError[];
 }
 
+export interface FormData {
+  errors: FieldErrors;
+  pristine: boolean;
+  valid: boolean;
+  value: FormStateEntryValue;
+}
+
+export type FormStorageContextType = {
+  removeFormData: ({ formId }: { formId: string }) => void;
+  setFormData: ({ formData, formId }: { formData: FormData; formId: string }) => void;
+  state: Record<string, FormData>;
+};
+
 export interface FormRootProps extends Testable {
   children: ReactNode;
   className?: string;
   noValidate?: boolean;
-  onChange?: (formState: {
-    errors: FieldErrors;
-    pristine: boolean;
-    valid: boolean;
-    value: FormStateEntryValue;
-  }) => void;
+  onChange?: (formState: FormData) => void;
   onReset?: () => void;
   onSubmit?: (formState: FormStateEntry) => void;
 }
@@ -175,7 +186,7 @@ export interface UseFieldConfig<T> {
     value
   }: {
     dependencyValue: FormStateEntryValue;
-    methods: FormContext['methods'];
+    methods: { form: FormContext['methods']; root: FormRootProviderContext['methods'] };
     value: T;
   }) => void;
   validator?: Validator<T>;
@@ -234,22 +245,13 @@ export interface FormRootProviderProps {
 }
 
 export interface FormSideEffectProps {
-  dependencyExtractor: (formData: FormStateEntryValue) => unknown[];
+  dependencyExtractor: (formData: FormStateEntryValue) => Dependency;
   effect: (
-    dependencies: unknown[],
+    dependencies: Dependency,
     {
       methods
     }: {
-      methods: {
-        cancel: () => void;
-        edit: () => void;
-        forceValidate: ForceValidateMethod;
-        getFieldId: () => string;
-        removeFromForm: (payload: FormRemovePayload) => void;
-        reset: ({ resetList }: { resetList?: ResetFlag['resetList'] }) => void;
-        save: () => void;
-        setInForm: (payload: FormSetPayload) => void;
-      };
+      methods: { form: FormContext['methods']; root: FormRootProviderContext['methods'] };
     }
   ) => void | Promise<void>;
 }

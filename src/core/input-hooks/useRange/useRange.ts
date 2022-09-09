@@ -10,7 +10,7 @@ import {
 
 import { useMount, useUpdate } from '@rounik/react-custom-hooks';
 
-import { FormStateEntryValue, useField, useFieldDependency } from '@core';
+import { FormStateEntryValue, useField, useFieldDependency } from '@core/Form';
 
 import { rangeContext } from './context';
 import { RangeValue, UseRangeArgs } from './types';

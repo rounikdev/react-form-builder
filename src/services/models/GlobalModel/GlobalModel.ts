@@ -153,4 +153,7 @@ export class GlobalModel {
       requestAnimationFrame(callback);
     });
   };
+
+  static createStableDependency = (dependency: unknown) =>
+    typeof dependency === 'bigint' ? dependency : JSON.stringify(dependency);
 }

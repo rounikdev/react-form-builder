@@ -25,7 +25,7 @@ module.exports = {
   },
   globalSetup: './jest-global-setup.js',
   moduleNameMapper: {
-    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+    '\\.(css|less|scss|sass|png)$': 'identity-obj-proxy',
     '^@core(.*)$': '<rootDir>/src/core$1',
     '^@services(.*)$': '<rootDir>/src/services$1',
     '^@styles(.*)$': '<rootDir>/src/styles$1',

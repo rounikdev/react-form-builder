@@ -57,14 +57,14 @@ describe('FormSideEffect', () => {
     expect(mockEffect).toHaveBeenCalledTimes(2);
 
     expect(typeof mockEffect.mock.calls[0][1].methods).toBe('object');
-    expect(typeof mockEffect.mock.calls[0][1].methods.focusField).toBe('function');
-    expect(typeof mockEffect.mock.calls[0][1].methods.forceValidate).toBe('function');
-    expect(typeof mockEffect.mock.calls[0][1].methods.getFieldId).toBe('function');
-    expect(typeof mockEffect.mock.calls[0][1].methods.registerFieldErrors).toBe('function');
-    expect(typeof mockEffect.mock.calls[0][1].methods.removeFromForm).toBe('function');
-    expect(typeof mockEffect.mock.calls[0][1].methods.reset).toBe('function');
-    expect(typeof mockEffect.mock.calls[0][1].methods.scrollFieldIntoView).toBe('function');
-    expect(typeof mockEffect.mock.calls[0][1].methods.setFieldsValue).toBe('function');
-    expect(typeof mockEffect.mock.calls[0][1].methods.setInForm).toBe('function');
+    expect(typeof mockEffect.mock.calls[0][1].methods.form.focusField).toBe('function');
+    expect(typeof mockEffect.mock.calls[0][1].methods.form.forceValidate).toBe('function');
+    expect(typeof mockEffect.mock.calls[0][1].methods.form.getFieldId).toBe('function');
+    expect(typeof mockEffect.mock.calls[0][1].methods.form.registerFieldErrors).toBe('function');
+    expect(typeof mockEffect.mock.calls[0][1].methods.form.removeFromForm).toBe('function');
+    expect(typeof mockEffect.mock.calls[0][1].methods.form.reset).toBe('function');
+    expect(typeof mockEffect.mock.calls[0][1].methods.form.scrollFieldIntoView).toBe('function');
+    expect(typeof mockEffect.mock.calls[0][1].methods.form.setFieldsValue).toBe('function');
+    expect(typeof mockEffect.mock.calls[0][1].methods.form.setInForm).toBe('function');
   });
 });
