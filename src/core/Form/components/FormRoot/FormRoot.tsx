@@ -2,19 +2,31 @@ import { FC, memo, useCallback, useMemo } from 'react';
 
 import { useClass, useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
 
+import { INITIAL_RESET_RECORD_KEY, STORAGE_RESET } from '@core/Form/constants';
 import { FormContextInstance } from '@core/Form/context';
 import { useFormReducer, useRootForm } from '@core/Form/hooks';
 import { FormEditProvider, FormRootProvider } from '@core/Form/providers';
 import { formObjectReducer } from '@core/Form/reducers';
 import { flattenFormObjectState } from '@core/Form/services';
 import { FormContext, FormRootProps } from '@core/Form/types';
+import { GlobalModel } from '@services';
 
 import styles from './FormRoot.scss';
 
 const defaultTouchParent = () => {};
 
 export const FormRoot: FC<FormRootProps> = memo(
-  ({ children, className, dataTest, noValidate = true, onChange, onReset, onSubmit }) => {
+  ({
+    children,
+    className,
+    dataTest,
+    initialResetState,
+    noValidate = true,
+    onChange,
+    onReset,
+    onSubmit,
+    usesStorage
+  }) => {
     const { context, removeFromForm, setInForm, valid, value } = useFormReducer({
       flattenState: flattenFormObjectState,
       reducer: formObjectReducer
@@ -44,7 +56,9 @@ export const FormRoot: FC<FormRootProps> = memo(
       setResetFlag,
       setResetRecords
     } = useRootForm({
-      formData: value
+      formData: value,
+      initialResetState,
+      usesStorage
     });
 
     const onSubmitHandler = useCallback(
@@ -60,15 +74,40 @@ export const FormRoot: FC<FormRootProps> = memo(
 
     useUpdate(() => {
       if (!pristine && onChange) {
-        onChange({ errors, pristine, valid, value });
+        onChange({
+          errors,
+          pristine,
+          resetState: resetRecords[INITIAL_RESET_RECORD_KEY],
+          valid,
+          value
+        });
       }
     }, [errors, pristine, valid, value]);
 
+    // This will sync the errors
+    // and valid after reset:
+    useUpdate(() => {
+      if (resetFlag.resetKey === INITIAL_RESET_RECORD_KEY || resetFlag.resetKey === STORAGE_RESET) {
+        if (pristine && onChange && usesStorage) {
+          onChange({
+            errors,
+            pristine,
+            resetState: resetRecords[INITIAL_RESET_RECORD_KEY],
+            valid,
+            value
+          });
+        }
+      }
+    }, [resetFlag, GlobalModel.createStableDependency([errors, valid])]);
+
     useUpdateOnly(() => {
-      if (pristine && onReset) {
+      if (
+        (resetFlag.resetKey === INITIAL_RESET_RECORD_KEY || resetFlag.resetKey === STORAGE_RESET) &&
+        onReset
+      ) {
         onReset();
       }
-    }, [pristine]);
+    }, [resetFlag]);
 
     const methods = useMemo(
       () => ({
@@ -141,7 +180,8 @@ export const FormRoot: FC<FormRootProps> = memo(
         pristine,
         resetFlag,
         resetRecords,
-        scrolledField
+        scrolledField,
+        usesStorage
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
@@ -153,7 +193,8 @@ export const FormRoot: FC<FormRootProps> = memo(
       rootProviderMethods,
       resetFlag,
       scrolledField,
-      value
+      value,
+      usesStorage
     ]);
 
     return (

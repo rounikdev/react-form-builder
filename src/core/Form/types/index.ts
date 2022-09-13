@@ -109,12 +109,14 @@ export interface FieldErrors {
 export interface FormData {
   errors: FieldErrors;
   pristine: boolean;
+  resetState: FormStateEntry;
   valid: boolean;
   value: FormStateEntryValue;
 }
 
 export type FormStorageContextType = {
   removeFormData: ({ formId }: { formId: string }) => void;
+  resetFormData: ({ formId }: { formId: string }) => void;
   setFormData: ({ formData, formId }: { formData: FormData; formId: string }) => void;
   state: Record<string, FormData>;
 };
@@ -122,10 +124,12 @@ export type FormStorageContextType = {
 export interface FormRootProps extends Testable {
   children: ReactNode;
   className?: string;
+  initialResetState?: FormStateEntryValue;
   noValidate?: boolean;
   onChange?: (formState: FormData) => void;
   onReset?: () => void;
   onSubmit?: (formState: FormStateEntry) => void;
+  usesStorage?: boolean;
 }
 
 export interface FormObjectProps {
@@ -237,6 +241,7 @@ export interface FormRootProviderContext {
   resetFlag: ResetFlag;
   resetRecords: Record<string, FormStateEntryValue>;
   scrolledField: string;
+  usesStorage?: boolean;
 }
 
 export interface FormRootProviderProps {

@@ -2,7 +2,11 @@ import { useCallback, useState } from 'react';
 
 import { useUpdate, useUpdatedRef } from '@rounik/react-custom-hooks';
 
-import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '@core/Form/constants';
+import {
+  INITIAL_RESET_RECORD_KEY,
+  ROOT_RESET_RECORD_KEY,
+  STORAGE_RESET
+} from '@core/Form/constants';
 import {
   FieldErrors,
   FieldErrorsPayload,
@@ -15,9 +19,11 @@ import {
 
 interface UseRootFormProps {
   formData: FormStateEntryValue;
+  initialResetState?: FormStateEntryValue;
+  usesStorage?: boolean;
 }
 
-export const useRootForm = ({ formData }: UseRootFormProps) => {
+export const useRootForm = ({ formData, initialResetState, usesStorage }: UseRootFormProps) => {
   const [fieldsToBeSet, setFieldsValueState] = useState<SetFieldsValuePayload>({});
 
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -111,14 +117,17 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
 
   const getFieldId = useCallback(() => '', []);
 
-  const reset = useCallback(({ resetList }: { resetList?: string[] } = {}) => {
-    if (resetList) {
-      setResetFlag({ resetKey: '', resetList });
-    } else {
-      setResetFlag({ resetKey: INITIAL_RESET_RECORD_KEY });
-      setPristine(true);
-    }
-  }, []);
+  const reset = useCallback(
+    ({ resetList }: { resetList?: string[] } = {}) => {
+      if (resetList) {
+        setResetFlag({ resetKey: '', resetList });
+      } else {
+        setResetFlag({ resetKey: usesStorage ? STORAGE_RESET : INITIAL_RESET_RECORD_KEY });
+        setPristine(true);
+      }
+    },
+    [usesStorage]
+  );
 
   // Store the initial reset state
   // in the resetRecords:
@@ -129,7 +138,14 @@ export const useRootForm = ({ formData }: UseRootFormProps) => {
         [INITIAL_RESET_RECORD_KEY]: formData
       }));
     }
-  }, [formData]);
+
+    if (usesStorage && initialResetState) {
+      setResetRecords((currentResetRecords) => ({
+        ...currentResetRecords,
+        [INITIAL_RESET_RECORD_KEY]: initialResetState
+      }));
+    }
+  }, [formData, initialResetState]);
 
   return {
     cancel,
