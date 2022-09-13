@@ -25,19 +25,26 @@ import styles from '../../FormStories.scss';
 const formId = 'stepOne';
 
 export const StepOne: FC = memo(() => {
-  const { setFormData, state } = useFormStorage();
+  const { resetFormData, setFormData, state } = useFormStorage();
 
   const initialState = useMemo(() => {
     return state[formId]?.value ?? {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state[formId]]);
+  }, [state[formId]?.value]);
 
   return (
     <FormRoot
       dataTest="user"
+      initialResetState={state[formId]?.resetState}
       onChange={(formData) => {
+        console.log(formData);
         setFormData({ formData, formId });
       }}
+      onReset={() => {
+        console.log('reset step one');
+        resetFormData({ formId });
+      }}
+      usesStorage
     >
       <FormSideEffect
         dependencyExtractor={(formData) => {
@@ -131,7 +138,7 @@ export const StepOne: FC = memo(() => {
                 {({
                   formContext: {
                     isEdit,
-                    methods: { cancel, edit, save },
+                    methods: { cancel, edit, reset, save },
                     valid
                   },
                   formRootContext: { formData }
@@ -139,6 +146,11 @@ export const StepOne: FC = memo(() => {
                   <>
                     <div className={styles.AddUserContainer}>
                       <Button dataTest="edit-contacts" onClick={edit} text="Edit contacts" />
+                      <Button
+                        dataTest="reset-contacts"
+                        onClick={() => reset()}
+                        text="Reset contacts"
+                      />
                       <ul>
                         {((formData.contacts as Contact[]) || []).map((contact) => {
                           return Object.keys(contact).length ? (
@@ -245,6 +257,16 @@ export const StepOne: FC = memo(() => {
           }}
         </FormArray>
       </ConditionalFields>
+      <FormUser>
+        {({ formRootContext: { methods } }) => {
+          return (
+            <div>
+              <Button dataTest="reset" onClick={() => methods.reset({})} text="Reset" />
+            </div>
+          );
+        }}
+      </FormUser>
+      <pre>{JSON.stringify(state, null, 2)}</pre>
     </FormRoot>
   );
 });

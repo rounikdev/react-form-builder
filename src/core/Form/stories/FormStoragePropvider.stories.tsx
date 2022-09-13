@@ -4,7 +4,7 @@ import { FC, StrictMode, useState } from 'react';
 import { Button } from '@ui';
 
 import { FormStorageProvider } from '../components';
-import { StepOne } from './components';
+import { StepOne, StepTwo } from './components';
 
 export default {
   title: 'Demo/Form-Storage-Provider'
@@ -19,7 +19,10 @@ const Template: Story<FC> = () => {
         <Button dataTest="set-step-1" onClick={() => setStep(1)} text="Step 1" />
         <Button dataTest="set-step-2" onClick={() => setStep(2)} text="Step 2" />
       </div>
-      <FormStorageProvider>{step === 1 ? <StepOne /> : null}</FormStorageProvider>
+      <FormStorageProvider>
+        {step === 1 ? <StepOne /> : null}
+        {step === 2 ? <StepTwo /> : null}
+      </FormStorageProvider>
     </StrictMode>
   );
 };

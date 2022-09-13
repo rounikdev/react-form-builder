@@ -2,7 +2,7 @@ import { useCallback, useLayoutEffect, useState } from 'react';
 
 import { useIsMounted } from '@rounik/react-custom-hooks';
 
-import { ROOT_RESET_RECORD_KEY } from '@core/Form/constants';
+import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '@core/Form/constants';
 import { useFormRoot } from '@core/Form/providers';
 import { shouldBeReset } from '@core/Form/services';
 import { GlobalModel } from '@services';
@@ -19,7 +19,8 @@ export const useFormArray = <T>({
   const {
     methods: { setDirty },
     resetFlag,
-    resetRecords
+    resetRecords,
+    usesStorage
   } = useFormRoot();
 
   const [list, setList] = useState<T[]>(initialValue);
@@ -42,10 +43,19 @@ export const useFormArray = <T>({
 
   useLayoutEffect(() => {
     if (isMounted.current && shouldBeReset({ fieldId, resetFlag })) {
-      const resetValue = (GlobalModel.getNestedValue(
-        resetRecords[resetFlag.resetKey || ROOT_RESET_RECORD_KEY],
-        fieldId.split('.')
-      ) ?? initialValue) as T[];
+      let resetValue: T[] = [];
+
+      if (usesStorage) {
+        resetValue = (GlobalModel.getNestedValue(
+          resetRecords[resetFlag.resetKey || INITIAL_RESET_RECORD_KEY],
+          fieldId.split('.')
+        ) ?? []) as T[]; // TODO: should we introduce a defaultValue?
+      } else {
+        resetValue = (GlobalModel.getNestedValue(
+          resetRecords[resetFlag.resetKey || ROOT_RESET_RECORD_KEY],
+          fieldId.split('.')
+        ) ?? initialValue) as T[];
+      }
 
       // Reset array to prevent existing items
       // to read from the reset state with old names

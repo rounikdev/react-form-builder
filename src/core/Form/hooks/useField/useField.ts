@@ -18,7 +18,11 @@ import {
   useUpdateOnly
 } from '@rounik/react-custom-hooks';
 
-import { ROOT_RESET_RECORD_KEY } from '@core/Form/constants';
+import {
+  INITIAL_RESET_RECORD_KEY,
+  ROOT_RESET_RECORD_KEY,
+  STORAGE_RESET
+} from '@core/Form/constants';
 import { useForm } from '@core/Form/hooks/useForm/useForm';
 import { useFormEditContext, useFormRoot } from '@core/Form/providers';
 import { shouldBeReset } from '@core/Form/services';
@@ -45,8 +49,16 @@ export const useField = <T>({
 
   const { isEdit } = useFormEditContext();
 
-  const { fieldsToBeSet, focusedField, formData, methods, resetFlag, resetRecords, scrolledField } =
-    useFormRoot();
+  const {
+    fieldsToBeSet,
+    focusedField,
+    formData,
+    methods,
+    resetFlag,
+    resetRecords,
+    scrolledField,
+    usesStorage
+  } = useFormRoot();
 
   const { focusField, registerFieldErrors, scrollFieldIntoView, setDirty, setFieldsValue } =
     methods;
@@ -175,8 +187,7 @@ export const useField = <T>({
       setState((current) => ({
         ...current,
         ...validityCheck,
-        validating: false,
-        value: formattedValue
+        validating: false
       }));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -216,14 +227,29 @@ export const useField = <T>({
     const fieldPath = fieldId.split('.');
 
     if (shouldBeReset({ fieldId, resetFlag })) {
-      const resetValue =
-        GlobalModel.getNestedValue(
-          resetRecords[resetFlag.resetKey || ROOT_RESET_RECORD_KEY],
-          fieldPath
-        ) ?? updatedInitialValue;
+      let resetValue: FormStateEntryValue;
+
+      if (usesStorage) {
+        resetValue =
+          GlobalModel.getNestedValue(resetRecords[INITIAL_RESET_RECORD_KEY], fieldPath) ??
+          undefined; // TODO: is undefined a valid data type (maybe provide a defaultValue)
+      } else {
+        resetValue =
+          GlobalModel.getNestedValue(
+            resetRecords[resetFlag.resetKey || ROOT_RESET_RECORD_KEY],
+            fieldPath
+          ) ?? updatedInitialValue;
+      }
 
       await validateField(resetValue, updatedDependency);
 
+      setState((current) => ({
+        ...current,
+        focused: false,
+        touched: false,
+        validating: false
+      }));
+    } else if (resetFlag.resetKey === STORAGE_RESET) {
       setState((current) => ({
         ...current,
         focused: false,

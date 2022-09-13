@@ -11,8 +11,11 @@ import {
 
 import { FormData, FormStorageContextType } from '@core/Form/types';
 
-const initialFormStorageContext = {
+const initialFormStorageContext: FormStorageContextType = {
   removeFormData: () => {
+    // Default implementation
+  },
+  resetFormData: () => {
     // Default implementation
   },
   setFormData: () => {
@@ -44,9 +47,36 @@ export const FormStorageProvider: FC<FormStorageProviderProps> = memo(({ childre
     });
   }, []);
 
+  const resetFormData = useCallback(({ formId }: { formId: string }) => {
+    setState((currentState) => {
+      const newState = { ...currentState };
+
+      if (newState[formId]) {
+        newState[formId].value = {};
+      }
+
+      return newState;
+    });
+  }, []);
+
   const setFormData = useCallback(
     ({ formData, formId }: { formData: FormData; formId: string }) => {
-      setState((currentState) => ({ ...currentState, [formId]: formData }));
+      setState((currentState) => {
+        const newState = formData;
+
+        // Keep the initially set reset state:
+        if (currentState[formId]?.resetState) {
+          newState.resetState = currentState[formId].resetState;
+        }
+
+        // No value saved here while pristine:
+        // (formData.value === undefined)
+        if (formData.pristine) {
+          newState.value = currentState[formId]?.value ?? {};
+        }
+
+        return { ...currentState, [formId]: newState };
+      });
     },
     []
   );
@@ -54,6 +84,7 @@ export const FormStorageProvider: FC<FormStorageProviderProps> = memo(({ childre
   const value = useMemo(
     () => ({
       removeFormData,
+      resetFormData,
       setFormData,
       state
     }),

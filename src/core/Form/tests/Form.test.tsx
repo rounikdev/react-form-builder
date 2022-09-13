@@ -598,6 +598,13 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
         ]
       },
       pristine: false,
+      resetState: {
+        user: {
+          info: {
+            firstName: ''
+          }
+        }
+      },
       valid: false,
       value: { user: { info: { firstName: 'a' } } }
     });
