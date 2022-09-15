@@ -17,9 +17,9 @@ export interface ModalBackdropProps {
   id: ModalId;
   isClosed: boolean;
   props: {
-    onClick: MouseEventHandler<HTMLDivElement>;
-    onAnimationStart: AnimationEventHandler<HTMLDivElement>;
     onAnimationEnd: AnimationEventHandler<HTMLDivElement>;
+    onAnimationStart: AnimationEventHandler<HTMLDivElement>;
+    onClick: MouseEventHandler<HTMLDivElement>;
     ref: RefObject<HTMLDivElement>;
     style: CSSProperties;
   };
@@ -34,11 +34,11 @@ export interface ModalContainerProps {
 }
 
 export interface ModalElement {
+  Backdrop?: FC<ModalBackdropProps>;
+  Container?: FC<ModalContainerProps>;
   animate?: boolean;
   clearPreceding?: boolean;
   closeAutomatically?: boolean;
-  Backdrop?: FC<ModalBackdropProps>;
-  Container?: FC<ModalContainerProps>;
   content?: ReactNode | ((args: ModalBackdropProps & { close: () => void }) => ReactNode);
   forceShow?: boolean;
   hideBackdrop?: boolean;
@@ -67,12 +67,12 @@ export interface ModalTemplateProps extends Omit<ModalElement, 'onClose'> {
 export type ModalAction = (modal: ModalElement) => void;
 
 export interface ModalContext {
+  BaseBackdrop?: FC<ModalBackdropProps>;
+  BaseContainer?: FC<ModalContainerProps>;
   actions: {
     [key: string]: ModalAction;
   };
   baseAnimate?: boolean;
-  BaseBackdrop?: FC<ModalBackdropProps>;
-  BaseContainer?: FC<ModalContainerProps>;
   modalsToShow: { [key: string]: ModalElement };
   orderList: ModalElement[];
 }
@@ -92,8 +92,8 @@ export interface ModalCustomActionProps {
   addBtnTxt: string;
   alwaysRender?: boolean;
   btnGroupClassName?: string;
-  disableConfirm?: boolean;
   children: ReactNode;
+  disableConfirm?: boolean;
   headerTxt?: string;
   id: ModalId;
   onCancel?: () => void;

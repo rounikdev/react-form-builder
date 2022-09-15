@@ -51,8 +51,8 @@ export interface TranslationContext {
 
 export interface TranslationProviderProps {
   children: ReactNode;
-  languageId: string;
   dictionaries: Dictionaries;
+  languageId: string;
 }
 
 export interface TranslationProps {

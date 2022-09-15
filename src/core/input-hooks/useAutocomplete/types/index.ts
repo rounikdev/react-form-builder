@@ -26,6 +26,7 @@ export interface UseAutocompleteArgs<T>
 
 export interface UseAutocompleteReturnType<T>
   extends Omit<UseFieldReturnType<T>, 'onChangeHandler' | 'value' | 'onBlurHandler'> {
+  Provider: Provider<AutocompleteContext>;
   close: AutocompleteContext['close'];
   context: AutocompleteContext;
   filteredList: T[];
@@ -33,7 +34,6 @@ export interface UseAutocompleteReturnType<T>
   isRequired: boolean;
   onBlurHandler: () => void;
   open: AutocompleteContext['open'];
-  Provider: Provider<AutocompleteContext>;
   search: string;
   select: AutocompleteContext['select'];
   selected: string[];

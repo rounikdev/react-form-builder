@@ -4,8 +4,8 @@ export type InputOnBlurSideEffect = ({
   setValue,
   value
 }: {
-  value: string;
   setValue?: (value: string) => void;
+  value: string;
 }) => string;
 
 export interface UseTextInput extends UseFieldConfig<string> {

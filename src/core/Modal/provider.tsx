@@ -17,10 +17,10 @@ export const Provider = ({
   BaseContainer,
   children
 }: {
-  baseAnimate?: boolean;
   BaseBackdrop?: FC<ModalBackdropProps>;
-  children: ReactNode;
   BaseContainer?: FC<ModalContainerProps>;
+  baseAnimate?: boolean;
+  children: ReactNode;
 }): JSX.Element => {
   const { value } = useModalContextValue({
     ...initialState,

@@ -10,9 +10,9 @@ export interface RangeValue {
 }
 
 export interface UseRangeArgs extends UseFieldConfig<RangeValue> {
+  label?: string | ((dependencyValue: FormStateEntryValue) => string);
   max?: number;
   min?: number;
-  label?: string | ((dependencyValue: FormStateEntryValue) => string);
   options?: RangeOptions;
   required?: boolean | ((dependencyValue: FormStateEntryValue) => boolean);
   single?: boolean;

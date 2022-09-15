@@ -4,8 +4,8 @@ import { Stylable, Testable } from '@types';
 
 export interface AccordionContext {
   closeInGroup: (id: string) => void;
-  openedControlledAccordions: string[];
   openInGroup: (id: string) => void;
+  openedControlledAccordions: string[];
 }
 
 export interface RenderHeaderArgs {

@@ -14,8 +14,9 @@
     "plugin:prettier/recommended",
     "plugin:react-hooks/recommended",
     "plugin:react/recommended",
-    "prettier",
-    "plugin:react/jsx-runtime"
+    "plugin:react/jsx-runtime",
+    "plugin:typescript-sort-keys/recommended",
+    "prettier"
   ],
   "globals": {},
   "parser": "@typescript-eslint/parser",
@@ -37,6 +38,7 @@
     "sort-destructure-keys",
     "sort-keys-fix",
     "testing-library",
+    "typescript-sort-keys",
     "unused-imports"
   ],
   "ignorePatterns": ["cypress.config.ts", "dist", "instrumented"],
