@@ -154,6 +154,7 @@ export class GlobalModel {
     });
   };
 
+  // TODO: Think of using a package to check equality of reference types:
   static createStableDependency = (dependency: unknown) =>
     typeof dependency === 'bigint' ? dependency : JSON.stringify(dependency);
 }
