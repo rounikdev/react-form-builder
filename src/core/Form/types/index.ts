@@ -78,8 +78,8 @@ export interface FieldErrorsPayload {
 export type SetFieldsValuePayload = Record<string, FormStateEntryValue>;
 
 export interface FormContext {
-  forceValidateFlag: ForceValidateFlag;
   focused: boolean;
+  forceValidateFlag: ForceValidateFlag;
   formOnlyErrors: ValidationError[];
   isEdit: boolean;
   isParentEdit: boolean;
@@ -88,8 +88,8 @@ export interface FormContext {
     blurParent: () => void;
     cancel: () => void;
     edit: () => void;
-    forceValidate: ForceValidateMethod;
     focusParent: () => void;
+    forceValidate: ForceValidateMethod;
     getFieldId: () => string;
     removeFromForm: (payload: FormRemovePayload) => void;
     reset: () => void;
@@ -271,9 +271,9 @@ export interface OldNewValue<T> {
 export type Formatter<T> = (oldNewValue: OldNewValue<T>) => T;
 
 export interface UseFormArrayParams<T> {
-  initialValue: T[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   factories: { [key: string]: () => any };
+  initialValue: T[];
 }
 
 export type FieldRenderCondition = (formData: FormStateEntryValue) => boolean;

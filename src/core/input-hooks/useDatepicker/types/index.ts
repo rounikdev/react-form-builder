@@ -7,9 +7,9 @@ export interface DatepickerState {
   input: string | null;
   month: number;
   selected?: Date;
-  today: Date;
-  toLeft: boolean;
   show: boolean;
+  toLeft: boolean;
+  today: Date;
   year: number;
 }
 
@@ -33,13 +33,13 @@ export interface DatepickerContext {
   focusCalendar: () => void;
   focused: boolean;
   hide: () => void;
+  inputBlurHandler: (event: FocusEvent) => void;
+  inputChangeHandler: (event: ChangeEvent) => void;
+  isRequired: boolean;
   label: string;
   maxDate?: Date;
   minDate?: Date;
   monthName: string;
-  inputBlurHandler: (event: FocusEvent) => void;
-  inputChangeHandler: (event: ChangeEvent) => void;
-  isRequired: boolean;
   onBlurHandler: FocusEventHandler<HTMLElement>;
   onFocusHandler: FocusEventHandler<HTMLElement>;
   openButtonRef: RefObject<HTMLButtonElement>;

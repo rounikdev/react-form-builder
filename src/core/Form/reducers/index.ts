@@ -7,9 +7,9 @@ import {
 } from '../types';
 
 export enum FormActions {
-  SET_IN_FORM = 'SET_IN_FORM',
   REMOVE_FROM_FORM = 'REMOVE_FROM_FORM',
-  SET_FORM_STATE = 'SET_FORM_STATE'
+  SET_FORM_STATE = 'SET_FORM_STATE',
+  SET_IN_FORM = 'SET_IN_FORM'
 }
 
 export const formRemoveFromArrayActionReducer = (
