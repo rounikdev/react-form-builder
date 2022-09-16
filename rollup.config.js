@@ -13,9 +13,9 @@ import externals from 'rollup-plugin-node-externals';
 import postcss from 'rollup-plugin-postcss';
 import renameNodeModules from 'rollup-plugin-rename-node-modules';
 import { terser } from 'rollup-plugin-terser';
-import ttypescript from 'ttypescript';
 import typescript from 'rollup-plugin-typescript2';
 import visualizer from 'rollup-plugin-visualizer';
+import ttypescript from 'ttypescript';
 
 const sourceRoot = 'src';
 const outputFolder = 'dist';
@@ -67,6 +67,7 @@ export default [
       resolve(),
       terser(),
       typescript({
+        clean: true,
         tsconfig: 'tsconfig.build.json',
         // https://github.com/ezolenko/rollup-plugin-typescript2/issues/201
         typescript: ttypescript,

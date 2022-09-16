@@ -19,7 +19,6 @@ export const StepTwo: FC = memo(() => {
       dataTest="user-details"
       initialResetState={state[formId]?.resetState}
       onChange={(formData) => {
-        console.log(formData);
         setFormData({ formData, formId });
       }}
       onReset={() => {

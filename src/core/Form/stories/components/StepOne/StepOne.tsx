@@ -37,7 +37,6 @@ export const StepOne: FC = memo(() => {
       dataTest="user"
       initialResetState={state[formId]?.resetState}
       onChange={(formData) => {
-        console.log(formData);
         setFormData({ formData, formId });
       }}
       onReset={() => {

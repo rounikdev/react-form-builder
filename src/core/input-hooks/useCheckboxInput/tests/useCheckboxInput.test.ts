@@ -3,6 +3,7 @@ import { act, renderHook } from '@testing-library/react-hooks';
 
 import { useField } from '@core/Form/hooks/useField/useField';
 
+import { UseCheckboxInput } from '../types';
 import { useCheckboxInput } from '../useCheckboxInput';
 
 jest.mock('@core/Form/hooks/useField/useField', () => {
@@ -25,12 +26,12 @@ describe('useCheckboxInput', () => {
   });
 
   it('Calls `useField` with correct arguments', () => {
-    const useFieldArg = {
+    const useFieldArg: UseCheckboxInput = {
       dependencyExtractor: jest.fn(),
       initialValue: true,
       name: 'test',
       sideEffect: jest.fn(),
-      validator: jest.fn()
+      validator: () => ({ errors: [], valid: true })
     };
 
     renderHook(() => useCheckboxInput(useFieldArg));
@@ -61,12 +62,12 @@ describe('useCheckboxInput', () => {
       value: 'boolean'
     };
 
-    const useCheckboxInputArgs = {
+    const useCheckboxInputArgs: UseCheckboxInput = {
       dependencyExtractor: jest.fn(),
       initialValue: true,
       name: 'test',
       sideEffect: jest.fn(),
-      validator: jest.fn()
+      validator: () => ({ errors: [], valid: true })
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

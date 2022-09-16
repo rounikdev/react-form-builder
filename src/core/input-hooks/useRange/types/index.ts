@@ -33,7 +33,7 @@ export interface RangeContext {
   min?: number;
   move: MouseEventHandler;
   onBlurHandler: FocusEventHandler;
-  onChangeHandler: (value: RangeValue) => Promise<void>;
+  onChangeHandler: (value: RangeValue) => void;
   onFocusHandler: FocusEventHandler;
   onTrackClickHandler: MouseEventHandler;
   options?: RangeOptions;

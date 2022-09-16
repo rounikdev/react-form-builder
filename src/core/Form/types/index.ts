@@ -213,7 +213,7 @@ export interface UseFieldReturnType<T> {
   focused: boolean;
   isEdit: boolean;
   onBlurHandler: FocusEventHandler<HTMLElement>;
-  onChangeHandler: (value: T) => Promise<void>;
+  onChangeHandler: (value: T) => void;
   onFocusHandler: FocusEventHandler<HTMLElement>;
   touched: boolean;
   valid: boolean;
