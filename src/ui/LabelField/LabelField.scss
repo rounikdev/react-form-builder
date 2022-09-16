@@ -18,6 +18,10 @@
 
     color: var(--color-label);
 
+    &.NoLabel {
+      justify-content: flex-end;
+    }
+
     .Label {
       margin-right: var(--offset-medium);
       overflow: hidden;

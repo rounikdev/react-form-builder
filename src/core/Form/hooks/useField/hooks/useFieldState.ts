@@ -135,7 +135,7 @@ export const useFieldState = <T>({
   );
 
   const setValue = useCallback(
-    ({ value }: { useDependency?: boolean; value: T }) => {
+    ({ value }: { value: T }) => {
       setState((current) => {
         const formattedValue = formatterRef.current
           ? formatterRef.current({

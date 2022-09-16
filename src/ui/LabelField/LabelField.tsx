@@ -24,7 +24,7 @@ export const LabelField: FC<LabelFieldProps> = memo(
 
     return (
       <div className={styles.Container}>
-        <div className={styles.Content}>
+        <div className={useClass([styles.Content, !label && styles.NoLabel], [label])}>
           <label
             className={labelClassName}
             data-test={`${dataTest}-label`}

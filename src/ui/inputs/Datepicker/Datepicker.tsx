@@ -59,7 +59,11 @@ export const Datepicker: FC<DatepickerProps> = memo(
           data-test={`${dataTest}-datepicker-container`}
           ref={context.containerRef}
         >
-          <label className={styles.Label} data-test={`${dataTest}-datepicker-label`} htmlFor={id}>
+          <label
+            className={useClass([styles.Label, !context.label && styles.NoLabel], [context.label])}
+            data-test={`${dataTest}-datepicker-label`}
+            htmlFor={id}
+          >
             {translate(context.label)}
             <span className={styles.Required}>
               {context.isRequired ? translate('required') : null}

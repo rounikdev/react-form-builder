@@ -10,7 +10,7 @@ interface UseFieldDOMConfig<T> extends Pick<UseFieldConfig<T>, 'onBlur' | 'onFoc
   blur: () => void;
   fieldId: string;
   focus: () => void;
-  setValue: ({ useDependency, value }: { useDependency?: boolean; value: T }) => void;
+  setValue: ({ value }: { value: T }) => void;
   touched: boolean;
 }
 
