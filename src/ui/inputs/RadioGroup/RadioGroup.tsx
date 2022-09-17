@@ -84,7 +84,7 @@ export const RadioGroup: FC<RadioGroupProps> = memo(
                   onFocus={onFocusHandler}
                   ref={index === 0 ? (fieldRef as MutableRefObject<HTMLInputElement>) : null}
                   type="radio"
-                  value={option.inputValue}
+                  value={option.inputValue ?? ''}
                 />
                 <label
                   className={styles.Label}

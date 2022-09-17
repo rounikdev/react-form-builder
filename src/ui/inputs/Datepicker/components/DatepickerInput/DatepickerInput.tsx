@@ -40,7 +40,7 @@ export const DatepickerInput: FC<DatepickerInputProps> = memo(
           onChange={inputChangeHandler}
           onFocus={onFocusHandler}
           placeholder={translate(placeholder) as string}
-          value={dateInput}
+          value={dateInput ?? ''}
         />
         <Control
           className={styles.OpenControl}

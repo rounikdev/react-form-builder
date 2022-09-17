@@ -10,7 +10,8 @@ import {
   useFormStorage
 } from '@core';
 import { GlobalModel, ValidatorModel } from '@services';
-import { Button, Checkbox, ErrorField, Text } from '@ui';
+import { Autocomplete, Button, Checkbox, Datepicker, ErrorField, Text } from '@ui';
+import { Option } from '@ui/inputs/Autocomplete';
 
 import {
   Contact,
@@ -21,6 +22,21 @@ import {
 } from '../../data';
 
 import styles from '../../FormStories.scss';
+
+export const options = [
+  {
+    id: 'cat',
+    label: 'Cat'
+  },
+  {
+    id: 'dog',
+    label: 'Dog'
+  },
+  {
+    id: 'horse',
+    label: 'Horse'
+  }
+];
 
 const formId = 'stepOne';
 
@@ -61,6 +77,28 @@ export const StepOne: FC = memo(() => {
         initialValue={initialState.anonymous}
         label="Is anonymous"
         name="anonymous"
+      />
+      <Autocomplete
+        dataTest="pet"
+        extractId={(item) => item?.id ?? ''}
+        extractLabel={(item) => item.label}
+        id="pet"
+        initialValue={initialState.pet}
+        label="Pet"
+        list={options}
+        name="pet"
+        renderOption={({ item, ref }) => (
+          <Option dataTest={item.id} id={item.id} key={item.id} ref={ref} text={item.label} />
+        )}
+      />
+      <Datepicker
+        dataTest="birthDate"
+        dependencyExtractor={(formData) => formData.anonymous}
+        disabled={(anonymous) => anonymous}
+        id="birth-date"
+        initialValue={(anonymous) => (anonymous ? undefined : initialState.birthDate)}
+        label="Birth date"
+        name="birthDate"
       />
       <Text
         dependencyExtractor={(formData) => formData.anonymous}
@@ -124,6 +162,13 @@ export const StepOne: FC = memo(() => {
           }
           label="Karate belt"
           name="karateBelt"
+        />
+        <Datepicker
+          dataTest="belt-acquired"
+          id="belt-acquired"
+          initialValue={initialState.beltAcquired}
+          label="Date belt acquired"
+          name="beltAcquired"
         />
         <FormArray
           factory={contactFactory}

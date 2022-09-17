@@ -163,7 +163,9 @@ export const useDatepicker = ({
   }, []);
 
   const clearInput = useCallback(() => {
-    onChangeHandler(undefined);
+    if (value) {
+      onChangeHandler(undefined);
+    }
 
     setState((currentState) => {
       const now = new Date();
@@ -177,13 +179,19 @@ export const useDatepicker = ({
         year: minDate?.getFullYear() ?? maxDate?.getFullYear() ?? now.getFullYear()
       };
     });
-  }, [maxDate, minDate, onChangeHandler]);
+  }, [maxDate, minDate, onChangeHandler, value]);
 
   const selectDate = useCallback(
     (date: Date) => {
-      if (canBeSelected({ date, maxDate, minDate })) {
-        onChangeHandler(date);
+      const canSelect = canBeSelected({ date, maxDate, minDate });
 
+      const shouldSelect = !value || value.toISOString() !== date.toISOString();
+
+      if (canSelect && shouldSelect) {
+        onChangeHandler(date);
+      }
+
+      if (canSelect) {
         setState((currentState) => ({
           ...currentState,
           focusedDate: '',
@@ -192,7 +200,7 @@ export const useDatepicker = ({
         }));
       }
     },
-    [maxDate, minDate, onChangeHandler]
+    [maxDate, minDate, onChangeHandler, value]
   );
 
   const focusCalendar = useCallback(() => {
@@ -216,15 +224,16 @@ export const useDatepicker = ({
         if (canBeSelected({ date: validDate, maxDate, minDate })) {
           selectDate(validDate);
         } else {
+          onChangeHandler(undefined);
           clearInput();
         }
-      } else {
+      } else if (inputValue) {
         clearInput();
       }
 
       onBlurHandler(event);
     },
-    [clearInput, maxDate, minDate, onBlurHandler, selectDate, useEndOfDay]
+    [clearInput, maxDate, minDate, onBlurHandler, onChangeHandler, selectDate, useEndOfDay]
   );
 
   const inputChangeHandler = useCallback(({ target: { value: inputValue } }) => {
@@ -367,16 +376,16 @@ export const useDatepicker = ({
 
     if (selected && canBeSelected({ date: selected, maxDate, minDate })) {
       setState((currentState) => ({ ...currentState, input, selected }));
-    } else {
-      clearInput();
+    } else if (selected) {
+      onChangeHandler(undefined);
     }
-  }, [clearInput, maxDate, minDate, value]);
+  }, [maxDate, minDate, value]);
 
-  useUpdate(() => {
+  useUpdateOnly(() => {
     if (!value) {
       clearInput();
     }
-  }, [clearInput, value]);
+  }, [value]);
 
   useUpdate(() => {
     setState((currentState) => ({

@@ -23,6 +23,8 @@
 }
 
 .CalendarEnter {
+  z-index: 1;
+
   transform-origin: top right;
 
   animation: scale-in var(--transition) ease-in-out forwards;

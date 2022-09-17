@@ -97,7 +97,11 @@ export const Text: FC<TextProps> = memo(
             placeholder={translate(placeholder) as string}
             ref={fieldRef as MutableRefObject<HTMLInputElement>}
             type={type}
-            value={value}
+            // The empty string handles the case
+            // when undefined is provided
+            // (When a function is provided as
+            // initialValue and it returns undefined)
+            value={value ?? ''}
           />
           {pattern ? (
             <Mask className={inputClassName} focused={focused} pattern={pattern} value={value} />
