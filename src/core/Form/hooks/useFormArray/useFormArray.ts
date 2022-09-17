@@ -41,6 +41,7 @@ export const useFormArray = <T>({
   // TODO: create useLayoutUpdateOnly hook, based on useLayoutEffect in the hooks package
   const isMounted = useIsMounted();
 
+  // TODO: StrictMode check!
   useLayoutEffect(() => {
     if (isMounted.current && shouldBeReset({ fieldId, resetFlag })) {
       let resetValue: T[] = [];

@@ -211,6 +211,7 @@ export const useNestedForm = <T>({
     }
   }, [focused]);
 
+  // TODO: StrictMode check!
   useUpdateOnly(() => {
     const fieldId = getFieldId();
 
@@ -221,6 +222,7 @@ export const useNestedForm = <T>({
     }
   }, [parentContext.forceValidateFlag]);
 
+  // TODO: StrictMode check!
   useUpdateOnly(() => {
     forceValidate(parentContext.forceValidateFlag);
   }, [parentContext.forceValidateFlag]);

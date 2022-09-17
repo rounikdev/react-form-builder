@@ -100,6 +100,7 @@ export const FormRoot: FC<FormRootProps> = memo(
       }
     }, [resetFlag, GlobalModel.createStableDependency([errors, valid])]);
 
+    // TODO: StrictMode check!
     useUpdateOnly(() => {
       if (
         (resetFlag.resetKey === INITIAL_RESET_RECORD_KEY || resetFlag.resetKey === STORAGE_RESET) &&

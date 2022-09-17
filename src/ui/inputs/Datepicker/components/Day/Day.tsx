@@ -44,6 +44,8 @@ export const Day: FC<DayProps> = memo(({ dataTest, date, isOtherMonth }) => {
     },
     [date, selectDate]
   );
+
+  // TODO: StrictMode check!
   useUpdate(() => {
     if (isSelected && !state.focusedDate) {
       setFocusedDate(`${date.getTime()}`);

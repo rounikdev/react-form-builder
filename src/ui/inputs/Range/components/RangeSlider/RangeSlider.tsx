@@ -137,6 +137,7 @@ export const RangeSlider: FC<RangeSliderProps> = memo(({ dataTest, label, limit,
     [limit, name, onChangeHandler, options, step, stepExtra, value]
   );
 
+  // TODO: StrictMode check!
   useUpdate(() => {
     const newX = clientX;
 

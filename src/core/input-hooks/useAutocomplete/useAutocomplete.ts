@@ -245,6 +245,7 @@ export const useAutocomplete = <T>({
     };
   }, [close, fieldRef, multi, open, select, state.focused, state.selected, state.show]);
 
+  // TODO: StrictMode check!
   useUpdateOnly(() => {
     onChangeHandler(
       list.filter((option) => {
@@ -253,6 +254,7 @@ export const useAutocomplete = <T>({
     );
   }, [state.selected]);
 
+  // TODO: StrictMode check!
   // Update from value from useField:
   useUpdateOnly(() => {
     if (

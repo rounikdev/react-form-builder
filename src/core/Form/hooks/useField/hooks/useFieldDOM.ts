@@ -91,6 +91,7 @@ export const useFieldDOM = <T>({
               GlobalModel.createStableDependency(updatedInitialValueRef.current))) ||
         !usesStorage
       ) {
+        console.log(value, updatedInitialValueRef.current, usesStorage);
         setDirty();
 
         setValue({ value });

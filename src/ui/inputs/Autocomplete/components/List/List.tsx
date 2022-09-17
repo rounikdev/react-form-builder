@@ -43,6 +43,7 @@ export const List = <T,>({
     }));
   }, [rowRefs, list]);
 
+  // TODO: StrictMode check!
   useUpdateOnly(() => {
     if (list.length === 0) {
       setStyle((prevStyle) => ({ ...prevStyle, height: 0 }));

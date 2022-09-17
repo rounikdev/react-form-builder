@@ -65,6 +65,7 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
 
       useWindowResize({ callback: observerCallback, debounceTime: DEBOUNCE_TIME });
 
+      // TODO: StrictMode check!
       // Handles nested transitions like
       // ErrorFields of ConditionalFields
       useUpdateOnly(() => {

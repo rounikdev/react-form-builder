@@ -31,6 +31,7 @@ export const Animator: FC<AnimatorProps> = memo(
       });
     });
 
+    // TODO: StrictMode check!
     useUpdateOnly(() => {
       setState((prevState) => {
         if (shouldAnimate(prevState.content, children) && !isAnimating.current) {

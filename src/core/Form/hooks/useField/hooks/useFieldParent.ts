@@ -43,6 +43,7 @@ export const useFieldParent = <T>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, valid, value]);
 
+  // TODO StrictMode check!
   useUpdateOnly(() => {
     if (Object.keys(forceValidateFlag).length === 0) {
       setTouch(true);

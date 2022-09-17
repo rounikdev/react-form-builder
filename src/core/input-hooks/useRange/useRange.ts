@@ -229,6 +229,7 @@ export const useRange = ({
     }
   }, []);
 
+  // TODO: StrictMode check!
   useUpdate(() => {
     if (options) {
       onChangeHandler({

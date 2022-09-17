@@ -222,12 +222,15 @@ export const useDatepicker = ({
 
       if (validDate) {
         if (canBeSelected({ date: validDate, maxDate, minDate })) {
+          console.log(1);
           selectDate(validDate);
         } else {
+          console.log(2);
           onChangeHandler(undefined);
           clearInput();
         }
       } else if (inputValue) {
+        console.log(3);
         clearInput();
       }
 
@@ -369,6 +372,7 @@ export const useDatepicker = ({
     }
   });
 
+  // TODO: StrictMode check!
   useUpdate(() => {
     const selected = value || null;
 
@@ -381,8 +385,10 @@ export const useDatepicker = ({
     }
   }, [maxDate, minDate, value]);
 
+  // TODO: StrictMode check!
   useUpdateOnly(() => {
     if (!value) {
+      console.log(' if (!value) {');
       clearInput();
     }
   }, [value]);
@@ -409,6 +415,7 @@ export const useDatepicker = ({
     }
   }, [focusCalendar, state.show]);
 
+  // TODO: StrictMode check!
   useUpdateOnly(() => {
     if (!state.show) {
       blurCalendar(new Event('focus'));
