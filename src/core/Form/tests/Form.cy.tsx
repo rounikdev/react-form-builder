@@ -105,50 +105,52 @@ describe('FormDemo', () => {
     cy.get('[data-test="users-form"').invoke('attr', 'data-pristine').should('equal', 'true');
   });
 
-  it('Edit nested forms', () => {
-    mount(<FormDemo />);
+  Cypress._.times(5, () => {
+    it('Edit nested forms', () => {
+      mount(<FormDemo />);
 
-    const updatedFirstName = 'Gergana';
+      const updatedFirstName = 'Gergana';
 
-    const updatedPhone = '123456789';
+      const updatedPhone = '123456789';
 
-    // Initial state:
-    cy.get('[data-test="users-form"').invoke('attr', 'data-pristine').should('equal', 'true');
+      // Initial state:
+      cy.get('[data-test="users-form"').invoke('attr', 'data-pristine').should('equal', 'true');
 
-    cy.get('[data-test^="user-"').should('have.length', initialUsers.length);
+      cy.get('[data-test^="user-"').should('have.length', initialUsers.length);
 
-    // Enable edit
-    cy.get('[data-test="edit-form"').click();
+      // Enable edit
+      cy.get('[data-test="edit-form"').click();
 
-    // Enable edit of nested form
-    cy.get('[data-test="edit-user-0"').click();
+      // Enable edit of nested form
+      cy.get('[data-test="edit-user-0"').click();
 
-    // Enable edit of another level of nested form
-    cy.get('[data-test="edit-user-0-phones"').click();
+      // Enable edit of another level of nested form
+      cy.get('[data-test="edit-user-0-phones"').click();
 
-    // Update field in the most nested form:
-    cy.get('[data-test="phone-value-0-0-input"]').clear();
-    cy.get('[data-test="phone-value-0-0-input"]').type(updatedPhone);
-    cy.get('[data-test="save-user-0-phones"]').click();
+      // Update field in the most nested form:
+      cy.get('[data-test="phone-value-0-0-input"]').clear();
+      cy.get('[data-test="phone-value-0-0-input"]').type(updatedPhone);
+      cy.get('[data-test="save-user-0-phones"]').click();
 
-    // Update field in the upper form:
-    cy.get('[data-test="first-name-0-input"]').clear();
-    cy.get('[data-test="first-name-0-input"]').type(updatedFirstName);
-    cy.get('[data-test="save-user-0"]').click();
+      // Update field in the upper form:
+      cy.get('[data-test="first-name-0-input"]').focus().scrollIntoView().clear();
+      cy.get('[data-test="first-name-0-input"]').type(updatedFirstName);
+      cy.get('[data-test="save-user-0"]').click();
 
-    // Save the form:
-    cy.get('[data-test="save-form"]').click();
+      // Save the form:
+      cy.get('[data-test="save-form"]').click();
 
-    cy.get('[data-test="first-name-0-input"]').should('have.value', updatedFirstName);
-    cy.get('[data-test="last-name-0-input"]').should('have.value', initialUsers[0].lastName);
-    cy.get('[data-test^="phone-value-0-"').should('have.length', initialUsers[0].phones.length);
-    cy.get('[data-test="phone-value-0-0-input"]').should('have.value', updatedPhone);
-    cy.get('[data-test="phone-value-0-1-input"]').should(
-      'have.value',
-      initialUsers[0].phones[1].value
-    );
+      cy.get('[data-test="first-name-0-input"]').should('have.value', updatedFirstName);
+      cy.get('[data-test="last-name-0-input"]').should('have.value', initialUsers[0].lastName);
+      cy.get('[data-test^="phone-value-0-"').should('have.length', initialUsers[0].phones.length);
+      cy.get('[data-test="phone-value-0-0-input"]').should('have.value', updatedPhone);
+      cy.get('[data-test="phone-value-0-1-input"]').should(
+        'have.value',
+        initialUsers[0].phones[1].value
+      );
 
-    cy.get('[data-test="users-form"').invoke('attr', 'data-pristine').should('equal', 'false');
+      cy.get('[data-test="users-form"').invoke('attr', 'data-pristine').should('equal', 'false');
+    });
   });
 
   it('Edit nested forms - cancel the most nested form', () => {

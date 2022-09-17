@@ -59,7 +59,8 @@ export const useField = <T>({
     onBlur,
     onFocus,
     setValue,
-    touched: state.touched
+    touched: state.touched,
+    updatedInitialValue
   });
 
   useFieldReset<T>({ fieldId, resetState, updatedInitialValue });
@@ -91,6 +92,7 @@ export const useField = <T>({
     onBlurHandler,
     onChangeHandler,
     onFocusHandler,
+    updatedInitialValue,
     ...state
   };
 };

@@ -230,7 +230,7 @@ describe('useRange', () => {
     expect(result.current.context.clientX).toBe(100);
   });
 
-  it('clicking ot track changes the value', () => {
+  it('Clicking on track changes the value', () => {
     const initialValue = {
       from: 2,
       to: 4
@@ -285,7 +285,7 @@ describe('useRange', () => {
     });
   });
 
-  it('clicking ot track changes the value in single mode', () => {
+  it('Clicking on track changes the value in single mode', () => {
     const initialValue = {
       from: 1,
       to: 3

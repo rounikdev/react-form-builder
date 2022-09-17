@@ -83,6 +83,7 @@ export const useAutocomplete = <T>({
     onChangeHandler,
     onFocusHandler,
     touched,
+    updatedInitialValue,
     valid,
     validating,
     value
@@ -316,6 +317,7 @@ export const useAutocomplete = <T>({
     setSearch,
     show: state.show,
     touched,
+    updatedInitialValue,
     valid,
     validating,
     wrapperRef: element

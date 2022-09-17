@@ -19,8 +19,6 @@ export interface RangeProps extends Field<RangeValue> {
   stepExtra?: number;
 }
 
-const defaultValue = { from: 0, to: 0 };
-
 export const Range: FC<RangeProps> = memo(
   ({
     className,
@@ -28,15 +26,15 @@ export const Range: FC<RangeProps> = memo(
     dependencyExtractor,
     formatter,
     hideBar,
-    initialValue = defaultValue,
+    initialValue,
     label,
     max,
     min,
     name,
     onBlur,
     onFocus,
-    required,
     options,
+    required,
     sideEffect,
     single,
     step = 1,

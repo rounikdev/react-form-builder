@@ -1,10 +1,11 @@
 import { FocusEvent, useCallback, useRef } from 'react';
 
-import { useUpdate } from '@rounik/react-custom-hooks';
+import { useUpdate, useUpdatedRef } from '@rounik/react-custom-hooks';
 
 import { useForm } from '@core/Form/hooks/useForm/useForm';
 import { useFormRoot } from '@core/Form/providers';
 import { UseFieldConfig } from '@core/Form/types';
+import { GlobalModel } from '@services';
 
 interface UseFieldDOMConfig<T> extends Pick<UseFieldConfig<T>, 'onBlur' | 'onFocus'> {
   blur: () => void;
@@ -12,6 +13,7 @@ interface UseFieldDOMConfig<T> extends Pick<UseFieldConfig<T>, 'onBlur' | 'onFoc
   focus: () => void;
   setValue: ({ value }: { value: T }) => void;
   touched: boolean;
+  updatedInitialValue: FormDataEntryValue;
 }
 
 export const useFieldDOM = <T>({
@@ -21,12 +23,14 @@ export const useFieldDOM = <T>({
   onBlur,
   onFocus,
   setValue,
-  touched
+  touched,
+  updatedInitialValue
 }: UseFieldDOMConfig<T>) => {
   const {
     focusedField,
     methods: { setDirty },
-    scrolledField
+    scrolledField,
+    usesStorage
   } = useFormRoot();
 
   const {
@@ -75,15 +79,25 @@ export const useFieldDOM = <T>({
     [onBlur]
   );
 
+  const updatedInitialValueRef = useUpdatedRef(updatedInitialValue);
+
+  // TODO: Make sure that this method is set in the dependencies array where used
   const onChangeHandler = useCallback(
     (value: T) => {
-      setDirty();
+      if (
+        (usesStorage &&
+          (typeof value !== 'object' ||
+            GlobalModel.createStableDependency(value) !==
+              GlobalModel.createStableDependency(updatedInitialValueRef.current))) ||
+        !usesStorage
+      ) {
+        setDirty();
 
-      setValue({ value });
+        setValue({ value });
+      }
     },
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [usesStorage]
   );
 
   const onFocusHandler = useCallback(

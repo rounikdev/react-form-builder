@@ -65,6 +65,7 @@ describe('useRadioGroup', () => {
       onChangeHandler: 'function',
       onFocusHandler: 'function',
       touched: 'boolean',
+      updatedInitialValue: 'string',
       valid: 'boolean',
       validating: 'boolean',
       value: 'string'

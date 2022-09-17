@@ -8,13 +8,16 @@ import {
   useState
 } from 'react';
 
-import { useMount, useUpdate } from '@rounik/react-custom-hooks';
+import { useUpdate } from '@rounik/react-custom-hooks';
 
-import { FormStateEntryValue, useField, useFieldDependency } from '@core/Form';
+import { useField, useFieldDependency } from '@core/Form';
 
 import { rangeContext } from './context';
 import { RangeValue, UseRangeArgs } from './types';
 
+const DEFAULT_RANGE_VALUE: RangeValue = { from: 0, to: 0 };
+
+// TODO: Think of using formatter for limiting the values:
 export const useRange = ({
   dependencyExtractor,
   formatter,
@@ -33,20 +36,6 @@ export const useRange = ({
   stepExtra,
   validator
 }: UseRangeArgs) => {
-  const { dependencyValue, onBlurHandler, onChangeHandler, onFocusHandler, value } =
-    useField<RangeValue>({
-      dependencyExtractor,
-      formatter,
-      initialValue,
-      name,
-      onBlur,
-      onFocus,
-      sideEffect,
-      validator
-    });
-
-  const dependantData = useFieldDependency({ dependencyValue, label, required });
-
   const { max, min } = useMemo(() => {
     const limits = {
       max: maximum,
@@ -60,6 +49,41 @@ export const useRange = ({
 
     return limits;
   }, [maximum, minimum, options]);
+
+  const initialValueFallback = useMemo(() => {
+    if (initialValue) {
+      return initialValue;
+    } else {
+      if (typeof max !== 'undefined' && typeof min !== 'undefined') {
+        return {
+          from: min,
+          to: min
+        };
+      } else {
+        return DEFAULT_RANGE_VALUE;
+      }
+    }
+  }, [initialValue, max, min]);
+
+  const {
+    dependencyValue,
+    onBlurHandler,
+    onChangeHandler,
+    onFocusHandler,
+    value = typeof initialValueFallback !== 'function' ? initialValueFallback : DEFAULT_RANGE_VALUE,
+    updatedInitialValue
+  } = useField<RangeValue>({
+    dependencyExtractor,
+    formatter,
+    initialValue: initialValueFallback,
+    name,
+    onBlur,
+    onFocus,
+    sideEffect,
+    validator
+  });
+
+  const dependantData = useFieldDependency({ dependencyValue, label, required });
 
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -153,14 +177,7 @@ export const useRange = ({
       from: false,
       to: false
     }));
-
-    if (options) {
-      onChangeHandler({
-        from: limitToOptions(value.from),
-        to: limitToOptions(value.to)
-      });
-    }
-  }, [limitToOptions, onChangeHandler, options, value]);
+  }, []);
 
   const onTrackClickHandler = useCallback(
     (event: MouseEvent) => {
@@ -212,33 +229,19 @@ export const useRange = ({
     }
   }, []);
 
-  useMount(() => {
+  useUpdate(() => {
     if (options) {
       onChangeHandler({
-        from: limitToOptions(value.from),
-        to: limitToOptions(value.to)
+        from: limitToOptions(updatedInitialValue.from),
+        to: limitToOptions(updatedInitialValue.to)
       });
     } else {
       onChangeHandler({
-        from: limitFrom(value.from),
-        to: limitTo(value.to)
+        from: limitFrom(updatedInitialValue.from),
+        to: limitTo(updatedInitialValue.to)
       });
     }
-  });
-
-  useUpdate(() => {
-    const builtInitialValue =
-      typeof initialValue === 'function'
-        ? (initialValue as (dependencyValue: FormStateEntryValue) => RangeValue)(dependencyValue)
-        : initialValue;
-
-    if (options && typeof initialValue !== 'function') {
-      onChangeHandler({
-        from: limitToOptions(builtInitialValue.from),
-        to: limitToOptions(builtInitialValue.to)
-      });
-    }
-  }, [initialValue]);
+  }, [updatedInitialValue]);
 
   const context = useMemo(
     () => ({

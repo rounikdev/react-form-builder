@@ -216,6 +216,7 @@ export interface UseFieldReturnType<T> {
   onChangeHandler: (value: T) => void;
   onFocusHandler: FocusEventHandler<HTMLElement>;
   touched: boolean;
+  updatedInitialValue: FormStateEntryValue;
   valid: boolean;
   validating: boolean;
   value: T;

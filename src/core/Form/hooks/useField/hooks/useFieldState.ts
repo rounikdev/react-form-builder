@@ -39,7 +39,8 @@ export const useFieldState = <T>({
   const {
     fieldsToBeSet,
     formData,
-    methods: { setDirty, setFieldsValue }
+    methods: { setDirty, setFieldsValue },
+    usesStorage
   } = useFormRoot();
 
   const dependency = useMemo(() => {
@@ -164,12 +165,25 @@ export const useFieldState = <T>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Sync with storage or with
+  // the internal state on
+  // dependency update:
   useUpdate(() => {
-    setValue({ value: state.value });
+    setValue({ value: usesStorage ? updatedInitialValue : state.value });
   }, [updatedDependency]);
 
   useUpdate(() => {
-    setValue({ value: updatedInitialValue });
+    // When outside storage is being used
+    // and we update through user action
+    // the user action calls onChangeHandler
+    // with one value, but while a new value
+    // is ready for set up, the storage
+    // updates the initialValue but to the
+    // previously set value, and a flicker
+    // occurs (infinite loop is started):
+    if (!usesStorage) {
+      setValue({ value: updatedInitialValue });
+    }
   }, [updatedInitialValue]);
 
   // Set value from the
