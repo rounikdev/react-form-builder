@@ -494,7 +494,7 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
     expect(onSubmit).toHaveBeenCalledWith({ valid, value: { [fieldName]: value } });
   });
 
-  it('Force validate flag updates', () => {
+  it('Force validate flag updates', async () => {
     const callback = jest.fn();
 
     const { getByDataTest } = testRender(
@@ -506,12 +506,16 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
       </FormRoot>
     );
 
+    //! https://github.com/testing-library/user-event/issues/565
+    jest.useRealTimers();
+
     const button = getByDataTest('method-test-button');
-    userEvent.click(button);
+    await userEvent.click(button);
 
     expect(callback).toHaveBeenCalledTimes(1);
   });
 
+  // TODO: decide what to do with this test:
   it('Form reducer returns state as default', () => {
     // const newState = reducer(initialFormContext, {
     //   payload: { key: '', type: '' },
@@ -520,6 +524,7 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
     // expect(newState).toEqual(initialFormContext);
   });
 
+  // TODO: decide what to do with this test:
   // eslint-disable-next-line max-len
   it('Form reducer returns state without modifying it if no change in value or valid when setting field data', () => {
     // const newState = reducer(initialFormContext, {
@@ -585,7 +590,10 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
 
     const input = await findByDataTest('input');
 
-    userEvent.type(input, 'a');
+    //! https://github.com/testing-library/user-event/issues/565
+    jest.useRealTimers();
+
+    await userEvent.type(input, 'a');
 
     const lastCall = mockOnChange.mock.calls.pop();
 

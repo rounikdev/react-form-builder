@@ -84,7 +84,7 @@ export const Checkbox: FC<CheckboxProps> = memo(
               htmlFor={id}
               title={dependantData.label}
             >
-              {label}
+              {dependantData.label}
             </label>
           ) : null}
         </div>

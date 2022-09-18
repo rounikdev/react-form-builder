@@ -1,4 +1,4 @@
-import { forwardRef, Fragment, memo, RefObject, useCallback, useMemo } from 'react';
+import { forwardRef, Fragment, KeyboardEvent, memo, RefObject, useCallback, useMemo } from 'react';
 
 import { useClass, useUpdateOnly } from '@rounik/react-custom-hooks';
 
@@ -54,7 +54,7 @@ export const Option = memo(
           }
         }, [close, id, multi, select])}
         onKeyUp={useCallback(
-          (event) => {
+          (event: KeyboardEvent) => {
             if (event.code === 'Enter') {
               select(id);
 

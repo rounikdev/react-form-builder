@@ -3,7 +3,7 @@ import { useUpdateOnly } from '@rounik/react-custom-hooks';
 import {
   INITIAL_RESET_RECORD_KEY,
   ROOT_RESET_RECORD_KEY,
-  STORAGE_RESET
+  STORAGE_RESET_KEY
 } from '@core/Form/constants';
 import { useFormRoot } from '@core/Form/providers';
 import { shouldBeReset } from '@core/Form/services';
@@ -31,7 +31,7 @@ export const useFieldReset = <T>({
 
     if (shouldBeReset({ fieldId, resetFlag })) {
       if (usesStorage) {
-        resetValue = GlobalModel.getNestedValue(resetRecords[INITIAL_RESET_RECORD_KEY], fieldPath);
+        resetValue = GlobalModel.getNestedValue(resetRecords[resetFlag.resetKey], fieldPath);
       } else {
         resetValue =
           GlobalModel.getNestedValue(
@@ -41,7 +41,7 @@ export const useFieldReset = <T>({
       }
 
       resetState(resetValue);
-    } else if (resetFlag.resetKey === STORAGE_RESET) {
+    } else if (resetFlag.resetKey === STORAGE_RESET_KEY) {
       resetValue = GlobalModel.getNestedValue(resetRecords[INITIAL_RESET_RECORD_KEY], fieldPath);
 
       resetState(resetValue);

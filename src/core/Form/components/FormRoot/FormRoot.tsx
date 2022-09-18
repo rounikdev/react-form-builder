@@ -1,8 +1,8 @@
-import { FC, memo, useCallback, useMemo } from 'react';
+import { FC, FormEvent, memo, useCallback, useMemo } from 'react';
 
 import { useClass, useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
 
-import { INITIAL_RESET_RECORD_KEY, STORAGE_RESET } from '@core/Form/constants';
+import { INITIAL_RESET_RECORD_KEY, STORAGE_RESET_KEY } from '@core/Form/constants';
 import { FormContextInstance } from '@core/Form/context';
 import { useFormReducer, useRootForm } from '@core/Form/hooks';
 import { FormEditProvider, FormRootProvider } from '@core/Form/providers';
@@ -21,6 +21,7 @@ export const FormRoot: FC<FormRootProps> = memo(
     className,
     dataTest,
     initialResetState,
+    isPristine = true,
     noValidate = true,
     onChange,
     onReset,
@@ -58,11 +59,12 @@ export const FormRoot: FC<FormRootProps> = memo(
     } = useRootForm({
       formData: value,
       initialResetState,
+      isPristine,
       usesStorage
     });
 
     const onSubmitHandler = useCallback(
-      (event) => {
+      (event: FormEvent) => {
         event.preventDefault();
 
         if (onSubmit) {
@@ -87,7 +89,11 @@ export const FormRoot: FC<FormRootProps> = memo(
     // This will sync the errors
     // and valid after reset:
     useUpdate(() => {
-      if (resetFlag.resetKey === INITIAL_RESET_RECORD_KEY || resetFlag.resetKey === STORAGE_RESET) {
+      if (
+        resetFlag.resetKey === INITIAL_RESET_RECORD_KEY ||
+        resetFlag.resetKey === STORAGE_RESET_KEY ||
+        resetFlag.resetKey === '' // This prevents StrictMode breaking the behavior
+      ) {
         if (pristine && onChange && usesStorage) {
           onChange({
             errors,
@@ -100,11 +106,11 @@ export const FormRoot: FC<FormRootProps> = memo(
       }
     }, [resetFlag, GlobalModel.createStableDependency([errors, valid])]);
 
-    // TODO: StrictMode check!
     useUpdateOnly(() => {
       if (
-        (resetFlag.resetKey === INITIAL_RESET_RECORD_KEY || resetFlag.resetKey === STORAGE_RESET) &&
-        onReset
+        onReset &&
+        (resetFlag.resetKey === INITIAL_RESET_RECORD_KEY ||
+          resetFlag.resetKey === STORAGE_RESET_KEY)
       ) {
         onReset();
       }

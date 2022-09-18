@@ -34,7 +34,10 @@ describe('HeightTransitionProvider', () => {
       </HeightTransitionProvider>
     );
 
-    userEvent.click(getByDataTest('force-update-button'));
+    //! https://github.com/testing-library/user-event/issues/565
+    jest.useRealTimers();
+
+    await userEvent.click(getByDataTest('force-update-button'));
 
     expect(mockForceUpdateCb).toBeCalledTimes(1);
   });

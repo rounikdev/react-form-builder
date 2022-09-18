@@ -1,4 +1,4 @@
-import { mount } from '@cypress/react';
+import { mount } from '@cypress/react18';
 import { composeStory } from '@storybook/testing-react';
 
 import { formatDateInput, TranslationProvider } from '@core';
@@ -102,18 +102,18 @@ describe('Datepicker', () => {
     cy.get('body').trigger('keyup', { code: 'ArrowLeft' });
     cy.get('body').trigger('keyup', { code: 'ArrowLeft' });
 
-    cy.focused().should('have.attr', 'data-date', new Date('01 Mar 2022').toLocaleDateString());
+    cy.focused().should('have.attr', 'data-date', new Date('27 Mar 2022').toLocaleDateString());
 
     cy.get('body').trigger('keyup', { code: 'ArrowUp' });
 
     // The same date should be focused, because is selected:
-    cy.focused().should('have.attr', 'data-date', new Date('01 Mar 2022').toLocaleDateString());
+    cy.focused().should('have.attr', 'data-date', new Date('20 Mar 2022').toLocaleDateString());
 
     for (let i = 0; i < 7; i++) {
       cy.get('body').trigger('keyup', { code: 'ArrowRight' });
     }
 
-    cy.focused().should('have.attr', 'data-date', new Date('02 Mar 2022').toLocaleDateString());
+    cy.focused().should('have.attr', 'data-date', new Date('27 Mar 2022').toLocaleDateString());
 
     cy.focused().trigger('keyup', {
       code: 'Tab',

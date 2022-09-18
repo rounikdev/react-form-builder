@@ -1,0 +1,8 @@
+.Container {
+  &.Disabled {
+    border: var(--border-width) dashed var(--color-border-disabled);
+    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}

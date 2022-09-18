@@ -4,7 +4,7 @@ import { FormContext } from '../types';
 
 export const initialFormContext: FormContext = {
   focused: false,
-  forceValidateFlag: {},
+  forceValidateFlag: null,
   formOnlyErrors: [],
   isEdit: false,
   isParentEdit: false,

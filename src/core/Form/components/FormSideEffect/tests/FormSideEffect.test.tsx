@@ -29,7 +29,7 @@ describe('FormSideEffect', () => {
     expect(FormSideEffect.displayName).toBe('FormSideEffect');
   });
 
-  it('Change in form state triggers the effect', () => {
+  it('Change in form state triggers the effect', async () => {
     const initialValue = 'John';
     const changedValue = 'Ana';
     const mockEffect = jest.fn();
@@ -41,8 +41,11 @@ describe('FormSideEffect', () => {
     expect(mockEffect.mock.calls[0][0]).toEqual([undefined]);
     expect(mockEffect.mock.calls[1][0]).toEqual([initialValue]);
 
-    userEvent.clear(getByDataTest('fieldA'));
-    userEvent.type(getByDataTest('fieldA'), changedValue);
+    //! https://github.com/testing-library/user-event/issues/565
+    jest.useRealTimers();
+
+    await userEvent.clear(getByDataTest('fieldA'));
+    await userEvent.type(getByDataTest('fieldA'), changedValue);
 
     const lastCall = mockEffect.mock.calls.pop();
 

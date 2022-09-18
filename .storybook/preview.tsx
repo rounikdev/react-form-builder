@@ -1,9 +1,8 @@
 import { Story } from '@storybook/react';
 
 import { TranslationProvider } from '../src/core';
-import { BaseCSS } from '../src/ui';
-
 import { dictionaries } from '../src/core/Translation/tests/data';
+import { BaseCSS } from '../src/ui';
 
 export const decorators = [
   (StoryFn: Story) => (

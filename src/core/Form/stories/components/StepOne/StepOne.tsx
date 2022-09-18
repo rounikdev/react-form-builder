@@ -1,4 +1,4 @@
-import { FC, memo, useMemo } from 'react';
+import { FC, Fragment, memo, useMemo } from 'react';
 
 import {
   ConditionalFields,
@@ -52,6 +52,7 @@ export const StepOne: FC = memo(() => {
     <FormRoot
       dataTest="user"
       initialResetState={state[formId]?.resetState}
+      //   isPristine={state[formId]?.pristine ?? true}
       onChange={(formData) => {
         setFormData({ formData, formId });
       }}
@@ -79,6 +80,8 @@ export const StepOne: FC = memo(() => {
         name="anonymous"
       />
       <Autocomplete
+        autocomplete
+        className={styles.Field}
         dataTest="pet"
         extractId={(item) => item?.id ?? ''}
         extractLabel={(item) => item.label}
@@ -86,12 +89,14 @@ export const StepOne: FC = memo(() => {
         initialValue={initialState.pet}
         label="Pet"
         list={options}
+        multi
         name="pet"
         renderOption={({ item, ref }) => (
           <Option dataTest={item.id} id={item.id} key={item.id} ref={ref} text={item.label} />
         )}
       />
       <Datepicker
+        className={styles.Field}
         dataTest="birthDate"
         dependencyExtractor={(formData) => formData.anonymous}
         disabled={(anonymous) => anonymous}
@@ -101,6 +106,7 @@ export const StepOne: FC = memo(() => {
         name="birthDate"
       />
       <Text
+        className={styles.Field}
         dependencyExtractor={(formData) => formData.anonymous}
         dataTest="first-name"
         disabled={(anonymous) => anonymous}
@@ -121,6 +127,7 @@ export const StepOne: FC = memo(() => {
         }}
       />
       <Text
+        className={styles.Field}
         dependencyExtractor={(formData) => ({
           anonymous: formData.anonymous,
           firstName: formData.firstName
@@ -146,6 +153,7 @@ export const StepOne: FC = memo(() => {
         }}
       />
       <Checkbox
+        className={styles.Field}
         dataTest="knows-karate"
         id="knows-karate"
         initialValue={initialState.knowsKarate}
@@ -154,6 +162,7 @@ export const StepOne: FC = memo(() => {
       />
       <ConditionalFields condition={(formData) => formData.knowsKarate}>
         <Text
+          className={styles.Field}
           dependencyExtractor={(formData) => formData.firstName}
           dataTest="karate-belt"
           id="karate-belt"
@@ -164,6 +173,7 @@ export const StepOne: FC = memo(() => {
           name="karateBelt"
         />
         <Datepicker
+          className={styles.Field}
           dataTest="belt-acquired"
           id="belt-acquired"
           initialValue={initialState.beltAcquired}
@@ -196,13 +206,15 @@ export const StepOne: FC = memo(() => {
                         text="Reset contacts"
                       />
                       <ul>
-                        {((formData.contacts as Contact[]) || []).map((contact) => {
+                        {((formData.contacts as Contact[]) || []).map((contact, index) => {
                           return Object.keys(contact).length ? (
-                            <li key={contact.id}>
+                            <li key={contact.id ?? index}>
                               {contact.email}, {contact.phone}
                               {contact.isPrimary ? ', Primary' : ''}
                             </li>
-                          ) : null;
+                          ) : (
+                            <Fragment key={index}></Fragment>
+                          );
                         })}
                       </ul>
                     </div>

@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 
 import { useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
 
@@ -62,6 +62,7 @@ const ParentFormActor: FC<ParentFormActorProps> = ({
 };
 
 interface WrapperProps extends ParentFormActorProps {
+  children?: ReactNode;
   parentFormName?: string;
 }
 
@@ -105,7 +106,7 @@ describe('useNestedForm', () => {
 
     expect(typeof result.current.forceValidate).toBe('function');
 
-    expect(result.current.forceValidateFlag).toEqual({});
+    expect(result.current.forceValidateFlag).toEqual(null);
 
     expect(result.current.getFieldId()).toBe(name);
 

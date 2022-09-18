@@ -74,7 +74,10 @@ describe('HeightTransitionBox', () => {
 
     expect(window.getComputedStyle(wrapper).overflow).toBe('auto');
 
-    userEvent.click(getByDataTest('toggle-content'));
+    //! https://github.com/testing-library/user-event/issues/565
+    jest.useRealTimers();
+
+    await userEvent.click(getByDataTest('toggle-content'));
 
     expect(window.getComputedStyle(wrapper).overflow).toBe('hidden');
   });
@@ -86,7 +89,10 @@ describe('HeightTransitionBox', () => {
       window.getComputedStyle(await findByDataTest('test-heightTransition-container')).overflow
     ).toBe('auto');
 
-    userEvent.click(getByDataTest('toggle-content'));
+    //! https://github.com/testing-library/user-event/issues/565
+    jest.useRealTimers();
+
+    await userEvent.click(getByDataTest('toggle-content'));
 
     expect(
       window.getComputedStyle(await findByDataTest('test-heightTransition-container')).overflow

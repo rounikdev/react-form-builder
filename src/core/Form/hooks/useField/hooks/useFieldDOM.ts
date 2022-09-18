@@ -1,3 +1,4 @@
+import { dequal } from 'dequal';
 import { FocusEvent, useCallback, useRef } from 'react';
 
 import { useUpdate, useUpdatedRef } from '@rounik/react-custom-hooks';
@@ -5,7 +6,6 @@ import { useUpdate, useUpdatedRef } from '@rounik/react-custom-hooks';
 import { useForm } from '@core/Form/hooks/useForm/useForm';
 import { useFormRoot } from '@core/Form/providers';
 import { UseFieldConfig } from '@core/Form/types';
-import { GlobalModel } from '@services';
 
 interface UseFieldDOMConfig<T> extends Pick<UseFieldConfig<T>, 'onBlur' | 'onFocus'> {
   blur: () => void;
@@ -81,24 +81,23 @@ export const useFieldDOM = <T>({
 
   const updatedInitialValueRef = useUpdatedRef(updatedInitialValue);
 
-  // TODO: Make sure that this method is set in the dependencies array where used
+  const usesStorageRef = useUpdatedRef(usesStorage);
+
   const onChangeHandler = useCallback(
     (value: T) => {
+      // TODO: rethink this:
       if (
-        (usesStorage &&
-          (typeof value !== 'object' ||
-            GlobalModel.createStableDependency(value) !==
-              GlobalModel.createStableDependency(updatedInitialValueRef.current))) ||
-        !usesStorage
+        (usesStorageRef.current &&
+          (typeof value !== 'object' || !dequal(value, updatedInitialValueRef.current))) ||
+        !usesStorageRef.current
       ) {
-        console.log(value, updatedInitialValueRef.current, usesStorage);
         setDirty();
 
         setValue({ value });
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [usesStorage]
+    []
   );
 
   const onFocusHandler = useCallback(

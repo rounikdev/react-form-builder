@@ -20,6 +20,7 @@ export const Datepicker: FC<DatepickerProps> = memo(
     className,
     dataTest,
     dependencyExtractor,
+    disabled,
     id,
     initialValue,
     label = '',
@@ -34,6 +35,7 @@ export const Datepicker: FC<DatepickerProps> = memo(
   }) => {
     const { context, Provider } = useDatepicker({
       dependencyExtractor,
+      disabled,
       initialValue,
       label,
       maxDateExtractor,

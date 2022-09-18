@@ -1,4 +1,4 @@
-import { mount } from '@cypress/react';
+import { mount } from '@cypress/react18';
 import { composeStory } from '@storybook/testing-react';
 
 import Meta, { CarouselDemo } from '../stories/Carousel.stories';

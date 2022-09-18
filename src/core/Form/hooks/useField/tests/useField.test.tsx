@@ -1,7 +1,7 @@
 import { fireEvent } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import userEvent from '@testing-library/user-event';
-import { FC, FocusEventHandler, MutableRefObject, useEffect, useState } from 'react';
+import { FC, FocusEventHandler, MutableRefObject, ReactNode, useEffect, useState } from 'react';
 
 import { FormObject, FormRoot } from '@core/Form/components';
 import { useForm } from '@core/Form/hooks/useForm/useForm';
@@ -190,7 +190,7 @@ describe('useField', () => {
       return null;
     };
 
-    const Wrapper: FC = ({ children }) => (
+    const Wrapper: FC<{ children: ReactNode }> = ({ children }) => (
       <FormRoot dataTest="root-form">
         <ForceValidateTrigger />
         {children}
@@ -221,16 +221,19 @@ describe('useField', () => {
       </FormRoot>
     );
 
+    //! https://github.com/testing-library/user-event/issues/565
+    jest.useRealTimers();
+
     const stateA = JSON.parse(getByDataTest('state').textContent || '');
     expect(stateA.value).toBe(initialValue);
 
-    userEvent.clear(getByDataTest('input'));
-    userEvent.type(getByDataTest('input'), changedValue);
+    await userEvent.clear(getByDataTest('input'));
+    await userEvent.type(getByDataTest('input'), changedValue);
 
     const stateB = JSON.parse(getByDataTest('state').textContent || '');
     expect(stateB.value).toBe(changedValue);
 
-    userEvent.click(getByDataTest('reset'));
+    await userEvent.click(getByDataTest('reset'));
 
     const stateC = JSON.parse((await findByDataTest('state')).textContent || '');
     expect(stateC.value).toBe(initialValue);
@@ -288,6 +291,7 @@ describe('useField', () => {
     expect(stateB.touched).toBe(true);
   });
 
+  // Fix this one:
   it('Validates with dependency', async () => {
     const fieldNameA = 'password';
     const fieldNameB = 'repeatPassword';
@@ -322,25 +326,29 @@ describe('useField', () => {
       </FormRoot>
     );
 
+    //! https://github.com/testing-library/user-event/issues/565
+    jest.useRealTimers();
+
     const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
     expect(stateB.valid).toBe(false);
     expect(stateB.errors).toEqual([{ text: error }]);
 
-    userEvent.clear(getByDataTest('inputB'));
-    userEvent.type(getByDataTest('inputB'), initialValueA);
+    await userEvent.clear(getByDataTest('inputB'));
+    await userEvent.type(getByDataTest('inputB'), initialValueA);
 
     const updatedStateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
     expect(updatedStateB.valid).toBe(true);
     expect(updatedStateB.errors).toEqual([]);
 
-    userEvent.clear(getByDataTest('input'));
-    userEvent.type(getByDataTest('input'), initialValueB);
+    await userEvent.clear(getByDataTest('input'));
+    await userEvent.type(getByDataTest('input'), initialValueB);
 
     const updatedStateC = JSON.parse((await findByDataTest('stateB')).textContent || '');
     expect(updatedStateC.valid).toBe(false);
     expect(updatedStateC.errors).toEqual([{ text: error }]);
   });
 
+  // TODO: Fix this one
   it('Validates with dependency as object', async () => {
     const fieldNameA = 'password';
     const fieldNameB = 'repeatPassword';
@@ -375,25 +383,29 @@ describe('useField', () => {
       </FormRoot>
     );
 
+    //! https://github.com/testing-library/user-event/issues/565
+    jest.useRealTimers();
+
     const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
     expect(stateB.valid).toBe(false);
     expect(stateB.errors).toEqual([{ text: error }]);
 
-    userEvent.clear(getByDataTest('inputB'));
-    userEvent.type(getByDataTest('inputB'), initialValueA);
+    await userEvent.clear(getByDataTest('inputB'));
+    await userEvent.type(getByDataTest('inputB'), initialValueA);
 
     const updatedStateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
     expect(updatedStateB.valid).toBe(true);
     expect(updatedStateB.errors).toEqual([]);
 
-    userEvent.clear(getByDataTest('input'));
-    userEvent.type(getByDataTest('input'), initialValueB);
+    await userEvent.clear(getByDataTest('input'));
+    await userEvent.type(getByDataTest('input'), initialValueB);
 
     const updatedStateC = JSON.parse((await findByDataTest('stateB')).textContent || '');
     expect(updatedStateC.valid).toBe(false);
     expect(updatedStateC.errors).toEqual([{ text: error }]);
   });
 
+  // TODO: fix this one:
   it('Validates with dependency as array', async () => {
     const fieldNameA = 'password';
     const fieldNameB = 'repeatPassword';
@@ -432,21 +444,25 @@ describe('useField', () => {
     expect(stateB.valid).toBe(false);
     expect(stateB.errors).toEqual([{ text: error }]);
 
-    userEvent.clear(getByDataTest('inputB'));
-    userEvent.type(getByDataTest('inputB'), initialValueA);
+    //! https://github.com/testing-library/user-event/issues/565
+    jest.useRealTimers();
+
+    await userEvent.clear(getByDataTest('inputB'));
+    await userEvent.type(getByDataTest('inputB'), initialValueA);
 
     const updatedStateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
     expect(updatedStateB.valid).toBe(true);
     expect(updatedStateB.errors).toEqual([]);
 
-    userEvent.clear(getByDataTest('input'));
-    userEvent.type(getByDataTest('input'), initialValueB);
+    await userEvent.clear(getByDataTest('input'));
+    await userEvent.type(getByDataTest('input'), initialValueB);
 
     const updatedStateC = JSON.parse((await findByDataTest('stateB')).textContent || '');
     expect(updatedStateC.valid).toBe(false);
     expect(updatedStateC.errors).toEqual([{ text: error }]);
   });
 
+  // TODO: fix this one
   it('Validates with BigInt as dependency', async () => {
     const fieldNameA = 'password';
     const fieldNameB = 'repeatPassword';
@@ -485,15 +501,18 @@ describe('useField', () => {
     expect(stateB.valid).toBe(false);
     expect(stateB.errors).toEqual([{ text: error }]);
 
-    userEvent.clear(getByDataTest('inputB'));
-    userEvent.type(getByDataTest('inputB'), initialValueA);
+    //! https://github.com/testing-library/user-event/issues/565
+    jest.useRealTimers();
+
+    await userEvent.clear(getByDataTest('inputB'));
+    await userEvent.type(getByDataTest('inputB'), initialValueA);
 
     const updatedStateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
     expect(updatedStateB.valid).toBe(false);
     expect(updatedStateB.errors).toEqual([{ text: error }]);
 
-    userEvent.clear(getByDataTest('input'));
-    userEvent.type(getByDataTest('input'), 'something');
+    await userEvent.clear(getByDataTest('input'));
+    await userEvent.type(getByDataTest('input'), 'something');
 
     const updatedStateB2 = JSON.parse((await findByDataTest('stateB')).textContent || '');
     expect(updatedStateB2.valid).toBe(true);
@@ -577,13 +596,16 @@ describe('useField', () => {
     const stateA = JSON.parse(getByDataTest('state').textContent || '');
     expect(stateA.value).toBe(formatter({ newValue: initialValue, oldValue: initialValue }));
 
-    userEvent.clear(getByDataTest('input'));
-    userEvent.type(getByDataTest('input'), changedValue);
+    //! https://github.com/testing-library/user-event/issues/565
+    jest.useRealTimers();
+
+    await userEvent.clear(getByDataTest('input'));
+    await userEvent.type(getByDataTest('input'), changedValue);
 
     const stateB = JSON.parse(getByDataTest('state').textContent || '');
     expect(stateB.value).toBe(formatter({ newValue: changedValue, oldValue: initialValue }));
 
-    userEvent.click(getByDataTest('reset'));
+    await userEvent.click(getByDataTest('reset'));
 
     const stateC = JSON.parse((await findByDataTest('state')).textContent || '');
     expect(stateC.value).toBe(formatter({ newValue: initialValue, oldValue: initialValue }));
@@ -625,8 +647,11 @@ describe('useField', () => {
     const stateA = JSON.parse(getByDataTest('state').textContent || '');
     expect(stateA.value).toBe(initialValue);
 
-    userEvent.clear(getByDataTest('input'));
-    userEvent.type(getByDataTest('input'), changedValue);
+    //! https://github.com/testing-library/user-event/issues/565
+    jest.useRealTimers();
+
+    await userEvent.clear(getByDataTest('input'));
+    await userEvent.type(getByDataTest('input'), changedValue);
 
     const firstCall = sideEffectMock.mock.calls[0];
     expect(typeof firstCall[0].methods).toBe('object');
@@ -641,7 +666,7 @@ describe('useField', () => {
     expect(lastCall[0].value).toEqual(changedValue);
   });
 
-  it('Calls focus on the field element from the root form context', () => {
+  it('Calls focus on the field element from the root form context', async () => {
     const initialValue = 'Ivan';
     const name = 'firstName';
 
@@ -664,12 +689,15 @@ describe('useField', () => {
 
     expect(mockFocus).toHaveBeenCalledTimes(0);
 
-    userEvent.click(getByDataTest('focus'));
+    //! https://github.com/testing-library/user-event/issues/565
+    jest.useRealTimers();
+
+    await userEvent.click(getByDataTest('focus'));
 
     expect(mockFocus).toHaveBeenCalledTimes(1);
   });
 
-  it('Calls scrollIntoView on the field element from the root form context', () => {
+  it('Calls scrollIntoView on the field element from the root form context', async () => {
     const initialValue = 'Ivan';
     const name = 'firstName';
 
@@ -697,7 +725,10 @@ describe('useField', () => {
 
     expect(mockScrollIntoView).toHaveBeenCalledTimes(0);
 
-    userEvent.click(getByDataTest('scroll-into-view'));
+    //! https://github.com/testing-library/user-event/issues/565
+    jest.useRealTimers();
+
+    await userEvent.click(getByDataTest('scroll-into-view'));
 
     expect(mockScrollIntoView).toHaveBeenCalledTimes(1);
   });
@@ -749,7 +780,10 @@ describe('useField', () => {
     expect(await findByDataTest('input')).toHaveValue(initialValue);
     expect(getByDataTest('input')).not.toBeValid();
 
-    userEvent.click(getByDataTest('set-field-value'));
+    //! https://github.com/testing-library/user-event/issues/565
+    jest.useRealTimers();
+
+    await userEvent.click(getByDataTest('set-field-value'));
 
     expect(await findByDataTest('input')).toHaveValue(changedValue);
     expect(getByDataTest('input')).toBeValid();
@@ -812,7 +846,10 @@ describe('useField', () => {
     expect(await findByDataTest('input')).toHaveValue(initialValue);
     expect(getByDataTest('input')).not.toBeValid();
 
-    userEvent.click(getByDataTest('set-field-value'));
+    //! https://github.com/testing-library/user-event/issues/565
+    jest.useRealTimers();
+
+    await userEvent.click(getByDataTest('set-field-value'));
 
     expect(await findByDataTest('input')).toHaveValue(changedValue);
     expect(getByDataTest('input')).toBeValid();
@@ -854,10 +891,13 @@ describe('useField', () => {
       </FormRoot>
     );
 
-    userEvent.type(getByDataTest('input'), valueA);
+    //! https://github.com/testing-library/user-event/issues/565
+    jest.useRealTimers();
+
+    await userEvent.type(getByDataTest('input'), valueA);
     expect(getByDataTest('input')).toHaveValue(valueA);
 
-    userEvent.type(getByDataTest('dependency-input'), 'x');
+    await userEvent.type(getByDataTest('dependency-input'), 'x');
     expect(getByDataTest('input')).toHaveValue(valueB);
   });
 
@@ -883,11 +923,11 @@ describe('useField', () => {
     expect(getByDataTest('last-name')).toHaveValue(firstNameValue);
   });
 
-  it('Generates `value` based on `initialValue` update', () => {
+  it('Generates `value` based on `initialValue` update', async () => {
     const lastNameValue = 'Doe';
 
     const TestComponent: FC = () => {
-      const [initialValue, setInitialValue] = useState('');
+      const [initialValue, setInitialValue] = useState('Cat');
 
       return (
         <>
@@ -901,7 +941,12 @@ describe('useField', () => {
 
     const { getByDataTest } = testRender(<TestComponent />);
 
-    userEvent.click(getByDataTest('update-button'));
+    expect(getByDataTest('last-name')).toHaveValue('Cat');
+
+    //! https://github.com/testing-library/user-event/issues/565
+    jest.useRealTimers();
+
+    await userEvent.click(getByDataTest('update-button'));
 
     expect(getByDataTest('last-name')).toHaveValue('Doe');
   });

@@ -1,6 +1,6 @@
 import { createRef, memo, RefObject, useMemo, useState } from 'react';
 
-import { useLastDiffValue, useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
+import { useLastDiffValue, useUpdate } from '@rounik/react-custom-hooks';
 
 import { ListProps } from '../../types';
 
@@ -43,8 +43,7 @@ export const List = <T,>({
     }));
   }, [rowRefs, list]);
 
-  // TODO: StrictMode check!
-  useUpdateOnly(() => {
+  useUpdate(() => {
     if (list.length === 0) {
       setStyle((prevStyle) => ({ ...prevStyle, height: 0 }));
     } else if (list.length >= prevList.length) {

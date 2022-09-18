@@ -1,4 +1,4 @@
-import { mount } from '@cypress/react';
+import { mount } from '@cypress/react18';
 import { FC, useState } from 'react';
 
 import { HeightTransitionBox } from '../HeightTransitionBox';
@@ -114,8 +114,8 @@ describe('HeightTransitionBox', () => {
     cy.get('[data-test="toggle-content"]').click();
 
     // TODO sporadically timeouts in `cy:prod:ct`
-    // cy.wait(600);
-    // cy.get('[data-test="test-content"]').should('not.exist');
+    cy.wait(600);
+    cy.get('[data-test="test-content"]').should('not.exist');
   });
 
   it('Pass `transitionDuration` and `transitionType` props', () => {

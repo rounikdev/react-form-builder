@@ -434,7 +434,7 @@ describe('useDatepicker', () => {
     act(() => {
       result.current.context.inputChangeHandler({
         target: { value: '02/12/2020' }
-      } as unknown as ChangeEvent<Element>);
+      } as unknown as ChangeEvent<HTMLInputElement>);
     });
 
     expect(result.current.context.dateInput).toBe('02/12/2020');
@@ -500,7 +500,7 @@ describe('useDatepicker', () => {
   it('useDatepicker - calling toggle opens and closes', () => {
     const { result } = renderHook(() => useDatepicker({ initialValue: undefined, name: 'from' }));
 
-    expect(result.current.context.state.show).toBe(false);
+    expect(result.current.context.state.show).toBe(null);
 
     act(() => {
       result.current.context.toggle({ preventDefault: () => {} } as unknown as MouseEvent);
@@ -518,7 +518,7 @@ describe('useDatepicker', () => {
   it('useDatepicker - calling hide closes', () => {
     const { result } = renderHook(() => useDatepicker({ initialValue: undefined, name: 'from' }));
 
-    expect(result.current.context.state.show).toBe(false);
+    expect(result.current.context.state.show).toBe(null);
 
     act(() => {
       result.current.context.toggle({ preventDefault: () => {} } as unknown as MouseEvent);
@@ -563,7 +563,7 @@ describe('useDatepicker', () => {
     const blurEvent = { target: { value: dateInput } };
 
     act(() => {
-      result.current.context.inputBlurHandler(blurEvent as unknown as FocusEvent);
+      result.current.context.inputBlurHandler(blurEvent as unknown as FocusEvent<HTMLInputElement>);
     });
 
     expect(result.current.context.dateInput).toBe(dateInput);
@@ -577,7 +577,7 @@ describe('useDatepicker', () => {
     const blurEvent = { target: { value: dateInput } };
 
     act(() => {
-      result.current.context.inputBlurHandler(blurEvent as unknown as FocusEvent);
+      result.current.context.inputBlurHandler(blurEvent as unknown as FocusEvent<HTMLInputElement>);
     });
 
     expect(result.current.context.dateInput).toBe('');
@@ -594,7 +594,7 @@ describe('useDatepicker', () => {
     const blurEvent = { target: { value: dateInput } };
 
     act(() => {
-      result.current.context.inputBlurHandler(blurEvent as unknown as FocusEvent);
+      result.current.context.inputBlurHandler(blurEvent as unknown as FocusEvent<HTMLInputElement>);
     });
 
     expect(result.current.context.dateInput).toBe('');

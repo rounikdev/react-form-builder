@@ -66,7 +66,7 @@ export interface FormState {
 
 export type ForceValidateFlag = Record<string, boolean>;
 
-export type ForceValidateMethod = (customForceValidateFlag?: ForceValidateFlag) => void;
+export type ForceValidateMethod = (customForceValidateFlag?: ForceValidateFlag | null) => void;
 
 export type ResetFlag = { resetKey: string; resetList?: string[] };
 
@@ -79,7 +79,7 @@ export type SetFieldsValuePayload = Record<string, FormStateEntryValue>;
 
 export interface FormContext {
   focused: boolean;
-  forceValidateFlag: ForceValidateFlag;
+  forceValidateFlag: ForceValidateFlag | null;
   formOnlyErrors: ValidationError[];
   isEdit: boolean;
   isParentEdit: boolean;
@@ -125,6 +125,7 @@ export interface FormRootProps extends Testable {
   children: ReactNode;
   className?: string;
   initialResetState?: FormStateEntryValue;
+  isPristine?: boolean;
   noValidate?: boolean;
   onChange?: (formState: FormData) => void;
   onReset?: () => void;

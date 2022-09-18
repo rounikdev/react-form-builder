@@ -1,4 +1,13 @@
-import { FocusEvent, useCallback, useMemo, useRef, useState } from 'react';
+import {
+  ChangeEventHandler,
+  FocusEvent,
+  FocusEventHandler,
+  MouseEvent,
+  useCallback,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 
 import {
   useKeyboardEvent,
@@ -21,8 +30,10 @@ import {
 } from './helpers';
 import { DatepickerContext, DatepickerState, UseDatepickerArgs } from './types';
 
+// TODO: Split into smaller hooks
 export const useDatepicker = ({
   dependencyExtractor,
+  disabled,
   formatter,
   initialValue,
   label,
@@ -58,7 +69,7 @@ export const useDatepicker = ({
     validator
   });
 
-  const dependantData = useFieldDependency({ dependencyValue, label, required });
+  const dependantData = useFieldDependency({ dependencyValue, disabled, label, required });
 
   const { formData } = useFormRoot();
 
@@ -79,7 +90,7 @@ export const useDatepicker = ({
     input: null,
     month: new Date().getMonth(),
     selected: undefined,
-    show: false,
+    show: null, // This prevents triggering blur on mount in StrictMode
     today: new Date(),
     toLeft: false,
     year: new Date().getFullYear()
@@ -111,7 +122,7 @@ export const useDatepicker = ({
     return constructWeeksInMonth(days);
   }, [state.month, state.year, useEndOfDay]);
 
-  const blurCalendar = useCallback(
+  const blurCalendar: FocusEventHandler<HTMLElement> = useCallback(
     (event) => {
       onBlurHandler(event);
 
@@ -129,7 +140,7 @@ export const useDatepicker = ({
 
   // Will work for 'Math.abs(month) === 1`
   const changeMonth = useCallback(
-    (months) => {
+    (months: number) => {
       let newMonth: number;
       let newYear = state.year;
 
@@ -154,7 +165,7 @@ export const useDatepicker = ({
     [state.month, state.year]
   );
 
-  const changeYear = useCallback((years) => {
+  const changeYear = useCallback((years: number) => {
     setState((currentState) => ({
       ...currentState,
       toLeft: years < 0,
@@ -210,7 +221,7 @@ export const useDatepicker = ({
   }, [onFocusHandler]);
 
   const inputBlurHandler = useCallback(
-    (event) => {
+    (event: FocusEvent<HTMLInputElement>) => {
       const {
         target: { value: inputValue }
       } = event;
@@ -222,15 +233,12 @@ export const useDatepicker = ({
 
       if (validDate) {
         if (canBeSelected({ date: validDate, maxDate, minDate })) {
-          console.log(1);
           selectDate(validDate);
         } else {
-          console.log(2);
           onChangeHandler(undefined);
           clearInput();
         }
       } else if (inputValue) {
-        console.log(3);
         clearInput();
       }
 
@@ -239,17 +247,20 @@ export const useDatepicker = ({
     [clearInput, maxDate, minDate, onBlurHandler, onChangeHandler, selectDate, useEndOfDay]
   );
 
-  const inputChangeHandler = useCallback(({ target: { value: inputValue } }) => {
-    setState((currentState) => ({
-      ...currentState,
-      focusedDate: '',
-      input: inputValue,
-      show: false
-    }));
-  }, []);
+  const inputChangeHandler: ChangeEventHandler<HTMLInputElement> = useCallback(
+    ({ target: { value: inputValue } }) => {
+      setState((currentState) => ({
+        ...currentState,
+        focusedDate: '',
+        input: inputValue,
+        show: false
+      }));
+    },
+    []
+  );
 
   const toggle = useCallback(
-    (event) => {
+    (event: MouseEvent) => {
       event.preventDefault();
 
       setState((currentState) => {
@@ -262,7 +273,7 @@ export const useDatepicker = ({
           month: selected
             ? selected.getMonth()
             : minDate?.getMonth() ?? maxDate?.getMonth() ?? now.getMonth(),
-          show: !show,
+          show: show === null || show === false,
           year: selected
             ? selected.getFullYear()
             : minDate?.getFullYear() ?? maxDate?.getFullYear() ?? now.getFullYear()
@@ -372,7 +383,6 @@ export const useDatepicker = ({
     }
   });
 
-  // TODO: StrictMode check!
   useUpdate(() => {
     const selected = value || null;
 
@@ -385,10 +395,8 @@ export const useDatepicker = ({
     }
   }, [maxDate, minDate, value]);
 
-  // TODO: StrictMode check!
   useUpdateOnly(() => {
     if (!value) {
-      console.log(' if (!value) {');
       clearInput();
     }
   }, [value]);
@@ -415,12 +423,11 @@ export const useDatepicker = ({
     }
   }, [focusCalendar, state.show]);
 
-  // TODO: StrictMode check!
   useUpdateOnly(() => {
-    if (!state.show) {
-      blurCalendar(new Event('focus'));
+    if (state.show !== null && !state.show) {
+      blurCalendar(new Event('focus') as unknown as FocusEvent<HTMLElement>);
     }
-  }, [blurCalendar, state.show]);
+  }, [state.show]);
 
   const context: DatepickerContext = useMemo(
     () => ({
@@ -431,6 +438,7 @@ export const useDatepicker = ({
       clearInput,
       containerRef,
       dateInput,
+      disabled: dependantData.disabled,
       errors,
       focusCalendar,
       focused,
@@ -461,6 +469,7 @@ export const useDatepicker = ({
       changeYear,
       clearInput,
       dateInput,
+      dependantData.disabled,
       dependantData.label,
       dependantData.required,
       errors,

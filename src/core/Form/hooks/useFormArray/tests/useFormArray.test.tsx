@@ -38,7 +38,9 @@ const Reset: FC<ResetProps> = ({ resetKey, resetState }) => {
   return null;
 };
 
-const Wrapper: FC = ({ children }) => <FormRoot dataTest="root-form">{children}</FormRoot>;
+const Wrapper: FC<{ children: ReactNode }> = ({ children }) => (
+  <FormRoot dataTest="root-form">{children}</FormRoot>
+);
 
 interface WrapperWithResetProps {
   children?: ReactNode;

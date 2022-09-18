@@ -8,8 +8,6 @@ import {
   useState
 } from 'react';
 
-import { useUpdate } from '@rounik/react-custom-hooks';
-
 import { useField, useFieldDependency } from '@core/Form';
 
 import { rangeContext } from './context';
@@ -17,6 +15,7 @@ import { RangeValue, UseRangeArgs } from './types';
 
 const DEFAULT_RANGE_VALUE: RangeValue = { from: 0, to: 0 };
 
+// TODO: Split into smaller hooks
 // TODO: Think of using formatter for limiting the values:
 export const useRange = ({
   dependencyExtractor,
@@ -52,26 +51,68 @@ export const useRange = ({
 
   const initialValueFallback = useMemo(() => {
     if (initialValue) {
-      return initialValue;
-    } else {
-      if (typeof max !== 'undefined' && typeof min !== 'undefined') {
-        return {
-          from: min,
-          to: min
-        };
+      if (typeof initialValue === 'function') {
+        return initialValue;
       } else {
-        return DEFAULT_RANGE_VALUE;
+        if (single) {
+          const from = initialValue.from;
+          let to = initialValue.to ?? 0;
+
+          if (min) {
+            to = Math.max(min, to);
+          }
+
+          if (max) {
+            to = Math.min(max, to);
+          }
+
+          return {
+            from,
+            to
+          };
+        } else {
+          let to = initialValue.to ?? 0;
+
+          if (min) {
+            to = Math.max(min, to);
+          }
+
+          if (max) {
+            to = Math.min(max, to);
+          }
+
+          let from = initialValue.from ?? 0;
+
+          if (min) {
+            from = Math.max(min, from);
+          }
+
+          if (max) {
+            from = Math.min(max, from);
+          }
+
+          from = Math.min(from, to);
+
+          return {
+            from,
+            to
+          };
+        }
       }
+    } else {
+      return {
+        from: min ?? 0,
+        to: min ?? 0
+      };
     }
-  }, [initialValue, max, min]);
+  }, [initialValue, max, min, single]);
 
   const {
     dependencyValue,
     onBlurHandler,
     onChangeHandler,
     onFocusHandler,
-    value = typeof initialValueFallback !== 'function' ? initialValueFallback : DEFAULT_RANGE_VALUE,
-    updatedInitialValue
+    value = typeof initialValueFallback !== 'function' ? initialValueFallback : DEFAULT_RANGE_VALUE
   } = useField<RangeValue>({
     dependencyExtractor,
     formatter,
@@ -228,21 +269,6 @@ export const useRange = ({
       setWidth(trackRef.current.offsetWidth);
     }
   }, []);
-
-  // TODO: StrictMode check!
-  useUpdate(() => {
-    if (options) {
-      onChangeHandler({
-        from: limitToOptions(updatedInitialValue.from),
-        to: limitToOptions(updatedInitialValue.to)
-      });
-    } else {
-      onChangeHandler({
-        from: limitFrom(updatedInitialValue.from),
-        to: limitTo(updatedInitialValue.to)
-      });
-    }
-  }, [updatedInitialValue]);
 
   const context = useMemo(
     () => ({

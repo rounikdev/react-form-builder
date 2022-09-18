@@ -7,13 +7,14 @@ export interface DatepickerState {
   input: string | null;
   month: number;
   selected?: Date;
-  show: boolean;
+  show: boolean | null;
   toLeft: boolean;
   today: Date;
   year: number;
 }
 
 export interface UseDatepickerArgs extends UseFieldConfig<Date | undefined> {
+  disabled?: boolean | ((dependencyValue: FormStateEntryValue) => boolean);
   label?: string | ((dependencyValue: FormStateEntryValue) => string);
   maxDateExtractor?: (formValue: FormStateEntryValue) => Date | undefined;
   minDateExtractor?: (formValue: FormStateEntryValue) => Date | undefined;
@@ -22,19 +23,20 @@ export interface UseDatepickerArgs extends UseFieldConfig<Date | undefined> {
 }
 
 export interface DatepickerContext {
-  blurCalendar: (event: FocusEvent) => void;
+  blurCalendar: (event: FocusEvent<HTMLElement>) => void;
   calendarRef: RefObject<HTMLDivElement>;
   changeMonth: (months: number) => void;
   changeYear: (years: number) => void;
   clearInput: () => void;
   containerRef: RefObject<HTMLDivElement>;
   dateInput: string;
+  disabled: boolean;
   errors: ValidationError[];
   focusCalendar: () => void;
   focused: boolean;
   hide: () => void;
-  inputBlurHandler: (event: FocusEvent) => void;
-  inputChangeHandler: (event: ChangeEvent) => void;
+  inputBlurHandler: (event: FocusEvent<HTMLInputElement>) => void;
+  inputChangeHandler: (event: ChangeEvent<HTMLInputElement>) => void;
   isRequired: boolean;
   label: string;
   maxDate?: Date;

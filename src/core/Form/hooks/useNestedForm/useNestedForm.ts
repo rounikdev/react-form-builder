@@ -42,7 +42,7 @@ export const useNestedForm = <T>({
 
   const { isEdit: isParentEdit } = useFormEditContext();
 
-  const [forceValidateFlag, setForceValidateFlag] = useState<ForceValidateFlag>({});
+  const [forceValidateFlag, setForceValidateFlag] = useState<ForceValidateFlag | null>(null);
 
   const [isEdit, setIsEdit] = useState(false);
 
@@ -184,7 +184,8 @@ export const useNestedForm = <T>({
       valid: valid && validityCheck.valid,
       value
     });
-  }, [GlobalModel.createStableDependency(dependency), valid, value]);
+    // !This is very important!!!!
+  }, [GlobalModel.createStableDependency([dependency, value, valid])]);
 
   // Update form errors state on errors update:
   useUpdate(() => {
@@ -211,20 +212,26 @@ export const useNestedForm = <T>({
     }
   }, [focused]);
 
-  // TODO: StrictMode check!
   useUpdateOnly(() => {
     const fieldId = getFieldId();
 
-    if (Object.keys(parentContext.forceValidateFlag).length === 0) {
+    if (
+      parentContext.forceValidateFlag &&
+      Object.keys(parentContext.forceValidateFlag).length === 0
+    ) {
       setTouched(true);
-    } else if (typeof parentContext.forceValidateFlag[fieldId] === 'boolean') {
+    } else if (
+      parentContext.forceValidateFlag &&
+      typeof parentContext.forceValidateFlag[fieldId] === 'boolean'
+    ) {
       setTouched(parentContext.forceValidateFlag[fieldId]);
     }
   }, [parentContext.forceValidateFlag]);
 
-  // TODO: StrictMode check!
   useUpdateOnly(() => {
-    forceValidate(parentContext.forceValidateFlag);
+    if (parentContext.forceValidateFlag) {
+      forceValidate(parentContext.forceValidateFlag);
+    }
   }, [parentContext.forceValidateFlag]);
 
   /**

@@ -1,4 +1,4 @@
-import { mount } from '@cypress/react';
+import { mount } from '@cypress/react18';
 
 import { FormRoot } from '@core';
 import { Text } from '@ui';

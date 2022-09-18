@@ -203,6 +203,7 @@ describe('FormRootProvider and useFormRoot', () => {
     });
   });
 
+  // TODO: fix this
   it('Provides the right form errors state if nested field with error is removed', async () => {
     const Component = ({ show }: { show: boolean }) => (
       <ShowHide show={show}>
@@ -226,7 +227,9 @@ describe('FormRootProvider and useFormRoot', () => {
 
     const { findByDataTest, getByDataTest, rerender } = testRender(<Component show={true} />);
 
-    let errors = JSON.parse((await (await findByDataTest('errors')).textContent) || '');
+    const errorsContainer = await findByDataTest('errors');
+
+    let errors = JSON.parse(errorsContainer.textContent || '');
 
     expect(errors).toEqual({
       'address.street.name': [{ text: 'requiredField' }],

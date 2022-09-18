@@ -153,6 +153,7 @@ describe('Modal actions', () => {
     expect(mockOnClose).toBeCalledTimes(1);
   });
 
+  // TODO: fix this:
   it('Closes on close button click', async () => {
     const { findByDataTest, getByDataTest } = testRender(
       <Modal.Provider baseAnimate BaseBackdrop={Backdrop} BaseContainer={Container}>
@@ -174,8 +175,11 @@ describe('Modal actions', () => {
 
     expect(closeButton).toBeInTheDocument();
 
-    userEvent.click(closeButton);
-    fireEvent.animationEnd(modalBackdrop);
+    //! https://github.com/testing-library/user-event/issues/565
+    jest.useRealTimers();
+
+    await userEvent.click(closeButton);
+    fireEvent.animationEnd(modalBackdrop, {});
 
     expect(await findByDataTest('test-backdrop-modal')).not.toBeInTheDocument();
   });
@@ -268,6 +272,7 @@ describe('Modal actions', () => {
   });
 
   describe('Modal Inline', () => {
+    // TODO: fix this
     it('With `alwaysRender`', async () => {
       const mockOnOpen = jest.fn();
 

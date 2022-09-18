@@ -1,6 +1,10 @@
 import { act, renderHook } from '@testing-library/react-hooks';
 
-import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '@core/Form/constants';
+import {
+  INITIAL_RESET_RECORD_KEY,
+  NO_RESET_KEY,
+  ROOT_RESET_RECORD_KEY
+} from '@core/Form/constants';
 import { FormStateEntryValue } from '@core/Form/types';
 
 import { useRootForm } from '../useRootForm';
@@ -21,9 +25,9 @@ describe('useRootForm', () => {
 
     expect(result.current.scrolledField).toBe('');
 
-    expect(result.current.forceValidateFlag).toEqual({});
+    expect(result.current.forceValidateFlag).toEqual(null);
 
-    expect(result.current.resetFlag).toEqual({ resetKey: INITIAL_RESET_RECORD_KEY });
+    expect(result.current.resetFlag).toEqual({ resetKey: NO_RESET_KEY });
 
     expect(result.current.resetRecords).toEqual({
       [INITIAL_RESET_RECORD_KEY]: formData
@@ -166,7 +170,7 @@ describe('useRootForm', () => {
       result.current.reset();
     });
 
-    expect(result.current.resetFlag).toEqual({ resetKey: INITIAL_RESET_RECORD_KEY });
+    expect(result.current.resetFlag).toEqual({ resetKey: NO_RESET_KEY });
     expect(result.current.pristine).toBe(true);
   });
 

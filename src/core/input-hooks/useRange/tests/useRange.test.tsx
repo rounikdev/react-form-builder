@@ -92,7 +92,7 @@ describe('useRange', () => {
       useRange({ initialValue, max: 5, min: 1, name, step: 1, stepExtra: 10 })
     );
 
-    expect(result.current.context.value).toEqual({ from: 4, to: 5 });
+    expect(result.current.context.value).toEqual({ from: 4, to: 4 });
   });
 
   it('Sets the initial value when there are min and max when no options', () => {
