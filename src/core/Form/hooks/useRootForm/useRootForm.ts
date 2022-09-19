@@ -82,7 +82,6 @@ export const useRootForm = ({
   const cancel = useCallback(() => {
     setIsEdit(false);
 
-    // !Setting here INITIAL fixes the first cy form test
     setResetFlag({ resetKey: ROOT_RESET_RECORD_KEY });
 
     setTimeout(() => {
@@ -107,7 +106,6 @@ export const useRootForm = ({
         [ROOT_RESET_RECORD_KEY]: formDataRef.current
       };
     });
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setResetRecords]); // formData makes Form test hang
 
@@ -125,15 +123,9 @@ export const useRootForm = ({
 
   const getFieldId = useCallback(() => '', []);
 
-  //const pristineRef = useUpdatedRef(pristine);
-
   const usesStorageRef = useUpdatedRef(usesStorage);
 
   const reset = useCallback(({ resetList }: { resetList?: string[] } = {}) => {
-    // if (pristineRef.current) {
-    //   return;
-    // }
-
     if (resetList) {
       setResetFlag({ resetKey: '', resetList });
     } else {

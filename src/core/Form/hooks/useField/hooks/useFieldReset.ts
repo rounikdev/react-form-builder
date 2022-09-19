@@ -23,8 +23,7 @@ export const useFieldReset = <T>({
 }: UseFieldResetConfig<T>) => {
   const { resetFlag, resetRecords, usesStorage } = useFormRoot();
 
-  // TODO: StrictMode check!
-  useUpdateOnly(async () => {
+  useUpdateOnly(() => {
     const fieldPath = fieldId.split('.');
 
     let resetValue: FormStateEntryValue;
