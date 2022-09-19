@@ -7,9 +7,7 @@ import { useUpdateOnly } from '@rounik/react-custom-hooks';
 import { ShowHide, testRender } from '@services/utils';
 
 import { FormArray, FormObject, FormRoot } from '../components';
-// import { initialFormContext } from '../context';
 import { useField, useForm } from '../hooks';
-// import { reducer } from '../reducers';
 import { Validator } from '../types';
 
 interface FormTestComponent {
@@ -513,38 +511,6 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
     await userEvent.click(button);
 
     expect(callback).toHaveBeenCalledTimes(1);
-  });
-
-  // TODO: decide what to do with this test:
-  it('Form reducer returns state as default', () => {
-    // const newState = reducer(initialFormContext, {
-    //   payload: { key: '', type: '' },
-    //   type: 'SOME_UNEXPECTED_TYPE' as 'REMOVE_FROM_FORM'
-    // });
-    // expect(newState).toEqual(initialFormContext);
-  });
-
-  // TODO: decide what to do with this test:
-  // eslint-disable-next-line max-len
-  it('Form reducer returns state without modifying it if no change in value or valid when setting field data', () => {
-    // const newState = reducer(initialFormContext, {
-    //   payload: { key: 'firstName', valid: true, value: 'Ivan' },
-    //   type: 'SET_IN_FORM'
-    // });
-    // expect(newState).toEqual({
-    //   ...initialFormContext,
-    //   state: {
-    //     firstName: {
-    //       valid: true,
-    //       value: 'Ivan'
-    //     }
-    //   }
-    // });
-    // const newStateB = reducer(newState, {
-    //   payload: { key: 'firstName', valid: true, value: 'Ivan' },
-    //   type: 'SET_IN_FORM'
-    // });
-    // expect(newStateB).toBe(newState);
   });
 
   it('Sets the errors state', async () => {

@@ -4,6 +4,7 @@ import { FC, ReactNode } from 'react';
 import { useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { FormObject, FormRoot } from '@core/Form/components';
+import { NO_RESET_KEY, ROOT_RESET_RECORD_KEY } from '@core/Form/constants';
 import { useForm } from '@core/Form/hooks/useForm/useForm';
 import { useFormRoot } from '@core/Form/providers';
 import { FormRootProviderContext, ResetFlag } from '@core/Form/types';
@@ -47,7 +48,7 @@ const ParentFormActor: FC<ParentFormActorProps> = ({
   }, [shouldEdit]);
 
   useUpdateOnly(() => {
-    if (onResetFlag) {
+    if (onResetFlag && resetFlag.resetKey !== NO_RESET_KEY) {
       onResetFlag(resetFlag);
     }
   }, [resetFlag]);
@@ -63,18 +64,20 @@ const ParentFormActor: FC<ParentFormActorProps> = ({
 
 interface WrapperProps extends ParentFormActorProps {
   children?: ReactNode;
+  isPristine?: boolean;
   parentFormName?: string;
 }
 
 const Wrapper: FC<WrapperProps> = ({
   children,
+  isPristine,
   onResetFlag,
   onResetRecords = () => {},
   parentFormName,
   shouldEdit,
   shouldForceValidate
 }) => (
-  <FormRoot dataTest="root-form">
+  <FormRoot isPristine={isPristine} dataTest="root-form">
     <ParentFormActor
       onResetFlag={onResetFlag}
       onResetRecords={onResetRecords}
@@ -251,7 +254,7 @@ describe('useNestedForm', () => {
     expect(mockOnResetRecords.mock.lastCall[0][name]).toBeUndefined();
   });
 
-  it('Canceling parent edit cancels nested form without reset', () => {
+  it("Canceling parent cancels nested form with parent's reset flag", () => {
     const name = 'user';
 
     const valid = true;
@@ -269,6 +272,7 @@ describe('useNestedForm', () => {
 
     const { rerender, result } = renderHook(() => useNestedForm({ name, valid, value }), {
       initialProps: {
+        isPristine: false,
         onResetFlag: mockOnResetFlag,
         onResetRecords: mockOnResetRecords,
         shouldEdit: true
@@ -280,7 +284,12 @@ describe('useNestedForm', () => {
       result.current.edit();
     });
 
-    rerender({ onResetRecords: mockOnResetRecords, shouldEdit: false });
+    rerender({
+      isPristine: false,
+      onResetFlag: mockOnResetFlag,
+      onResetRecords: mockOnResetRecords,
+      shouldEdit: false
+    });
 
     expect(result.current.isEdit).toBe(false);
 
@@ -290,7 +299,7 @@ describe('useNestedForm', () => {
 
     expect(mockOnResetRecords.mock.lastCall[0][name]).toBeUndefined();
 
-    expect(mockOnResetFlag).not.toHaveBeenCalled();
+    expect(mockOnResetFlag).toHaveBeenCalledWith({ resetKey: ROOT_RESET_RECORD_KEY });
   });
 
   it('Parent force validate triggers update in forceValidateFlag', () => {

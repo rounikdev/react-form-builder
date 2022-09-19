@@ -54,7 +54,7 @@ export const useFormArray = <T>({
           fieldId.split('.')
         ) ??
           initialValue ??
-          defaultValue) as T[]; // TODO: should we introduce a defaultValue?
+          defaultValue) as T[];
       } else {
         resetValue = (GlobalModel.getNestedValue(
           resetRecords[resetFlag.resetKey || ROOT_RESET_RECORD_KEY],
