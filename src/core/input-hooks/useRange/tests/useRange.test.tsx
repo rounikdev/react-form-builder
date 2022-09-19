@@ -1,5 +1,4 @@
-import { fireEvent } from '@testing-library/react';
-import { act, renderHook } from '@testing-library/react-hooks';
+import { act, fireEvent, renderHook } from '@testing-library/react';
 import { FC, MouseEvent } from 'react';
 
 import { testRender } from '@services/utils';
