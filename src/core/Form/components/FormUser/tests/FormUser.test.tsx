@@ -33,8 +33,6 @@ describe('FormUser', () => {
       </FormRoot>
     );
 
-    //! https://github.com/testing-library/user-event/issues/565
-    jest.useRealTimers();
     await userEvent.type(await findByDataTest('idNumber-input'), '007');
 
     // eslint-disable-next-line testing-library/prefer-screen-queries

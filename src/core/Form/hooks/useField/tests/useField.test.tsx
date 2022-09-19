@@ -1,5 +1,4 @@
-import { fireEvent } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
+import { fireEvent, renderHook, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FC, FocusEventHandler, MutableRefObject, ReactNode, useEffect, useState } from 'react';
 
@@ -122,19 +121,23 @@ describe('useField', () => {
       }
     };
 
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useField({ initialValue, name, validator })
-    );
+    const { result } = renderHook(() => useField({ initialValue, name, validator }));
 
     expect(result.current.valid).toBe(false);
     expect(result.current.validating).toBe(true);
     expect(result.current.errors).toEqual([]);
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.valid).toBe(false);
+    });
 
-    expect(result.current.valid).toBe(false);
-    expect(result.current.validating).toBe(false);
-    expect(result.current.errors).toEqual([{ text: error }]);
+    await waitFor(() => {
+      expect(result.current.validating).toBe(false);
+    });
+
+    await waitFor(() => {
+      expect(result.current.errors).toEqual([{ text: error }]);
+    });
   });
 
   it('Handles validator error', () => {
@@ -172,6 +175,11 @@ describe('useField', () => {
     const { unmount } = renderHook(() => useField({ initialValue, name, validator }));
 
     jest.runAllTimers();
+
+    // Set again the real timers
+    // for usage in the rest of
+    // tests:
+    jest.useRealTimers();
 
     unmount();
   });
@@ -220,9 +228,6 @@ describe('useField', () => {
         <ResetButton />
       </FormRoot>
     );
-
-    //! https://github.com/testing-library/user-event/issues/565
-    jest.useRealTimers();
 
     const stateA = JSON.parse(getByDataTest('state').textContent || '');
     expect(stateA.value).toBe(initialValue);
@@ -291,7 +296,6 @@ describe('useField', () => {
     expect(stateB.touched).toBe(true);
   });
 
-  // Fix this one:
   it('Validates with dependency', async () => {
     const fieldNameA = 'password';
     const fieldNameB = 'repeatPassword';
@@ -326,12 +330,12 @@ describe('useField', () => {
       </FormRoot>
     );
 
-    //! https://github.com/testing-library/user-event/issues/565
-    jest.useRealTimers();
-
-    const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
-    expect(stateB.valid).toBe(false);
-    expect(stateB.errors).toEqual([{ text: error }]);
+    await waitFor(async () => {
+      const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
+      expect(stateB.valid).toBe(false);
+      // eslint-disable-next-line testing-library/no-wait-for-multiple-assertions
+      expect(stateB.errors).toEqual([{ text: error }]);
+    });
 
     await userEvent.clear(getByDataTest('inputB'));
     await userEvent.type(getByDataTest('inputB'), initialValueA);
@@ -348,7 +352,6 @@ describe('useField', () => {
     expect(updatedStateC.errors).toEqual([{ text: error }]);
   });
 
-  // TODO: Fix this one
   it('Validates with dependency as object', async () => {
     const fieldNameA = 'password';
     const fieldNameB = 'repeatPassword';
@@ -383,12 +386,12 @@ describe('useField', () => {
       </FormRoot>
     );
 
-    //! https://github.com/testing-library/user-event/issues/565
-    jest.useRealTimers();
-
-    const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
-    expect(stateB.valid).toBe(false);
-    expect(stateB.errors).toEqual([{ text: error }]);
+    await waitFor(async () => {
+      const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
+      expect(stateB.valid).toBe(false);
+      // eslint-disable-next-line testing-library/no-wait-for-multiple-assertions
+      expect(stateB.errors).toEqual([{ text: error }]);
+    });
 
     await userEvent.clear(getByDataTest('inputB'));
     await userEvent.type(getByDataTest('inputB'), initialValueA);
@@ -405,7 +408,6 @@ describe('useField', () => {
     expect(updatedStateC.errors).toEqual([{ text: error }]);
   });
 
-  // TODO: fix this one:
   it('Validates with dependency as array', async () => {
     const fieldNameA = 'password';
     const fieldNameB = 'repeatPassword';
@@ -440,12 +442,12 @@ describe('useField', () => {
       </FormRoot>
     );
 
-    const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
-    expect(stateB.valid).toBe(false);
-    expect(stateB.errors).toEqual([{ text: error }]);
-
-    //! https://github.com/testing-library/user-event/issues/565
-    jest.useRealTimers();
+    await waitFor(async () => {
+      const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
+      expect(stateB.valid).toBe(false);
+      // eslint-disable-next-line testing-library/no-wait-for-multiple-assertions
+      expect(stateB.errors).toEqual([{ text: error }]);
+    });
 
     await userEvent.clear(getByDataTest('inputB'));
     await userEvent.type(getByDataTest('inputB'), initialValueA);
@@ -497,12 +499,12 @@ describe('useField', () => {
       </FormRoot>
     );
 
-    const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
-    expect(stateB.valid).toBe(false);
-    expect(stateB.errors).toEqual([{ text: error }]);
-
-    //! https://github.com/testing-library/user-event/issues/565
-    jest.useRealTimers();
+    await waitFor(async () => {
+      const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
+      expect(stateB.valid).toBe(false);
+      // eslint-disable-next-line testing-library/no-wait-for-multiple-assertions
+      expect(stateB.errors).toEqual([{ text: error }]);
+    });
 
     await userEvent.clear(getByDataTest('inputB'));
     await userEvent.type(getByDataTest('inputB'), initialValueA);
@@ -596,9 +598,6 @@ describe('useField', () => {
     const stateA = JSON.parse(getByDataTest('state').textContent || '');
     expect(stateA.value).toBe(formatter({ newValue: initialValue, oldValue: initialValue }));
 
-    //! https://github.com/testing-library/user-event/issues/565
-    jest.useRealTimers();
-
     await userEvent.clear(getByDataTest('input'));
     await userEvent.type(getByDataTest('input'), changedValue);
 
@@ -647,9 +646,6 @@ describe('useField', () => {
     const stateA = JSON.parse(getByDataTest('state').textContent || '');
     expect(stateA.value).toBe(initialValue);
 
-    //! https://github.com/testing-library/user-event/issues/565
-    jest.useRealTimers();
-
     await userEvent.clear(getByDataTest('input'));
     await userEvent.type(getByDataTest('input'), changedValue);
 
@@ -689,9 +685,6 @@ describe('useField', () => {
 
     expect(mockFocus).toHaveBeenCalledTimes(0);
 
-    //! https://github.com/testing-library/user-event/issues/565
-    jest.useRealTimers();
-
     await userEvent.click(getByDataTest('focus'));
 
     expect(mockFocus).toHaveBeenCalledTimes(1);
@@ -724,9 +717,6 @@ describe('useField', () => {
     input.scrollIntoView = mockScrollIntoView;
 
     expect(mockScrollIntoView).toHaveBeenCalledTimes(0);
-
-    //! https://github.com/testing-library/user-event/issues/565
-    jest.useRealTimers();
 
     await userEvent.click(getByDataTest('scroll-into-view'));
 
@@ -779,9 +769,6 @@ describe('useField', () => {
 
     expect(await findByDataTest('input')).toHaveValue(initialValue);
     expect(getByDataTest('input')).not.toBeValid();
-
-    //! https://github.com/testing-library/user-event/issues/565
-    jest.useRealTimers();
 
     await userEvent.click(getByDataTest('set-field-value'));
 
@@ -846,9 +833,6 @@ describe('useField', () => {
     expect(await findByDataTest('input')).toHaveValue(initialValue);
     expect(getByDataTest('input')).not.toBeValid();
 
-    //! https://github.com/testing-library/user-event/issues/565
-    jest.useRealTimers();
-
     await userEvent.click(getByDataTest('set-field-value'));
 
     expect(await findByDataTest('input')).toHaveValue(changedValue);
@@ -890,9 +874,6 @@ describe('useField', () => {
         </FormObject>
       </FormRoot>
     );
-
-    //! https://github.com/testing-library/user-event/issues/565
-    jest.useRealTimers();
 
     await userEvent.type(getByDataTest('input'), valueA);
     expect(getByDataTest('input')).toHaveValue(valueA);
@@ -942,9 +923,6 @@ describe('useField', () => {
     const { getByDataTest } = testRender(<TestComponent />);
 
     expect(getByDataTest('last-name')).toHaveValue('Cat');
-
-    //! https://github.com/testing-library/user-event/issues/565
-    jest.useRealTimers();
 
     await userEvent.click(getByDataTest('update-button'));
 

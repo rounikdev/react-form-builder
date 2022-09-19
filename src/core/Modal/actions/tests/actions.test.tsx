@@ -155,10 +155,9 @@ describe('Modal actions', () => {
         value: JSON.stringify({ id: 'test' })
       }
     });
-    //! https://github.com/testing-library/user-event/issues/565
-    jest.useRealTimers();
 
     const modalBackdrop = getByDataTest('test-backdrop-modal');
+
     await userEvent.click(modalBackdrop);
 
     expect(getByText(JSON.stringify({}))).toBeInTheDocument();

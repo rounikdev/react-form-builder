@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react';
 import { FC, ReactNode } from 'react';
 
 import { useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
@@ -135,8 +135,7 @@ describe('useNestedForm', () => {
     const mockOnResetRecords = jest.fn();
 
     const { result } = renderHook(() => useNestedForm({ name, valid, value }), {
-      initialProps: { onResetRecords: mockOnResetRecords },
-      wrapper: Wrapper
+      wrapper: ({ children }) => <Wrapper onResetRecords={mockOnResetRecords}>{children}</Wrapper>
     });
 
     act(() => {
@@ -166,8 +165,11 @@ describe('useNestedForm', () => {
     const mockOnResetRecords = jest.fn();
 
     const { result } = renderHook(() => useNestedForm({ name, valid, value }), {
-      initialProps: { onResetRecords: mockOnResetRecords, parentFormName },
-      wrapper: Wrapper
+      wrapper: ({ children }) => (
+        <Wrapper onResetRecords={mockOnResetRecords} parentFormName={parentFormName}>
+          {children}
+        </Wrapper>
+      )
     });
 
     act(() => {
@@ -195,7 +197,7 @@ describe('useNestedForm', () => {
 
     const { result } = renderHook(() => useNestedForm({ name, valid, value }), {
       initialProps: { onResetRecords: mockOnResetRecords },
-      wrapper: Wrapper
+      wrapper: ({ children }) => <Wrapper onResetRecords={mockOnResetRecords}>{children}</Wrapper>
     });
 
     act(() => {
@@ -229,8 +231,11 @@ describe('useNestedForm', () => {
     jest.useFakeTimers();
 
     const { result } = renderHook(() => useNestedForm({ name, valid, value }), {
-      initialProps: { onResetFlag: mockOnResetFlag, onResetRecords: mockOnResetRecords },
-      wrapper: Wrapper
+      wrapper: ({ children }) => (
+        <Wrapper onResetFlag={mockOnResetFlag} onResetRecords={mockOnResetRecords}>
+          {children}
+        </Wrapper>
+      )
     });
 
     act(() => {
@@ -270,25 +275,33 @@ describe('useNestedForm', () => {
 
     jest.useFakeTimers();
 
+    let shouldEdit = true;
+
     const { rerender, result } = renderHook(() => useNestedForm({ name, valid, value }), {
-      initialProps: {
-        isPristine: false,
-        onResetFlag: mockOnResetFlag,
-        onResetRecords: mockOnResetRecords,
-        shouldEdit: true
-      },
-      wrapper: Wrapper
+      wrapper: ({ children }) => (
+        <Wrapper
+          isPristine={false}
+          onResetFlag={mockOnResetFlag}
+          onResetRecords={mockOnResetRecords}
+          shouldEdit={shouldEdit}
+        >
+          {children}
+        </Wrapper>
+      )
     });
 
     act(() => {
       result.current.edit();
     });
 
+    // ! https://github.com/testing-library/react-testing-library/pull/991#issuecomment-1207138334
+    shouldEdit = false;
+
     rerender({
       isPristine: false,
       onResetFlag: mockOnResetFlag,
       onResetRecords: mockOnResetRecords,
-      shouldEdit: false
+      shouldEdit: shouldEdit
     });
 
     expect(result.current.isEdit).toBe(false);
@@ -315,8 +328,7 @@ describe('useNestedForm', () => {
     jest.useFakeTimers();
 
     const { result } = renderHook(() => useNestedForm({ name, valid, value }), {
-      initialProps: { shouldForceValidate: true },
-      wrapper: Wrapper
+      wrapper: ({ children }) => <Wrapper shouldForceValidate={true}>{children}</Wrapper>
     });
 
     const initialForceValidateFlag = result.current.forceValidateFlag;

@@ -74,9 +74,6 @@ describe('HeightTransitionBox', () => {
 
     expect(window.getComputedStyle(wrapper).overflow).toBe('auto');
 
-    //! https://github.com/testing-library/user-event/issues/565
-    jest.useRealTimers();
-
     await userEvent.click(getByDataTest('toggle-content'));
 
     expect(window.getComputedStyle(wrapper).overflow).toBe('hidden');
@@ -88,9 +85,6 @@ describe('HeightTransitionBox', () => {
     expect(
       window.getComputedStyle(await findByDataTest('test-heightTransition-container')).overflow
     ).toBe('auto');
-
-    //! https://github.com/testing-library/user-event/issues/565
-    jest.useRealTimers();
 
     await userEvent.click(getByDataTest('toggle-content'));
 

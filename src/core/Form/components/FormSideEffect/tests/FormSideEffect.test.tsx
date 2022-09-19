@@ -41,9 +41,6 @@ describe('FormSideEffect', () => {
     expect(mockEffect.mock.calls[0][0]).toEqual([undefined]);
     expect(mockEffect.mock.calls[1][0]).toEqual([initialValue]);
 
-    //! https://github.com/testing-library/user-event/issues/565
-    jest.useRealTimers();
-
     await userEvent.clear(getByDataTest('fieldA'));
     await userEvent.type(getByDataTest('fieldA'), changedValue);
 

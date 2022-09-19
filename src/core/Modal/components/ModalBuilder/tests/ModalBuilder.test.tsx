@@ -175,9 +175,6 @@ describe('Modal actions', () => {
 
     expect(closeButton).toBeInTheDocument();
 
-    //! https://github.com/testing-library/user-event/issues/565
-    jest.useRealTimers();
-
     await userEvent.click(closeButton);
     fireEvent.animationEnd(modalBackdrop, {});
 

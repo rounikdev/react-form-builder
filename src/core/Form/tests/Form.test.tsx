@@ -504,9 +504,6 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
       </FormRoot>
     );
 
-    //! https://github.com/testing-library/user-event/issues/565
-    jest.useRealTimers();
-
     const button = getByDataTest('method-test-button');
     await userEvent.click(button);
 
@@ -555,9 +552,6 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
     const { findByDataTest } = testRender(<Component />);
 
     const input = await findByDataTest('input');
-
-    //! https://github.com/testing-library/user-event/issues/565
-    jest.useRealTimers();
 
     await userEvent.type(input, 'a');
 
