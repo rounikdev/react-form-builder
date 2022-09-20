@@ -47,6 +47,7 @@
       /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
       cursor: not-allowed;
 
+      // ! If no empty line here stylelint throws an error (order/properties-order)
       pointer-events: none;
     }
   }
