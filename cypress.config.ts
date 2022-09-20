@@ -23,6 +23,7 @@ export default defineConfig({
     },
     excludeSpecPattern: '**/examples/**/*.js'
   },
+  experimentalWebKitSupport: true,
   screenshotOnRunFailure: false,
   video: false,
   viewportHeight: 720,
