@@ -165,9 +165,7 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
 
   useMount(() => {
     if (!alwaysRender && onOpen) {
-      if (onOpen) {
-        onOpen();
-      }
+      onOpen();
     }
   });
 

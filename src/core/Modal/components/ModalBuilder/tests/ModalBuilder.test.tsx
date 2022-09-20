@@ -1,4 +1,4 @@
-import { fireEvent } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FC } from 'react';
 
@@ -111,7 +111,7 @@ describe('Modal actions', () => {
     let modalSectionContent = getByDataTest('test-container-modal');
 
     userEvent.click(modalSectionContent);
-    fireEvent.animationEnd(modalBackdrop);
+    // fireEvent.animationEnd(modalBackdrop);
 
     modalBackdrop = await findByDataTest('test-backdrop-modal');
     modalSectionContent = getByDataTest('test-container-modal');
@@ -119,17 +119,17 @@ describe('Modal actions', () => {
     expect(modalBackdrop).toBeInTheDocument();
     expect(modalSectionContent).toBeInTheDocument();
 
-    userEvent.click(modalBackdrop);
+    await userEvent.click(modalBackdrop);
     fireEvent.animationEnd(modalBackdrop);
 
-    expect(await findByDataTest('test-backdrop-modal')).not.toBeInTheDocument();
+    await waitFor(() => expect(queryByDataTest('test-backdrop-modal')).not.toBeInTheDocument());
     expect(queryByDataTest('test-container-modal')).not.toBeInTheDocument();
   });
 
   it('onClose callback fired', async () => {
     const mockOnClose = jest.fn();
 
-    const { findByDataTest, getByDataTest } = testRender(
+    const { getByDataTest, queryByDataTest } = testRender(
       <Modal.Provider baseAnimate BaseBackdrop={Backdrop} BaseContainer={Container}>
         <TestActionButton action="showModalById" />
       </Modal.Provider>
@@ -146,16 +146,15 @@ describe('Modal actions', () => {
 
     const modalBackdrop = getByDataTest('test-backdrop-modal');
 
-    userEvent.click(modalBackdrop);
+    await userEvent.click(modalBackdrop);
     fireEvent.animationEnd(modalBackdrop);
 
-    expect(await findByDataTest('test-backdrop-modal')).not.toBeInTheDocument();
+    await waitFor(() => expect(queryByDataTest('test-backdrop-modal')).not.toBeInTheDocument());
     expect(mockOnClose).toBeCalledTimes(1);
   });
 
-  // TODO: fix this:
   it('Closes on close button click', async () => {
-    const { findByDataTest, getByDataTest } = testRender(
+    const { getByDataTest, queryByDataTest } = testRender(
       <Modal.Provider baseAnimate BaseBackdrop={Backdrop} BaseContainer={Container}>
         <TestActionButton action="showModalById" />
       </Modal.Provider>
@@ -178,7 +177,7 @@ describe('Modal actions', () => {
     await userEvent.click(closeButton);
     fireEvent.animationEnd(modalBackdrop, {});
 
-    expect(await findByDataTest('test-backdrop-modal')).not.toBeInTheDocument();
+    await waitFor(() => expect(queryByDataTest('test-backdrop-modal')).not.toBeInTheDocument());
   });
 
   it('Pass function as content', () => {
@@ -269,7 +268,6 @@ describe('Modal actions', () => {
   });
 
   describe('Modal Inline', () => {
-    // TODO: fix this
     it('With `alwaysRender`', async () => {
       const mockOnOpen = jest.fn();
 
@@ -309,9 +307,11 @@ describe('Modal actions', () => {
 
       fireEvent.animationEnd(getByDataTest('modal-1-backdrop-modal'));
 
-      expect(getComputedStyle(await findByDataTest('modal-1-backdrop-modal')).visibility).toBe(
-        'hidden'
-      );
+      await waitFor(async () => {
+        expect(getComputedStyle(await findByDataTest('modal-1-backdrop-modal')).visibility).toBe(
+          'hidden'
+        );
+      });
     });
 
     it('With no `alwaysRender`', async () => {
@@ -341,5 +341,51 @@ describe('Modal actions', () => {
       expect(mockOnOpen).toBeCalledTimes(1);
       expect(await findByDataTest('test-button-hideModalById')).toBeInTheDocument();
     });
+  });
+
+  // eslint-disable-next-line max-len
+  it('Prevents closing on backdrop click when `preventModalBackdropClick` prop is provided', async () => {
+    const { getByDataTest } = testRender(
+      <Modal.Provider baseAnimate BaseBackdrop={Backdrop} BaseContainer={Container}>
+        <TestActionButton action="showModalById" />
+      </Modal.Provider>
+    );
+
+    const buttonShowModalById = getByDataTest('test-button-showModalById');
+
+    fireEvent.click(buttonShowModalById, {
+      target: {
+        id: 'test',
+        preventModalBackdropClick: true
+      }
+    });
+
+    const modalBackdrop = getByDataTest('test-backdrop-modal');
+
+    await userEvent.click(modalBackdrop);
+    fireEvent.animationEnd(modalBackdrop);
+
+    expect(getByDataTest('test-backdrop-modal')).toBeInTheDocument();
+  });
+
+  it('onOpen callback fired', async () => {
+    const mockOnOpen = jest.fn();
+
+    const { getByDataTest } = testRender(
+      <Modal.Provider baseAnimate BaseBackdrop={Backdrop} BaseContainer={Container}>
+        <TestActionButton action="showModalById" />
+      </Modal.Provider>
+    );
+
+    const buttonShowModalById = getByDataTest('test-button-showModalById');
+
+    fireEvent.click(buttonShowModalById, {
+      target: {
+        id: 'test',
+        onOpen: mockOnOpen
+      }
+    });
+
+    expect(mockOnOpen).toBeCalledTimes(1);
   });
 });

@@ -4,6 +4,7 @@ import { FC, ReactNode } from 'react';
 import { useMount } from '@rounik/react-custom-hooks';
 
 import { FormRoot } from '@core';
+import { useField } from '@core/Form/hooks/useField/useField';
 import { useFormRoot } from '@core/Form/providers';
 import { keyEvent } from '@services/utils';
 
@@ -59,7 +60,27 @@ const Wrapper: FC<WrapperProps> = ({ children, name, value }) => {
   );
 };
 
+jest.mock('@core/Form/hooks/useField/useField', () => {
+  const originalModule = jest.requireActual('@core/Form/hooks/useField/useField');
+
+  return {
+    __esModule: true,
+    ...originalModule,
+    useField: jest.fn((...args) => args)
+  };
+});
+
 describe('useAutocomplete', () => {
+  beforeEach(() => {
+    (useField as jest.Mock).mockImplementation(
+      jest.requireActual('@core/Form/hooks/useField/useField').useField
+    );
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('Returns the right properties', () => {
     const name = 'fruits';
 
@@ -465,5 +486,44 @@ describe('useAutocomplete', () => {
     });
 
     expect(result.current.selected).toEqual(list.map((option) => option.ID));
+  });
+
+  it('Cannot generate `initialValue` from options', () => {
+    const name = 'fruits';
+
+    const { result } = renderHook(() =>
+      useAutocomplete({
+        extractId,
+        extractLabel,
+        initialValue: [
+          {
+            ID: '3',
+            title: 'Banana'
+          }
+        ],
+        list,
+        name
+      })
+    );
+
+    expect(result.current.selected).toEqual([]);
+  });
+
+  it('Receives `undefined` value from `useField`', () => {
+    (useField as jest.Mock).mockImplementation(jest.fn((...args) => args));
+
+    const name = 'fruits';
+
+    const { result } = renderHook(() =>
+      useAutocomplete({
+        extractId,
+        extractLabel,
+        initialValue: list,
+        list,
+        name
+      })
+    );
+
+    expect(result.current.selected).toEqual([]);
   });
 });

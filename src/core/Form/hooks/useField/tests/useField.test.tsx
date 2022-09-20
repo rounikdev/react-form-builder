@@ -890,7 +890,7 @@ describe('useField', () => {
         <Text dataTest="first-name" id="first-name" name="firstName" />
         <TestInput
           dataTestInput="last-name"
-          dependencyExtractor={(formData) => ({ firstName: formData.firstName })}
+          dependencyExtractor={(formData) => ({ firstName: formData.firstName || '' })}
           initialValue={({ firstName }) => firstName}
           name="lastName"
         />

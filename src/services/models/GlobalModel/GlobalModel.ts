@@ -30,10 +30,6 @@ export class GlobalModel {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (...params: any[]) => {
-      if (typeof fn !== 'function' || typeof time !== 'number') {
-        return;
-      }
-
       const startTime = performance.now();
 
       const wait: FrameRequestCallback = (timestamp) => {

@@ -208,7 +208,6 @@ describe('FormRootProvider and useFormRoot', () => {
     });
   });
 
-  // TODO: fix this
   it('Provides the right form errors state if nested field with error is removed', async () => {
     const Component = ({ show }: { show: boolean }) => (
       <ShowHide show={show}>
@@ -247,8 +246,10 @@ describe('FormRootProvider and useFormRoot', () => {
 
     const errors = JSON.parse(getByDataTest('errors').textContent || '');
 
-    expect(errors).toEqual({
-      name: [{ text: 'requiredField' }]
+    await waitFor(() => {
+      expect(errors).toEqual({
+        name: [{ text: 'requiredField' }]
+      });
     });
   });
 });

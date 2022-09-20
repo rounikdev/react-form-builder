@@ -223,17 +223,6 @@ describe('GlobalModel', () => {
         expect(mockCallback).toHaveBeenCalledWith('b');
       });
     });
-
-    it('Called with no callback', async () => {
-      const { getByDataTest } = testRender(<TestCmp />);
-
-      userEvent.type(getByDataTest('test-input'), 'a');
-      userEvent.type(getByDataTest('test-input'), 'b');
-
-      await waitFor(() => {
-        expect(getByDataTest('test-input')).toHaveValue('');
-      });
-    });
   });
 
   describe('setRAFTimeout', () => {
@@ -318,6 +307,50 @@ describe('GlobalModel', () => {
 
     tests.forEach(({ expected, value }) =>
       expect(GlobalModel.removeNonDigitFromString(value)).toBe(expected)
+    );
+  });
+
+  it('classer', () => {
+    const tests = [
+      {
+        expected: 'Class',
+        value: [false, undefined, 'Class']
+      },
+      {
+        expected: 'ClassOne ClassTwo',
+        value: ['ClassOne', 'ClassTwo']
+      }
+    ];
+
+    tests.forEach(({ expected, value }) => expect(GlobalModel.classer(value)).toBe(expected));
+  });
+
+  it('executeOnNextPaint', () => {
+    jest
+      .spyOn(window, 'requestAnimationFrame')
+      .mockImplementation(((cb) => cb(0)) as (callback: FrameRequestCallback) => number);
+
+    const mockCb = jest.fn();
+
+    GlobalModel.executeOnNextPaint(mockCb);
+
+    expect(mockCb).toHaveBeenCalled();
+  });
+
+  it('createStableDependency', () => {
+    const tests = [
+      {
+        expected: JSON.stringify([1, 2, 3]),
+        value: [1, 2, 3]
+      },
+      {
+        expected: BigInt(1),
+        value: BigInt(1)
+      }
+    ];
+
+    tests.forEach(({ expected, value }) =>
+      expect(GlobalModel.createStableDependency(value)).toBe(expected)
     );
   });
 });
