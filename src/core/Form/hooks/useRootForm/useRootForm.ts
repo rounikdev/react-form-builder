@@ -127,7 +127,7 @@ export const useRootForm = ({
 
   const reset = useCallback(({ resetList }: { resetList?: string[] } = {}) => {
     if (resetList) {
-      setResetFlag({ resetKey: '', resetList });
+      setResetFlag({ resetKey: NO_RESET_KEY, resetList });
     } else {
       setResetFlag({
         resetKey: usesStorageRef.current ? STORAGE_RESET_KEY : INITIAL_RESET_RECORD_KEY
@@ -140,7 +140,7 @@ export const useRootForm = ({
   useUpdate(() => {
     if (pristine) {
       setResetFlag({
-        resetKey: ''
+        resetKey: NO_RESET_KEY
       });
     }
   }, [pristine, resetFlag.resetKey]);

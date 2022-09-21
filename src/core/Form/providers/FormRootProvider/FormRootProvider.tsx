@@ -1,5 +1,6 @@
 import { createContext, FC, memo, useContext } from 'react';
 
+import { NO_RESET_KEY } from '@core/Form/constants';
 import { FormRootProviderContext, FormRootProviderProps } from '@core/Form/types';
 
 const FormRootContext = createContext<FormRootProviderContext>({
@@ -35,7 +36,7 @@ const FormRootContext = createContext<FormRootProviderContext>({
     }
   },
   pristine: true,
-  resetFlag: { resetKey: '' },
+  resetFlag: { resetKey: NO_RESET_KEY },
   resetRecords: {},
   scrolledField: ''
 });
