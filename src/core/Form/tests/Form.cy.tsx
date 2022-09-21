@@ -7,9 +7,18 @@ import Meta, { FormDemo as FormDemoStory } from '../stories/Form.stories';
 const FormDemo = composeStory(FormDemoStory, Meta);
 
 describe('FormDemo', () => {
-  // TODO: fix this
-  it.skip('Start edit, add new user, remove the first user and cancel edit', () => {
+  it('Start edit, add new user, remove the first user and cancel edit', () => {
     mount(<FormDemo />);
+
+    // This is needed in order
+    // to wait for the form to
+    // set its state. Without
+    // this the user actions
+    // are being executed so
+    // fast that they happen
+    // before the for state is
+    // finally set up.
+    cy.wait(500);
 
     // Initial state:
     cy.get('[data-test="users-form"').invoke('attr', 'data-pristine').should('equal', 'true');
@@ -106,7 +115,7 @@ describe('FormDemo', () => {
     cy.get('[data-test="users-form"').invoke('attr', 'data-pristine').should('equal', 'true');
   });
 
-  Cypress._.times(5, () => {
+  Cypress._.times(2, () => {
     it('Edit nested forms', () => {
       mount(<FormDemo />);
 
@@ -258,6 +267,16 @@ describe('FormDemo', () => {
 
   it('Edit nested forms - cancel on root level', () => {
     mount(<FormDemo />);
+
+    // This is needed in order
+    // to wait for the form to
+    // set its state. Without
+    // this the user actions
+    // are being executed so
+    // fast that they happen
+    // before the for state is
+    // finally set up.
+    cy.wait(500);
 
     const updatedFirstName = 'Gergana';
 

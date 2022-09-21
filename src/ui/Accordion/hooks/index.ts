@@ -89,6 +89,7 @@ export const useAccordion = ({
     }
   }, [children, isOpen]);
 
+  // TODO: Use useUpdateOnlySafe here, to prevent closing in StrictMode when opened is true
   useUpdateOnly(() => {
     if (!excludeFromGroup) {
       if (!openedControlledAccordions.includes(id) && isOpen) {

@@ -12,7 +12,7 @@ const content = (
 );
 
 describe('Carousel', () => {
-  it.skip('Manual mode using left and right button', () => {
+  it('Manual mode using left and right button', () => {
     mount(content);
 
     cy.get('[data-test="2-image"]').should('be.visible');

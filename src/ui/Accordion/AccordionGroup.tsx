@@ -16,10 +16,13 @@ export const AccordionGroup: FC<AccordionGroupProps> = memo(({ children, maxOpen
 
   const openInGroup = useCallback(
     (id: string) => {
-      setOpenedControlledAccordions((currentOpenedAccordions) => [
-        ...currentOpenedAccordions.slice(maxOpened),
-        id
-      ]);
+      setOpenedControlledAccordions((currentOpenedAccordions) => {
+        const candidateOpenedAccordions = [...currentOpenedAccordions, id];
+
+        const startingIndex = candidateOpenedAccordions.length - maxOpened;
+
+        return candidateOpenedAccordions.slice(startingIndex);
+      });
     },
     [maxOpened]
   );
