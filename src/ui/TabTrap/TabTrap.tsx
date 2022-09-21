@@ -21,7 +21,7 @@ export const TabTrap: FC<TabTrapProps> = ({ active, children }) => {
   );
 
   const keyDownHandler = useCallback(
-    (event) => {
+    (event: KeyboardEvent) => {
       const { code, shiftKey, target } = event;
 
       if (!active || code !== 'Tab') {

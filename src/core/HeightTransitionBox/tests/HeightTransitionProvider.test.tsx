@@ -34,7 +34,7 @@ describe('HeightTransitionProvider', () => {
       </HeightTransitionProvider>
     );
 
-    userEvent.click(getByDataTest('force-update-button'));
+    await userEvent.click(getByDataTest('force-update-button'));
 
     expect(mockForceUpdateCb).toBeCalledTimes(1);
   });

@@ -27,7 +27,7 @@ export const rangeContext = createContext<RangeContext>({
   onBlurHandler: () => {
     // Default implementation
   },
-  onChangeHandler: async () => {
+  onChangeHandler: () => {
     // Default implementation
   },
   onFocusHandler: () => {

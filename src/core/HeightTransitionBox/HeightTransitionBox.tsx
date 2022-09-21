@@ -44,13 +44,13 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
 
       const contentRef = useRef<HTMLDivElement>(null);
 
-      const [, setRender] = useState({});
+      const [, forceRender] = useState({});
       const [renderChildren, setRenderChildren] = useState(children);
 
       const prevChildren = useLastDiffValue(children);
 
       const observerCallback = useCallback(() => {
-        setRender({});
+        forceRender({});
 
         if (!isRoot) {
           forceUpdate();
@@ -65,6 +65,7 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
 
       useWindowResize({ callback: observerCallback, debounceTime: DEBOUNCE_TIME });
 
+      // TODO: StrictMode check!
       // Handles nested transitions like
       // ErrorFields of ConditionalFields
       useUpdateOnly(() => {
@@ -100,6 +101,10 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
       useUpdateSync(() => {
         isTransitioningRef.current = true;
       }, height);
+
+      useUpdateOnly(() => {
+        forceRender({});
+      }, [contentRef.current?.offsetHeight]);
 
       return (
         <div

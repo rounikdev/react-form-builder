@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useMemo, useRef } from 'react';
+import { FC, KeyboardEventHandler, memo, useCallback, useMemo, useRef } from 'react';
 
 import { useClass, useUpdate } from '@rounik/react-custom-hooks';
 
@@ -36,7 +36,7 @@ export const Day: FC<DayProps> = memo(({ dataTest, date, isOtherMonth }) => {
     [date, state.focusedDate]
   );
 
-  const onKeyDownHandler = useCallback(
+  const onKeyDownHandler: KeyboardEventHandler = useCallback(
     ({ code }) => {
       if (code === 'Enter' || code === 'Space') {
         selectDate(date);
@@ -44,6 +44,7 @@ export const Day: FC<DayProps> = memo(({ dataTest, date, isOtherMonth }) => {
     },
     [date, selectDate]
   );
+
   useUpdate(() => {
     if (isSelected && !state.focusedDate) {
       setFocusedDate(`${date.getTime()}`);

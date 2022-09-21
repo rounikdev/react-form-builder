@@ -74,7 +74,7 @@ describe('HeightTransitionBox', () => {
 
     expect(window.getComputedStyle(wrapper).overflow).toBe('auto');
 
-    userEvent.click(getByDataTest('toggle-content'));
+    await userEvent.click(getByDataTest('toggle-content'));
 
     expect(window.getComputedStyle(wrapper).overflow).toBe('hidden');
   });
@@ -86,7 +86,7 @@ describe('HeightTransitionBox', () => {
       window.getComputedStyle(await findByDataTest('test-heightTransition-container')).overflow
     ).toBe('auto');
 
-    userEvent.click(getByDataTest('toggle-content'));
+    await userEvent.click(getByDataTest('toggle-content'));
 
     expect(
       window.getComputedStyle(await findByDataTest('test-heightTransition-container')).overflow
@@ -164,5 +164,44 @@ describe('HeightTransitionBox', () => {
     fireEvent(await findByDataTest('test-root-heightTransition-container'), transitionEndEvent);
 
     expect(mockOnTransitionEnd).toBeCalledTimes(2);
+  });
+
+  it('Set current children in `onTransitionEnd` when `memoizeChildren` is passed', async () => {
+    const { findByDataTest, getByDataTest, queryByDataTest } = testRender(
+      <TestCmp memoizeChildren />
+    );
+
+    userEvent.click(getByDataTest('toggle-content'));
+    fireEvent(getByDataTest('test-heightTransition-container'), transitionEndEvent);
+
+    expect(await findByDataTest('test-content')).toBeInTheDocument();
+
+    await userEvent.click(getByDataTest('toggle-content'));
+    fireEvent(getByDataTest('test-heightTransition-container'), transitionEndEvent);
+
+    expect(queryByDataTest('test-content')).not.toBeInTheDocument();
+  });
+
+  // eslint-disable-next-line max-len
+  it('From no children to children and children to no children when `memoizeChildren` is passed', async () => {
+    const { findByDataTest, getByDataTest, queryByDataTest } = testRender(
+      <TestCmp memoizeChildren />
+    );
+
+    userEvent.click(getByDataTest('toggle-content'));
+    fireEvent(getByDataTest('test-heightTransition-container'), transitionEndEvent);
+
+    expect(await findByDataTest('test-content')).toBeInTheDocument();
+
+    Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
+      configurable: true,
+      value: 0
+    });
+
+    await userEvent.click(getByDataTest('toggle-content'));
+    fireEvent(getByDataTest('test-heightTransition-container'), transitionEndEvent);
+
+    expect(queryByDataTest('test-content')).not.toBeInTheDocument();
+    expect(getComputedStyle(getByDataTest('test-heightTransition-container')).height).toBe('0px');
   });
 });

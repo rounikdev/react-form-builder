@@ -1,9 +1,9 @@
-import { act, renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react';
 import { FocusEvent } from 'react';
 
 import { useField } from '@core/Form/hooks/useField/useField';
 
-import { InputOnBlurSideEffect } from '../types';
+import { InputOnBlurSideEffect, UseTextInput } from '../types';
 import { useTextInput } from '../useTextInput';
 
 jest.mock('@core/Form/hooks/useField/useField', () => {
@@ -26,13 +26,13 @@ describe('useTextInput', () => {
   });
 
   it('Calls `useField` with correct arguments', () => {
-    const useFieldArgs = {
+    const useFieldArgs: UseTextInput = {
       dependencyExtractor: jest.fn(),
       formatter: jest.fn(),
       initialValue: 'vanilla',
       name: 'test',
       sideEffect: jest.fn(),
-      validator: jest.fn()
+      validator: () => ({ errors: [], valid: true })
     };
 
     renderHook(() => useTextInput(useFieldArgs));
@@ -58,6 +58,7 @@ describe('useTextInput', () => {
       onChangeHandler: 'function',
       onFocusHandler: 'function',
       touched: 'boolean',
+      updatedInitialValue: 'string',
       valid: 'boolean',
       validating: 'boolean',
       value: 'string'
@@ -68,7 +69,7 @@ describe('useTextInput', () => {
       initialValue: '',
       name: 'test',
       sideEffect: jest.fn(),
-      validator: jest.fn()
+      validator: () => ({ errors: [], valid: true })
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -91,10 +92,10 @@ describe('useTextInput', () => {
       formatter: jest.fn(),
       name: 'test',
       sideEffect: jest.fn(),
-      validator: jest.fn()
+      validator: () => ({ errors: [], valid: true })
     };
 
-    renderHook(() => useTextInput(useFieldArgs));
+    renderHook(() => useTextInput(useFieldArgs as unknown as UseTextInput));
 
     expect(useField).toBeCalledTimes(1);
     expect((useField as jest.Mock).mock.calls[0][0]).toEqual({ ...useFieldArgs, initialValue: '' });
@@ -115,13 +116,13 @@ describe('useTextInput', () => {
       return newValue;
     };
 
-    const useFieldArgs = {
+    const useFieldArgs: UseTextInput = {
       dependencyExtractor: jest.fn(),
       initialValue: '',
       name: 'test',
       onBlurSideEffect,
       sideEffect: jest.fn(),
-      validator: jest.fn()
+      validator: () => ({ errors: [], valid: true })
     };
 
     const { result } = renderHook(() => useTextInput(useFieldArgs));
@@ -157,10 +158,10 @@ describe('useTextInput', () => {
       name: 'test',
       onBlurSideEffect,
       sideEffect: jest.fn(),
-      validator: jest.fn()
+      validator: () => ({ errors: [], valid: true })
     };
 
-    const { result } = renderHook(() => useTextInput(useFieldArgs));
+    const { result } = renderHook(() => useTextInput(useFieldArgs as unknown as UseTextInput));
 
     expect(result.current.value).toBe('');
 

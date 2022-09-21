@@ -18,6 +18,7 @@ export const datepickerContext = createContext<DatepickerContext>({
   },
   containerRef: { current: null },
   dateInput: '',
+  disabled: false,
   errors: [],
   focusCalendar: () => {
     // default implementation

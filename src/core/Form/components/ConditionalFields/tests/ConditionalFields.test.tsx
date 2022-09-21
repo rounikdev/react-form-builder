@@ -57,7 +57,7 @@ describe('ConditionalFields', () => {
     expect(queryByDataTest(`${fieldNameB}-input`)).not.toBeInTheDocument();
   });
 
-  it('Has `HeightTransitionBox` with children when `animate` props is passed', () => {
+  it('Has `HeightTransitionBox` with children when `animate` props is passed', async () => {
     const { getByDataTest } = testRender(
       <FormRoot dataTest="test">
         <Text dataTest={fieldNameA} id={fieldNameA} name={fieldNameA} />
@@ -71,7 +71,10 @@ describe('ConditionalFields', () => {
       </FormRoot>
     );
 
-    expect(getByDataTest('test-heightTransition-container')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(getByDataTest('test-heightTransition-container')).toBeInTheDocument();
+    });
+
     expect(getByDataTest(`${fieldNameB}-input`)).toBeInTheDocument();
   });
 
@@ -93,7 +96,7 @@ describe('ConditionalFields', () => {
       </FormRoot>
     );
 
-    await waitFor(async () => {
+    await waitFor(() => {
       expect(mockScrollIntoView).toHaveBeenCalledWith({
         behavior: 'smooth',
         block: 'start',
@@ -102,7 +105,7 @@ describe('ConditionalFields', () => {
     });
   });
 
-  it('Has `HeightTransitionBox` with children when `hidden` props is passed', () => {
+  it('Has `HeightTransitionBox` with children when `hidden` props is passed', async () => {
     const { getByDataTest } = testRender(
       <FormRoot dataTest="test">
         <Text dataTest={fieldNameA} id={fieldNameA} name={fieldNameA} />
@@ -117,8 +120,10 @@ describe('ConditionalFields', () => {
       </FormRoot>
     );
 
-    expect(window.getComputedStyle(getByDataTest('test-heightTransition-container')).display).toBe(
-      'block'
-    );
+    await waitFor(() => {
+      expect(
+        window.getComputedStyle(getByDataTest('test-heightTransition-container')).display
+      ).toBe('block');
+    });
   });
 });

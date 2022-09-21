@@ -17,6 +17,7 @@ export const DatepickerInput: FC<DatepickerInputProps> = memo(
   ({ dataTest, id, placeholder = '' }) => {
     const {
       dateInput,
+      disabled,
       inputBlurHandler,
       inputChangeHandler,
       onFocusHandler,
@@ -35,18 +36,20 @@ export const DatepickerInput: FC<DatepickerInputProps> = memo(
           autoComplete="off"
           className={styles.Input}
           data-test={`${dataTest}-datepicker-input`}
+          disabled={disabled}
           id={id}
           onBlur={inputBlurHandler}
           onChange={inputChangeHandler}
           onFocus={onFocusHandler}
           placeholder={translate(placeholder) as string}
-          value={dateInput}
+          value={dateInput ?? ''}
         />
         <Control
           className={styles.OpenControl}
           dataTest={`${dataTest}-datepicker-expand-button`}
+          disabled={disabled}
           label={translate('chooseDate') as string}
-          expanded={state.show}
+          expanded={!!state.show}
           onClick={toggle}
           onFocus={onFocusHandler}
           icon={<IconCalendar action />}

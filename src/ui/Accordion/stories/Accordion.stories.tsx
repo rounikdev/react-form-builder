@@ -1,5 +1,5 @@
 import { Meta, Story } from '@storybook/react';
-import { FC, StrictMode, useState } from 'react';
+import { FC, useState } from 'react';
 
 import { useMount, useUnmount } from '@rounik/react-custom-hooks';
 
@@ -90,7 +90,8 @@ const Template: Story<FC> = () => {
   const [openedCats, setOpenedCats] = useState(true);
 
   return (
-    <StrictMode>
+    // TODO: get StrictMode back when useUpdateOnlySafe is ready
+    <div>
       <div className={styles.Container}>
         <button
           data-test="unmount-bears"
@@ -154,7 +155,7 @@ const Template: Story<FC> = () => {
           <Content id="elephants-content" />
         </Accordion>
       </div>
-    </StrictMode>
+    </div>
   );
 };
 

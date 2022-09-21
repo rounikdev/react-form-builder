@@ -1,4 +1,4 @@
-import { mount } from '@cypress/react';
+import { mount } from '@cypress/react18';
 import { composeStory } from '@storybook/testing-react';
 
 import Meta, { CarouselDemo } from '../stories/Carousel.stories';
@@ -12,7 +12,7 @@ const content = (
 );
 
 describe('Carousel', () => {
-  it.skip('Manual mode using left and right button', () => {
+  it('Manual mode using left and right button', () => {
     mount(content);
 
     cy.get('[data-test="2-image"]').should('be.visible');

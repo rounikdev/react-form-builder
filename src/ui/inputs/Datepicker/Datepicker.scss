@@ -13,12 +13,18 @@
   color: var(--color-label);
   font-size: var(--font-small);
 
+  &.NoLabel {
+    justify-content: flex-end;
+  }
+
   .Required {
     font-size: var(--font-tiny);
   }
 }
 
 .CalendarEnter {
+  z-index: 1;
+
   transform-origin: top right;
 
   animation: scale-in var(--transition) ease-in-out forwards;

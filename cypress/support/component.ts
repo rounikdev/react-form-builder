@@ -15,9 +15,10 @@
 // ***********************************************************
 import '@cypress/code-coverage/support';
 import { setGlobalConfig } from '@storybook/testing-react';
+import { GlobalConfig } from '@storybook/testing-react/dist/types';
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
-import { mount } from 'cypress/react';
+import { mount } from 'cypress/react18';
 
 import { decorators } from '../../.storybook/preview';
 // Import commands.js using ES2015 syntax:
@@ -40,4 +41,4 @@ Cypress.Commands.add('mount', mount);
 // Example use:
 // cy.mount(<MyComponent />)
 
-setGlobalConfig(decorators);
+setGlobalConfig(decorators as GlobalConfig);

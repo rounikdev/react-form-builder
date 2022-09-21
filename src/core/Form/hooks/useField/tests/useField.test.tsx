@@ -1,7 +1,6 @@
-import { fireEvent } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
+import { fireEvent, renderHook, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { FC, FocusEventHandler, MutableRefObject, useEffect, useState } from 'react';
+import { FC, FocusEventHandler, MutableRefObject, ReactNode, useEffect, useState } from 'react';
 
 import { FormObject, FormRoot } from '@core/Form/components';
 import { useForm } from '@core/Form/hooks/useForm/useForm';
@@ -122,19 +121,23 @@ describe('useField', () => {
       }
     };
 
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useField({ initialValue, name, validator })
-    );
+    const { result } = renderHook(() => useField({ initialValue, name, validator }));
 
     expect(result.current.valid).toBe(false);
     expect(result.current.validating).toBe(true);
     expect(result.current.errors).toEqual([]);
 
-    await waitForNextUpdate();
+    await waitFor(() => {
+      expect(result.current.valid).toBe(false);
+    });
 
-    expect(result.current.valid).toBe(false);
-    expect(result.current.validating).toBe(false);
-    expect(result.current.errors).toEqual([{ text: error }]);
+    await waitFor(() => {
+      expect(result.current.validating).toBe(false);
+    });
+
+    await waitFor(() => {
+      expect(result.current.errors).toEqual([{ text: error }]);
+    });
   });
 
   it('Handles validator error', () => {
@@ -173,6 +176,11 @@ describe('useField', () => {
 
     jest.runAllTimers();
 
+    // Set again the real timers
+    // for usage in the rest of
+    // tests:
+    jest.useRealTimers();
+
     unmount();
   });
 
@@ -190,7 +198,7 @@ describe('useField', () => {
       return null;
     };
 
-    const Wrapper: FC = ({ children }) => (
+    const Wrapper: FC<{ children: ReactNode }> = ({ children }) => (
       <FormRoot dataTest="root-form">
         <ForceValidateTrigger />
         {children}
@@ -224,13 +232,13 @@ describe('useField', () => {
     const stateA = JSON.parse(getByDataTest('state').textContent || '');
     expect(stateA.value).toBe(initialValue);
 
-    userEvent.clear(getByDataTest('input'));
-    userEvent.type(getByDataTest('input'), changedValue);
+    await userEvent.clear(getByDataTest('input'));
+    await userEvent.type(getByDataTest('input'), changedValue);
 
     const stateB = JSON.parse(getByDataTest('state').textContent || '');
     expect(stateB.value).toBe(changedValue);
 
-    userEvent.click(getByDataTest('reset'));
+    await userEvent.click(getByDataTest('reset'));
 
     const stateC = JSON.parse((await findByDataTest('state')).textContent || '');
     expect(stateC.value).toBe(initialValue);
@@ -322,19 +330,22 @@ describe('useField', () => {
       </FormRoot>
     );
 
-    const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
-    expect(stateB.valid).toBe(false);
-    expect(stateB.errors).toEqual([{ text: error }]);
+    await waitFor(async () => {
+      const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
+      expect(stateB.valid).toBe(false);
+      // eslint-disable-next-line testing-library/no-wait-for-multiple-assertions
+      expect(stateB.errors).toEqual([{ text: error }]);
+    });
 
-    userEvent.clear(getByDataTest('inputB'));
-    userEvent.type(getByDataTest('inputB'), initialValueA);
+    await userEvent.clear(getByDataTest('inputB'));
+    await userEvent.type(getByDataTest('inputB'), initialValueA);
 
     const updatedStateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
     expect(updatedStateB.valid).toBe(true);
     expect(updatedStateB.errors).toEqual([]);
 
-    userEvent.clear(getByDataTest('input'));
-    userEvent.type(getByDataTest('input'), initialValueB);
+    await userEvent.clear(getByDataTest('input'));
+    await userEvent.type(getByDataTest('input'), initialValueB);
 
     const updatedStateC = JSON.parse((await findByDataTest('stateB')).textContent || '');
     expect(updatedStateC.valid).toBe(false);
@@ -375,19 +386,22 @@ describe('useField', () => {
       </FormRoot>
     );
 
-    const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
-    expect(stateB.valid).toBe(false);
-    expect(stateB.errors).toEqual([{ text: error }]);
+    await waitFor(async () => {
+      const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
+      expect(stateB.valid).toBe(false);
+      // eslint-disable-next-line testing-library/no-wait-for-multiple-assertions
+      expect(stateB.errors).toEqual([{ text: error }]);
+    });
 
-    userEvent.clear(getByDataTest('inputB'));
-    userEvent.type(getByDataTest('inputB'), initialValueA);
+    await userEvent.clear(getByDataTest('inputB'));
+    await userEvent.type(getByDataTest('inputB'), initialValueA);
 
     const updatedStateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
     expect(updatedStateB.valid).toBe(true);
     expect(updatedStateB.errors).toEqual([]);
 
-    userEvent.clear(getByDataTest('input'));
-    userEvent.type(getByDataTest('input'), initialValueB);
+    await userEvent.clear(getByDataTest('input'));
+    await userEvent.type(getByDataTest('input'), initialValueB);
 
     const updatedStateC = JSON.parse((await findByDataTest('stateB')).textContent || '');
     expect(updatedStateC.valid).toBe(false);
@@ -428,25 +442,29 @@ describe('useField', () => {
       </FormRoot>
     );
 
-    const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
-    expect(stateB.valid).toBe(false);
-    expect(stateB.errors).toEqual([{ text: error }]);
+    await waitFor(async () => {
+      const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
+      expect(stateB.valid).toBe(false);
+      // eslint-disable-next-line testing-library/no-wait-for-multiple-assertions
+      expect(stateB.errors).toEqual([{ text: error }]);
+    });
 
-    userEvent.clear(getByDataTest('inputB'));
-    userEvent.type(getByDataTest('inputB'), initialValueA);
+    await userEvent.clear(getByDataTest('inputB'));
+    await userEvent.type(getByDataTest('inputB'), initialValueA);
 
     const updatedStateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
     expect(updatedStateB.valid).toBe(true);
     expect(updatedStateB.errors).toEqual([]);
 
-    userEvent.clear(getByDataTest('input'));
-    userEvent.type(getByDataTest('input'), initialValueB);
+    await userEvent.clear(getByDataTest('input'));
+    await userEvent.type(getByDataTest('input'), initialValueB);
 
     const updatedStateC = JSON.parse((await findByDataTest('stateB')).textContent || '');
     expect(updatedStateC.valid).toBe(false);
     expect(updatedStateC.errors).toEqual([{ text: error }]);
   });
 
+  // TODO: fix this one
   it('Validates with BigInt as dependency', async () => {
     const fieldNameA = 'password';
     const fieldNameB = 'repeatPassword';
@@ -481,19 +499,22 @@ describe('useField', () => {
       </FormRoot>
     );
 
-    const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
-    expect(stateB.valid).toBe(false);
-    expect(stateB.errors).toEqual([{ text: error }]);
+    await waitFor(async () => {
+      const stateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
+      expect(stateB.valid).toBe(false);
+      // eslint-disable-next-line testing-library/no-wait-for-multiple-assertions
+      expect(stateB.errors).toEqual([{ text: error }]);
+    });
 
-    userEvent.clear(getByDataTest('inputB'));
-    userEvent.type(getByDataTest('inputB'), initialValueA);
+    await userEvent.clear(getByDataTest('inputB'));
+    await userEvent.type(getByDataTest('inputB'), initialValueA);
 
     const updatedStateB = JSON.parse((await findByDataTest('stateB')).textContent || '');
     expect(updatedStateB.valid).toBe(false);
     expect(updatedStateB.errors).toEqual([{ text: error }]);
 
-    userEvent.clear(getByDataTest('input'));
-    userEvent.type(getByDataTest('input'), 'something');
+    await userEvent.clear(getByDataTest('input'));
+    await userEvent.type(getByDataTest('input'), 'something');
 
     const updatedStateB2 = JSON.parse((await findByDataTest('stateB')).textContent || '');
     expect(updatedStateB2.valid).toBe(true);
@@ -577,13 +598,13 @@ describe('useField', () => {
     const stateA = JSON.parse(getByDataTest('state').textContent || '');
     expect(stateA.value).toBe(formatter({ newValue: initialValue, oldValue: initialValue }));
 
-    userEvent.clear(getByDataTest('input'));
-    userEvent.type(getByDataTest('input'), changedValue);
+    await userEvent.clear(getByDataTest('input'));
+    await userEvent.type(getByDataTest('input'), changedValue);
 
     const stateB = JSON.parse(getByDataTest('state').textContent || '');
     expect(stateB.value).toBe(formatter({ newValue: changedValue, oldValue: initialValue }));
 
-    userEvent.click(getByDataTest('reset'));
+    await userEvent.click(getByDataTest('reset'));
 
     const stateC = JSON.parse((await findByDataTest('state')).textContent || '');
     expect(stateC.value).toBe(formatter({ newValue: initialValue, oldValue: initialValue }));
@@ -625,8 +646,8 @@ describe('useField', () => {
     const stateA = JSON.parse(getByDataTest('state').textContent || '');
     expect(stateA.value).toBe(initialValue);
 
-    userEvent.clear(getByDataTest('input'));
-    userEvent.type(getByDataTest('input'), changedValue);
+    await userEvent.clear(getByDataTest('input'));
+    await userEvent.type(getByDataTest('input'), changedValue);
 
     const firstCall = sideEffectMock.mock.calls[0];
     expect(typeof firstCall[0].methods).toBe('object');
@@ -641,7 +662,7 @@ describe('useField', () => {
     expect(lastCall[0].value).toEqual(changedValue);
   });
 
-  it('Calls focus on the field element from the root form context', () => {
+  it('Calls focus on the field element from the root form context', async () => {
     const initialValue = 'Ivan';
     const name = 'firstName';
 
@@ -664,12 +685,12 @@ describe('useField', () => {
 
     expect(mockFocus).toHaveBeenCalledTimes(0);
 
-    userEvent.click(getByDataTest('focus'));
+    await userEvent.click(getByDataTest('focus'));
 
     expect(mockFocus).toHaveBeenCalledTimes(1);
   });
 
-  it('Calls scrollIntoView on the field element from the root form context', () => {
+  it('Calls scrollIntoView on the field element from the root form context', async () => {
     const initialValue = 'Ivan';
     const name = 'firstName';
 
@@ -697,7 +718,7 @@ describe('useField', () => {
 
     expect(mockScrollIntoView).toHaveBeenCalledTimes(0);
 
-    userEvent.click(getByDataTest('scroll-into-view'));
+    await userEvent.click(getByDataTest('scroll-into-view'));
 
     expect(mockScrollIntoView).toHaveBeenCalledTimes(1);
   });
@@ -749,7 +770,7 @@ describe('useField', () => {
     expect(await findByDataTest('input')).toHaveValue(initialValue);
     expect(getByDataTest('input')).not.toBeValid();
 
-    userEvent.click(getByDataTest('set-field-value'));
+    await userEvent.click(getByDataTest('set-field-value'));
 
     expect(await findByDataTest('input')).toHaveValue(changedValue);
     expect(getByDataTest('input')).toBeValid();
@@ -812,7 +833,7 @@ describe('useField', () => {
     expect(await findByDataTest('input')).toHaveValue(initialValue);
     expect(getByDataTest('input')).not.toBeValid();
 
-    userEvent.click(getByDataTest('set-field-value'));
+    await userEvent.click(getByDataTest('set-field-value'));
 
     expect(await findByDataTest('input')).toHaveValue(changedValue);
     expect(getByDataTest('input')).toBeValid();
@@ -854,10 +875,10 @@ describe('useField', () => {
       </FormRoot>
     );
 
-    userEvent.type(getByDataTest('input'), valueA);
+    await userEvent.type(getByDataTest('input'), valueA);
     expect(getByDataTest('input')).toHaveValue(valueA);
 
-    userEvent.type(getByDataTest('dependency-input'), 'x');
+    await userEvent.type(getByDataTest('dependency-input'), 'x');
     expect(getByDataTest('input')).toHaveValue(valueB);
   });
 
@@ -869,7 +890,7 @@ describe('useField', () => {
         <Text dataTest="first-name" id="first-name" name="firstName" />
         <TestInput
           dataTestInput="last-name"
-          dependencyExtractor={(formData) => ({ firstName: formData.firstName })}
+          dependencyExtractor={(formData) => ({ firstName: formData.firstName || '' })}
           initialValue={({ firstName }) => firstName}
           name="lastName"
         />
@@ -883,11 +904,11 @@ describe('useField', () => {
     expect(getByDataTest('last-name')).toHaveValue(firstNameValue);
   });
 
-  it('Generates `value` based on `initialValue` update', () => {
+  it('Generates `value` based on `initialValue` update', async () => {
     const lastNameValue = 'Doe';
 
     const TestComponent: FC = () => {
-      const [initialValue, setInitialValue] = useState('');
+      const [initialValue, setInitialValue] = useState('Cat');
 
       return (
         <>
@@ -901,7 +922,9 @@ describe('useField', () => {
 
     const { getByDataTest } = testRender(<TestComponent />);
 
-    userEvent.click(getByDataTest('update-button'));
+    expect(getByDataTest('last-name')).toHaveValue('Cat');
+
+    await userEvent.click(getByDataTest('update-button'));
 
     expect(getByDataTest('last-name')).toHaveValue('Doe');
   });

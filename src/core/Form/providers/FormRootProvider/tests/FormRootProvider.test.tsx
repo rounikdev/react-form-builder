@@ -1,3 +1,4 @@
+import { waitFor } from '@testing-library/react';
 import { FC, FocusEventHandler, MutableRefObject, useEffect } from 'react';
 
 import { FormObject, FormRoot } from '@core/Form/components';
@@ -158,11 +159,13 @@ describe('FormRootProvider and useFormRoot', () => {
       </ShowHide>
     );
 
-    const errors = JSON.parse((await findByDataTest('errors')).textContent || '');
+    await waitFor(async () => {
+      const errors = JSON.parse((await findByDataTest('errors')).textContent || '');
 
-    expect(errors).toEqual({
-      'address.street.name': [{ text: 'requiredField' }],
-      name: [{ text: 'requiredField' }]
+      expect(errors).toEqual({
+        'address.street.name': [{ text: 'requiredField' }],
+        name: [{ text: 'requiredField' }]
+      });
     });
   });
 
@@ -187,16 +190,18 @@ describe('FormRootProvider and useFormRoot', () => {
 
     const { findByDataTest, getByDataTest, rerender } = testRender(<Component show={true} />);
 
-    let errors = JSON.parse((await findByDataTest('errors')).textContent || '');
+    await waitFor(async () => {
+      const errors = JSON.parse((await findByDataTest('errors')).textContent || '');
 
-    expect(errors).toEqual({
-      'address.street.name': [{ text: 'requiredField' }],
-      name: [{ text: 'requiredField' }]
+      expect(errors).toEqual({
+        'address.street.name': [{ text: 'requiredField' }],
+        name: [{ text: 'requiredField' }]
+      });
     });
 
     rerender(<Component show={false} />);
 
-    errors = JSON.parse(getByDataTest('errors').textContent || '');
+    const errors = JSON.parse(getByDataTest('errors').textContent || '');
 
     expect(errors).toEqual({
       'address.street.name': [{ text: 'requiredField' }]
@@ -226,19 +231,25 @@ describe('FormRootProvider and useFormRoot', () => {
 
     const { findByDataTest, getByDataTest, rerender } = testRender(<Component show={true} />);
 
-    let errors = JSON.parse((await (await findByDataTest('errors')).textContent) || '');
+    const errorsContainer = await findByDataTest('errors');
 
-    expect(errors).toEqual({
-      'address.street.name': [{ text: 'requiredField' }],
-      name: [{ text: 'requiredField' }]
+    await waitFor(() => {
+      const errors = JSON.parse(errorsContainer.textContent || '');
+
+      expect(errors).toEqual({
+        'address.street.name': [{ text: 'requiredField' }],
+        name: [{ text: 'requiredField' }]
+      });
     });
 
     rerender(<Component show={false} />);
 
-    errors = JSON.parse(getByDataTest('errors').textContent || '');
+    const errors = JSON.parse(getByDataTest('errors').textContent || '');
 
-    expect(errors).toEqual({
-      name: [{ text: 'requiredField' }]
+    await waitFor(() => {
+      expect(errors).toEqual({
+        name: [{ text: 'requiredField' }]
+      });
     });
   });
 });

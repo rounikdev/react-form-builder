@@ -1,9 +1,18 @@
-import { CSSProperties, FC, memo, useCallback, useMemo, useRef, useState } from 'react';
+import {
+  CSSProperties,
+  FC,
+  memo,
+  MouseEventHandler,
+  useCallback,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 
 import { useMount, useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { useModal } from '@core/Modal/context';
-import { ModalBuilderProps } from '@core/Modal/types';
+import { ModalBackdropProps, ModalBuilderProps } from '@core/Modal/types';
 
 const DEFAULT_ANIMATION_PROPERTIES: CSSProperties = {
   animationDelay: '0s',
@@ -65,7 +74,7 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
     setIsClosed(true);
   }, [hideModalById, id, onClose]);
 
-  const onBackdropCloseHandler = useCallback(
+  const onBackdropCloseHandler: MouseEventHandler = useCallback(
     (event) => {
       if (backdropRef.current === event.target) {
         onCloseHandler();
@@ -90,7 +99,7 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
     clearModalsToShow();
   }, [clearModalsToShow]);
 
-  const onBackdropClick = useCallback(
+  const onBackdropClick: MouseEventHandler = useCallback(
     (event) => {
       if (!preventModalBackdropClick) {
         onBackdropCloseHandler(event);
@@ -103,7 +112,11 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
     const output = children || content || null;
 
     const renderOutput =
-      typeof output === 'function' ? output({ ...props, close: onCloseHandler }) : output;
+      typeof output === 'function'
+        ? output({ ...props, close: onCloseHandler } as unknown as ModalBackdropProps & {
+            close: () => void;
+          })
+        : output;
 
     return renderOutput;
   }, [children, content, props, onCloseHandler]);
@@ -152,9 +165,7 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
 
   useMount(() => {
     if (!alwaysRender && onOpen) {
-      if (onOpen) {
-        onOpen();
-      }
+      onOpen();
     }
   });
 

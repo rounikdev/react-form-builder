@@ -62,7 +62,7 @@ export const Checkbox: FC<CheckboxProps> = memo(
             aria-hidden={hidden}
             aria-invalid={!valid}
             aria-required={dependantData.required}
-            checked={value}
+            checked={!!value}
             className={inputClass}
             data-test={`${dataTest}-input`}
             disabled={dependantData.disabled}
@@ -84,7 +84,7 @@ export const Checkbox: FC<CheckboxProps> = memo(
               htmlFor={id}
               title={dependantData.label}
             >
-              {label}
+              {dependantData.label}
             </label>
           ) : null}
         </div>

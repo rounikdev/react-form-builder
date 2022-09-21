@@ -1,7 +1,8 @@
-import { act, renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react';
 
 import { useField } from '@core/Form/hooks/useField/useField';
 
+import { UseRadioGroup } from '../types';
 import { useRadioGroup } from '../useRadioGroup';
 
 jest.mock('@core/Form/hooks/useField/useField', () => {
@@ -25,10 +26,10 @@ describe('useRadioGroup', () => {
       initialValue: 'vanilla',
       name: 'test',
       sideEffect: jest.fn(),
-      validator: jest.fn()
+      validator: () => ({ errors: [], valid: true })
     };
 
-    const useRadioGroupArgs = {
+    const useRadioGroupArgs: UseRadioGroup = {
       ...useFieldArgs,
       options: [
         {
@@ -64,12 +65,13 @@ describe('useRadioGroup', () => {
       onChangeHandler: 'function',
       onFocusHandler: 'function',
       touched: 'boolean',
+      updatedInitialValue: 'string',
       valid: 'boolean',
       validating: 'boolean',
       value: 'string'
     };
 
-    const useRadioGroupArgs = {
+    const useRadioGroupArgs: UseRadioGroup = {
       dependencyExtractor: jest.fn(),
       initialValue: 'vanilla',
       name: 'test',
@@ -82,7 +84,7 @@ describe('useRadioGroup', () => {
         { label: 'Vanilla', value: 'vanilla' }
       ],
       sideEffect: jest.fn(),
-      validator: jest.fn()
+      validator: () => ({ errors: [], valid: true })
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -109,10 +111,10 @@ describe('useRadioGroup', () => {
       initialValue: 'vanilla',
       name: 'test',
       sideEffect: jest.fn(),
-      validator: jest.fn()
+      validator: () => ({ errors: [], valid: true })
     };
 
-    const useRadioGroupArgs = {
+    const useRadioGroupArgs: UseRadioGroup = {
       ...useFieldArgs,
       options: [
         {

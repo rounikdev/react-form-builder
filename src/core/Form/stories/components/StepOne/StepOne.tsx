@@ -1,4 +1,4 @@
-import { FC, memo, useMemo } from 'react';
+import { FC, Fragment, memo, useMemo } from 'react';
 
 import {
   ConditionalFields,
@@ -10,7 +10,8 @@ import {
   useFormStorage
 } from '@core';
 import { GlobalModel, ValidatorModel } from '@services';
-import { Button, Checkbox, ErrorField, Text } from '@ui';
+import { Autocomplete, Button, Checkbox, Datepicker, ErrorField, Text } from '@ui';
+import { Option } from '@ui/inputs/Autocomplete';
 
 import {
   Contact,
@@ -21,6 +22,21 @@ import {
 } from '../../data';
 
 import styles from '../../FormStories.scss';
+
+export const options = [
+  {
+    id: 'cat',
+    label: 'Cat'
+  },
+  {
+    id: 'dog',
+    label: 'Dog'
+  },
+  {
+    id: 'horse',
+    label: 'Horse'
+  }
+];
 
 const formId = 'stepOne';
 
@@ -36,8 +52,8 @@ export const StepOne: FC = memo(() => {
     <FormRoot
       dataTest="user"
       initialResetState={state[formId]?.resetState}
+      //   isPristine={state[formId]?.pristine ?? true}
       onChange={(formData) => {
-        console.log(formData);
         setFormData({ formData, formId });
       }}
       onReset={() => {
@@ -63,7 +79,34 @@ export const StepOne: FC = memo(() => {
         label="Is anonymous"
         name="anonymous"
       />
+      <Autocomplete
+        autocomplete
+        className={styles.Field}
+        dataTest="pet"
+        extractId={(item) => item?.id ?? ''}
+        extractLabel={(item) => item.label}
+        id="pet"
+        initialValue={initialState.pet}
+        label="Pet"
+        list={options}
+        multi
+        name="pet"
+        renderOption={({ item, ref }) => (
+          <Option dataTest={item.id} id={item.id} key={item.id} ref={ref} text={item.label} />
+        )}
+      />
+      <Datepicker
+        className={styles.Field}
+        dataTest="birthDate"
+        dependencyExtractor={(formData) => formData.anonymous}
+        disabled={(anonymous) => anonymous}
+        id="birth-date"
+        initialValue={(anonymous) => (anonymous ? undefined : initialState.birthDate)}
+        label="Birth date"
+        name="birthDate"
+      />
       <Text
+        className={styles.Field}
         dependencyExtractor={(formData) => formData.anonymous}
         dataTest="first-name"
         disabled={(anonymous) => anonymous}
@@ -84,6 +127,7 @@ export const StepOne: FC = memo(() => {
         }}
       />
       <Text
+        className={styles.Field}
         dependencyExtractor={(formData) => ({
           anonymous: formData.anonymous,
           firstName: formData.firstName
@@ -109,6 +153,7 @@ export const StepOne: FC = memo(() => {
         }}
       />
       <Checkbox
+        className={styles.Field}
         dataTest="knows-karate"
         id="knows-karate"
         initialValue={initialState.knowsKarate}
@@ -117,6 +162,7 @@ export const StepOne: FC = memo(() => {
       />
       <ConditionalFields condition={(formData) => formData.knowsKarate}>
         <Text
+          className={styles.Field}
           dependencyExtractor={(formData) => formData.firstName}
           dataTest="karate-belt"
           id="karate-belt"
@@ -125,6 +171,14 @@ export const StepOne: FC = memo(() => {
           }
           label="Karate belt"
           name="karateBelt"
+        />
+        <Datepicker
+          className={styles.Field}
+          dataTest="belt-acquired"
+          id="belt-acquired"
+          initialValue={initialState.beltAcquired}
+          label="Date belt acquired"
+          name="beltAcquired"
         />
         <FormArray
           factory={contactFactory}
@@ -152,13 +206,15 @@ export const StepOne: FC = memo(() => {
                         text="Reset contacts"
                       />
                       <ul>
-                        {((formData.contacts as Contact[]) || []).map((contact) => {
+                        {((formData.contacts as Contact[]) || []).map((contact, index) => {
                           return Object.keys(contact).length ? (
-                            <li key={contact.id}>
+                            <li key={contact.id ?? index}>
                               {contact.email}, {contact.phone}
                               {contact.isPrimary ? ', Primary' : ''}
                             </li>
-                          ) : null;
+                          ) : (
+                            <Fragment key={index}></Fragment>
+                          );
                         })}
                       </ul>
                     </div>

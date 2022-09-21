@@ -33,7 +33,7 @@ describe('FormUser', () => {
       </FormRoot>
     );
 
-    userEvent.type(await findByDataTest('idNumber-input'), '007');
+    await userEvent.type(await findByDataTest('idNumber-input'), '007');
 
     // eslint-disable-next-line testing-library/prefer-screen-queries
     expect(getByText('007')).toBeInTheDocument();

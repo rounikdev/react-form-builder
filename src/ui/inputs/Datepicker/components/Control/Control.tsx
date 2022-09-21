@@ -1,9 +1,14 @@
 import { FocusEventHandler, forwardRef, memo, MouseEvent, ReactNode } from 'react';
 
+import { useClass } from '@rounik/react-custom-hooks';
+
 import { Stylable, Testable } from '@types';
+
+import styles from './Control.scss';
 
 interface DatepickerControlProps extends Stylable, Testable {
   describedBy?: string;
+  disabled?: boolean;
   expanded?: boolean;
   icon?: ReactNode;
   label?: string;
@@ -19,6 +24,7 @@ export const Control = memo(
         className,
         dataTest,
         describedBy,
+        disabled,
         expanded,
         icon,
         label,
@@ -32,10 +38,15 @@ export const Control = memo(
       return (
         <button
           aria-describedby={describedBy}
+          aria-disabled={disabled}
           aria-expanded={expanded}
           aria-label={label}
-          className={className}
+          className={useClass(
+            [styles.Container, disabled && styles.Disabled, className],
+            [className, disabled]
+          )}
           data-test={dataTest}
+          disabled={disabled}
           onClick={onClick}
           onFocus={onFocus}
           ref={ref}

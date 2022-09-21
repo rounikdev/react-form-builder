@@ -157,7 +157,8 @@ describe('Modal actions', () => {
     });
 
     const modalBackdrop = getByDataTest('test-backdrop-modal');
-    userEvent.click(modalBackdrop);
+
+    await userEvent.click(modalBackdrop);
 
     expect(getByText(JSON.stringify({}))).toBeInTheDocument();
   });

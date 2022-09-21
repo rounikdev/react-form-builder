@@ -74,11 +74,11 @@
 }
 
 .FromLeftEnter {
-  animation: from-left-enter var(--transition) ease-in-out;
+  animation: from-left-enter var(--transition) ease-in-out forwards;
 }
 
 .FromLeftExit {
-  animation: from-left-exit var(--transition) ease-in-out;
+  animation: from-left-exit var(--transition) ease-in-out forwards;
 }
 
 @keyframes from-left-enter {
@@ -102,11 +102,11 @@
 }
 
 .FromRightEnter {
-  animation: fromRightEnter var(--transition) ease-in-out;
+  animation: from-right-enter var(--transition) ease-in-out forwards;
 }
 
 .FromRightExit {
-  animation: fromRightExit var(--transition) ease-in-out;
+  animation: from-right-exit var(--transition) ease-in-out forwards;
 }
 
 @keyframes from-right-enter {

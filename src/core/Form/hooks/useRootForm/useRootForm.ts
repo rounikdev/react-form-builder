@@ -4,8 +4,9 @@ import { useUpdate, useUpdatedRef } from '@rounik/react-custom-hooks';
 
 import {
   INITIAL_RESET_RECORD_KEY,
+  NO_RESET_KEY,
   ROOT_RESET_RECORD_KEY,
-  STORAGE_RESET
+  STORAGE_RESET_KEY
 } from '@core/Form/constants';
 import {
   FieldErrors,
@@ -20,24 +21,30 @@ import {
 interface UseRootFormProps {
   formData: FormStateEntryValue;
   initialResetState?: FormStateEntryValue;
+  isPristine?: boolean;
   usesStorage?: boolean;
 }
 
-export const useRootForm = ({ formData, initialResetState, usesStorage }: UseRootFormProps) => {
+export const useRootForm = ({
+  formData,
+  initialResetState,
+  isPristine,
+  usesStorage
+}: UseRootFormProps) => {
   const [fieldsToBeSet, setFieldsValueState] = useState<SetFieldsValuePayload>({});
 
   const [errors, setErrors] = useState<FieldErrors>({});
 
-  const [pristine, setPristine] = useState<boolean>(true);
+  const [pristine, setPristine] = useState<boolean>(!!isPristine);
 
   const [focusedField, focusField] = useState('');
 
   const [scrolledField, scrollFieldIntoView] = useState('');
 
-  const [forceValidateFlag, setForceValidateFlag] = useState<ForceValidateFlag>({});
+  const [forceValidateFlag, setForceValidateFlag] = useState<ForceValidateFlag | null>(null);
 
   const [resetFlag, setResetFlag] = useState<ResetFlag>({
-    resetKey: INITIAL_RESET_RECORD_KEY
+    resetKey: NO_RESET_KEY
   });
 
   const [resetRecords, setResetRecords] = useState<Record<string, FormStateEntryValue>>({});
@@ -99,7 +106,6 @@ export const useRootForm = ({ formData, initialResetState, usesStorage }: UseRoo
         [ROOT_RESET_RECORD_KEY]: formDataRef.current
       };
     });
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setResetRecords]); // formData makes Form test hang
 
@@ -117,17 +123,27 @@ export const useRootForm = ({ formData, initialResetState, usesStorage }: UseRoo
 
   const getFieldId = useCallback(() => '', []);
 
-  const reset = useCallback(
-    ({ resetList }: { resetList?: string[] } = {}) => {
-      if (resetList) {
-        setResetFlag({ resetKey: '', resetList });
-      } else {
-        setResetFlag({ resetKey: usesStorage ? STORAGE_RESET : INITIAL_RESET_RECORD_KEY });
-        setPristine(true);
-      }
-    },
-    [usesStorage]
-  );
+  const usesStorageRef = useUpdatedRef(usesStorage);
+
+  const reset = useCallback(({ resetList }: { resetList?: string[] } = {}) => {
+    if (resetList) {
+      setResetFlag({ resetKey: NO_RESET_KEY, resetList });
+    } else {
+      setResetFlag({
+        resetKey: usesStorageRef.current ? STORAGE_RESET_KEY : INITIAL_RESET_RECORD_KEY
+      });
+      setPristine(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useUpdate(() => {
+    if (pristine) {
+      setResetFlag({
+        resetKey: NO_RESET_KEY
+      });
+    }
+  }, [pristine, resetFlag.resetKey]);
 
   // Store the initial reset state
   // in the resetRecords:

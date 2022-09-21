@@ -1,4 +1,4 @@
-import { CSSProperties, FC, memo, useCallback, useMemo, useState } from 'react';
+import { CSSProperties, FC, memo, ReactEventHandler, useCallback, useMemo, useState } from 'react';
 
 import { useUpdateOnly } from '@rounik/react-custom-hooks';
 
@@ -34,7 +34,10 @@ export const Image: FC<ImageProps> = memo(({ alt, className, dataTest, src }) =>
 
   const showImage = useMemo(() => src && !state.error, [src, state.error]);
 
-  const onLoadHandler = useCallback(({ target: { naturalHeight, naturalWidth } }) => {
+  const onLoadHandler: ReactEventHandler<HTMLImageElement> = useCallback((event) => {
+    const target = event.target as HTMLImageElement;
+    const { naturalHeight, naturalWidth } = target;
+
     setState((currentState) => ({
       ...currentState,
       style: getImageStyle(naturalHeight, naturalWidth)

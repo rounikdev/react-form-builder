@@ -1,4 +1,4 @@
-import { mount } from '@cypress/react';
+import { mount } from '@cypress/react18';
 import { FC, useState } from 'react';
 
 import { HeightTransitionBox } from '../HeightTransitionBox';
@@ -38,7 +38,12 @@ const TestCmp: FC<
           transitionDuration={transitionDuration}
           transitionType={transitionType}
         >
-          {showContent ? <div data-test="test-content" style={{ height: 200 }} /> : null}
+          {showContent ? (
+            <div
+              data-test="test-content"
+              style={{ backgroundColor: 'red', height: 200, width: 200 }}
+            />
+          ) : null}
         </HeightTransitionBox>
       ) : null}
 
@@ -52,7 +57,12 @@ const TestCmp: FC<
               transitionDuration={transitionDuration}
               transitionType={transitionType}
             >
-              {showContent ? <div data-test="test-content" style={{ height: 200 }} /> : null}
+              {showContent ? (
+                <div
+                  data-test="test-content"
+                  style={{ backgroundColor: 'red', height: 200, width: 200 }}
+                />
+              ) : null}
             </HeightTransitionBox>
           </HeightTransitionBox>
         </HeightTransitionProvider>
@@ -114,8 +124,8 @@ describe('HeightTransitionBox', () => {
     cy.get('[data-test="toggle-content"]').click();
 
     // TODO sporadically timeouts in `cy:prod:ct`
-    // cy.wait(600);
-    // cy.get('[data-test="test-content"]').should('not.exist');
+    cy.wait(600);
+    cy.get('[data-test="test-content"]').should('not.exist');
   });
 
   it('Pass `transitionDuration` and `transitionType` props', () => {

@@ -9,7 +9,8 @@ export interface RangeValue {
   to: number;
 }
 
-export interface UseRangeArgs extends UseFieldConfig<RangeValue> {
+export interface UseRangeArgs extends Omit<UseFieldConfig<RangeValue>, 'initialValue'> {
+  initialValue?: UseFieldConfig<RangeValue>['initialValue'];
   label?: string | ((dependencyValue: FormStateEntryValue) => string);
   max?: number;
   min?: number;
@@ -33,7 +34,7 @@ export interface RangeContext {
   min?: number;
   move: MouseEventHandler;
   onBlurHandler: FocusEventHandler;
-  onChangeHandler: (value: RangeValue) => Promise<void>;
+  onChangeHandler: (value: RangeValue) => void;
   onFocusHandler: FocusEventHandler;
   onTrackClickHandler: MouseEventHandler;
   options?: RangeOptions;

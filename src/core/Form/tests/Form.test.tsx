@@ -1,4 +1,4 @@
-import { fireEvent } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FC, useEffect } from 'react';
 
@@ -7,9 +7,7 @@ import { useUpdateOnly } from '@rounik/react-custom-hooks';
 import { ShowHide, testRender } from '@services/utils';
 
 import { FormArray, FormObject, FormRoot } from '../components';
-// import { initialFormContext } from '../context';
 import { useField, useForm } from '../hooks';
-// import { reducer } from '../reducers';
 import { Validator } from '../types';
 
 interface FormTestComponent {
@@ -359,7 +357,9 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
     rerender(<Component show={false} />);
 
     const stateB = JSON.parse(getByDataTest('state').textContent || '');
-    expect(stateB).toEqual({});
+    await waitFor(() => {
+      expect(stateB).toEqual({});
+    });
 
     const validityB = getByDataTest('validity').textContent;
     expect(validityB).toBe(`${valid}`);
@@ -494,7 +494,7 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
     expect(onSubmit).toHaveBeenCalledWith({ valid, value: { [fieldName]: value } });
   });
 
-  it('Force validate flag updates', () => {
+  it('Force validate flag updates', async () => {
     const callback = jest.fn();
 
     const { getByDataTest } = testRender(
@@ -507,39 +507,9 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
     );
 
     const button = getByDataTest('method-test-button');
-    userEvent.click(button);
+    await userEvent.click(button);
 
     expect(callback).toHaveBeenCalledTimes(1);
-  });
-
-  it('Form reducer returns state as default', () => {
-    // const newState = reducer(initialFormContext, {
-    //   payload: { key: '', type: '' },
-    //   type: 'SOME_UNEXPECTED_TYPE' as 'REMOVE_FROM_FORM'
-    // });
-    // expect(newState).toEqual(initialFormContext);
-  });
-
-  // eslint-disable-next-line max-len
-  it('Form reducer returns state without modifying it if no change in value or valid when setting field data', () => {
-    // const newState = reducer(initialFormContext, {
-    //   payload: { key: 'firstName', valid: true, value: 'Ivan' },
-    //   type: 'SET_IN_FORM'
-    // });
-    // expect(newState).toEqual({
-    //   ...initialFormContext,
-    //   state: {
-    //     firstName: {
-    //       valid: true,
-    //       value: 'Ivan'
-    //     }
-    //   }
-    // });
-    // const newStateB = reducer(newState, {
-    //   payload: { key: 'firstName', valid: true, value: 'Ivan' },
-    //   type: 'SET_IN_FORM'
-    // });
-    // expect(newStateB).toBe(newState);
   });
 
   it('Sets the errors state', async () => {
@@ -585,7 +555,7 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
 
     const input = await findByDataTest('input');
 
-    userEvent.type(input, 'a');
+    await userEvent.type(input, 'a');
 
     const lastCall = mockOnChange.mock.calls.pop();
 

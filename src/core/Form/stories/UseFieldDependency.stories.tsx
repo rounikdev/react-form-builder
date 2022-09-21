@@ -39,7 +39,7 @@ const Template: Story<FC> = () => {
         />
         <Button
           dataTest="update-value"
-          onClick={() => setInitialFirstName('John')}
+          onClick={() => setInitialFirstName((current) => (current === 'John' ? 'Mike' : 'John'))}
           text="Update value"
         />
       </FormRoot>

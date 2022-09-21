@@ -53,9 +53,10 @@ const getInitialValue = <T>({ extractId, multi, options, value }: GetInitialValu
     );
   }
 
-  return multi ? initialValue : initialValue.length ? [initialValue[0]] : [];
+  return multi ? initialValue ?? [] : initialValue.length ? [initialValue[0]] : [];
 };
 
+// TODO: Split into smaller hooks
 // TODO: Filter the value for non existing options on options change
 export const useAutocomplete = <T>({
   dependencyExtractor,
@@ -83,6 +84,7 @@ export const useAutocomplete = <T>({
     onChangeHandler,
     onFocusHandler,
     touched,
+    updatedInitialValue,
     valid,
     validating,
     value
@@ -102,7 +104,7 @@ export const useAutocomplete = <T>({
   const [state, setState] = useState({
     focused: '',
     search: '',
-    selected: value.map((option) => extractId(option)),
+    selected: value?.map((option) => extractId(option)) ?? [],
     show: false
   });
 
@@ -138,7 +140,7 @@ export const useAutocomplete = <T>({
   }, [onBlurHandler, state.selected]);
 
   const keyUpHandler = useCallback(
-    (event) => {
+    (event: KeyboardEvent) => {
       if (!state.show) {
         return;
       }
@@ -244,6 +246,7 @@ export const useAutocomplete = <T>({
     };
   }, [close, fieldRef, multi, open, select, state.focused, state.selected, state.show]);
 
+  // TODO: StrictMode check!
   useUpdateOnly(() => {
     onChangeHandler(
       list.filter((option) => {
@@ -252,10 +255,11 @@ export const useAutocomplete = <T>({
     );
   }, [state.selected]);
 
-  // Update from value from useField:
+  // Update from the value
+  // coming from useField:
   useUpdateOnly(() => {
     if (
-      value.find(
+      value?.find(
         (incomingOption) => !list.find((option) => extractId(option) === extractId(incomingOption))
       )
     ) {
@@ -267,16 +271,18 @@ export const useAutocomplete = <T>({
     setState((currentState) => {
       let newSelected = currentState.selected;
 
-      if (!multi) {
-        if (newSelected[0] !== extractId(value[0])) {
+      if (!value) {
+        newSelected = [];
+      } else if (!multi) {
+        if (newSelected && value && newSelected[0] !== extractId(value[0])) {
           newSelected = [extractId(value[0])];
         } else {
           newSelected = newSelected;
         }
       } else {
-        if (value.length !== newSelected.length) {
+        if (value && newSelected && value.length !== newSelected.length) {
           newSelected = value.map((option) => extractId(option));
-        } else {
+        } else if (value && newSelected) {
           const dif = value.filter((item) => !newSelected.includes(extractId(item)));
 
           if (dif.length) {
@@ -316,6 +322,7 @@ export const useAutocomplete = <T>({
     setSearch,
     show: state.show,
     touched,
+    updatedInitialValue,
     valid,
     validating,
     wrapperRef: element

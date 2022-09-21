@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react';
 import { FC, ReactNode } from 'react';
 
 import { useMount } from '@rounik/react-custom-hooks';
@@ -38,7 +38,9 @@ const Reset: FC<ResetProps> = ({ resetKey, resetState }) => {
   return null;
 };
 
-const Wrapper: FC = ({ children }) => <FormRoot dataTest="root-form">{children}</FormRoot>;
+const Wrapper: FC<{ children: ReactNode }> = ({ children }) => (
+  <FormRoot dataTest="root-form">{children}</FormRoot>
+);
 
 interface WrapperWithResetProps {
   children?: ReactNode;
@@ -124,11 +126,11 @@ describe('useFormArray', () => {
     window.requestAnimationFrame = setTimeout;
 
     const { result } = renderHook(() => useFormArray({ factory, fieldId: 'users', initialValue }), {
-      initialProps: {
-        resetKey: 'users',
-        resetState: { users: initialValue }
-      },
-      wrapper: WrapperWithReset
+      wrapper: ({ children }) => (
+        <WrapperWithReset resetKey="users" resetState={{ users: initialValue }}>
+          {children}
+        </WrapperWithReset>
+      )
     });
 
     act(() => {
@@ -156,11 +158,11 @@ describe('useFormArray', () => {
     window.requestAnimationFrame = setTimeout;
 
     const { result } = renderHook(() => useFormArray({ factory, fieldId: 'users', initialValue }), {
-      initialProps: {
-        resetKey: ROOT_RESET_RECORD_KEY,
-        resetState: { users: initialValue }
-      },
-      wrapper: WrapperWithReset
+      wrapper: ({ children }) => (
+        <WrapperWithReset resetKey={ROOT_RESET_RECORD_KEY} resetState={{ users: initialValue }}>
+          {children}
+        </WrapperWithReset>
+      )
     });
 
     act(() => {
@@ -188,11 +190,11 @@ describe('useFormArray', () => {
     window.requestAnimationFrame = setTimeout;
 
     const { result } = renderHook(() => useFormArray({ factory, fieldId: 'users', initialValue }), {
-      initialProps: {
-        resetKey: INITIAL_RESET_RECORD_KEY,
-        resetState: { users: initialValue }
-      },
-      wrapper: WrapperWithReset
+      wrapper: ({ children }) => (
+        <WrapperWithReset resetKey={INITIAL_RESET_RECORD_KEY} resetState={{ users: initialValue }}>
+          {children}
+        </WrapperWithReset>
+      )
     });
 
     act(() => {
@@ -222,11 +224,11 @@ describe('useFormArray', () => {
     window.requestAnimationFrame = setTimeout;
 
     const { result } = renderHook(() => useFormArray({ factory, fieldId: 'users', initialValue }), {
-      initialProps: {
-        resetKey: 'phones',
-        resetState: { users: initialValue }
-      },
-      wrapper: WrapperWithReset
+      wrapper: ({ children }) => (
+        <WrapperWithReset resetKey="phones" resetState={{ users: initialValue }}>
+          {children}
+        </WrapperWithReset>
+      )
     });
 
     act(() => {

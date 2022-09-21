@@ -1,39 +1,17 @@
-import {
-  FocusEvent,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from 'react';
+import { useEffect, useMemo } from 'react';
 
-import {
-  useBeforeFirstRender,
-  useIsMounted,
-  useLastDiffValue,
-  useUnmount,
-  useUpdate,
-  useUpdatedRef,
-  useUpdateOnly
-} from '@rounik/react-custom-hooks';
-
-import {
-  INITIAL_RESET_RECORD_KEY,
-  ROOT_RESET_RECORD_KEY,
-  STORAGE_RESET
-} from '@core/Form/constants';
 import { useForm } from '@core/Form/hooks/useForm/useForm';
 import { useFormEditContext, useFormRoot } from '@core/Form/providers';
-import { shouldBeReset } from '@core/Form/services';
+import { UseFieldConfig, UseFieldReturnType } from '@core/Form/types';
+
 import {
-  FormStateEntryValue,
-  UseFieldConfig,
-  UseFieldReturnType,
-  UseFieldState,
-  ValidityCheck
-} from '@core/Form/types';
-import { GlobalModel } from '@services';
+  useFieldDOM,
+  useFieldErrors,
+  useFieldParent,
+  useFieldReset,
+  useFieldState,
+  useFieldValidate
+} from './hooks';
 
 export const useField = <T>({
   dependencyExtractor,
@@ -45,347 +23,66 @@ export const useField = <T>({
   sideEffect,
   validator
 }: UseFieldConfig<T>): UseFieldReturnType<T> => {
-  const context = useForm();
+  const { methods: rootMethods } = useFormRoot();
 
   const { isEdit } = useFormEditContext();
 
-  const {
-    fieldsToBeSet,
-    focusedField,
-    formData,
-    methods,
-    resetFlag,
-    resetRecords,
-    scrolledField,
-    usesStorage
-  } = useFormRoot();
-
-  const { focusField, registerFieldErrors, scrollFieldIntoView, setDirty, setFieldsValue } =
-    methods;
-
-  const isMounted = useIsMounted();
-
-  const fieldRef = useRef<HTMLElement | null>(null);
-
-  const dependency = useMemo(() => {
-    if (typeof dependencyExtractor === 'function' && formData) {
-      return dependencyExtractor(formData);
-    } else {
-      return undefined;
-    }
-  }, [dependencyExtractor, formData]);
-
-  const updatedDependency = useMemo(
-    () => dependency,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [GlobalModel.createStableDependency(dependency)]
-  );
-
-  const builtInitialValue = useMemo(
-    () =>
-      typeof initialValue === 'function'
-        ? (initialValue as (dependencyValue: FormStateEntryValue) => T)(updatedDependency)
-        : initialValue,
-    [updatedDependency, initialValue]
-  );
-
-  const updatedInitialValue = useMemo(
-    () => builtInitialValue,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [GlobalModel.createStableDependency(builtInitialValue)]
-  );
-
-  let stateValue = updatedInitialValue;
-
-  useBeforeFirstRender(() => {
-    if (formatter) {
-      stateValue = formatter({
-        dependencyValue: updatedDependency,
-        newValue: updatedInitialValue
-      });
-    } else {
-      stateValue = updatedInitialValue;
-    }
-  });
-
-  const [state, setFieldState] = useState<UseFieldState<T>>({
-    errors: [],
-    focused: false,
-    touched: false,
-    valid: true,
-    validating: false,
-    value: stateValue
-  });
-
-  const setState = useCallback(
-    (value: SetStateAction<UseFieldState<T>>) => {
-      if (isMounted.current) {
-        setFieldState(value);
-      }
-    },
-    [isMounted]
-  );
-
-  const prevValue = useLastDiffValue(state.value);
-
-  const prevValueRef = useUpdatedRef(prevValue);
-
-  const valueRef = useUpdatedRef(state.value);
-
-  const formatterRef = useUpdatedRef(formatter);
-
-  const validatorRef = useUpdatedRef(validator);
-
-  const validateField = useCallback(
-    async (value: T, dependencyValue?: FormStateEntryValue, useDependency?: boolean) => {
-      let validityCheck: ValidityCheck;
-      let formattedValue: T;
-
-      if (value !== valueRef.current || useDependency) {
-        let oldValue: T | undefined;
-
-        if (value !== valueRef.current) {
-          oldValue = valueRef.current;
-        } else if (useDependency) {
-          oldValue = prevValueRef.current;
-        }
-
-        formattedValue = formatterRef.current
-          ? formatterRef.current({
-              dependencyValue,
-              newValue: value,
-              oldValue
-            })
-          : value;
-      } else {
-        formattedValue = value;
-      }
-
-      setState((current) => ({
-        ...current,
-        valid: false,
-        validating: true,
-        value: formattedValue
-      }));
-
-      if (validatorRef.current) {
-        try {
-          validityCheck = await validatorRef.current(formattedValue, dependencyValue);
-        } catch (error) {
-          validityCheck = {
-            errors: [{ text: 'errorValidating' }],
-            valid: false
-          };
-        }
-      } else {
-        validityCheck = {
-          errors: [],
-          valid: true
-        };
-      }
-
-      setState((current) => ({
-        ...current,
-        ...validityCheck,
-        validating: false
-      }));
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+  const { methods: parentMethods } = useForm();
+  const { getFieldId } = parentMethods;
 
   const fieldId = useMemo(() => {
-    const parentId = context.methods.getFieldId();
+    const parentId = getFieldId();
 
     return parentId ? `${parentId}.${name}` : name;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [context.methods.getFieldId, name]);
+  }, [getFieldId, name]);
 
-  useUpdateOnly(() => {
-    if (Object.keys(context.forceValidateFlag).length === 0) {
-      setState((current) => ({
-        ...current,
-        touched: true
-      }));
-    } else if (typeof context.forceValidateFlag[fieldId] === 'boolean') {
-      setState((current) => ({
-        ...current,
-        touched: context.forceValidateFlag[fieldId]
-      }));
-    }
-  }, [context.forceValidateFlag]);
+  const {
+    blur,
+    focus,
+    resetState,
+    setTouch,
+    setValidity,
+    setValue,
+    state,
+    updatedDependency,
+    updatedInitialValue
+  } = useFieldState<T>({ dependencyExtractor, fieldId, formatter, initialValue });
 
-  // Validate only when updatedDependency
-  // has changed. That's why we use
-  // ref for the value:
-  useEffect(() => {
-    validateField(state.value, updatedDependency, true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [updatedDependency]);
+  useFieldErrors({ fieldErrors: state.errors, fieldId });
 
-  useUpdateOnly(async () => {
-    const fieldPath = fieldId.split('.');
+  useFieldParent<T>({ fieldId, name, setTouch, valid: state.valid, value: state.value });
 
-    if (shouldBeReset({ fieldId, resetFlag })) {
-      let resetValue: FormStateEntryValue;
-
-      if (usesStorage) {
-        resetValue =
-          GlobalModel.getNestedValue(resetRecords[INITIAL_RESET_RECORD_KEY], fieldPath) ??
-          undefined; // TODO: is undefined a valid data type (maybe provide a defaultValue)
-      } else {
-        resetValue =
-          GlobalModel.getNestedValue(
-            resetRecords[resetFlag.resetKey || ROOT_RESET_RECORD_KEY],
-            fieldPath
-          ) ?? updatedInitialValue;
-      }
-
-      await validateField(resetValue, updatedDependency);
-
-      setState((current) => ({
-        ...current,
-        focused: false,
-        touched: false,
-        validating: false
-      }));
-    } else if (resetFlag.resetKey === STORAGE_RESET) {
-      setState((current) => ({
-        ...current,
-        focused: false,
-        touched: false,
-        validating: false
-      }));
-    }
-  }, [resetFlag]);
-
-  useUnmount(() => {
-    // No need to call setDirty, because a field could be
-    // unmounted because removal form array, which calls
-    // setDirty or from conditional field change, which
-    // might have happened because some form state update
-    // which calls setDirty:
-    context.methods.removeFromForm({ key: name });
+  const { fieldRef, onBlurHandler, onChangeHandler, onFocusHandler } = useFieldDOM<T>({
+    blur,
+    fieldId,
+    focus,
+    onBlur,
+    onFocus,
+    setValue,
+    touched: state.touched,
+    updatedInitialValue
   });
 
-  // Update form errors state on errors update:
-  useEffect(() => {
-    if (registerFieldErrors) {
-      registerFieldErrors({ fieldErrors: state.errors, fieldId });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fieldId, state.errors]);
+  useFieldReset<T>({ fieldId, resetState, updatedInitialValue });
 
-  // Remove from form errors state on unmount:
-  useEffect(() => {
-    return () => {
-      if (registerFieldErrors) {
-        registerFieldErrors({ fieldErrors: [], fieldId });
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fieldId]);
+  useFieldValidate({
+    setValidity,
+    updatedDependency,
+    validating: state.validating,
+    validator,
+    value: state.value
+  });
 
-  useUpdate(() => {
-    validateField(updatedInitialValue, updatedDependency);
-  }, [updatedInitialValue]);
-
-  // Update parent Form state:
-  useEffect(() => {
-    context.methods.setInForm({
-      key: name,
-      valid: state.valid,
-      value: state.value
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name, state.valid, state.value]);
-
-  // Execute side effect:
   useEffect(() => {
     if (sideEffect) {
       sideEffect({
         dependencyValue: updatedDependency,
-        methods: { form: context.methods, root: methods },
+        methods: { form: parentMethods, root: rootMethods },
         value: state.value
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.value, updatedDependency]);
-
-  // Focus element from the root form:
-  useUpdate(() => {
-    if (focusedField === fieldId && fieldRef.current) {
-      fieldRef.current.focus();
-
-      focusField('');
-    }
-  }, [focusedField]);
-
-  // Scroll element into view from the root form:
-  useUpdate(() => {
-    if (scrolledField === fieldId && fieldRef.current) {
-      fieldRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-        inline: 'nearest'
-      });
-
-      scrollFieldIntoView('');
-    }
-  }, [scrolledField]);
-
-  // Set value from the root form:
-  useUpdate(() => {
-    if (fieldsToBeSet[fieldId] !== undefined) {
-      setDirty();
-      validateField(fieldsToBeSet[fieldId], updatedDependency);
-      setFieldsValue({ [fieldId]: undefined });
-    }
-  }, [fieldsToBeSet]);
-
-  useUpdate(() => {
-    if (state.touched) {
-      context.methods.touchParent();
-    }
-  }, [state.touched]);
-
-  const onBlurHandler = useCallback(
-    (event: FocusEvent) => {
-      setState((current) => ({ ...current, focused: false, touched: true }));
-
-      if (typeof onBlur === 'function') {
-        onBlur(event);
-      }
-
-      context.methods.blurParent();
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [onBlur]
-  );
-
-  const onChangeHandler = useCallback(
-    (val) => {
-      setDirty();
-
-      return validateField(val, updatedDependency);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [updatedDependency, validateField]
-  );
-
-  const onFocusHandler = useCallback(
-    (event: FocusEvent) => {
-      setState((current) => ({ ...current, focused: true, touched: true }));
-
-      if (typeof onFocus === 'function') {
-        onFocus(event);
-      }
-
-      context.methods.focusParent();
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [onFocus]
-  );
 
   return {
     dependencyValue: updatedDependency,
@@ -395,6 +92,7 @@ export const useField = <T>({
     onBlurHandler,
     onChangeHandler,
     onFocusHandler,
+    updatedInitialValue,
     ...state
   };
 };
