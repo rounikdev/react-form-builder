@@ -30,7 +30,13 @@ const Template: Story<FC> = () => {
             onReset={() => {
               console.log('Form reset');
             }}
-            onSubmit={console.log}
+            onSubmit={({ rootMethods: { injectErrors } }) => {
+              setTimeout(() => {
+                injectErrors({
+                  'users.0.firstName': { errors: [{ text: 'Such user exists' }], override: true }
+                });
+              }, 500);
+            }}
           >
             <FormStateDisplay />
             <FormArray factory={createUser} initialValue={initialUsers} name="users">

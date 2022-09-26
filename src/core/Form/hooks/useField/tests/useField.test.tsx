@@ -1,11 +1,17 @@
-import { fireEvent, renderHook, waitFor } from '@testing-library/react';
+import { act, fireEvent, renderHook, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FC, FocusEventHandler, MutableRefObject, ReactNode, useEffect, useState } from 'react';
 
 import { FormObject, FormRoot } from '@core/Form/components';
 import { useForm } from '@core/Form/hooks/useForm/useForm';
 import { useFormRoot } from '@core/Form/providers';
-import { DependencyExtractor, Formatter, FormStateEntryValue, Validator } from '@core/Form/types';
+import {
+  DependencyExtractor,
+  Formatter,
+  FormStateEntryValue,
+  InjectedError,
+  Validator
+} from '@core/Form/types';
 import { ShowHide, testRender } from '@services/utils';
 import { Text } from '@ui';
 
@@ -80,6 +86,7 @@ const TestInput: FC<TestInputProps<string>> = ({
     sideEffect,
     validator
   });
+
   return (
     <>
       <input
@@ -927,5 +934,81 @@ describe('useField', () => {
     await userEvent.click(getByDataTest('update-button'));
 
     expect(getByDataTest('last-name')).toHaveValue('Doe');
+  });
+
+  it('Sets the errors from the root form context.', async () => {
+    const initialValue = '';
+    const parentFormName = 'user';
+    const name = 'firstName';
+    const error = 'Error';
+    const injectedError = 'Injected Error';
+    const injectedErrorsA = { errors: [{ text: injectedError }] };
+    const injectedErrorsB = { errors: [{ text: injectedError }], override: true };
+
+    const InjectErrorsButton = ({
+      dataTest,
+      errors
+    }: {
+      dataTest: string;
+      errors: InjectedError;
+    }) => {
+      const { methods } = useFormRoot();
+
+      return (
+        <button
+          data-test={dataTest}
+          onClick={() =>
+            methods.injectErrors({
+              [`${parentFormName}.${name}`]: errors
+            })
+          }
+        ></button>
+      );
+    };
+
+    const { findByDataTest, getByDataTest } = testRender(
+      <FormRoot dataTest="root-form" onSubmit={jest.fn()}>
+        <FormObject name="user">
+          <TestInput
+            initialValue={initialValue}
+            name={name}
+            validator={(firstName) => {
+              if (firstName) {
+                return { errors: [], valid: true };
+              } else {
+                return {
+                  errors: [{ text: error }],
+                  valid: false
+                };
+              }
+            }}
+          />
+        </FormObject>
+        <InjectErrorsButton dataTest="inject-errors-a" errors={injectedErrorsA} />
+        <InjectErrorsButton dataTest="inject-errors-b" errors={injectedErrorsB} />
+      </FormRoot>
+    );
+
+    expect(await findByDataTest('input')).toHaveValue(initialValue);
+    expect(getByDataTest('input')).not.toBeValid();
+
+    act(() => {
+      // TODO: investigate the cause of that behavior:
+      // This is needed to update the component:
+      getByDataTest('input').focus();
+    });
+
+    const stateA = JSON.parse((await findByDataTest('state')).textContent || '');
+    expect(stateA.errors).toEqual([{ text: error }]);
+
+    await userEvent.click(getByDataTest('inject-errors-a'));
+
+    const stateB = JSON.parse((await findByDataTest('state')).textContent || '');
+    expect(stateB.errors).toEqual([{ text: error }, { text: injectedError }]);
+
+    await userEvent.click(getByDataTest('inject-errors-b'));
+
+    const stateC = JSON.parse((await findByDataTest('state')).textContent || '');
+    expect(stateC.errors).toEqual([{ text: injectedError }]);
   });
 });

@@ -43,6 +43,8 @@ export const FormRoot: FC<FormRootProps> = memo(
       forceValidate,
       forceValidateFlag,
       getFieldId,
+      injectedErrors,
+      injectErrors,
       isEdit,
       pristine,
       registerFieldErrors,
@@ -62,17 +64,6 @@ export const FormRoot: FC<FormRootProps> = memo(
       isPristine,
       usesStorage
     });
-
-    const onSubmitHandler = useCallback(
-      (event: FormEvent) => {
-        event.preventDefault();
-
-        if (onSubmit) {
-          onSubmit({ valid, value });
-        }
-      },
-      [onSubmit, valid, value]
-    );
 
     useUpdate(() => {
       if (!pristine && onChange) {
@@ -165,6 +156,7 @@ export const FormRoot: FC<FormRootProps> = memo(
       () => ({
         focusField,
         forceValidate,
+        injectErrors,
         registerFieldErrors,
         reset,
         scrollFieldIntoView,
@@ -177,12 +169,24 @@ export const FormRoot: FC<FormRootProps> = memo(
       []
     );
 
+    const onSubmitHandler = useCallback(
+      (event: FormEvent) => {
+        event.preventDefault();
+
+        if (onSubmit) {
+          onSubmit({ formState: { valid, value }, rootMethods: rootProviderMethods });
+        }
+      },
+      [onSubmit, rootProviderMethods, valid, value]
+    );
+
     const formRootContext = useMemo(() => {
       return {
         errors,
         fieldsToBeSet,
         focusedField,
         formData: value,
+        injectedErrors,
         methods: rootProviderMethods,
         pristine,
         resetFlag,
@@ -195,6 +199,7 @@ export const FormRoot: FC<FormRootProps> = memo(
       errors,
       fieldsToBeSet,
       focusedField,
+      injectedErrors,
       pristine,
       resetRecords,
       rootProviderMethods,

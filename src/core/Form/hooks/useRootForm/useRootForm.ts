@@ -14,6 +14,7 @@ import {
   ForceValidateFlag,
   ForceValidateMethod,
   FormStateEntryValue,
+  InjectedErrors,
   ResetFlag,
   SetFieldsValuePayload
 } from '@core/Form/types';
@@ -35,6 +36,8 @@ export const useRootForm = ({
 
   const [errors, setErrors] = useState<FieldErrors>({});
 
+  const [injectedErrors, setInjectedErrors] = useState<InjectedErrors>({});
+
   const [pristine, setPristine] = useState<boolean>(!!isPristine);
 
   const [focusedField, focusField] = useState('');
@@ -54,6 +57,8 @@ export const useRootForm = ({
       setFieldsValueState((prevState) => ({ ...prevState, ...value })),
     []
   );
+
+  const injectErrors = useCallback((value: InjectedErrors) => setInjectedErrors(value), []);
 
   const forceValidate: ForceValidateMethod = useCallback((customForceValidateFlag = {}) => {
     setForceValidateFlag(customForceValidateFlag);
@@ -173,6 +178,8 @@ export const useRootForm = ({
     forceValidate,
     forceValidateFlag,
     getFieldId,
+    injectedErrors,
+    injectErrors,
     isEdit,
     pristine,
     registerFieldErrors,

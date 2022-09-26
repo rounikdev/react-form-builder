@@ -491,7 +491,7 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
     fireEvent.submit(form);
 
     expect(onSubmit).toHaveBeenCalledTimes(1);
-    expect(onSubmit).toHaveBeenCalledWith({ valid, value: { [fieldName]: value } });
+    expect(onSubmit.mock.calls[0][0].formState).toEqual({ valid, value: { [fieldName]: value } });
   });
 
   it('Force validate flag updates', async () => {
