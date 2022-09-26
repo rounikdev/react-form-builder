@@ -8,12 +8,16 @@ const FormRootContext = createContext<FormRootProviderContext>({
   fieldsToBeSet: {},
   focusedField: '',
   formData: {},
+  injectedErrors: {},
   methods: {
     focusField: () => {
       // default function
     },
     forceValidate: () => {
       // default function
+    },
+    injectErrors: () => {
+      // default implementation
     },
     registerFieldErrors: undefined,
     reset: () => {

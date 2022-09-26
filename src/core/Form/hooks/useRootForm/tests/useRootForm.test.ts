@@ -17,6 +17,8 @@ describe('useRootForm', () => {
 
     expect(result.current.fieldsToBeSet).toEqual({});
 
+    expect(result.current.injectedErrors).toEqual({});
+
     expect(result.current.errors).toEqual({});
 
     expect(result.current.pristine).toBe(true);

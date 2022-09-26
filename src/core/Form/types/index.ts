@@ -77,6 +77,13 @@ export interface FieldErrorsPayload {
 
 export type SetFieldsValuePayload = Record<string, FormStateEntryValue>;
 
+export interface InjectedError {
+  errors: ValidationError[];
+  override?: boolean;
+}
+
+export type InjectedErrors = Record<string, InjectedError>;
+
 export interface FormContext {
   focused: boolean;
   forceValidateFlag: ForceValidateFlag | null;
@@ -129,7 +136,13 @@ export interface FormRootProps extends Testable {
   noValidate?: boolean;
   onChange?: (formState: FormData) => void;
   onReset?: () => void;
-  onSubmit?: (formState: FormStateEntry) => void;
+  onSubmit?: ({
+    formState,
+    rootMethods
+  }: {
+    formState: FormStateEntry;
+    rootMethods: FormRootProviderContext['methods'];
+  }) => void;
   usesStorage?: boolean;
 }
 
@@ -228,9 +241,11 @@ export interface FormRootProviderContext {
   fieldsToBeSet: SetFieldsValuePayload;
   focusedField: string;
   formData: FormStateEntryValue;
+  injectedErrors: InjectedErrors;
   methods: {
     focusField: (fieldId: string) => void;
     forceValidate: ForceValidateMethod;
+    injectErrors: (payload: InjectedErrors) => void;
     registerFieldErrors?: (payload: FieldErrorsPayload) => void;
     reset: ({ resetList }: { resetList?: ResetFlag['resetList'] }) => void;
     scrollFieldIntoView: (fieldId: string) => void;

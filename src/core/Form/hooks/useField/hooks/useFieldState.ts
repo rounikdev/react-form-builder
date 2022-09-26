@@ -39,6 +39,7 @@ export const useFieldState = <T>({
   const {
     fieldsToBeSet,
     formData,
+    injectedErrors,
     methods: { setDirty, setFieldsValue },
     usesStorage
   } = useFormRoot();
@@ -197,6 +198,23 @@ export const useFieldState = <T>({
       setFieldsValue({ [fieldId]: undefined });
     }
   }, [fieldsToBeSet]);
+
+  // Update the errors from the
+  // root method call:
+  useUpdate(() => {
+    if (injectedErrors[fieldId] !== undefined) {
+      const hasErrors = !!injectedErrors[fieldId].errors.length;
+
+      setState((current) => ({
+        ...current,
+        errors: injectedErrors[fieldId].override
+          ? [...injectedErrors[fieldId].errors]
+          : [...current.errors, ...injectedErrors[fieldId].errors],
+        touched: hasErrors,
+        valid: !hasErrors
+      }));
+    }
+  }, [injectedErrors]);
 
   return {
     blur,
