@@ -1,4 +1,4 @@
-import { fireEvent, waitFor } from '@testing-library/react';
+import { act, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FC, useEffect } from 'react';
 
@@ -356,8 +356,13 @@ describe('FormRoot, FormObject, FormArray and useForm', () => {
 
     rerender(<Component show={false} />);
 
-    const stateB = JSON.parse(getByDataTest('state').textContent || '');
-    await waitFor(() => {
+    await waitFor(async () => {
+      let stateB = '';
+
+      act(() => {
+        stateB = JSON.parse(getByDataTest('state').textContent || '');
+      });
+
       expect(stateB).toEqual({});
     });
 

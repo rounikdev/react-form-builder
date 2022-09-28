@@ -528,7 +528,7 @@ describe('useField', () => {
     expect(updatedStateB2.errors).toEqual([]);
   });
 
-  it('Removes the field data from the form state on field unmount', () => {
+  it('Removes the field data from the form state on field unmount', async () => {
     const fieldName = 'firstName';
     const initialValue = 'Ivan';
 
@@ -558,8 +558,15 @@ describe('useField', () => {
 
     rerender(<Component show={false} />);
 
-    const formStateB = JSON.parse(getByDataTest('form-state').textContent || '');
-    expect(formStateB).toEqual({});
+    await waitFor(() => {
+      let formStateB = '';
+
+      act(() => {
+        formStateB = JSON.parse(getByDataTest('form-state').textContent || '');
+      });
+
+      expect(formStateB).toEqual({});
+    });
   });
 
   it('Formatter formats value on mount', () => {

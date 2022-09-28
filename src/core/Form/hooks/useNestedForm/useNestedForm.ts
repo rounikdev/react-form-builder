@@ -1,6 +1,12 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import { useUnmount, useUpdate, useUpdatedRef, useUpdateOnly } from '@rounik/react-custom-hooks';
+import {
+  useUnmountSafe,
+  useUpdate,
+  useUpdatedRef,
+  useUpdateExtended,
+  useUpdateOnlyExtended
+} from '@rounik/react-custom-hooks';
 
 import { useForm } from '@core/Form/hooks/useForm/useForm';
 import { useFormEditContext, useFormRoot } from '@core/Form/providers';
@@ -15,7 +21,6 @@ import {
   Validator,
   ValidityCheck
 } from '@core/Form/types';
-import { GlobalModel } from '@services';
 
 interface UseNestedFormArgs<T> {
   dependencyExtractor?: DependencyExtractor;
@@ -150,42 +155,46 @@ export const useNestedForm = <T>({
     setTouched(true);
   }, []);
 
-  useUpdate(async () => {
-    let validityCheck: ValidityCheck;
+  useUpdateExtended(
+    async () => {
+      let validityCheck: ValidityCheck;
 
-    if (validator) {
-      parentContext.methods.setInForm({
-        key: name,
-        valid: false,
-        value
-      });
+      if (validator) {
+        parentContext.methods.setInForm({
+          key: name,
+          valid: false,
+          value
+        });
 
-      try {
-        validityCheck = await validator(value, dependency);
-      } catch (error) {
+        try {
+          validityCheck = await validator(value, dependency);
+        } catch (error) {
+          validityCheck = {
+            errors: [{ text: 'errorValidating' }],
+            valid: false
+          };
+        }
+      } else {
         validityCheck = {
-          errors: [{ text: 'errorValidating' }],
-          valid: false
+          errors: [],
+          valid: true
         };
       }
-    } else {
-      validityCheck = {
-        errors: [],
-        valid: true
-      };
-    }
 
-    setErrors(validityCheck.errors);
+      setErrors(validityCheck.errors);
 
-    setNestedIsValid(validityCheck.valid);
+      setNestedIsValid(validityCheck.valid);
 
-    parentContext.methods.setInForm({
-      key: name,
-      valid: valid && validityCheck.valid,
-      value
-    });
+      parentContext.methods.setInForm({
+        key: name,
+        valid: valid && validityCheck.valid,
+        value
+      });
+    },
     // !This is very important!!!!
-  }, [GlobalModel.createStableDependency([dependency, value, valid])]);
+    [dependency, value, valid],
+    true
+  );
 
   // Update form errors state on errors update:
   useUpdate(() => {
@@ -212,7 +221,7 @@ export const useNestedForm = <T>({
     }
   }, [focused]);
 
-  useUpdateOnly(() => {
+  useUpdateOnlyExtended(() => {
     const fieldId = getFieldId();
 
     if (
@@ -228,7 +237,7 @@ export const useNestedForm = <T>({
     }
   }, [parentContext.forceValidateFlag]);
 
-  useUpdateOnly(() => {
+  useUpdateOnlyExtended(() => {
     if (parentContext.forceValidateFlag) {
       forceValidate(parentContext.forceValidateFlag);
     }
@@ -239,7 +248,7 @@ export const useNestedForm = <T>({
    * Close nested forms on closing
    * the parent one:
    */
-  useUpdateOnly(() => {
+  useUpdateOnlyExtended(() => {
     if (!isParentEdit && isEdit) {
       // Because the reset has already
       // been triggered from it's parent:
@@ -247,19 +256,19 @@ export const useNestedForm = <T>({
     }
   }, [isParentEdit]);
 
-  useUpdateOnly(() => {
+  useUpdateOnlyExtended(() => {
     if (touched) {
       parentContext.methods.touchParent();
     }
   }, [touched]);
 
-  useUpdateOnly(() => {
+  useUpdateOnlyExtended(() => {
     if (shouldBeReset({ fieldId: getFieldId(), resetFlag })) {
       setTouched(false);
     }
   }, [resetFlag]);
 
-  useUnmount(clear);
+  useUnmountSafe(clear);
 
   return {
     blurParent,

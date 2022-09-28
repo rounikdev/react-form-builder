@@ -1,7 +1,7 @@
 import { act } from '@testing-library/react';
 import { FC } from 'react';
 
-import { useMount } from '@rounik/react-custom-hooks';
+import { useMountSafe } from '@rounik/react-custom-hooks';
 
 import { testRender } from '@services/utils';
 
@@ -18,7 +18,7 @@ interface LanguageSetterProps {
 const LanguageSetter: FC<LanguageSetterProps> = ({ languageId }) => {
   const { setLanguage } = useTranslation();
 
-  useMount(() => {
+  useMountSafe(() => {
     setTimeout(() => {
       setLanguage(languageId);
     });
@@ -34,7 +34,7 @@ interface DictionariesUpdaterProps {
 const DictionariesUpdater: FC<DictionariesUpdaterProps> = ({ dictionaries }) => {
   const { updateDictionaries } = useTranslation();
 
-  useMount(() => {
+  useMountSafe(() => {
     setTimeout(() => {
       updateDictionaries(dictionaries);
     });

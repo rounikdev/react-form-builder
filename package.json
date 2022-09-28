@@ -60,7 +60,7 @@
     "last 2 Safari versions"
   ],
   "dependencies": {
-    "@rounik/react-custom-hooks": "0.1.9",
+    "@rounik/react-custom-hooks": "0.1.10",
     "dequal": "2.0.3"
   },
   "devDependencies": {

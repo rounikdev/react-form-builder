@@ -1,7 +1,7 @@
 import { FC, memo, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 
-import { useUpdateOnly } from '@rounik/react-custom-hooks';
+import { useUpdateOnlyExtended } from '@rounik/react-custom-hooks';
 
 import { ModalBuilder } from './components';
 import { useModal } from './context';
@@ -20,7 +20,7 @@ export const Inline: FC<ModalInlineProps> = ({ alwaysRender, children, id }) => 
     return modalsToShow[id];
   }, [id, modalsToShow]);
 
-  useUpdateOnly(() => {
+  useUpdateOnlyExtended(() => {
     if (orderList.length) {
       orderList.forEach(({ id: elementId }) => {
         setModal({ id: elementId });

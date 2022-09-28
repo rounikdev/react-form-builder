@@ -9,7 +9,7 @@ import {
   useState
 } from 'react';
 
-import { useMount, useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
+import { useMountSafe, useUpdate, useUpdateOnlyExtended } from '@rounik/react-custom-hooks';
 
 import { useModal } from '@core/Modal/context';
 import { ModalBackdropProps, ModalBuilderProps } from '@core/Modal/types';
@@ -163,7 +163,7 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
     [contentStyle]
   );
 
-  useMount(() => {
+  useMountSafe(() => {
     if (!alwaysRender && onOpen) {
       onOpen();
     }
@@ -185,7 +185,7 @@ export const ModalBuilder: FC<ModalBuilderProps> = (props) => {
     }
   }, [visible]);
 
-  useUpdateOnly(() => {
+  useUpdateOnlyExtended(() => {
     if (modalsToShow[id] && !hasAnimation) {
       clearModalsToShow();
     }

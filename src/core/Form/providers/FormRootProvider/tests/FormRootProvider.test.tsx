@@ -203,8 +203,10 @@ describe('FormRootProvider and useFormRoot', () => {
 
     const errors = JSON.parse(getByDataTest('errors').textContent || '');
 
-    expect(errors).toEqual({
-      'address.street.name': [{ text: 'requiredField' }]
+    await waitFor(() => {
+      expect(errors).toEqual({
+        'address.street.name': [{ text: 'requiredField' }]
+      });
     });
   });
 
