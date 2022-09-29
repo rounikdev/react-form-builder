@@ -3,6 +3,7 @@ import { SetStateAction, useCallback, useMemo, useState } from 'react';
 import {
   useBeforeFirstRender,
   useIsMounted,
+  useMemoExtended,
   useUpdate,
   useUpdatedRef
 } from '@rounik/react-custom-hooks';
@@ -15,7 +16,6 @@ import {
   UseFieldState,
   ValidityCheck
 } from '@core/Form/types';
-import { GlobalModel } from '@services';
 
 interface UseFieldStateConfig<T>
   extends Pick<UseFieldConfig<T>, 'dependencyExtractor' | 'formatter' | 'initialValue'> {
@@ -52,11 +52,7 @@ export const useFieldState = <T>({
     }
   }, [dependencyExtractor, formData]);
 
-  const updatedDependency = useMemo(
-    () => dependency,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [GlobalModel.createStableDependency(dependency)]
-  );
+  const updatedDependency = useMemoExtended(() => dependency, [dependency], true);
 
   const updatedDependencyRef = useUpdatedRef(updatedDependency);
 
@@ -74,11 +70,7 @@ export const useFieldState = <T>({
     return value;
   }, [updatedDependency, initialValue]);
 
-  const updatedInitialValue = useMemo(
-    () => builtInitialValue,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [GlobalModel.createStableDependency(builtInitialValue)]
-  );
+  const updatedInitialValue = useMemoExtended(() => builtInitialValue, [builtInitialValue], true);
 
   let initialStateValue = updatedInitialValue;
 

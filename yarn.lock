@@ -1809,10 +1809,12 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
-"@rounik/react-custom-hooks@0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@rounik/react-custom-hooks/-/react-custom-hooks-0.1.9.tgz#cce77d1600fd30eedccc1573cd3058e51a4ce483"
-  integrity sha512-9VEitk7svWJNaCByiG7D5kLRWLSMUdkmE4zw0wpG9eVXuyQgrXfnBX5VOU1A7OcmQnvNlPOhfrf/yMPgsa3AkA==
+"@rounik/react-custom-hooks@0.1.10":
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/@rounik/react-custom-hooks/-/react-custom-hooks-0.1.10.tgz#b2e6a7ebd7bc40b832d1cccb710c5123a027e480"
+  integrity sha512-U9XHpKDy+fbrQ1Ke6c0cFip1b2K8Ul9/RkwtViWKHgJ6upUq/sK1rDpsWfqbdoPkc4EPyl5utwtfU9qau7SQAw==
+  dependencies:
+    dequal "2.0.3"
 
 "@sinclair/typebox@^0.24.1":
   version "0.24.42"

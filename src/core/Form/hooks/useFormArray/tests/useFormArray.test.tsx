@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react';
 import { FC, ReactNode } from 'react';
 
-import { useMount } from '@rounik/react-custom-hooks';
+import { useMountSafe } from '@rounik/react-custom-hooks';
 
 import { FormRoot } from '@core/Form/components';
 import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '@core/Form/constants';
@@ -20,7 +20,7 @@ const Reset: FC<ResetProps> = ({ resetKey, resetState }) => {
     methods: { setResetFlag, setResetRecords }
   } = useFormRoot();
 
-  useMount(() => {
+  useMountSafe(() => {
     setResetRecords((currentResetRecords) => {
       return {
         ...currentResetRecords,
@@ -29,7 +29,7 @@ const Reset: FC<ResetProps> = ({ resetKey, resetState }) => {
     });
   });
 
-  useMount(() => {
+  useMountSafe(() => {
     setTimeout(() => {
       setResetFlag({ resetKey });
     });

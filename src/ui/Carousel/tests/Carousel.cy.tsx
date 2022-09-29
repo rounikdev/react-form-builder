@@ -67,7 +67,7 @@ describe('Carousel', () => {
 
     cy.get('[data-test="change-auto"]').trigger('click');
 
-    cy.wait(2500);
+    cy.wait(3500);
     cy.get('[data-test="3-image"]').should('be.visible');
 
     cy.get('[data-test="change-auto"]').trigger('click');

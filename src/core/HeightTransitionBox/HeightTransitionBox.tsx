@@ -3,7 +3,7 @@ import { FC, forwardRef, memo, MutableRefObject, useCallback, useRef, useState }
 import {
   useLastDiffValue,
   useMutationObserver,
-  useUpdateOnly,
+  useUpdateOnlyExtended,
   useUpdateSync,
   useWindowResize
 } from '@rounik/react-custom-hooks';
@@ -68,13 +68,13 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
       // TODO: StrictMode check!
       // Handles nested transitions like
       // ErrorFields of ConditionalFields
-      useUpdateOnly(() => {
+      useUpdateOnlyExtended(() => {
         if (isRoot) {
           observerCallback();
         }
       }, [isRoot, observerCallback, shouldForceUpdate]);
 
-      useUpdateOnly(() => {
+      useUpdateOnlyExtended(() => {
         if (memoizeChildren) {
           if (!children && prevChildren) {
             setRenderChildren(prevChildren);
@@ -102,7 +102,7 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
         isTransitioningRef.current = true;
       }, height);
 
-      useUpdateOnly(() => {
+      useUpdateOnlyExtended(() => {
         forceRender({});
       }, [contentRef.current?.offsetHeight]);
 

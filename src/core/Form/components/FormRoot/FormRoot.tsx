@@ -1,6 +1,11 @@
 import { FC, FormEvent, memo, useCallback, useMemo } from 'react';
 
-import { useClass, useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
+import {
+  useClass,
+  useUpdate,
+  useUpdateExtended,
+  useUpdateOnlyExtended
+} from '@rounik/react-custom-hooks';
 
 import { INITIAL_RESET_RECORD_KEY, NO_RESET_KEY, STORAGE_RESET_KEY } from '@core/Form/constants';
 import { FormContextInstance } from '@core/Form/context';
@@ -9,7 +14,6 @@ import { FormEditProvider, FormRootProvider } from '@core/Form/providers';
 import { formObjectReducer } from '@core/Form/reducers';
 import { flattenFormObjectState } from '@core/Form/services';
 import { FormContext, FormRootProps } from '@core/Form/types';
-import { GlobalModel } from '@services';
 
 import styles from './FormRoot.scss';
 
@@ -79,25 +83,29 @@ export const FormRoot: FC<FormRootProps> = memo(
 
     // This will sync the errors
     // and valid after reset:
-    useUpdate(() => {
-      if (
-        resetFlag.resetKey === INITIAL_RESET_RECORD_KEY ||
-        resetFlag.resetKey === STORAGE_RESET_KEY ||
-        resetFlag.resetKey === NO_RESET_KEY // This prevents StrictMode breaking the behavior
-      ) {
-        if (pristine && onChange && usesStorage) {
-          onChange({
-            errors,
-            pristine,
-            resetState: resetRecords[INITIAL_RESET_RECORD_KEY],
-            valid,
-            value
-          });
+    useUpdateExtended(
+      () => {
+        if (
+          resetFlag.resetKey === INITIAL_RESET_RECORD_KEY ||
+          resetFlag.resetKey === STORAGE_RESET_KEY ||
+          resetFlag.resetKey === NO_RESET_KEY // This prevents StrictMode breaking the behavior
+        ) {
+          if (pristine && onChange && usesStorage) {
+            onChange({
+              errors,
+              pristine,
+              resetState: resetRecords[INITIAL_RESET_RECORD_KEY],
+              valid,
+              value
+            });
+          }
         }
-      }
-    }, [resetFlag, GlobalModel.createStableDependency([errors, valid])]);
+      },
+      [resetFlag, errors, valid],
+      true
+    );
 
-    useUpdateOnly(() => {
+    useUpdateOnlyExtended(() => {
       if (
         onReset &&
         (resetFlag.resetKey === INITIAL_RESET_RECORD_KEY ||

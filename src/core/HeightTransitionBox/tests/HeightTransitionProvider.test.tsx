@@ -1,7 +1,7 @@
 import userEvent from '@testing-library/user-event';
 import { FC } from 'react';
 
-import { useUpdateOnly } from '@rounik/react-custom-hooks';
+import { useUpdateOnlyExtended } from '@rounik/react-custom-hooks';
 
 import { testRender } from '@services/utils';
 
@@ -13,7 +13,7 @@ const TestComponent: FC<{ onForceUpdate: () => void }> = ({ onForceUpdate }) => 
     shouldForceUpdate
   } = useHeightTransition();
 
-  useUpdateOnly(() => {
+  useUpdateOnlyExtended(() => {
     onForceUpdate();
   }, [onForceUpdate, shouldForceUpdate]);
 

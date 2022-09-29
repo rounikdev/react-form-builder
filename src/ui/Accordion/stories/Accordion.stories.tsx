@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/react';
 import { FC, useState } from 'react';
 
-import { useMount, useUnmount } from '@rounik/react-custom-hooks';
+import { useMountSafe, useUnmountSafe } from '@rounik/react-custom-hooks';
 
 import { Image } from '@ui';
 
@@ -16,11 +16,11 @@ export default {
 } as Meta;
 
 const Content: FC<{ id: string }> = ({ id }) => {
-  useMount(() => {
+  useMountSafe(() => {
     console.log('Content mount', id);
   });
 
-  useUnmount(() => {
+  useUnmountSafe(() => {
     console.log('Content un-mount', id);
   });
 
@@ -90,7 +90,7 @@ const Template: Story<FC> = () => {
   const [openedCats, setOpenedCats] = useState(true);
 
   return (
-    // TODO: get StrictMode back when useUpdateOnlySafe is ready
+    // TODO: get StrictMode back when useUpdateOnlyExtendedSafe is ready
     <div>
       <div className={styles.Container}>
         <button

@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react';
 import { FC, ReactNode } from 'react';
 
-import { useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
+import { useUpdate, useUpdateOnlyExtended } from '@rounik/react-custom-hooks';
 
 import { FormObject, FormRoot } from '@core/Form/components';
 import { NO_RESET_KEY, ROOT_RESET_RECORD_KEY } from '@core/Form/constants';
@@ -47,13 +47,13 @@ const ParentFormActor: FC<ParentFormActorProps> = ({
     }
   }, [shouldEdit]);
 
-  useUpdateOnly(() => {
+  useUpdateOnlyExtended(() => {
     if (onResetFlag && resetFlag.resetKey !== NO_RESET_KEY) {
       onResetFlag(resetFlag);
     }
   }, [resetFlag]);
 
-  useUpdateOnly(() => {
+  useUpdateOnlyExtended(() => {
     if (onResetRecords) {
       onResetRecords(resetRecords);
     }

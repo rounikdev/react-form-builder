@@ -33,10 +33,14 @@ describe('ConditionalFields', () => {
     expect(queryByDataTest(`${fieldNameB}-input`)).not.toBeInTheDocument();
 
     fireEvent.change(getByDataTest(`${fieldNameA}-input`), { target: { value: 'a' } });
-    expect(await findByDataTest(`${fieldNameB}-input`)).toBeInTheDocument();
+    await waitFor(async () => {
+      expect(await findByDataTest(`${fieldNameB}-input`)).toBeInTheDocument();
+    });
 
     fireEvent.change(getByDataTest(`${fieldNameA}-input`), { target: { value: '' } });
-    expect(queryByDataTest(`${fieldNameB}-input`)).not.toBeInTheDocument();
+    await waitFor(async () => {
+      expect(queryByDataTest(`${fieldNameB}-input`)).not.toBeInTheDocument();
+    });
   });
 
   it('Has `HeightTransitionBox` with no children when `animate` prop is passed', () => {

@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react';
 import { FC, ReactNode } from 'react';
 
-import { useMount } from '@rounik/react-custom-hooks';
+import { useMountSafe } from '@rounik/react-custom-hooks';
 
 import { FormRoot } from '@core';
 import { useField } from '@core/Form/hooks/useField/useField';
@@ -40,7 +40,7 @@ const ValueSetter: FC<ValueSetterProps> = ({ name, value }) => {
     methods: { setFieldsValue }
   } = useFormRoot();
 
-  useMount(() => {
+  useMountSafe(() => {
     setTimeout(() => {
       setFieldsValue({ [name]: value });
     });

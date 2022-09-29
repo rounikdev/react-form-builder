@@ -1,6 +1,6 @@
 {
   "name": "@rounik/react-form-builder",
-  "version": "0.0.42",
+  "version": "0.0.43",
   "description": "React form builder with field hooks for building custom design systems",
   "keywords": [
     "design system",
@@ -60,7 +60,7 @@
     "last 2 Safari versions"
   ],
   "dependencies": {
-    "@rounik/react-custom-hooks": "0.1.9",
+    "@rounik/react-custom-hooks": "0.1.10",
     "dequal": "2.0.3"
   },
   "devDependencies": {
