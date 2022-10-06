@@ -1,0 +1,47 @@
+.Container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Enter {
+  animation: enter 500ms forwards;
+}
+
+.Exit {
+  animation: exit 500ms forwards;
+}
+
+.Nested {
+  animation: enter 700ms forwards;
+}
+
+@keyframes enter {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes exit {
+  from {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+.Item {
+  display: flex;
+
+  font-size: 2rem;
+}
