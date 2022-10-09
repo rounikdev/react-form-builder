@@ -1,6 +1,8 @@
-import { FC, memo, useCallback, useState } from 'react';
+import { FC, memo, useCallback, useRef, useState } from 'react';
 
 import { useClass } from '@rounik/react-custom-hooks';
+
+import { HeightTransitionBox } from '@core';
 
 import { useAccordion } from './hooks';
 import { AccordionProps } from './types';
@@ -9,6 +11,7 @@ import styles from './Accordion.scss';
 
 export const Accordion: FC<AccordionProps> = memo(
   ({
+    animateOnContentChange,
     children,
     className,
     dataTest,
@@ -18,7 +21,8 @@ export const Accordion: FC<AccordionProps> = memo(
     keepMounted,
     onChange,
     opened,
-    renderHeader
+    renderHeader,
+    scrollOnOpenEnd
   }) => {
     const {
       close,
@@ -39,7 +43,27 @@ export const Accordion: FC<AccordionProps> = memo(
       opened
     });
 
+    const headerRef = useRef<null | HTMLDivElement>(null);
+
     const [overflow, setOverflow] = useState(opened);
+
+    const onTransitionEnd = useCallback(() => {
+      onTransitionEndHandler();
+
+      if (isOpen) {
+        setOverflow(true);
+
+        if (scrollOnOpenEnd) {
+          headerRef.current?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+            inline: 'nearest'
+          });
+        }
+      } else {
+        setOverflow(false);
+      }
+    }, [isOpen, onTransitionEndHandler, scrollOnOpenEnd]);
 
     let element = null;
 
@@ -65,7 +89,9 @@ export const Accordion: FC<AccordionProps> = memo(
         )}
         data-test={dataTest}
       >
-        <div className={styles.Header}>{renderHeader({ close, disabled, id, isOpen, open })}</div>
+        <div ref={headerRef} className={styles.Header}>
+          {renderHeader({ close, disabled, id, isOpen, open })}
+        </div>
         <div
           aria-labelledby={`${id}-header`}
           className={useClass(
@@ -73,20 +99,12 @@ export const Accordion: FC<AccordionProps> = memo(
             [isOpen, overflow]
           )}
           id={`${id}-content`}
-          onTransitionEnd={useCallback(() => {
-            onTransitionEndHandler();
-
-            if (isOpen) {
-              setOverflow(true);
-            } else {
-              setOverflow(false);
-            }
-          }, [isOpen, onTransitionEndHandler])}
+          onTransitionEnd={onTransitionEnd}
           ref={contentWrapperRef}
           role="region"
           style={{ height }}
         >
-          {element}
+          {animateOnContentChange ? <HeightTransitionBox>{element}</HeightTransitionBox> : element}
         </div>
       </div>
     );
