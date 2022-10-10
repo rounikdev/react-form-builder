@@ -27,3 +27,5 @@ export interface ListAnimatorProps extends Stylable {
 export interface ListAnimatorState {
   content: ListAnimatorChild[] | null;
 }
+
+export type ListAnimatorKeyMap = Record<string, boolean>;

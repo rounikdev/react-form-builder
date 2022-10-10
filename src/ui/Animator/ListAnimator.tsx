@@ -1,164 +1,142 @@
-import { Children, cloneElement, FC, memo, useCallback, useRef, useState } from 'react';
+import {
+  AnimationEvent,
+  Children,
+  FC,
+  memo,
+  TransitionEvent,
+  useCallback,
+  useRef,
+  useState
+} from 'react';
 
-import { useMountSafe, useUpdateOnlyExtended } from '@rounik/react-custom-hooks';
+import { useUpdateOnlyExtended } from '@rounik/react-custom-hooks';
 
-import { ListAnimatorChild, ListAnimatorProps, ListAnimatorState } from './types';
+import { addClass, buildKeyMap, cloneWithClassName, getUpdates, removeClass } from './services';
+import {
+  ListAnimatorChild,
+  ListAnimatorKeyMap,
+  ListAnimatorProps,
+  ListAnimatorState
+} from './types';
 
 // https://stackoverflow.com/questions/47028558/
 // react-cloneelement-inside-react-children-map-is-causing-element-keys-to-change/47030407#47030407
 export const ListAnimator: FC<ListAnimatorProps> = memo(
   ({ children, className, enterClass, exitClass, tag: Tag = 'div' }) => {
+    const isExit = useRef(false);
+
+    const journal = useRef<ListAnimatorKeyMap>({});
+
+    const enterNewChildren = useCallback(
+      (newItems: ListAnimatorChild[] | undefined, oldKeys: ListAnimatorKeyMap) => {
+        const newChildren: ListAnimatorChild[] = [];
+
+        Children.forEach(newItems, (child) => {
+          const isNewItem = !oldKeys[child?.key ?? ''];
+
+          const updatedClassName = isNewItem
+            ? addClass(child, enterClass)
+            : removeClass(child, enterClass);
+
+          cloneWithClassName(child, newChildren, updatedClassName);
+        });
+
+        return newChildren;
+      },
+      [enterClass]
+    );
+
+    const exitOldChildren = useCallback(
+      (newItems: ListAnimatorChild[] | null | undefined, newKeys: ListAnimatorKeyMap) => {
+        const oldChildren: ListAnimatorChild[] = [];
+
+        Children.forEach(newItems, (child) => {
+          const isExiting = !newKeys[child?.key ?? ''];
+
+          let updatedClassName = isExiting
+            ? addClass(child, exitClass)
+            : removeClass(child, enterClass);
+
+          if (isExiting) {
+            updatedClassName =
+              (updatedClassName as string)
+                ?.split(' ')
+                .filter((c) => c !== enterClass)
+                .join(' ') ?? '';
+          }
+
+          cloneWithClassName(child, oldChildren, updatedClassName);
+        });
+
+        return oldChildren;
+      },
+      [enterClass, exitClass]
+    );
+
     const [state, setState] = useState<ListAnimatorState>({
-      content: null
+      content: enterNewChildren(children, {})
     });
 
-    const isAnimating = useRef(false);
-
-    const addClass = useCallback(
-      (child: ListAnimatorChild | null | undefined, classToAdd?: string) => {
-        if (!classToAdd) {
-          return child?.props?.className;
-        } else if (child?.props?.className) {
-          return `${child?.props?.className} ${classToAdd}`;
-        } else {
-          return classToAdd;
-        }
-      },
-      []
-    );
-
-    const removeClass = useCallback(
-      (child: ListAnimatorChild | null | undefined, classToRemove?: string) => {
-        if (!classToRemove || !child?.props?.className) {
-          return child?.props?.className;
-        } else {
-          return (
-            child?.props.className
-              ?.split(' ')
-              .filter((currentClassName: string) => currentClassName !== classToRemove)
-              .join(' ') ?? ''
-          );
-        }
-      },
-      []
-    );
-
-    const buildKeyMap = useCallback((elements: ListAnimatorChild[] | null | undefined) => {
-      const keyMap: Record<string, boolean> = {};
-
-      Children.forEach(elements, (child) => {
-        if (child?.key) {
-          keyMap[`${child?.key}`] = true;
-        }
-      });
-
-      return keyMap;
-    }, []);
-
-    const cloneWithClassName = useCallback(
-      (
-        child: ListAnimatorChild | null | undefined,
-        list: ListAnimatorChild[],
-        updatedClassName: string
-      ) => {
-        if (!child) {
+    const animationEndHandler = useCallback(
+      (event: AnimationEvent | TransitionEvent) => {
+        if (!isExit.current) {
           return;
         }
 
-        const cloned = cloneElement(
-          child,
-          {
-            ...child.props,
-            className: updatedClassName
-          },
-          child.props?.children
-        );
+        if (event.target) {
+          const target = event.target as Element;
+          const classList = Array.from(target.classList);
 
-        list.push(cloned);
-      },
-      []
-    );
-
-    const setNewChildren = useCallback(() => {
-      if (isAnimating.current) {
-        isAnimating.current = false;
-
-        setState((prevState) => {
-          const oldKeys = buildKeyMap(prevState.content);
-
-          const newChildren: ListAnimatorChild[] = [];
-
-          Children.forEach(children, (child) => {
-            const isNewItem = !oldKeys[child?.key ?? ''];
-
-            const updatedClassName = isNewItem
-              ? addClass(child, enterClass)
-              : removeClass(child, enterClass);
-
-            cloneWithClassName(child, newChildren, updatedClassName);
-          });
-
-          return { content: newChildren };
-        });
-      }
-    }, [addClass, buildKeyMap, children, cloneWithClassName, enterClass, removeClass]);
-
-    useMountSafe(() => {
-      const animatedChildren: ListAnimatorChild[] = [];
-
-      Children.forEach(children, (child) => {
-        cloneWithClassName(child, animatedChildren, addClass(child, enterClass));
-      });
-
-      setState({
-        content: animatedChildren
-      });
-    });
-
-    useUpdateOnlyExtended(() => {
-      let exitCount = 0;
-
-      setState((prevState) => {
-        const newKeys = buildKeyMap(children);
-
-        if (!isAnimating.current) {
-          isAnimating.current = true;
-
-          const animatedChildren = [] as ListAnimatorChild[];
-
-          Children.forEach(prevState.content, (child) => {
-            let updatedClassName = addClass(child);
-
-            const isExiting = !newKeys[`${child?.key}`];
-
-            if (isExiting) {
-              exitCount++;
-
-              updatedClassName = addClass(child, exitClass);
-            } else {
-              updatedClassName = removeClass(child, enterClass);
-            }
-
-            cloneWithClassName(child, animatedChildren, updatedClassName);
-          });
-
-          return { content: animatedChildren };
+          if (!classList.find((c) => c === exitClass)) {
+            return;
+          }
         }
 
-        return prevState;
-      });
+        isExit.current = false;
 
-      // Because there will be no
-      // animation/transition end,
-      // we need to manually set
-      // the new children:
-      if (exitCount === 0) {
-        setNewChildren();
-      }
+        setState((prevState) => ({
+          content: enterNewChildren(children, buildKeyMap(prevState.content))
+        }));
+      },
+      [children, enterNewChildren, exitClass]
+    );
+
+    useUpdateOnlyExtended(() => {
+      setState((prevState) => {
+        const { enterCount, exitCount, newKeys, oldKeys } = getUpdates(children, prevState.content);
+
+        if (!enterCount && !exitCount) {
+          return { content: enterNewChildren(children, journal.current) };
+        }
+
+        journal.current = isExit.current ? newKeys : oldKeys;
+
+        // Perform exiting before entering the
+        // new items. If also new items are coming,
+        // they will be set after the exit animation
+        // has ended:
+        if (exitCount) {
+          isExit.current = true;
+
+          return { content: exitOldChildren(prevState.content, newKeys) };
+        }
+
+        if (enterCount) {
+          isExit.current = false;
+
+          return { content: enterNewChildren(children, oldKeys) };
+        }
+
+        return { content: enterNewChildren(children, journal.current) };
+      });
     }, [children]);
 
     return (
-      <Tag className={className} onAnimationEnd={setNewChildren} onTransitionEnd={setNewChildren}>
+      <Tag
+        className={className}
+        onAnimationEnd={animationEndHandler}
+        onTransitionEnd={animationEndHandler}
+      >
         {state.content}
       </Tag>
     );
