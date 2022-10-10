@@ -14,6 +14,7 @@ export const Accordion: FC<AccordionProps> = memo(
     animateOnContentChange,
     children,
     className,
+    classNameOnContentOpen,
     dataTest,
     disabled,
     excludeFromGroup,
@@ -95,8 +96,8 @@ export const Accordion: FC<AccordionProps> = memo(
         <div
           aria-labelledby={`${id}-header`}
           className={useClass(
-            [styles.Content, isOpen && overflow && styles.Open],
-            [isOpen, overflow]
+            [styles.Content, isOpen && overflow && styles.Open, classNameOnContentOpen],
+            [classNameOnContentOpen, isOpen, overflow]
           )}
           id={`${id}-content`}
           onTransitionEnd={onTransitionEnd}

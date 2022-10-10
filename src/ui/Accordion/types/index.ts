@@ -28,6 +28,7 @@ export interface UseAccordionArgs {
 
 export interface AccordionProps extends UseAccordionArgs, Stylable, Testable {
   animateOnContentChange?: boolean;
+  classNameOnContentOpen?: string;
   onChange?: UseAccordionArgs['onChange'];
   renderHeader: (params: RenderHeaderArgs) => ReactNode;
   scrollOnOpenEnd?: boolean;
