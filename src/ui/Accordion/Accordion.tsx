@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useRef, useState } from 'react';
+import { FC, memo, SyntheticEvent, useCallback, useRef, useState } from 'react';
 
 import { useClass } from '@rounik/react-custom-hooks';
 
@@ -48,23 +48,30 @@ export const Accordion: FC<AccordionProps> = memo(
 
     const [overflow, setOverflow] = useState(opened);
 
-    const onTransitionEnd = useCallback(() => {
-      onTransitionEndHandler();
-
-      if (isOpen) {
-        setOverflow(true);
-
-        if (scrollOnOpenEnd) {
-          headerRef.current?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-            inline: 'nearest'
-          });
+    const onTransitionEnd = useCallback(
+      (e: SyntheticEvent) => {
+        if (e.target !== contentWrapperRef.current) {
+          return;
         }
-      } else {
-        setOverflow(false);
-      }
-    }, [isOpen, onTransitionEndHandler, scrollOnOpenEnd]);
+
+        onTransitionEndHandler();
+
+        if (isOpen) {
+          setOverflow(true);
+
+          if (scrollOnOpenEnd) {
+            headerRef.current?.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+              inline: 'nearest'
+            });
+          }
+        } else {
+          setOverflow(false);
+        }
+      },
+      [contentWrapperRef, isOpen, onTransitionEndHandler, scrollOnOpenEnd]
+    );
 
     let element = null;
 
