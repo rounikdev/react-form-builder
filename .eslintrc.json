@@ -60,6 +60,7 @@
     "import/extensions": "off",
     "import/no-extraneous-dependencies": "off",
     "max-len": ["warn", { "code": 100 }],
+    "no-duplicate-imports": "error",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "react/prop-types": 0,
