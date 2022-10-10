@@ -1,5 +1,5 @@
 import { Meta, Story } from '@storybook/react';
-import { FC, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 
 import { useMountSafe, useUnmountSafe } from '@rounik/react-custom-hooks';
 
@@ -16,6 +16,10 @@ export default {
 } as Meta;
 
 const Content: FC<{ id: string }> = ({ id }) => {
+  const [hasText, setHasText] = useState(true);
+
+  const toggleHasText = useCallback(() => setHasText((prevState) => !prevState), []);
+
   useMountSafe(() => {
     console.log('Content mount', id);
   });
@@ -26,6 +30,9 @@ const Content: FC<{ id: string }> = ({ id }) => {
 
   return (
     <div data-test={`${id}-component`}>
+      <button data-test="toggle-text" onClick={toggleHasText}>
+        Toggle Text
+      </button>
       <Image
         alt="cat"
         className={styles.Image}
@@ -33,20 +40,22 @@ const Content: FC<{ id: string }> = ({ id }) => {
         // eslint-disable-next-line max-len
         src="https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg"
       />
-      <p className={styles.Text}>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui deleniti dolorem laboriosam
-        sunt totam officiis, soluta ad sed optio, rem harum cumque quibusdam. Repellendus facere
-        dolores harum eos saepe corporis. Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-        Sit obcaecati magni sapiente consequatur adipisci doloremque, quod numquam iure assumenda
-        quia. Fuga, sapiente? Labore officiis atque temporibus aperiam iusto voluptatem unde? Lorem
-        ipsum dolor, sit amet consectetur adipisicing elit. Consectetur aut beatae placeat itaque
-        neque modi molestiae nulla rem dolore. Dolor nihil beatae hic at illum expedita error
-        consequatur nobis eaque. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui
-        deleniti dolorem laboriosam sunt totam officiis, soluta ad sed optio, rem harum cumque
-        quibusdam. Repellendus facere dolores harum eos saepe corporis. Lorem ipsum dolor, sit amet
-        consectetur adipisicing elit. Sit obcaecati magni sapiente consequatur adipisci doloremque,
-        quod numquam iure assumenda quia.
-      </p>
+      {hasText ? (
+        <p className={styles.Text}>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui deleniti dolorem laboriosam
+          sunt totam officiis, soluta ad sed optio, rem harum cumque quibusdam. Repellendus facere
+          dolores harum eos saepe corporis. Lorem ipsum dolor, sit amet consectetur adipisicing
+          elit. Sit obcaecati magni sapiente consequatur adipisci doloremque, quod numquam iure
+          assumenda quia. Fuga, sapiente? Labore officiis atque temporibus aperiam iusto voluptatem
+          unde? Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consectetur aut beatae
+          placeat itaque neque modi molestiae nulla rem dolore. Dolor nihil beatae hic at illum
+          expedita error consequatur nobis eaque. Lorem, ipsum dolor sit amet consectetur
+          adipisicing elit. Qui deleniti dolorem laboriosam sunt totam officiis, soluta ad sed
+          optio, rem harum cumque quibusdam. Repellendus facere dolores harum eos saepe corporis.
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sit obcaecati magni sapiente
+          consequatur adipisci doloremque, quod numquam iure assumenda quia.
+        </p>
+      ) : null}
     </div>
   );
 };
@@ -138,10 +147,12 @@ const Template: Story<FC> = () => {
             </Accordion>
           ) : null}
           <Accordion
+            animateOnContentChange
             dataTest="dolphins"
             excludeFromGroup
             id="dolphins"
             renderHeader={renderHeader('Dolphins')}
+            scrollOnOpenEnd
           >
             <Content id="dolphins-content" />
           </Accordion>
