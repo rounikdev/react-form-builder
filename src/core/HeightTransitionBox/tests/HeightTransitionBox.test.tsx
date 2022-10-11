@@ -41,9 +41,9 @@ const TestCmp: FC<
 describe('HeightTransitionBox', () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let transitionEndEvent: any;
-  const originalOffsetHeight = Object.getOwnPropertyDescriptor(
+  const originalScrollHeight = Object.getOwnPropertyDescriptor(
     HTMLElement.prototype,
-    'offsetHeight'
+    'scrollHeight'
   );
 
   beforeEach(() => {
@@ -52,19 +52,21 @@ describe('HeightTransitionBox', () => {
   });
 
   beforeAll(() => {
-    Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
+    Object.defineProperty(HTMLElement.prototype, 'scrollHeight', {
       configurable: true,
       value: 500
     });
   });
 
   afterAll(() => {
-    Object.defineProperty(
-      HTMLElement.prototype,
-      'offsetHeight',
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      originalOffsetHeight as PropertyDescriptor & ThisType<any>
-    );
+    if (originalScrollHeight !== undefined) {
+      Object.defineProperty(
+        HTMLElement.prototype,
+        'scrollHeight',
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        originalScrollHeight as PropertyDescriptor & ThisType<any>
+      );
+    }
   });
 
   it('Changes `overflow` based on transitioning state', async () => {
@@ -193,7 +195,7 @@ describe('HeightTransitionBox', () => {
 
     expect(await findByDataTest('test-content')).toBeInTheDocument();
 
-    Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
+    Object.defineProperty(HTMLElement.prototype, 'scrollHeight', {
       configurable: true,
       value: 0
     });
