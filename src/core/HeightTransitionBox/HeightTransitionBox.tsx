@@ -89,8 +89,8 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
 
       // Declare and initialize height
       // This is not done in a hook to prevent rendering skip
-      let height = contentRef.current?.offsetHeight ?? 0;
-      const prevHeight = useLastDiffValue(contentRef.current?.offsetHeight);
+      let height = contentRef.current?.scrollHeight ?? 0;
+      const prevHeight = useLastDiffValue(contentRef.current?.scrollHeight);
 
       // Set `height` to 0
       if (memoizeChildren && prevHeight !== undefined && !children && prevChildren) {
@@ -104,7 +104,7 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
 
       useUpdateOnlyExtended(() => {
         forceRender({});
-      }, [contentRef.current?.offsetHeight, contentRef.current?.scrollHeight]);
+      }, [contentRef.current?.scrollHeight]);
 
       return (
         <div
