@@ -66,6 +66,7 @@
 }
 
 .Text {
+  width: 50%;
   padding: var(--offset-small);
 
   font-size: var(--offset-normal);
@@ -79,4 +80,43 @@
 
 .Content {
   width: 50%;
+}
+
+.ListAnimator {
+  display: flex;
+  flex-wrap: wrap;
+
+  background-color: var(--color-card-background);
+}
+
+.Enter {
+  animation: enter 500ms forwards;
+}
+
+.Exit {
+  animation: exit 500ms forwards;
+}
+
+@keyframes enter {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes exit {
+  from {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
 }

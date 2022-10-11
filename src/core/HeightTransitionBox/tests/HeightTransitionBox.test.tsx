@@ -1,6 +1,6 @@
 import { fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { FC, useState } from 'react';
+import { FC, ReactNode, useState } from 'react';
 
 import { testRender } from '@services/utils';
 
@@ -10,9 +10,17 @@ import { HeightTransitionBoxProps } from '../types';
 
 const TestCmp: FC<
   HeightTransitionBoxProps & {
+    children?: ReactNode;
     displayContent?: boolean;
   }
-> = ({ displayContent, memoizeChildren, onTransitionEnd, transitionDuration, transitionType }) => {
+> = ({
+  children,
+  displayContent,
+  memoizeChildren,
+  onTransitionEnd,
+  transitionDuration,
+  transitionType
+}) => {
   const [showContent, setShowContent] = useState(displayContent ?? false);
 
   return (
@@ -32,7 +40,12 @@ const TestCmp: FC<
         transitionDuration={transitionDuration}
         transitionType={transitionType}
       >
-        {showContent ? <div data-test="test-content" /> : null}
+        {showContent ? (
+          <>
+            <div data-test="test-content" />
+            {children}
+          </>
+        ) : null}
       </HeightTransitionBox>
     </>
   );
@@ -203,5 +216,20 @@ describe('HeightTransitionBox', () => {
 
     expect(queryByDataTest('test-content')).not.toBeInTheDocument();
     expect(getComputedStyle(getByDataTest('test-heightTransition-container')).height).toBe('0px');
+  });
+
+  it('Cannot trigger `onTransitionEnd` from nested element', async () => {
+    const mockOnTransitionEnd = jest.fn();
+
+    const { findByDataTest } = testRender(
+      <TestCmp displayContent onTransitionEnd={mockOnTransitionEnd}>
+        <div data-test="test-children" style={{ transition: 'height 300ms ease-in-out' }}></div>
+      </TestCmp>
+    );
+
+    fireEvent(await findByDataTest('test-children'), transitionEndEvent);
+    fireEvent(await findByDataTest('test-heightTransition-container'), transitionEndEvent);
+
+    expect(mockOnTransitionEnd).toBeCalledTimes(1);
   });
 });
