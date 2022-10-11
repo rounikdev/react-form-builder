@@ -112,7 +112,13 @@ export const Accordion: FC<AccordionProps> = memo(
           role="region"
           style={{ height }}
         >
-          {animateOnContentChange ? <HeightTransitionBox>{element}</HeightTransitionBox> : element}
+          {animateOnContentChange ? (
+            <HeightTransitionBox dataTest={`${dataTest}-content`} noContentOverflowAuto>
+              {element}
+            </HeightTransitionBox>
+          ) : (
+            element
+          )}
         </div>
       </div>
     );

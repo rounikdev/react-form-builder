@@ -30,6 +30,7 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
         dataTest,
         isRoot,
         memoizeChildren,
+        noContentOverflowAuto,
         onTransitionEnd,
         style,
         transitionDuration,
@@ -89,8 +90,8 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
 
       // Declare and initialize height
       // This is not done in a hook to prevent rendering skip
-      let height = contentRef.current?.scrollHeight ?? 0;
-      const prevHeight = useLastDiffValue(contentRef.current?.scrollHeight);
+      let height = contentRef.current?.offsetHeight ?? 0;
+      const prevHeight = useLastDiffValue(contentRef.current?.offsetHeight);
 
       // Set `height` to 0
       if (memoizeChildren && prevHeight !== undefined && !children && prevChildren) {
@@ -104,7 +105,7 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
 
       useUpdateOnlyExtended(() => {
         forceRender({});
-      }, [contentRef.current?.scrollHeight]);
+      }, [contentRef.current?.offsetHeight, contentRef.current?.scrollHeight]);
 
       return (
         <div
@@ -133,7 +134,7 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
           ref={ref as MutableRefObject<HTMLDivElement>}
           style={{
             height,
-            overflow: isTransitioningRef.current ? 'hidden' : 'auto',
+            overflow: isTransitioningRef.current ? 'hidden' : 'initial',
             transition: `height ${
               typeof transitionDuration !== 'undefined' ? `${transitionDuration}ms` : '300ms'
             } ${typeof transitionType !== 'undefined' ? transitionType : 'ease-in-out'}`,
@@ -144,7 +145,7 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
             data-test={`${dataTest}-heightTransition-content`}
             className={contentClassName}
             ref={contentRef}
-            style={{ overflow: 'auto' }}
+            style={noContentOverflowAuto ? undefined : { overflow: 'auto' }}
           >
             {memoizeChildren ? renderChildren : children}
           </div>
