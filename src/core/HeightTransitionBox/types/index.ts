@@ -8,7 +8,7 @@ export interface HeightTransitionBoxProps extends Stylable {
   dataTest?: string;
   isRoot?: boolean;
   memoizeChildren?: boolean;
-  noContentOverflowAuto?: boolean;
+  noOverflowAuto?: boolean;
   onTransitionEnd?: TransitionEventHandler | null;
   ref?: MutableRefObject<HTMLDivElement | null>;
   style?: CSSProperties;

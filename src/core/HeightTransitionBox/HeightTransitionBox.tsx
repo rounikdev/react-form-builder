@@ -30,7 +30,7 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
         dataTest,
         isRoot,
         memoizeChildren,
-        noContentOverflowAuto,
+        noOverflowAuto,
         onTransitionEnd,
         style,
         transitionDuration,
@@ -134,7 +134,7 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
           ref={ref as MutableRefObject<HTMLDivElement>}
           style={{
             height,
-            overflow: isTransitioningRef.current ? 'hidden' : 'initial',
+            overflow: isTransitioningRef.current ? 'hidden' : noOverflowAuto ? 'initial' : 'auto',
             transition: `height ${
               typeof transitionDuration !== 'undefined' ? `${transitionDuration}ms` : '300ms'
             } ${typeof transitionType !== 'undefined' ? transitionType : 'ease-in-out'}`,
@@ -145,7 +145,7 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
             data-test={`${dataTest}-heightTransition-content`}
             className={contentClassName}
             ref={contentRef}
-            style={noContentOverflowAuto ? undefined : { overflow: 'auto' }}
+            style={noOverflowAuto ? undefined : { overflow: 'auto' }}
           >
             {memoizeChildren ? renderChildren : children}
           </div>
