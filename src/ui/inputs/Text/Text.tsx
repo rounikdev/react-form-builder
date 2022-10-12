@@ -104,7 +104,13 @@ export const Text: FC<TextProps> = memo(
             value={value ?? ''}
           />
           {pattern ? (
-            <Mask className={inputClassName} focused={focused} pattern={pattern} value={value} />
+            <Mask
+              className={inputClassName}
+              dataTest={dataTest}
+              focused={focused}
+              pattern={pattern}
+              value={value}
+            />
           ) : null}
         </div>
         <ErrorField dataTest={`error-field-${dataTest}`} errors={errors} isError={isError} />

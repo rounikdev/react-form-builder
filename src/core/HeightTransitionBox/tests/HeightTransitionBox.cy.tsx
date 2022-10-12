@@ -8,17 +8,21 @@ import { HeightTransitionBoxProps } from '../types';
 const TestCmp: FC<
   HeightTransitionBoxProps & {
     displayContent?: boolean;
+    subContent?: (args: { toggleProp: boolean }) => JSX.Element;
     withProvider?: boolean;
   }
 > = ({
   displayContent,
   memoizeChildren,
   onTransitionEnd,
+  subContent,
   transitionDuration,
   transitionType,
   withProvider
 }) => {
   const [showContent, setShowContent] = useState(displayContent ?? false);
+
+  const [toggleProp, setToggleProp] = useState(false);
 
   return (
     <>
@@ -28,6 +32,18 @@ const TestCmp: FC<
         type="button"
       >
         Toggle
+      </button>
+
+      <button
+        data-test="toggle-sub-content"
+        onClick={() =>
+          setToggleProp((prevState) => {
+            return !prevState;
+          })
+        }
+        type="button"
+      >
+        Toggle sub content padding
       </button>
 
       {!withProvider ? (
@@ -44,6 +60,8 @@ const TestCmp: FC<
               style={{ backgroundColor: 'red', height: 200, width: 200 }}
             />
           ) : null}
+
+          {subContent ? subContent({ toggleProp }) : null}
         </HeightTransitionBox>
       ) : null}
 
@@ -164,5 +182,72 @@ describe('HeightTransitionBox', () => {
     cy.get('[data-test="toggle-content"]').click();
 
     cy.get('@args').should('have.been.calledTwice');
+  });
+
+  it('With `event.propertyName` different from `height`', () => {
+    const mock = {
+      fn() {}
+    };
+
+    cy.spy(mock, 'fn').as('args');
+
+    const ChildCmp: FC<{ toggleProp: boolean }> = ({ toggleProp }) => (
+      <div
+        data-test="test-content-wrap"
+        style={{
+          backgroundColor: 'blue',
+          height: 200,
+          padding: toggleProp ? 20 : 0,
+          transition: 'padding 300ms ease-in-out',
+          width: 200
+        }}
+      ></div>
+    );
+
+    mount(
+      <TestCmp
+        onTransitionEnd={mock.fn}
+        subContent={({ toggleProp }) => {
+          return <ChildCmp toggleProp={toggleProp} />;
+        }}
+      />
+    );
+
+    cy.get('[data-test="toggle-sub-content"]').click();
+
+    cy.get('@args').should('not.have.been.called');
+  });
+
+  it('Cannot trigger `onTransitionEnd` from nested element', () => {
+    const mock = {
+      fn() {}
+    };
+
+    cy.spy(mock, 'fn').as('args');
+
+    const ChildCmp: FC<{ toggleProp: boolean }> = ({ toggleProp }) => (
+      <div
+        data-test="test-content-wrap"
+        style={{
+          backgroundColor: 'green',
+          height: toggleProp ? 200 : 0,
+          transition: 'all 300ms ease-in-out',
+          width: 200
+        }}
+      ></div>
+    );
+
+    mount(
+      <TestCmp
+        onTransitionEnd={mock.fn}
+        subContent={({ toggleProp }) => {
+          return <ChildCmp toggleProp={toggleProp} />;
+        }}
+      />
+    );
+
+    cy.get('[data-test="toggle-sub-content"]').click();
+
+    cy.get('@args').should('not.have.been.called');
   });
 });

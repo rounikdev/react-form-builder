@@ -1,4 +1,4 @@
-import { FC, forwardRef, memo, MutableRefObject, useCallback, useRef, useState } from 'react';
+import { FC, forwardRef, memo, RefObject, useCallback, useMemo, useRef, useState } from 'react';
 
 import {
   useLastDiffValue,
@@ -30,18 +30,24 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
         dataTest,
         isRoot,
         memoizeChildren,
-        noOverflowAuto,
         onTransitionEnd,
         style,
         transitionDuration,
         transitionType
       },
-      ref
+      forwardedRef
     ) => {
       const {
         actions: { forceUpdate },
         shouldForceUpdate
       } = useHeightTransition();
+
+      const ref = useRef<HTMLDivElement>(null);
+
+      const containerRef = useMemo(
+        () => (forwardedRef as RefObject<HTMLDivElement>) || ref,
+        [forwardedRef]
+      );
 
       const contentRef = useRef<HTMLDivElement>(null);
 
@@ -114,27 +120,35 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
           onTransitionEnd={(event) => {
             event.stopPropagation();
 
-            if (event.propertyName == 'height') {
-              // Transitioning stops
-              isTransitioningRef.current = false;
-
-              if (memoizeChildren && !children && prevChildren) {
-                setRenderChildren(children);
-              }
-
-              if (onTransitionEnd) {
-                onTransitionEnd(event);
-              }
-
-              // This will trigger force update so
-              // `isTransitioningRef.current` will be applied
-              observerCallback();
+            if (event.propertyName !== 'height') {
+              return;
             }
+
+            if (event.target !== containerRef?.current) {
+              return;
+            }
+
+            // Transitioning stops
+            isTransitioningRef.current = false;
+
+            if (memoizeChildren && !children && prevChildren) {
+              setRenderChildren(children);
+            }
+
+            if (onTransitionEnd) {
+              onTransitionEnd(event);
+            }
+
+            // This will trigger force update so
+            // `isTransitioningRef.current` will be applied
+            observerCallback();
+
+            forceRender({});
           }}
-          ref={ref as MutableRefObject<HTMLDivElement>}
+          ref={containerRef}
           style={{
             height,
-            overflow: isTransitioningRef.current ? 'hidden' : noOverflowAuto ? 'initial' : 'auto',
+            overflow: isTransitioningRef.current ? 'hidden' : 'auto',
             transition: `height ${
               typeof transitionDuration !== 'undefined' ? `${transitionDuration}ms` : '300ms'
             } ${typeof transitionType !== 'undefined' ? transitionType : 'ease-in-out'}`,
@@ -145,7 +159,7 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
             data-test={`${dataTest}-heightTransition-content`}
             className={contentClassName}
             ref={contentRef}
-            style={noOverflowAuto ? undefined : { overflow: 'auto' }}
+            style={{ overflow: 'auto' }}
           >
             {memoizeChildren ? renderChildren : children}
           </div>

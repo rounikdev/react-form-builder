@@ -50,6 +50,7 @@ export const Accordion: FC<AccordionProps> = memo(
 
     const onTransitionEnd = useCallback(
       (e: SyntheticEvent) => {
+        /* istanbul ignore next */
         if (e.target !== contentWrapperRef.current) {
           return;
         }
@@ -113,9 +114,7 @@ export const Accordion: FC<AccordionProps> = memo(
           style={{ height }}
         >
           {animateOnContentChange ? (
-            <HeightTransitionBox dataTest={`${dataTest}-content`} noOverflowAuto>
-              {element}
-            </HeightTransitionBox>
+            <HeightTransitionBox dataTest={`${dataTest}-content`}>{element}</HeightTransitionBox>
           ) : (
             element
           )}
