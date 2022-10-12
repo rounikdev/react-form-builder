@@ -36,7 +36,11 @@ const TestCmp: FC<
 
       <button
         data-test="toggle-sub-content"
-        onClick={() => setToggleProp((prevState) => !prevState)}
+        onClick={() =>
+          setToggleProp((prevState) => {
+            return !prevState;
+          })
+        }
         type="button"
       >
         Toggle sub content padding
@@ -191,8 +195,11 @@ describe('HeightTransitionBox', () => {
       <div
         data-test="test-content-wrap"
         style={{
+          backgroundColor: 'blue',
+          height: 200,
           padding: toggleProp ? 20 : 0,
-          transition: 'padding 300ms ease-in-out'
+          transition: 'padding 300ms ease-in-out',
+          width: 200
         }}
       ></div>
     );
@@ -222,8 +229,10 @@ describe('HeightTransitionBox', () => {
       <div
         data-test="test-content-wrap"
         style={{
+          backgroundColor: 'green',
           height: toggleProp ? 200 : 0,
-          transition: 'height 300ms ease-in-out'
+          transition: 'all 300ms ease-in-out',
+          width: 200
         }}
       ></div>
     );

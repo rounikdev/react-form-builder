@@ -6,12 +6,13 @@ import styles from './Mask.scss';
 
 export interface IMaskProps {
   className: string;
+  dataTest?: string;
   focused: boolean;
   pattern: string;
   value: string;
 }
 
-export const Mask: FC<IMaskProps> = memo(({ className, focused, pattern, value }) => {
+export const Mask: FC<IMaskProps> = memo(({ className, dataTest, focused, pattern, value }) => {
   const maskTxt = useMemo(
     () =>
       Array.from(pattern).reduce((accum, char, index) => {
@@ -33,7 +34,9 @@ export const Mask: FC<IMaskProps> = memo(({ className, focused, pattern, value }
         [className, focused]
       )}
     >
-      <span className={styles.MaskTxt}>{maskTxt}</span>
+      <span className={styles.MaskTxt} data-test={`${dataTest}-mask-text`}>
+        {maskTxt}
+      </span>
     </div>
   );
 });

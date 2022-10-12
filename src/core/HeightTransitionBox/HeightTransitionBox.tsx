@@ -121,12 +121,10 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
             event.stopPropagation();
 
             if (event.propertyName !== 'height') {
-              console.log('HERE');
               return;
             }
 
             if (event.target !== containerRef?.current) {
-              console.log('THERE');
               return;
             }
 
