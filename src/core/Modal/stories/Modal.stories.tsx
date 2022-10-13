@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, Story } from '@storybook/react';
 
 import { ModalBuilder } from '@core/Modal/components';
 import { useModal } from '@core/Modal/context';
@@ -10,7 +10,7 @@ import { BackdropAnimate, ContainerAnimate } from './components';
 export default {
   component: ModalBuilder,
   title: 'Components/Modal/Basic'
-} as ComponentMeta<typeof ModalBuilder>;
+} as Meta;
 
 const Playground = (args: ModalElement): JSX.Element => {
   const {
@@ -20,6 +20,7 @@ const Playground = (args: ModalElement): JSX.Element => {
   return (
     <div id="modal">
       <button
+        data-test="open-modal-1"
         onClick={() => {
           showModalById({
             ...args,
@@ -29,6 +30,7 @@ const Playground = (args: ModalElement): JSX.Element => {
                 <br />
                 <br />
                 <button
+                  data-test="open-modal-2"
                   onClick={() => {
                     showModalById({
                       ...args,
@@ -77,13 +79,14 @@ const Playground = (args: ModalElement): JSX.Element => {
   );
 };
 
-const Template: ComponentStory<typeof ModalBuilder> = (args): JSX.Element => (
+const Template: Story<ModalElement> = (args) => (
   <Provider baseAnimate BaseBackdrop={BackdropAnimate} BaseContainer={ContainerAnimate}>
     <Playground {...args} />
   </Provider>
 );
 
 export const Basic = Template.bind({});
+
 Basic.args = {
   content: '',
   id: 'modal-1',

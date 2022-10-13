@@ -58,6 +58,7 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
 
       const observerCallback = useCallback(() => {
         forceRender({});
+        requestAnimationFrame(() => forceRender({}));
 
         if (!isRoot) {
           forceUpdate();
@@ -111,7 +112,7 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
 
       useUpdateOnlyExtended(() => {
         forceRender({});
-      }, [contentRef.current?.offsetHeight, contentRef.current?.scrollHeight]);
+      }, [contentRef.current?.offsetHeight]);
 
       return (
         <div
