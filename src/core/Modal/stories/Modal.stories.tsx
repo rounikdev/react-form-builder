@@ -41,6 +41,7 @@ const Playground = (args: ModalElement): JSX.Element => {
                           <br />
                           <br />
                           <button
+                            data-test="open-modal-3"
                             onClick={() => {
                               showModalById({
                                 ...args,

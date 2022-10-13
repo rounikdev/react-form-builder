@@ -112,6 +112,7 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
 
       useUpdateOnlyExtended(() => {
         forceRender({});
+        requestAnimationFrame(() => forceRender({}));
       }, [contentRef.current?.offsetHeight]);
 
       return (
