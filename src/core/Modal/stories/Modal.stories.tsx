@@ -14,7 +14,7 @@ export default {
 
 const Playground = (args: ModalElement): JSX.Element => {
   const {
-    actions: { showModalById }
+    actions: { hideModalById, showModalById }
   } = useModal();
 
   return (
@@ -27,6 +27,30 @@ const Playground = (args: ModalElement): JSX.Element => {
             content: (
               <p style={{ padding: '4rem', textAlign: 'center' }}>
                 <span style={{ fontSize: '2rem', fontWeight: 'bold' }}> Modal 1</span>
+                <br />
+                <br />
+                <button
+                  data-test="hide-modal-4"
+                  onClick={() => {
+                    hideModalById({
+                      id: 'modal-4'
+                    });
+                  }}
+                >
+                  Hide Modal 4
+                </button>
+                <br />
+                <br />
+                <button
+                  data-test="open-modal-1-1"
+                  onClick={() => {
+                    showModalById({
+                      ...args
+                    });
+                  }}
+                >
+                  Show Modal 1 1
+                </button>
                 <br />
                 <br />
                 <button

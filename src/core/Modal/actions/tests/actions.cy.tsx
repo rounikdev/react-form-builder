@@ -36,5 +36,15 @@ describe('Accordion', () => {
 
     cy.get('[data-test="open-modal-3"]').click();
     cy.get('[data-test="modal-3-backdrop-modal"]').should('be.visible');
+
+    // Try to open Modal 1 again
+    cy.get('[data-test="modal-3-close-modal"]').click();
+    cy.get('[data-test="open-modal-1"]').click();
+    cy.get('[data-test="open-modal-1-1"]').click();
+    cy.get('[data-test="modal-1-backdrop-modal"]').should('be.visible');
+
+    // Try to hide non existing Modal 4
+    cy.get('[data-test="hide-modal-4"]').click();
+    cy.get('[data-test="modal-1-backdrop-modal"]').should('be.visible');
   });
 });
