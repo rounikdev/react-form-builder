@@ -116,7 +116,7 @@ export interface FieldErrors {
 export interface FormData {
   errors: FieldErrors;
   pristine: boolean;
-  resetState: FormStateEntry;
+  resetState: FormStateEntryValue;
   valid: boolean;
   value: FormStateEntryValue;
 }
@@ -132,7 +132,6 @@ export interface FormRootProps extends Testable {
   children: ReactNode;
   className?: string;
   initialResetState?: FormStateEntryValue;
-  isPristine?: boolean;
   noValidate?: boolean;
   onChange?: (formState: FormData) => void;
   onReset?: () => void;

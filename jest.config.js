@@ -19,7 +19,7 @@ module.exports = {
     global: {
       branches: 85,
       functions: 85,
-      lines: 95,
+      lines: 94,
       statements: 95
     }
   },
@@ -32,6 +32,7 @@ module.exports = {
     '^@types(.*)$': '<rootDir>/src/types$1',
     '^@ui(.*)$': '<rootDir>/src/ui$1'
   },
+  modulePathIgnorePatterns: ['<rootDir>/dist'],
   reporters: ['default'],
   setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
   testEnvironment: 'jsdom',

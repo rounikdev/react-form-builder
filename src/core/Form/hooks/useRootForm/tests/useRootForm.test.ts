@@ -13,7 +13,7 @@ describe('useRootForm', () => {
   it('Has the right initial state when is pristine', () => {
     const formData: FormStateEntryValue = { firstName: 'Ivan' };
 
-    const { result } = renderHook(() => useRootForm({ formData, isPristine: true }));
+    const { result } = renderHook(() => useRootForm({ formData }));
 
     expect(result.current.fieldsToBeSet).toEqual({});
 
@@ -40,43 +40,14 @@ describe('useRootForm', () => {
     expect(result.current.getFieldId()).toBe('');
   });
 
-  it('Has the right initial state when not pristine', () => {
-    const formData: FormStateEntryValue = { firstName: 'Ivan' };
-
-    const { result } = renderHook(() => useRootForm({ formData, isPristine: false }));
-
-    expect(result.current.fieldsToBeSet).toEqual({});
-
-    expect(result.current.errors).toEqual({});
-
-    expect(result.current.pristine).toBe(false);
-
-    expect(result.current.focusedField).toBe('');
-
-    expect(result.current.scrolledField).toBe('');
-
-    expect(result.current.forceValidateFlag).toEqual(null);
-
-    expect(result.current.resetFlag).toEqual({ resetKey: NO_RESET_KEY });
-
-    expect(result.current.resetRecords).toEqual({});
-
-    expect(result.current.isEdit).toBe(false);
-
-    expect(result.current.getFieldId()).toBe('');
-  });
-
   it('Updates initial reset record only while pristine', () => {
     const formData: FormStateEntryValue = { firstName: 'Ivan' };
     const formData2: FormStateEntryValue = { firstName: 'Ivan', lastName: '' };
     const formData3: FormStateEntryValue = { firstName: 'Ivan', lastName: 'I' };
 
-    const { rerender, result } = renderHook(
-      ({ data }) => useRootForm({ formData: data, isPristine: true }),
-      {
-        initialProps: { data: formData }
-      }
-    );
+    const { rerender, result } = renderHook(({ data }) => useRootForm({ formData: data }), {
+      initialProps: { data: formData }
+    });
 
     expect(result.current.pristine).toBe(true);
 
@@ -112,7 +83,7 @@ describe('useRootForm', () => {
 
     jest.useFakeTimers();
 
-    const { result } = renderHook(() => useRootForm({ formData, isPristine: true }));
+    const { result } = renderHook(() => useRootForm({ formData }));
 
     expect(result.current.isEdit).toBe(false);
 
@@ -147,7 +118,7 @@ describe('useRootForm', () => {
 
     jest.useFakeTimers();
 
-    const { result } = renderHook(() => useRootForm({ formData, isPristine: true }));
+    const { result } = renderHook(() => useRootForm({ formData }));
 
     expect(result.current.isEdit).toBe(false);
 
@@ -177,38 +148,6 @@ describe('useRootForm', () => {
     });
   });
 
-  it('Toggles edit mode and sets the right resetRecords on save if not pristine', async () => {
-    const formData: FormStateEntryValue = { firstName: 'Ivan' };
-
-    jest.useFakeTimers();
-
-    const { result } = renderHook(() => useRootForm({ formData, isPristine: false }));
-
-    expect(result.current.isEdit).toBe(false);
-
-    act(() => {
-      result.current.edit();
-    });
-
-    expect(result.current.isEdit).toBe(true);
-
-    expect(result.current.resetRecords).toEqual({
-      [ROOT_RESET_RECORD_KEY]: formData
-    });
-
-    act(() => {
-      result.current.save();
-    });
-
-    act(() => {
-      jest.runAllTimers();
-    });
-
-    expect(result.current.isEdit).toBe(false);
-
-    expect(result.current.resetRecords).toEqual({});
-  });
-
   it('On reset sets the initial reset key and pristine to true', () => {
     const formData: FormStateEntryValue = { firstName: 'Ivan' };
     const newResetKey = 'someKey';
@@ -233,7 +172,7 @@ describe('useRootForm', () => {
       result.current.reset();
     });
 
-    expect(result.current.resetFlag).toEqual({ resetKey: NO_RESET_KEY });
+    expect(result.current.resetFlag).toEqual({ resetKey: INITIAL_RESET_RECORD_KEY });
     expect(result.current.pristine).toBe(true);
   });
 
