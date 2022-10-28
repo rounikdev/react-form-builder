@@ -1,7 +1,7 @@
 import { dequal } from 'dequal';
 import { useCallback, useLayoutEffect, useState } from 'react';
 
-import { useIsMounted } from '@rounik/react-custom-hooks';
+import { useIsMounted, useUpdate } from '@rounik/react-custom-hooks';
 
 import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '@core/Form/constants';
 import { useFormRoot } from '@core/Form/providers';
@@ -13,13 +13,14 @@ const defaultValue: unknown = [];
 export const useFormArray = <T>({
   factory,
   fieldId,
-  initialValue = defaultValue as unknown as T[]
+  initialValue = defaultValue as T[]
 }: {
   factory: () => T;
   fieldId: string;
   initialValue?: T[];
 }) => {
   const {
+    fieldsToBeSet,
     methods: { setDirty },
     resetFlag,
     resetRecords,
@@ -41,9 +42,17 @@ export const useFormArray = <T>({
     [setDirty]
   );
 
-  // TODO: create useLayoutUpdateOnly hook, based on useLayoutEffect in the hooks package
   const isMounted = useIsMounted();
 
+  useUpdate(() => {
+    if (fieldsToBeSet[fieldId] !== undefined) {
+      setDirty();
+
+      setList(fieldsToBeSet[fieldId]);
+    }
+  }, [fieldsToBeSet]);
+
+  // TODO: create useLayoutUpdateOnly hook
   useLayoutEffect(() => {
     if (isMounted.current && shouldBeReset({ fieldId, resetFlag })) {
       let resetValue: T[] = [];
@@ -53,7 +62,7 @@ export const useFormArray = <T>({
           resetRecords[resetFlag.resetKey || INITIAL_RESET_RECORD_KEY],
           fieldId.split('.')
         ) ??
-          initialValue ??
+          GlobalModel.getNestedValue(resetRecords[INITIAL_RESET_RECORD_KEY], fieldId.split('.')) ??
           defaultValue) as T[];
       } else {
         resetValue = (GlobalModel.getNestedValue(
@@ -71,7 +80,7 @@ export const useFormArray = <T>({
         // item will still have index 0 and will
         // get the values of the 0-th array element
         // instead of the one with index 1:
-        setList(defaultValue as unknown as T[]);
+        setList(defaultValue as T[]);
 
         // Prevent UI from flickering because
         // the rerendering of the array:

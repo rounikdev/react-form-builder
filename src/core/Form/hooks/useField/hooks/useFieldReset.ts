@@ -30,7 +30,9 @@ export const useFieldReset = <T>({
 
     if (shouldBeReset({ fieldId, resetFlag })) {
       if (usesStorage) {
-        resetValue = GlobalModel.getNestedValue(resetRecords[resetFlag.resetKey], fieldPath);
+        resetValue =
+          GlobalModel.getNestedValue(resetRecords[resetFlag.resetKey], fieldPath) ??
+          GlobalModel.getNestedValue(resetRecords[INITIAL_RESET_RECORD_KEY], fieldPath);
       } else {
         resetValue =
           GlobalModel.getNestedValue(

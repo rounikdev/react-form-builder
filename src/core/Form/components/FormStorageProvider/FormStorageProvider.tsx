@@ -62,11 +62,11 @@ export const FormStorageProvider: FC<FormStorageProviderProps> = memo(({ childre
   const setFormData = useCallback(
     ({ formData, formId }: { formData: FormData; formId: string }) => {
       setState((currentState) => {
-        const newState = formData;
+        const newState = { ...formData };
 
         // Keep the initially set reset state:
-        if (currentState[formId]?.resetState) {
-          newState.resetState = currentState[formId].resetState;
+        if (currentState[formId]?.resetState || newState.resetState === null) {
+          newState.resetState = currentState[formId]?.resetState;
         }
 
         // No value saved here while pristine:

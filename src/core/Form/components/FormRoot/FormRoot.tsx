@@ -25,7 +25,6 @@ export const FormRoot: FC<FormRootProps> = memo(
     className,
     dataTest,
     initialResetState,
-    isPristine = true,
     noValidate = true,
     onChange,
     onReset,
@@ -65,7 +64,6 @@ export const FormRoot: FC<FormRootProps> = memo(
     } = useRootForm({
       formData: value,
       initialResetState,
-      isPristine,
       usesStorage
     });
 
@@ -94,7 +92,7 @@ export const FormRoot: FC<FormRootProps> = memo(
             onChange({
               errors,
               pristine,
-              resetState: resetRecords[INITIAL_RESET_RECORD_KEY],
+              resetState: null,
               valid,
               value
             });

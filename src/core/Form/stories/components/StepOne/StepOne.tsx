@@ -52,7 +52,6 @@ export const StepOne: FC = memo(() => {
     <FormRoot
       dataTest="user"
       initialResetState={state[formId]?.resetState}
-      //   isPristine={state[formId]?.pristine ?? true}
       onChange={(formData) => {
         setFormData({ formData, formId });
       }}

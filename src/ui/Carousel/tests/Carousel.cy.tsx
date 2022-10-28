@@ -12,33 +12,33 @@ const content = (
 );
 
 describe('Carousel', () => {
-  it.skip('Manual mode using left and right button', () => {
+  it('Manual mode using left and right button', () => {
     mount(content);
 
     cy.get('[data-test="2-image"]').should('be.visible');
 
     cy.get('[data-test="animals-carousel-left-button"]').trigger('click');
 
-    cy.wait(500);
+    cy.wait(1000);
     cy.get('[data-test="1-image"]').should('be.visible');
 
     // Can't click before transition is done:
-    cy.wait(500);
+    cy.wait(1000);
     cy.get('[data-test="animals-carousel-left-button"]').trigger('click');
 
     cy.get('[data-test="8-image-error"]').should('be.visible');
 
-    cy.wait(500);
+    cy.wait(1000);
     cy.get('[data-test="animals-carousel-left-button"]').trigger('click');
 
     cy.get('[data-test="7-image"]').should('be.visible');
 
-    cy.wait(500);
+    cy.wait(1000);
     cy.get('[data-test="animals-carousel-right-button"]').trigger('click');
 
     cy.get('[data-test="8-image-error"]').should('be.visible');
 
-    cy.wait(500);
+    cy.wait(1000);
     cy.get('[data-test="animals-carousel-right-button"]').trigger('click');
 
     cy.get('[data-test="1-image"]').should('be.visible');

@@ -22,23 +22,17 @@ import {
 interface UseRootFormProps {
   formData: FormStateEntryValue;
   initialResetState?: FormStateEntryValue;
-  isPristine?: boolean;
   usesStorage?: boolean;
 }
 
-export const useRootForm = ({
-  formData,
-  initialResetState,
-  isPristine,
-  usesStorage
-}: UseRootFormProps) => {
+export const useRootForm = ({ formData, initialResetState, usesStorage }: UseRootFormProps) => {
   const [fieldsToBeSet, setFieldsValueState] = useState<SetFieldsValuePayload>({});
 
   const [errors, setErrors] = useState<FieldErrors>({});
 
   const [injectedErrors, setInjectedErrors] = useState<InjectedErrors>({});
 
-  const [pristine, setPristine] = useState<boolean>(!!isPristine);
+  const [pristine, setPristine] = useState<boolean>(true);
 
   const [focusedField, focusField] = useState('');
 
@@ -141,14 +135,6 @@ export const useRootForm = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useUpdate(() => {
-    if (pristine) {
-      setResetFlag({
-        resetKey: NO_RESET_KEY
-      });
-    }
-  }, [pristine, resetFlag.resetKey]);
 
   // Store the initial reset state
   // in the resetRecords:
