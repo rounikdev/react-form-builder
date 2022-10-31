@@ -1,10 +1,15 @@
 import { FC, forwardRef, memo, RefObject, useCallback, useMemo, useRef, useState } from 'react';
 
-import { useLastDiffValue, useMutationObserver, useWindowResize } from '@rounik/react-custom-hooks';
+import {
+  useLastDiffValue,
+  useMutationObserver,
+  useUpdateOnly,
+  useUpdateSync,
+  useWindowResize
+} from '@rounik/react-custom-hooks';
 
 import { useHeightTransition } from './HeightTransitionProvider';
 import { HeightTransitionBoxProps } from './types';
-import { useUpdateOnly, useUpdateSync } from './useUpdateSync';
 
 const MUTATION_OBSERVER_CONFIG = {
   attributes: true,
@@ -98,8 +103,6 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
       if (memoizeChildren && prevHeight !== undefined && !children && prevChildren) {
         height = 0;
       }
-
-      console.log('height: ', height);
 
       // If there is a height diff allow transitioning
       useUpdateSync(() => {

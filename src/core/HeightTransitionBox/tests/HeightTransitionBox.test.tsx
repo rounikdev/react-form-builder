@@ -80,24 +80,44 @@ describe('HeightTransitionBox', () => {
     );
   });
 
-  it.only('Changes `overflow` based on transitioning state', async () => {
+  it('Changes `overflow` based on transitioning state', async () => {
+    Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
+      configurable: true,
+      value: 0
+    });
+
     const { findByDataTest, getByDataTest } = testRender(<TestCmp />);
 
     const wrapper = await findByDataTest('test-heightTransition-container');
 
     expect(window.getComputedStyle(wrapper).overflow).toBe('auto');
 
-    // await userEvent.click(getByDataTest('toggle-content'));
+    Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
+      configurable: true,
+      value: 500
+    });
 
-    // expect(window.getComputedStyle(wrapper).overflow).toBe('hidden');
+    await userEvent.click(getByDataTest('toggle-content'));
+
+    expect(window.getComputedStyle(wrapper).overflow).toBe('hidden');
   });
 
   it('Changes `overflow` based on transitioning state with `memoizeChildren` flag', async () => {
+    Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
+      configurable: true,
+      value: 0
+    });
+
     const { findByDataTest, getByDataTest } = testRender(<TestCmp memoizeChildren />);
 
     expect(
       window.getComputedStyle(await findByDataTest('test-heightTransition-container')).overflow
     ).toBe('auto');
+
+    Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
+      configurable: true,
+      value: 500
+    });
 
     await userEvent.click(getByDataTest('toggle-content'));
 
