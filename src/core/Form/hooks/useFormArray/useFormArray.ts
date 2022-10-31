@@ -1,7 +1,7 @@
 import { dequal } from 'dequal';
-import { useCallback, useLayoutEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
-import { useIsMounted, useUpdate } from '@rounik/react-custom-hooks';
+import { useIsMounted, useLayoutUpdateOnly, useUpdate } from '@rounik/react-custom-hooks';
 
 import { INITIAL_RESET_RECORD_KEY, ROOT_RESET_RECORD_KEY } from '@core/Form/constants';
 import { useFormRoot } from '@core/Form/providers';
@@ -52,8 +52,7 @@ export const useFormArray = <T>({
     }
   }, [fieldsToBeSet]);
 
-  // TODO: create useLayoutUpdateOnly hook
-  useLayoutEffect(() => {
+  useLayoutUpdateOnly(() => {
     if (isMounted.current && shouldBeReset({ fieldId, resetFlag })) {
       let resetValue: T[] = [];
 

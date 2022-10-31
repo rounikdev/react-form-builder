@@ -64,7 +64,7 @@
     "yarn": ">=1.22.19"
   },
   "dependencies": {
-    "@rounik/react-custom-hooks": "0.1.10",
+    "@rounik/react-custom-hooks": "0.1.12",
     "dequal": "2.0.3"
   },
   "devDependencies": {

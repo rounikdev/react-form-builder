@@ -3,13 +3,13 @@ import { FC, forwardRef, memo, RefObject, useCallback, useMemo, useRef, useState
 import {
   useLastDiffValue,
   useMutationObserver,
-  useUpdateOnlyExtended,
-  useUpdateSync,
+  useUpdateOnly,
   useWindowResize
 } from '@rounik/react-custom-hooks';
 
 import { useHeightTransition } from './HeightTransitionProvider';
 import { HeightTransitionBoxProps } from './types';
+import { useUpdateSync } from './useUpdateSync';
 
 const MUTATION_OBSERVER_CONFIG = {
   attributes: true,
@@ -73,16 +73,15 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
 
       useWindowResize({ callback: observerCallback, debounceTime: DEBOUNCE_TIME });
 
-      // TODO: StrictMode check!
       // Handles nested transitions like
       // ErrorFields of ConditionalFields
-      useUpdateOnlyExtended(() => {
+      useUpdateOnly(() => {
         if (isRoot) {
           observerCallback();
         }
       }, [isRoot, observerCallback, shouldForceUpdate]);
 
-      useUpdateOnlyExtended(() => {
+      useUpdateOnly(() => {
         if (memoizeChildren) {
           if (!children && prevChildren) {
             setRenderChildren(prevChildren);
@@ -105,15 +104,19 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
         height = 0;
       }
 
+      console.log('height: ', height);
+
       // If there is a height diff allow transitioning
       useUpdateSync(() => {
         isTransitioningRef.current = true;
       }, height);
 
-      useUpdateOnlyExtended(() => {
+      useUpdateOnly(() => {
         forceRender({});
         requestAnimationFrame(() => forceRender({}));
       }, [contentRef.current?.offsetHeight]);
+
+      console.log(' isTransitioningRef.current: ', isTransitioningRef.current);
 
       return (
         <div

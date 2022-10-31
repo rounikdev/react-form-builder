@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { useUpdatedRef, useUpdateExtended } from '@rounik/react-custom-hooks';
+import { useUpdate, useUpdatedRef } from '@rounik/react-custom-hooks';
 
 import { useForm } from '@core/Form/hooks';
 import { useFormRoot } from '@core/Form/providers';
@@ -14,7 +14,7 @@ export const FormSideEffect: FC<FormSideEffectProps> = ({ dependencyExtractor, e
 
   const effectRef = useUpdatedRef(effect);
 
-  useUpdateExtended(
+  useUpdate(
     () => {
       effectRef.current(dependencies, { methods: { form: methods, root: formRootMethods } });
     },

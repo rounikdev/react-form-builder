@@ -1,7 +1,7 @@
 import { Story } from '@storybook/react';
 import { FC, memo, StrictMode, useCallback, useState } from 'react';
 
-import { useClass, useMountSafe } from '@rounik/react-custom-hooks';
+import { useClass, useMount } from '@rounik/react-custom-hooks';
 
 import { ListAnimator } from '../ListAnimator';
 
@@ -17,7 +17,7 @@ interface ListItem {
 }
 
 const Item: FC<ListItem> = memo(({ className, id }) => {
-  useMountSafe(() => {
+  useMount(() => {
     console.log('mounting', id);
   });
   return (

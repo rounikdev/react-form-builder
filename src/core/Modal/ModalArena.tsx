@@ -1,7 +1,7 @@
 import { FC, memo } from 'react';
 import ReactDOM from 'react-dom';
 
-import { useUpdateOnlyExtended } from '@rounik/react-custom-hooks';
+import { useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { ModalBuilder } from './components';
 import { useModal } from './context';
@@ -15,7 +15,7 @@ const ModalArena: FC = () => {
 
   const modalEl = document.querySelector('#modal') as HTMLElement;
 
-  useUpdateOnlyExtended(() => {
+  useUpdateOnly(() => {
     if (orderList.length) {
       orderList.forEach(({ id }) => {
         setModal({ id });

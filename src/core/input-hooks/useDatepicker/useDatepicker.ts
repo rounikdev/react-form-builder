@@ -13,7 +13,7 @@ import {
   useKeyboardEvent,
   useOnOutsideClick,
   useUpdate,
-  useUpdateOnlyExtended
+  useUpdateOnly
 } from '@rounik/react-custom-hooks';
 
 import { useField, useFieldDependency } from '@core/Form/hooks';
@@ -395,7 +395,7 @@ export const useDatepicker = ({
     }
   }, [maxDate, minDate, value]);
 
-  useUpdateOnlyExtended(() => {
+  useUpdateOnly(() => {
     if (!value) {
       clearInput();
     }
@@ -423,7 +423,7 @@ export const useDatepicker = ({
     }
   }, [focusCalendar, state.show]);
 
-  useUpdateOnlyExtended(() => {
+  useUpdateOnly(() => {
     if (state.show !== null && !state.show) {
       blurCalendar(new Event('focus') as unknown as FocusEvent<HTMLElement>);
     }
