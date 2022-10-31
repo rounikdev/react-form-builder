@@ -1,12 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import {
-  useUnmountSafe,
-  useUpdate,
-  useUpdatedRef,
-  useUpdateExtended,
-  useUpdateOnlyExtended
-} from '@rounik/react-custom-hooks';
+import { useUnmount, useUpdate, useUpdatedRef, useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { useForm } from '@core/Form/hooks/useForm/useForm';
 import { useFormEditContext, useFormRoot } from '@core/Form/providers';
@@ -155,7 +149,7 @@ export const useNestedForm = <T>({
     setTouched(true);
   }, []);
 
-  useUpdateExtended(
+  useUpdate(
     async () => {
       let validityCheck: ValidityCheck;
 
@@ -221,7 +215,7 @@ export const useNestedForm = <T>({
     }
   }, [focused]);
 
-  useUpdateOnlyExtended(() => {
+  useUpdateOnly(() => {
     const fieldId = getFieldId();
 
     if (
@@ -237,7 +231,7 @@ export const useNestedForm = <T>({
     }
   }, [parentContext.forceValidateFlag]);
 
-  useUpdateOnlyExtended(() => {
+  useUpdateOnly(() => {
     if (parentContext.forceValidateFlag) {
       forceValidate(parentContext.forceValidateFlag);
     }
@@ -248,7 +242,7 @@ export const useNestedForm = <T>({
    * Close nested forms on closing
    * the parent one:
    */
-  useUpdateOnlyExtended(() => {
+  useUpdateOnly(() => {
     if (!isParentEdit && isEdit) {
       // Because the reset has already
       // been triggered from it's parent:
@@ -256,19 +250,19 @@ export const useNestedForm = <T>({
     }
   }, [isParentEdit]);
 
-  useUpdateOnlyExtended(() => {
+  useUpdateOnly(() => {
     if (touched) {
       parentContext.methods.touchParent();
     }
   }, [touched]);
 
-  useUpdateOnlyExtended(() => {
+  useUpdateOnly(() => {
     if (shouldBeReset({ fieldId: getFieldId(), resetFlag })) {
       setTouched(false);
     }
   }, [resetFlag]);
 
-  useUnmountSafe(clear);
+  useUnmount(clear);
 
   return {
     blurParent,

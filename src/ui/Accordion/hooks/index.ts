@@ -1,11 +1,6 @@
 import { ReactNode, useCallback, useContext, useLayoutEffect, useRef, useState } from 'react';
 
-import {
-  useMountSafe,
-  useUnmountSafe,
-  useUpdate,
-  useUpdateOnlyExtended
-} from '@rounik/react-custom-hooks';
+import { useMount, useUnmount, useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { accordionContext } from '../context';
 import { AccordionContext, UseAccordionArgs } from '../types';
@@ -76,13 +71,13 @@ export const useAccordion = ({
     }
   }, [isOpen, keepMounted]);
 
-  useMountSafe(() => {
+  useMount(() => {
     if (isOpen) {
       openInGroup(id);
     }
   });
 
-  useUnmountSafe(() => {
+  useUnmount(() => {
     closeInGroup(id);
   });
 
@@ -94,8 +89,7 @@ export const useAccordion = ({
     }
   }, [children, isOpen]);
 
-  // TODO: Use useUpdateOnlyExtendedSafe here, to prevent closing in StrictMode when opened is true
-  useUpdateOnlyExtended(() => {
+  useUpdateOnly(() => {
     if (!excludeFromGroup) {
       if (!openedControlledAccordions.includes(id) && isOpen) {
         close();
@@ -103,7 +97,7 @@ export const useAccordion = ({
     }
   }, [excludeFromGroup, openedControlledAccordions]);
 
-  useUpdateOnlyExtended(() => {
+  useUpdateOnly(() => {
     if (opened === isOpen) {
       return;
     }

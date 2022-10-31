@@ -1,11 +1,6 @@
 import { FC, FormEvent, memo, useCallback, useMemo } from 'react';
 
-import {
-  useClass,
-  useUpdate,
-  useUpdateExtended,
-  useUpdateOnlyExtended
-} from '@rounik/react-custom-hooks';
+import { useClass, useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { INITIAL_RESET_RECORD_KEY, NO_RESET_KEY, STORAGE_RESET_KEY } from '@core/Form/constants';
 import { FormContextInstance } from '@core/Form/context';
@@ -81,7 +76,7 @@ export const FormRoot: FC<FormRootProps> = memo(
 
     // This will sync the errors
     // and valid after reset:
-    useUpdateExtended(
+    useUpdate(
       () => {
         if (
           resetFlag.resetKey === INITIAL_RESET_RECORD_KEY ||
@@ -103,7 +98,7 @@ export const FormRoot: FC<FormRootProps> = memo(
       true
     );
 
-    useUpdateOnlyExtended(() => {
+    useUpdateOnly(() => {
       if (
         onReset &&
         (resetFlag.resetKey === INITIAL_RESET_RECORD_KEY ||

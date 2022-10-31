@@ -9,7 +9,7 @@ import {
   useState
 } from 'react';
 
-import { useUpdateOnlyExtended } from '@rounik/react-custom-hooks';
+import { useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { addClass, buildKeyMap, cloneWithClassName, getUpdates, removeClass } from './services';
 import {
@@ -101,7 +101,7 @@ export const ListAnimator: FC<ListAnimatorProps> = memo(
       [children, enterNewChildren, exitClass]
     );
 
-    useUpdateOnlyExtended(() => {
+    useUpdateOnly(() => {
       setState((prevState) => {
         const { enterCount, exitCount, newKeys, oldKeys } = getUpdates(children, prevState.content);
 

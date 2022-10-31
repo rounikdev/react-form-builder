@@ -1,6 +1,6 @@
 import { FC, memo, useCallback, useRef, useState } from 'react';
 
-import { useClass, useMountSafe, useUpdateOnlyExtended } from '@rounik/react-custom-hooks';
+import { useClass, useMount, useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { AnimatorProps, AnimatorState } from './types';
 
@@ -24,14 +24,14 @@ export const Animator: FC<AnimatorProps> = memo(
 
     const isAnimating = useRef(false);
 
-    useMountSafe(() => {
+    useMount(() => {
       setState({
         content: children,
         exiting: false
       });
     });
 
-    useUpdateOnlyExtended(() => {
+    useUpdateOnly(() => {
       setState((prevState) => {
         if (shouldAnimate(prevState.content, children) && !isAnimating.current) {
           isAnimating.current = true;

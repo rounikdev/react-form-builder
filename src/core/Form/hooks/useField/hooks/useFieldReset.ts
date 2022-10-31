@@ -1,4 +1,4 @@
-import { useUpdateOnlyExtended } from '@rounik/react-custom-hooks';
+import { useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import {
   INITIAL_RESET_RECORD_KEY,
@@ -23,7 +23,7 @@ export const useFieldReset = <T>({
 }: UseFieldResetConfig<T>) => {
   const { resetFlag, resetRecords, usesStorage } = useFormRoot();
 
-  useUpdateOnlyExtended(() => {
+  useUpdateOnly(() => {
     const fieldPath = fieldId.split('.');
 
     let resetValue: FormStateEntryValue;

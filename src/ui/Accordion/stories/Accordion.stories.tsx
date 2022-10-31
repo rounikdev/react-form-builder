@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/react';
 import { FC, StrictMode, useCallback, useState } from 'react';
 
-import { useMountSafe, useUnmountSafe } from '@rounik/react-custom-hooks';
+import { useMount, useUnmount } from '@rounik/react-custom-hooks';
 
 import { Image, ListAnimator } from '@ui';
 
@@ -36,11 +36,11 @@ const Content: FC<{ id: string }> = ({ id }) => {
     []
   );
 
-  useMountSafe(() => {
+  useMount(() => {
     console.log('Content mount', id);
   });
 
-  useUnmountSafe(() => {
+  useUnmount(() => {
     console.log('Content un-mount', id);
   });
 

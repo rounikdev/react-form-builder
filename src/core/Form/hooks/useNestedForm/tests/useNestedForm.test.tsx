@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react';
 import { FC, ReactNode } from 'react';
 
-import { useUpdate, useUpdateOnlyExtended } from '@rounik/react-custom-hooks';
+import { useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { FormObject, FormRoot } from '@core/Form/components';
 import { NO_RESET_KEY, ROOT_RESET_RECORD_KEY } from '@core/Form/constants';
@@ -47,13 +47,13 @@ const ParentFormActor: FC<ParentFormActorProps> = ({
     }
   }, [shouldEdit]);
 
-  useUpdateOnlyExtended(() => {
+  useUpdateOnly(() => {
     if (onResetFlag && resetFlag.resetKey !== NO_RESET_KEY) {
       onResetFlag(resetFlag);
     }
   }, [resetFlag]);
 
-  useUpdateOnlyExtended(() => {
+  useUpdateOnly(() => {
     if (onResetRecords) {
       onResetRecords(resetRecords);
     }
@@ -64,20 +64,18 @@ const ParentFormActor: FC<ParentFormActorProps> = ({
 
 interface WrapperProps extends ParentFormActorProps {
   children?: ReactNode;
-  isPristine?: boolean;
   parentFormName?: string;
 }
 
 const Wrapper: FC<WrapperProps> = ({
   children,
-  isPristine,
   onResetFlag,
   onResetRecords = () => {},
   parentFormName,
   shouldEdit,
   shouldForceValidate
 }) => (
-  <FormRoot isPristine={isPristine} dataTest="root-form">
+  <FormRoot dataTest="root-form">
     <ParentFormActor
       onResetFlag={onResetFlag}
       onResetRecords={onResetRecords}
@@ -280,7 +278,6 @@ describe('useNestedForm', () => {
     const { rerender, result } = renderHook(() => useNestedForm({ name, valid, value }), {
       wrapper: ({ children }) => (
         <Wrapper
-          isPristine={false}
           onResetFlag={mockOnResetFlag}
           onResetRecords={mockOnResetRecords}
           shouldEdit={shouldEdit}
@@ -298,7 +295,6 @@ describe('useNestedForm', () => {
     shouldEdit = false;
 
     rerender({
-      isPristine: false,
       onResetFlag: mockOnResetFlag,
       onResetRecords: mockOnResetRecords,
       shouldEdit: shouldEdit

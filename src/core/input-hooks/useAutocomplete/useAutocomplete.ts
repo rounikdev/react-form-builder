@@ -8,11 +8,7 @@ import {
   useState
 } from 'react';
 
-import {
-  useKeyboardEvent,
-  useOnOutsideClick,
-  useUpdateOnlyExtended
-} from '@rounik/react-custom-hooks';
+import { useKeyboardEvent, useOnOutsideClick, useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { useField, useFieldDependency } from '@core/Form';
 
@@ -250,8 +246,7 @@ export const useAutocomplete = <T>({
     };
   }, [close, fieldRef, multi, open, select, state.focused, state.selected, state.show]);
 
-  // TODO: StrictMode check!
-  useUpdateOnlyExtended(() => {
+  useUpdateOnly(() => {
     onChangeHandler(
       list.filter((option) => {
         return state.selected.includes(extractId(option));
@@ -261,7 +256,7 @@ export const useAutocomplete = <T>({
 
   // Update from the value
   // coming from useField:
-  useUpdateOnlyExtended(() => {
+  useUpdateOnly(() => {
     if (
       value?.find(
         (incomingOption) => !list.find((option) => extractId(option) === extractId(incomingOption))

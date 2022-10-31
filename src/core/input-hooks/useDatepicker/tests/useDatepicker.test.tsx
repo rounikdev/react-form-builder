@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react';
 import { ChangeEvent, FC, FocusEvent, MouseEvent } from 'react';
 
-import { useMountSafe } from '@rounik/react-custom-hooks';
+import { useMount } from '@rounik/react-custom-hooks';
 
 import { testRender } from '@services/utils';
 
@@ -25,7 +25,7 @@ interface TestComponentProps {
 const TestComponent: FC<TestComponentProps> = ({ initialValue, name, openOnMount }) => {
   const { context } = useDatepicker({ initialValue, name });
 
-  useMountSafe(() => {
+  useMount(() => {
     if (openOnMount) {
       context.toggle({ preventDefault: () => {} } as unknown as MouseEvent);
     }

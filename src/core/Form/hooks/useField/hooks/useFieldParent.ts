@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useUnmountSafe, useUpdateOnlyExtended } from '@rounik/react-custom-hooks';
+import { useUnmount, useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { useForm } from '@core/Form/hooks/useForm/useForm';
 
@@ -24,7 +24,7 @@ export const useFieldParent = <T>({
     methods: { removeFromForm, setInForm }
   } = useForm();
 
-  useUnmountSafe(() => {
+  useUnmount(() => {
     // No need to call setDirty, because a field could be
     // unmounted because removal form array, which calls
     // setDirty or from conditional field change, which
@@ -43,7 +43,7 @@ export const useFieldParent = <T>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, valid, value]);
 
-  useUpdateOnlyExtended(() => {
+  useUpdateOnly(() => {
     if (forceValidateFlag && Object.keys(forceValidateFlag).length === 0) {
       setTouch(true);
     } else if (forceValidateFlag && typeof forceValidateFlag[fieldId] === 'boolean') {

@@ -1,11 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 
-import {
-  useMountSafe,
-  useUnmountSafe,
-  useUpdate,
-  useUpdateOnlyExtended
-} from '@rounik/react-custom-hooks';
+import { useMount, useUnmount, useUpdate, useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { GlobalModel, RAFIdInfo } from '@services';
 
@@ -206,11 +201,11 @@ export const useCarousel = <T>({
     });
   }, [items, startIndex, styles.MoveToLeft, styles.MoveToRight]);
 
-  useMountSafe(() => {
+  useMount(() => {
     startAutoMove();
   });
 
-  useUpdateOnlyExtended(handleNewItems, [handleNewItems]);
+  useUpdateOnly(handleNewItems, [handleNewItems]);
 
   useUpdate(() => {
     setState((currentState) => ({
@@ -232,7 +227,7 @@ export const useCarousel = <T>({
     }
   }, [auto]);
 
-  useUnmountSafe(() => {
+  useUnmount(() => {
     if (timeoutId.current) {
       GlobalModel.clearRAFTimeout(timeoutId.current);
     }

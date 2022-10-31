@@ -1,6 +1,6 @@
 import { CSSProperties, FC, memo, ReactEventHandler, useCallback, useMemo, useState } from 'react';
 
-import { useUpdateOnlyExtended } from '@rounik/react-custom-hooks';
+import { useUpdateOnly } from '@rounik/react-custom-hooks';
 
 import { Stylable, Testable } from '@types';
 
@@ -52,7 +52,7 @@ export const Image: FC<ImageProps> = memo(({ alt, className, dataTest, src }) =>
     }));
   }, []);
 
-  useUpdateOnlyExtended(() => {
+  useUpdateOnly(() => {
     setState(() => defaultState);
   }, [src]);
 
