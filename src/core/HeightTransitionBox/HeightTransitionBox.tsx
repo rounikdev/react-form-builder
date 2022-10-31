@@ -1,15 +1,10 @@
 import { FC, forwardRef, memo, RefObject, useCallback, useMemo, useRef, useState } from 'react';
 
-import {
-  useLastDiffValue,
-  useMutationObserver,
-  useUpdateOnly,
-  useWindowResize
-} from '@rounik/react-custom-hooks';
+import { useLastDiffValue, useMutationObserver, useWindowResize } from '@rounik/react-custom-hooks';
 
 import { useHeightTransition } from './HeightTransitionProvider';
 import { HeightTransitionBoxProps } from './types';
-import { useUpdateSync } from './useUpdateSync';
+import { useUpdateOnly, useUpdateSync } from './useUpdateSync';
 
 const MUTATION_OBSERVER_CONFIG = {
   attributes: true,
@@ -115,8 +110,6 @@ export const HeightTransitionBox: FC<HeightTransitionBoxProps> = memo(
         forceRender({});
         requestAnimationFrame(() => forceRender({}));
       }, [contentRef.current?.offsetHeight]);
-
-      console.log(' isTransitioningRef.current: ', isTransitioningRef.current);
 
       return (
         <div

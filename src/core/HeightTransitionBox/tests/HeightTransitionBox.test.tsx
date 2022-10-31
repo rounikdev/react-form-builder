@@ -87,7 +87,7 @@ describe('HeightTransitionBox', () => {
 
     expect(window.getComputedStyle(wrapper).overflow).toBe('auto');
 
-    //  await userEvent.click(getByDataTest('toggle-content'));
+    // await userEvent.click(getByDataTest('toggle-content'));
 
     // expect(window.getComputedStyle(wrapper).overflow).toBe('hidden');
   });
