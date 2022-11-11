@@ -1,4 +1,5 @@
 export { default as FormStateDisplay } from './FormStateDisplay/FormStateDisplay';
+export { default as FormStateDisplaySimple } from './FormStateDisplaySimple/FormStateDisplaySimple';
 export * from './PhoneForm/PhoneForm';
 export * from './StepOne/StepOne';
 export * from './StepTwo/StepTwo';

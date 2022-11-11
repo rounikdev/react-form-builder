@@ -5,14 +5,8 @@ import { FormArray, FormObject, FormRoot, FormUser } from '@core';
 import { GlobalModel } from '@services';
 import { Button, Checkbox, ErrorField, Text } from '@ui';
 
-import { FormStateDisplay } from './components';
-import {
-  Contact,
-  contactFactory,
-  contactListValidator,
-  contactValidator,
-  initialContacts
-} from './data';
+import { FormStateDisplaySimple } from './components';
+import { Contact, contactFactory } from './data';
 
 import styles from './FormStories.scss';
 
@@ -25,35 +19,18 @@ const Template: Story<FC> = () => {
     <StrictMode>
       <section className={styles.Container}>
         <div className={styles.FormContainer}>
-          <FormRoot
-            className={styles.Form}
-            dataTest="user"
-            onSubmit={console.log}
-            onReset={() => {
-              console.log('Form reset');
-            }}
-          >
-            <FormStateDisplay />
+          <FormRoot className={styles.Form} dataTest="user">
+            <FormStateDisplaySimple />
+            <Text dataTest="first-name" id="first-name" label="First name" name="firstName" />
+            <Text dataTest="last-name" id="last-name" label="Last name" name="lastName" />
+            <Text dataTest="password" id="password" label="Password" name="password" />
             <Text
-              dataTest="first-name"
-              disabled={false}
-              id="first-name"
-              label="First Name"
-              name="firstName"
+              dataTest="repeat-password"
+              id="repeat-password"
+              label="Repeat password"
+              name="repeatPassword"
             />
-            <Text
-              dataTest="last-name"
-              disabled={false}
-              id="last-name"
-              label="Last Name"
-              name="lastName"
-            />
-            <FormArray
-              factory={contactFactory}
-              initialValue={initialContacts}
-              name="contacts"
-              validator={contactListValidator}
-            >
+            <FormArray factory={contactFactory} name="contacts">
               {([contacts, addContact, removeContact, arrayErrors, arrayTouched, arrayFocused]) => {
                 return (
                   <FormUser>
@@ -67,15 +44,15 @@ const Template: Story<FC> = () => {
                     }) => (
                       <>
                         <div className={styles.AddUserContainer}>
-                          <Button dataTest="edit-contacts" onClick={edit} text="Edit contacts" />
+                          <Button dataTest="edit-contacts" onClick={edit} text="Add contacts" />
                           <ul>
-                            {((formData.contacts as Contact[]) || []).map((contact) => {
-                              return Object.keys(contact).length ? (
+                            {((formData.contacts as Contact[]) ?? []).map((contact) => {
+                              return (
                                 <li key={contact.id}>
                                   {contact.email}, {contact.phone}
                                   {contact.isPrimary ? ', Primary' : ''}
                                 </li>
-                              ) : null;
+                              );
                             })}
                           </ul>
                         </div>
@@ -89,11 +66,10 @@ const Template: Story<FC> = () => {
                             return (
                               <div className={styles.ContactContainer} key={contact.id}>
                                 <div className={styles.Contact}>
-                                  <FormObject name={`${contactIndex}`} validator={contactValidator}>
+                                  <FormObject name={`${contactIndex}`}>
                                     <Text
                                       className={styles.Text}
                                       dataTest={`contact-email-${contactIndex}`}
-                                      disabled={false}
                                       id={`contact-email-${contactIndex}`}
                                       initialValue={contact.email}
                                       label="Email"
@@ -110,7 +86,6 @@ const Template: Story<FC> = () => {
                                     <Text
                                       className={styles.Text}
                                       dataTest={`contact-phone-${contactIndex}`}
-                                      disabled={false}
                                       id={`contact-phone-${contactIndex}`}
                                       initialValue={contact.phone}
                                       label="Phone"
@@ -119,7 +94,6 @@ const Template: Story<FC> = () => {
                                     <Checkbox
                                       className={styles.Checkbox}
                                       dataTest={`contact-is-primary-${contactIndex}`}
-                                      disabled={false}
                                       id={`contact-is-primary-${contactIndex}`}
                                       initialValue={contact.isPrimary}
                                       label="Is Primary"
