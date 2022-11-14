@@ -1,10 +1,19 @@
 import { Meta, Story } from '@storybook/react';
 import { FC, StrictMode } from 'react';
 
-import { FormArray, FormObject, FormRoot, FormUser } from '@core';
-import { GlobalModel } from '@services';
+import {
+  DependencyExtractor,
+  FormArray,
+  Formatter,
+  FormObject,
+  FormRoot,
+  FormUser,
+  Validator
+} from '@core';
+import { FormatterModel, GlobalModel, ValidatorModel } from '@services';
 import { Button, Checkbox, ErrorField, Text } from '@ui';
 
+import { ValidityCheck } from '../../../../dist';
 import { FormStateDisplaySimple } from './components';
 import { Contact, contactFactory } from './data';
 
@@ -14,6 +23,61 @@ export default {
   title: 'Demo/Form-With-Nested-Modals'
 } as Meta;
 
+const passwordValidator = ValidatorModel.composeValidators(
+  ValidatorModel.requiredValidator,
+  ValidatorModel.createMinLengthValidator(4, 'At least 4 characters are required!'),
+  ValidatorModel.createMaxLengthValidator(6, 'A maximum of 6 characters is allowed!')
+);
+
+const repeatPasswordValidator = ValidatorModel.composeValidators(
+  passwordValidator,
+  (value, dependencyValue) => {
+    if (value === dependencyValue) {
+      return { errors: [], valid: true };
+    } else {
+      return { errors: [{ text: `Passwords don't match!` }], valid: false };
+    }
+  }
+);
+
+const repeatPasswordDependencyExtractor: DependencyExtractor = (formData) => formData?.password;
+
+const creditCardDependencyExtractor: DependencyExtractor = (formData) => formData?.formatCreditCard;
+
+const creditCardValidator: Validator<string> = (value, dependencyValue) => {
+  if (dependencyValue) {
+    return ValidatorModel.creditCardValidator(value, 'Invalid credit card!');
+  } else {
+    let validityCheck: ValidityCheck;
+
+    if (value.length === 16) {
+      validityCheck = {
+        errors: [],
+        valid: true
+      };
+    } else {
+      validityCheck = {
+        errors: [{ text: 'Invalid credit card!' }],
+        valid: false
+      };
+    }
+
+    return validityCheck;
+  }
+};
+
+const creditCardFormatter: Formatter<string> = ({ dependencyValue, newValue, oldValue = '' }) => {
+  if (dependencyValue) {
+    return FormatterModel.creditCardFormatter({ newValue, oldValue });
+  } else if (newValue.indexOf('  ') !== -1) {
+    const trimmedValue = newValue.replaceAll('  ', '');
+
+    return trimmedValue.length > 16 ? oldValue : trimmedValue;
+  } else {
+    return newValue.length > 16 ? oldValue : newValue;
+  }
+};
+
 const Template: Story<FC> = () => {
   return (
     <StrictMode>
@@ -21,14 +85,58 @@ const Template: Story<FC> = () => {
         <div className={styles.FormContainer}>
           <FormRoot className={styles.Form} dataTest="user">
             <FormStateDisplaySimple />
-            <Text dataTest="first-name" id="first-name" label="First name" name="firstName" />
-            <Text dataTest="last-name" id="last-name" label="Last name" name="lastName" />
-            <Text dataTest="password" id="password" label="Password" name="password" />
             <Text
+              className={styles.Text}
+              dataTest="first-name"
+              id="first-name"
+              label="First name"
+              name="firstName"
+            />
+            <Text
+              className={styles.Text}
+              dataTest="last-name"
+              id="last-name"
+              label="Last name"
+              name="lastName"
+            />
+            <Text
+              className={styles.Text}
+              dataTest="password"
+              id="password"
+              label="Password"
+              name="password"
+              required
+              type="password"
+              validator={passwordValidator}
+            />
+            <Text
+              className={styles.Text}
               dataTest="repeat-password"
+              dependencyExtractor={repeatPasswordDependencyExtractor}
               id="repeat-password"
               label="Repeat password"
               name="repeatPassword"
+              required
+              type="password"
+              validator={repeatPasswordValidator}
+            />
+            <Checkbox
+              className={styles.Checkbox}
+              dataTest="format-credit-card"
+              id="format-credit-card"
+              label="Format credit card"
+              name="formatCreditCard"
+            />
+            <Text
+              className={styles.Text}
+              dataTest="credit-card"
+              dependencyExtractor={creditCardDependencyExtractor}
+              formatter={creditCardFormatter}
+              id="credit-card"
+              label="Credit card number"
+              name="creditCardNumber"
+              type="creditCardNumber"
+              validator={creditCardValidator}
             />
             <FormArray factory={contactFactory} name="contacts">
               {([contacts, addContact, removeContact, arrayErrors, arrayTouched, arrayFocused]) => {

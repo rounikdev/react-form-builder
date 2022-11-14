@@ -3,7 +3,7 @@
   width: 100vw;
   min-height: 100vh;
   padding: 2rem;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .FormContainer {
@@ -15,8 +15,13 @@
 
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 2rem;
   padding-bottom: 4rem;
+
+  .Checkbox,
+  .Text {
+    width: 30rem;
+  }
 }
 
 .AddUserContainer {

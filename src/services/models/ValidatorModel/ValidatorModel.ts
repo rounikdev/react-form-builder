@@ -213,7 +213,7 @@ export class ValidatorModel {
     };
   };
 
-  static creditCardValidator: Validator<string> = (value) => {
+  static creditCardValidator: Validator<string> = (value, message?: string) => {
     let validityCheck: ValidityCheck;
 
     const pattern = FormatterModel.creditCardPattern;
@@ -225,7 +225,7 @@ export class ValidatorModel {
       };
     } else {
       validityCheck = {
-        errors: [{ text: 'invalidCreditCard' }],
+        errors: [{ text: message || 'invalidCreditCard' }],
         valid: false
       };
     }
