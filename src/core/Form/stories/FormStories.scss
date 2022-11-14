@@ -7,7 +7,7 @@
 }
 
 .FormContainer {
-  width: 80rem;
+  width: 90rem;
 }
 
 .Form {
@@ -16,16 +16,22 @@
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
-  padding-bottom: 4rem;
+  justify-content: space-between;
+  padding: 2rem;
+
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow-active);
 
   .Checkbox,
   .Text {
-    width: 30rem;
+    width: calc(100% / 2 - 2rem);
   }
 }
 
 .AddUserContainer {
   width: 100%;
+
+  border-bottom: 0.1rem solid var(--color-button-secondary-background);
 }
 
 .AddButton {
@@ -51,7 +57,7 @@
 }
 
 .FormStateDisplay {
-  width: calc(100% - 80rem);
+  width: calc(100% - 90rem);
   margin-left: 2rem;
   padding: 2rem;
 
@@ -62,8 +68,8 @@
 // ************** Form with nested modals ************ //
 .ContactsForm {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
 
   display: none;
 
@@ -72,10 +78,15 @@
 
   background-color: var(--color-card-background);
   border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow-active);
+  transform: translate(-50%, -50%);
 
   &.Opened {
-    display: initial;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
   }
 
   .ContactContainer {
@@ -85,7 +96,12 @@
 
   .Contact {
     display: flex;
-    align-items: center;
+    gap: 2rem;
+
+    .ContactFieldsWrap {
+      display: flex;
+      gap: 2rem;
+    }
 
     .Text {
       flex: 1;
@@ -93,12 +109,18 @@
     }
 
     .Checkbox {
+      display: flex;
       width: 10rem;
     }
-  }
 
-  .Actions {
-    margin-top: var(--offset-medium);
+    .ButtonRemove {
+      display: flex;
+      align-items: center;
+      align-self: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+    }
   }
 }
 

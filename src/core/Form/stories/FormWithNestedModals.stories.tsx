@@ -15,7 +15,7 @@ import { Button, Checkbox, ErrorField, Text } from '@ui';
 
 import { ValidityCheck } from '../../../../dist';
 import { FormStateDisplaySimple } from './components';
-import { Contact, contactFactory } from './data';
+import { Contact, contactFactory, contactListValidator } from './data';
 
 import styles from './FormStories.scss';
 
@@ -50,7 +50,7 @@ const creditCardValidator: Validator<string> = (value, dependencyValue) => {
   } else {
     let validityCheck: ValidityCheck;
 
-    if (value.length === 16) {
+    if (value.length === 16 || value === '') {
       validityCheck = {
         errors: [],
         valid: true
@@ -77,6 +77,10 @@ const creditCardFormatter: Formatter<string> = ({ dependencyValue, newValue, old
     return newValue.length > 16 ? oldValue : newValue;
   }
 };
+
+const emailCharSet = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const emailValidator = ValidatorModel.createCharacterSetValidator(emailCharSet, 'Invalid email!');
 
 const Template: Story<FC> = () => {
   return (
@@ -138,7 +142,7 @@ const Template: Story<FC> = () => {
               type="creditCardNumber"
               validator={creditCardValidator}
             />
-            <FormArray factory={contactFactory} name="contacts">
+            <FormArray factory={contactFactory} name="contacts" validator={contactListValidator}>
               {([contacts, addContact, removeContact, arrayErrors, arrayTouched, arrayFocused]) => {
                 return (
                   <FormUser>
@@ -154,14 +158,16 @@ const Template: Story<FC> = () => {
                         <div className={styles.AddUserContainer}>
                           <Button dataTest="edit-contacts" onClick={edit} text="Add contacts" />
                           <ul>
-                            {((formData.contacts as Contact[]) ?? []).map((contact) => {
-                              return (
-                                <li key={contact.id}>
-                                  {contact.email}, {contact.phone}
-                                  {contact.isPrimary ? ', Primary' : ''}
-                                </li>
-                              );
-                            })}
+                            {((formData.contacts as Contact[]) ?? []).map(
+                              (contact, contactIndex) => {
+                                return (
+                                  <li key={contactIndex}>
+                                    {contact.email}, {contact.phone}
+                                    {contact.isPrimary ? ', Primary' : ''}
+                                  </li>
+                                );
+                              }
+                            )}
                           </ul>
                         </div>
                         <div
@@ -175,43 +181,48 @@ const Template: Story<FC> = () => {
                               <div className={styles.ContactContainer} key={contact.id}>
                                 <div className={styles.Contact}>
                                   <FormObject name={`${contactIndex}`}>
-                                    <Text
-                                      className={styles.Text}
-                                      dataTest={`contact-email-${contactIndex}`}
-                                      id={`contact-email-${contactIndex}`}
-                                      initialValue={contact.email}
-                                      label="Email"
-                                      name="email"
-                                    />
-                                    <Text
-                                      dataTest={`contact-id-${contactIndex}`}
-                                      hidden
-                                      id={`contact-id-${contactIndex}`}
-                                      initialValue={contact.id}
-                                      label="Id"
-                                      name="id"
-                                    />
-                                    <Text
-                                      className={styles.Text}
-                                      dataTest={`contact-phone-${contactIndex}`}
-                                      id={`contact-phone-${contactIndex}`}
-                                      initialValue={contact.phone}
-                                      label="Phone"
-                                      name="phone"
-                                    />
-                                    <Checkbox
-                                      className={styles.Checkbox}
-                                      dataTest={`contact-is-primary-${contactIndex}`}
-                                      id={`contact-is-primary-${contactIndex}`}
-                                      initialValue={contact.isPrimary}
-                                      label="Is Primary"
-                                      name="isPrimary"
-                                    />
-                                    <Button
-                                      dataTest={`remove-contact-${contactIndex}`}
-                                      onClick={() => removeContact(contactIndex)}
-                                      text="-"
-                                    />
+                                    <div className={styles.ContactFieldsWrap}>
+                                      <Text
+                                        className={styles.Text}
+                                        dataTest={`contact-email-${contactIndex}`}
+                                        id={`contact-email-${contactIndex}`}
+                                        initialValue={contact.email}
+                                        label="Email"
+                                        name="email"
+                                        required
+                                        validator={emailValidator}
+                                      />
+                                      <Text
+                                        dataTest={`contact-id-${contactIndex}`}
+                                        hidden
+                                        id={`contact-id-${contactIndex}`}
+                                        initialValue={contact.id}
+                                        label="Id"
+                                        name="id"
+                                      />
+                                      <Text
+                                        className={styles.Text}
+                                        dataTest={`contact-phone-${contactIndex}`}
+                                        id={`contact-phone-${contactIndex}`}
+                                        initialValue={contact.phone}
+                                        label="Phone"
+                                        name="phone"
+                                      />
+                                      <Checkbox
+                                        className={styles.Checkbox}
+                                        dataTest={`contact-is-primary-${contactIndex}`}
+                                        id={`contact-is-primary-${contactIndex}`}
+                                        initialValue={contact.isPrimary}
+                                        label="Is Primary"
+                                        name="isPrimary"
+                                      />
+                                      <Button
+                                        className={styles.ButtonRemove}
+                                        dataTest={`remove-contact-${contactIndex}`}
+                                        onClick={() => removeContact(contactIndex)}
+                                        text="-"
+                                      />
+                                    </div>
                                     <FormUser>
                                       {({
                                         formContext: {
@@ -238,11 +249,13 @@ const Template: Story<FC> = () => {
                               </div>
                             );
                           })}
-                          <ErrorField
-                            dataTest="contacts-list"
-                            errors={arrayErrors}
-                            isError={arrayErrors.length > 0 && arrayTouched && !arrayFocused}
-                          />
+                          <div>
+                            <ErrorField
+                              dataTest="contacts-list"
+                              errors={arrayErrors}
+                              isError={arrayErrors.length > 0 && arrayTouched && !arrayFocused}
+                            />
+                          </div>
                           <div className={styles.Actions}>
                             <Button
                               dataTest="add-contact"
@@ -272,7 +285,7 @@ const Template: Story<FC> = () => {
                 }
               }) => (
                 <div>
-                  <Button dataTest="reset-form" onClick={reset} text="Reset form" />
+                  <Button dataTest="reset-form" onClick={reset} text="Reset form" variant="Warn" />
                 </div>
               )}
             </FormUser>
