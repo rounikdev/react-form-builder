@@ -8,12 +8,12 @@ import {
   FormObject,
   FormRoot,
   FormUser,
-  Validator
+  Validator,
+  ValidityCheck
 } from '@core';
 import { FormatterModel, GlobalModel, ValidatorModel } from '@services';
 import { Button, Checkbox, ErrorField, Text } from '@ui';
 
-import { ValidityCheck } from '../../../../dist';
 import { FormStateDisplaySimple } from './components';
 import { Contact, contactFactory, contactListValidator } from './data';
 
@@ -203,6 +203,7 @@ const Template: Story<FC> = () => {
                                       <Text
                                         className={styles.Text}
                                         dataTest={`contact-phone-${contactIndex}`}
+                                        formatter={FormatterModel.integerOnlyFormatter}
                                         id={`contact-phone-${contactIndex}`}
                                         initialValue={contact.phone}
                                         label="Phone"
