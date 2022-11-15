@@ -149,7 +149,7 @@ const Template: Story<FC> = () => {
                     {({
                       formContext: {
                         isEdit,
-                        methods: { cancel, edit, save },
+                        methods: { cancel, edit, reset, save },
                         valid
                       },
                       formRootContext: { formData }
@@ -157,13 +157,27 @@ const Template: Story<FC> = () => {
                       <>
                         <div className={styles.AddUserContainer}>
                           <Button dataTest="edit-contacts" onClick={edit} text="Add contacts" />
+                          <Button dataTest="reset-contacts" onClick={reset} text="Reset contacts" />
                           <ul>
                             {((formData.contacts as Contact[]) ?? []).map(
                               (contact, contactIndex) => {
                                 return (
                                   <li className={styles.ContactSaved} key={contactIndex}>
-                                    {contact.email}, {contact.phone}
-                                    {contact.isPrimary ? ', Primary' : ''}
+                                    <div className={styles.Row}>
+                                      <div className={styles.Name}>Email:</div>
+                                      <div>{contact.email}</div>
+                                    </div>
+                                    {contact.phone ? (
+                                      <div className={styles.Row}>
+                                        <div className={styles.Name}>Phone:</div>
+                                        <div>{contact.phone}</div>
+                                      </div>
+                                    ) : null}
+                                    {contact.isPrimary ? (
+                                      <div className={styles.Row}>
+                                        <div className={styles.Name}>Primary</div>
+                                      </div>
+                                    ) : null}
                                   </li>
                                 );
                               }
