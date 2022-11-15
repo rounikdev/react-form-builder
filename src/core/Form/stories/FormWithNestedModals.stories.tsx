@@ -161,7 +161,7 @@ const Template: Story<FC> = () => {
                             {((formData.contacts as Contact[]) ?? []).map(
                               (contact, contactIndex) => {
                                 return (
-                                  <li key={contactIndex}>
+                                  <li className={styles.ContactSaved} key={contactIndex}>
                                     {contact.email}, {contact.phone}
                                     {contact.isPrimary ? ', Primary' : ''}
                                   </li>
