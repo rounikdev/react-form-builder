@@ -11,7 +11,7 @@ const Template: Story<FC> = () => {
   return (
     <StrictMode>
       <section className={styles.Container}>
-        <h1>Hello DevWeek!</h1>
+        <h1>Hello DevWeek!!!</h1>
       </section>
     </StrictMode>
   );
