@@ -81,7 +81,7 @@ export const Accordion: FC<AccordionProps> = memo(
     } else {
       if (isOpen && height === 0) {
         element = (
-          <div aria-hidden={true} key="cache" className={styles.Hidden} ref={hiddenContent}>
+          <div aria-hidden={true} key="cache" ref={hiddenContent}>
             {children}
           </div>
         );
