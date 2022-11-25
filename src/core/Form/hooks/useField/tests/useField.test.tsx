@@ -12,7 +12,7 @@ import {
   InjectedError,
   Validator
 } from '@core/Form/types';
-import { ShowHide, testRender, TestTextInput } from '@services/utils';
+import { ShowHide, testRender } from '@services/utils';
 import { Text } from '@ui';
 
 import { useField } from '../useField';
@@ -27,6 +27,7 @@ interface TestInputProps<T> {
   onBlur?: FocusEventHandler<HTMLElement>;
   onFocus?: FocusEventHandler<HTMLElement>;
   sideEffect?: ({ value }: { value: T }) => void;
+  validationDebounceTime?: number;
   validator?: Validator<T>;
 }
 
@@ -74,6 +75,7 @@ const TestInput: FC<TestInputProps<string>> = ({
   onBlur,
   onFocus,
   sideEffect,
+  validationDebounceTime,
   validator
 }) => {
   const { dependencyValue, fieldRef, ...state } = useField<string>({
@@ -84,6 +86,7 @@ const TestInput: FC<TestInputProps<string>> = ({
     onBlur,
     onFocus,
     sideEffect,
+    validationDebounceTime,
     validator
   });
 
@@ -1041,7 +1044,7 @@ describe('useField', () => {
 
     const { findByDataTest } = testRender(
       <FormRoot dataTest="root-form">
-        <TestTextInput
+        <TestInput
           dataTestInput={`input-${fieldPassword}`}
           name={fieldPassword}
           validator={validatorObj.validator}
