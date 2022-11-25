@@ -12,7 +12,7 @@ import {
   InjectedError,
   Validator
 } from '@core/Form/types';
-import { ShowHide, testRender } from '@services/utils';
+import { ShowHide, testRender, TestTextInput } from '@services/utils';
 import { Text } from '@ui';
 
 import { useField } from '../useField';
@@ -1017,5 +1017,67 @@ describe('useField', () => {
 
     const stateC = JSON.parse((await findByDataTest('state')).textContent || '');
     expect(stateC.errors).toEqual([{ text: injectedError }]);
+  });
+
+  it('Debounces validation', async () => {
+    const fieldPassword = 'password';
+    const error = 'Invalid password!';
+    const timeout = 400;
+
+    const validator: Validator<string> = async (value) => {
+      if (value.length > 3) {
+        return {
+          errors: [],
+          valid: true
+        };
+      } else {
+        return { errors: [{ text: error }], valid: false };
+      }
+    };
+
+    const validatorObj = { validator };
+
+    const validatorSpy = jest.spyOn(validatorObj, 'validator');
+
+    const { findByDataTest } = testRender(
+      <FormRoot dataTest="root-form">
+        <TestTextInput
+          dataTestInput={`input-${fieldPassword}`}
+          name={fieldPassword}
+          validator={validatorObj.validator}
+          validationDebounceTime={timeout}
+        />
+      </FormRoot>
+    );
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let state: any;
+
+    await waitFor(async () => {
+      state = JSON.parse((await findByDataTest('state')).textContent || '');
+      expect(state.valid).toBe(false);
+      // eslint-disable-next-line testing-library/no-wait-for-multiple-assertions
+      expect(state.errors).toEqual([{ text: error }]);
+    });
+
+    expect(validatorSpy).toBeCalledTimes(1);
+
+    await userEvent.type(await findByDataTest(`input-${fieldPassword}`), '123');
+    await userEvent.clear(await findByDataTest(`input-${fieldPassword}`));
+    await userEvent.type(await findByDataTest(`input-${fieldPassword}`), '1234');
+
+    state = JSON.parse((await findByDataTest('state')).textContent || '');
+
+    expect(state.valid).toBe(false);
+    expect(state.validating).toBe(true);
+
+    await waitFor(async () => {
+      state = JSON.parse((await findByDataTest('state')).textContent || '');
+
+      expect(state.valid).toBe(true);
+    });
+
+    expect(state.validating).toBe(false);
+    expect(validatorSpy).toBeCalledTimes(2);
   });
 });

@@ -31,6 +31,7 @@ export const Text: FC<TextProps> = memo(
     requiredLabel,
     sideEffect,
     type = 'text',
+    validationDebounceTime,
     validator
   }) => {
     const {
@@ -44,6 +45,7 @@ export const Text: FC<TextProps> = memo(
       onFocusHandler,
       touched,
       valid,
+      validating,
       value
     } = useTextInput({
       dependencyExtractor,
@@ -52,6 +54,7 @@ export const Text: FC<TextProps> = memo(
       name,
       onBlurSideEffect,
       sideEffect,
+      validationDebounceTime,
       validator
     });
 
@@ -66,6 +69,11 @@ export const Text: FC<TextProps> = memo(
     const inputClassName = useClass(
       [styles.Input, pattern && styles.WithMask, isError && styles.Error],
       [isError, pattern]
+    );
+
+    const totalErrors = useMemo(
+      () => (validating ? [{ text: 'validating' }] : errors),
+      [errors, validating]
     );
 
     return (
@@ -113,7 +121,7 @@ export const Text: FC<TextProps> = memo(
             />
           ) : null}
         </div>
-        <ErrorField dataTest={`error-field-${dataTest}`} errors={errors} isError={isError} />
+        <ErrorField dataTest={`error-field-${dataTest}`} errors={totalErrors} isError={isError} />
       </div>
     );
   }

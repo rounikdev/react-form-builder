@@ -76,6 +76,7 @@ export const TestTextInput: FC<TestInputProps<string>> = ({
   onBlur,
   onFocus,
   sideEffect,
+  validationDebounceTime,
   validator
 }) => {
   const { fieldRef, ...state } = useField<string>({
@@ -86,6 +87,7 @@ export const TestTextInput: FC<TestInputProps<string>> = ({
     onBlur,
     onFocus,
     sideEffect,
+    validationDebounceTime,
     validator
   });
   return (

@@ -21,6 +21,7 @@ export interface TestInputProps<T> {
   onBlur?: FocusEventHandler<HTMLElement>;
   onFocus?: FocusEventHandler<HTMLElement>;
   sideEffect?: ({ value }: { value: T }) => void;
+  validationDebounceTime?: number;
   validator?: Validator<T>;
 }
 

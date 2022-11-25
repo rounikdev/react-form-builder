@@ -58,6 +58,7 @@ export const dictionaries: Dictionaries = {
       required: 'Required',
       requiredField: 'Required field',
       to: 'To',
+      validating: 'Validating',
       weekdays: {
         fr: 'Fri',
         mo: 'Mon',

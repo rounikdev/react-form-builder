@@ -21,6 +21,7 @@ export const useField = <T>({
   onBlur,
   onFocus,
   sideEffect,
+  validationDebounceTime,
   validator
 }: UseFieldConfig<T>): UseFieldReturnType<T> => {
   const { methods: rootMethods } = useFormRoot();
@@ -69,6 +70,7 @@ export const useField = <T>({
     setValidity,
     updatedDependency,
     validating: state.validating,
+    validationDebounceTime,
     validator,
     value: state.value
   });

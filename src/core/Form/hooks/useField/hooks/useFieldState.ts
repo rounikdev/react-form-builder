@@ -106,7 +106,7 @@ export const useFieldState = <T>({
   );
 
   const blur = useCallback(() => {
-    setState((current) => ({ ...current, focused: false, touched: true, validating: true }));
+    setState((current) => ({ ...current, focused: false, touched: true }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
