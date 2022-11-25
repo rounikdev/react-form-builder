@@ -71,7 +71,7 @@ export const Text: FC<TextProps> = memo(
       [isError, pattern]
     );
 
-    const totalErrors = useMemo(
+    const generatedErrors = useMemo(
       () => (validating ? [{ text: 'validating' }] : errors),
       [errors, validating]
     );
@@ -121,7 +121,11 @@ export const Text: FC<TextProps> = memo(
             />
           ) : null}
         </div>
-        <ErrorField dataTest={`error-field-${dataTest}`} errors={totalErrors} isError={isError} />
+        <ErrorField
+          dataTest={`error-field-${dataTest}`}
+          errors={generatedErrors}
+          isError={isError}
+        />
       </div>
     );
   }
