@@ -1,6 +1,6 @@
 import { FC, memo, SyntheticEvent, useCallback, useRef, useState } from 'react';
 
-import { useClass } from '@rounik/react-custom-hooks';
+import { useClass, useLayoutUpdate } from '@rounik/react-custom-hooks';
 
 import { HeightTransitionBox } from '@core';
 
@@ -46,7 +46,7 @@ export const Accordion: FC<AccordionProps> = memo(
 
     const headerRef = useRef<null | HTMLDivElement>(null);
 
-    const [overflow, setOverflow] = useState(opened);
+    const [overflow, setOverflow] = useState(false);
 
     const onTransitionEnd = useCallback(
       (e: SyntheticEvent) => {
@@ -77,18 +77,32 @@ export const Accordion: FC<AccordionProps> = memo(
     let element = null;
 
     if (keepMounted) {
-      element = <div ref={hiddenContent}>{content}</div>;
+      element = (
+        <div className={styles.HiddenContent} ref={hiddenContent}>
+          {content}
+        </div>
+      );
     } else {
       if (isOpen && height === 0) {
         element = (
-          <div aria-hidden={true} key="cache" ref={hiddenContent}>
+          <div aria-hidden={true} className={styles.HiddenContent} key="cache" ref={hiddenContent}>
             {children}
           </div>
         );
       } else {
-        element = <div key="cache">{content}</div>;
+        element = (
+          <div className={styles.HiddenContent} key="cache">
+            {content}
+          </div>
+        );
       }
     }
+
+    useLayoutUpdate(() => {
+      if (isOpen === false) {
+        setOverflow(false);
+      }
+    }, [isOpen]);
 
     return (
       <div
@@ -104,7 +118,7 @@ export const Accordion: FC<AccordionProps> = memo(
         <div
           aria-labelledby={`${id}-header`}
           className={useClass(
-            [styles.Content, isOpen && overflow && styles.Open, isOpen && classNameOnContentOpen],
+            [styles.Content, overflow && styles.Open, isOpen && classNameOnContentOpen],
             [classNameOnContentOpen, isOpen, overflow]
           )}
           id={`${id}-content`}
