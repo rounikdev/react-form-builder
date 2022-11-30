@@ -22,3 +22,9 @@
     overflow: initial;
   }
 }
+
+// Used to expand based on children
+// content, including margin
+.HiddenContent {
+  overflow: auto;
+}
