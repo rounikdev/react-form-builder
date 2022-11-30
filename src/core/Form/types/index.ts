@@ -206,6 +206,7 @@ export interface UseFieldConfig<T> {
     methods: { form: FormContext['methods']; root: FormRootProviderContext['methods'] };
     value: T;
   }) => void;
+  validationDebounceTime?: number;
   validator?: Validator<T>;
 }
 

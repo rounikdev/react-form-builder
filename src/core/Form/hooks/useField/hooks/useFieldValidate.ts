@@ -1,6 +1,10 @@
 import { useCallback } from 'react';
 
-import { useUpdate, useUpdatedRef } from '@rounik/react-custom-hooks';
+import {
+  useCallbackDebouncedPromisified,
+  useUpdate,
+  useUpdatedRef
+} from '@rounik/react-custom-hooks';
 
 import {
   FormStateEntryValue,
@@ -13,6 +17,7 @@ interface UseFieldValidateConfig<T> {
   setValidity: ({ errors, valid }: ValidityCheck) => void;
   updatedDependency: FormStateEntryValue;
   validating: boolean;
+  validationDebounceTime?: number;
   validator: UseFieldConfig<T>['validator'];
   value: T;
 }
@@ -25,6 +30,7 @@ export const useFieldValidate = <T>({
   setValidity,
   updatedDependency,
   validating,
+  validationDebounceTime,
   validator,
   value
 }: UseFieldValidateConfig<T>) => {
@@ -56,9 +62,19 @@ export const useFieldValidate = <T>({
     []
   );
 
-  useUpdate(() => {
+  const validateFieldDebounced = useCallbackDebouncedPromisified({
+    fn: validateField,
+    fnDeps: [validateField],
+    timeout: validationDebounceTime || 0
+  });
+
+  useUpdate(async () => {
     if (validating) {
-      validateField(value, updatedDependency);
+      if (validationDebounceTime !== undefined) {
+        await validateFieldDebounced(value, updatedDependency);
+      } else {
+        await validateField(value, updatedDependency);
+      }
     }
   }, [updatedDependency, validating, value]);
 };

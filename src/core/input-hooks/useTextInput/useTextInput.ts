@@ -11,6 +11,7 @@ export const useTextInput: (args: UseTextInput) => UseTextInputReturnType = ({
   name,
   onBlurSideEffect,
   sideEffect,
+  validationDebounceTime,
   validator
 }) => {
   const builtInitialValue = useMemo(() => {
@@ -29,6 +30,7 @@ export const useTextInput: (args: UseTextInput) => UseTextInputReturnType = ({
       : initialValue ?? '',
     name,
     sideEffect,
+    validationDebounceTime,
     validator
   });
 

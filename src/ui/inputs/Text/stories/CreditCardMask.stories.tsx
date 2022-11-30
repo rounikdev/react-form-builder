@@ -26,6 +26,7 @@ CreditCardMask.args = {
   name: 'creditCard',
   pattern: FormatterModel.creditCardPattern,
   required: true,
+  validationDebounceTime: 4000,
   validator: ValidatorModel.composeValidators(
     ValidatorModel.requiredValidator,
     ValidatorModel.creditCardValidator

@@ -1,6 +1,6 @@
 {
   "name": "@rounik/react-form-builder",
-  "version": "0.0.56",
+  "version": "0.0.57",
   "description": "React form builder with field hooks for building custom design systems",
   "keywords": [
     "design system",
@@ -64,7 +64,7 @@
     "yarn": ">=1.22.19"
   },
   "dependencies": {
-    "@rounik/react-custom-hooks": "0.1.12",
+    "@rounik/react-custom-hooks": "0.1.13",
     "dequal": "2.0.3"
   },
   "devDependencies": {
