@@ -49,12 +49,12 @@ export const useAccordion = ({
   }, [closeInGroup, disabled, excludeFromGroup, id]);
 
   const open = useCallback(
-    (omitImperativeIsOpen?: boolean) => {
+    (openAuto?: unknown) => {
       if (disabled) {
         return;
       }
 
-      if (!omitImperativeIsOpen) {
+      if (openAuto !== 'auto') {
         isOpenImperativeRef.current = true;
       }
 
@@ -114,7 +114,7 @@ export const useAccordion = ({
     }
 
     if (opened) {
-      open(true);
+      open('auto');
     } else {
       close();
     }
