@@ -132,9 +132,13 @@ const renderHeader =
 const Template: Story<FC> = () => {
   const [mountBears, setMountBears] = useState(true);
   const [openedCats, setOpenedCats] = useState(false);
+  const [openedDogs, setOpenedDogs] = useState(false);
 
   useMount(() => {
-    setTimeout(() => setOpenedCats(true), 200);
+    setTimeout(() => {
+      setOpenedCats(true);
+      setOpenedDogs(true);
+    }, 200);
   });
 
   return (
@@ -182,7 +186,7 @@ const Template: Story<FC> = () => {
               dataTest="dogs"
               id="dogs"
               keepMounted
-              opened={openedCats}
+              opened={openedDogs}
               renderHeader={renderHeader('Dogs')}
               scrollOnOpenEndImperative
             >
