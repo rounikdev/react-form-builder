@@ -22,7 +22,7 @@ describe('Accordion', () => {
     // Open the second option:
     cy.get('[data-test="dogs"]').scrollIntoView();
     cy.get('[data-test="dogs-content-component"]').should('exist');
-    cy.get('[data-test="dogs-content-component"]').should('not.be.visible');
+    cy.get('[data-test="dogs-content-component"]').should('be.visible');
     cy.get('[data-test="dogs-header"]').click();
     cy.get('[data-test="dogs-content-component"]').should('be.visible');
 
@@ -40,7 +40,7 @@ describe('Accordion', () => {
     // The second option should be still opened:
     cy.get('[data-test="dogs"]').scrollIntoView();
     cy.get('[data-test="dogs-content-component"]').should('exist');
-    cy.get('[data-test="dogs-content-component"]').should('be.visible');
+    cy.get('[data-test="dogs-content-component"]').should('not.be.visible');
 
     // Opening the first one:
     cy.get('[data-test="cats"]').scrollIntoView();

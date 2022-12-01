@@ -178,7 +178,7 @@ const Template: Story<FC> = () => {
               }}
               opened={openedCats}
               renderHeader={renderHeader('Cats')}
-              scrollOnOpenEnd
+              scrollAfterOpenAuto
             >
               <Content id="cats-content" />
             </Accordion>
@@ -188,7 +188,7 @@ const Template: Story<FC> = () => {
               keepMounted
               opened={openedDogs}
               renderHeader={renderHeader('Dogs')}
-              scrollOnOpenEndImperative
+              scrollAfterOpenManual
             >
               <Content id="dogs-content" />
             </Accordion>
@@ -203,7 +203,7 @@ const Template: Story<FC> = () => {
               excludeFromGroup
               id="dolphins"
               renderHeader={renderHeader('Dolphins')}
-              scrollOnOpenEndImperative
+              scrollAfterOpenManual
             >
               <Content id="dolphins-content" />
             </Accordion>

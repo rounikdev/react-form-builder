@@ -23,8 +23,8 @@ export const Accordion: FC<AccordionProps> = memo(
     onChange,
     opened,
     renderHeader,
-    scrollOnOpenEnd,
-    scrollOnOpenEndImperative
+    scrollAfterOpenAuto,
+    scrollAfterOpenManual
   }) => {
     const {
       close,
@@ -62,7 +62,7 @@ export const Accordion: FC<AccordionProps> = memo(
         if (isOpen) {
           setOverflow(true);
 
-          if (scrollOnOpenEnd && !scrollOnOpenEndImperative) {
+          if (scrollAfterOpenAuto && !scrollAfterOpenManual) {
             headerRef.current?.scrollIntoView({
               behavior: 'smooth',
               block: 'start',
@@ -75,7 +75,7 @@ export const Accordion: FC<AccordionProps> = memo(
           setOverflow(false);
         }
 
-        if (scrollOnOpenEndImperative && !scrollOnOpenEnd && isOpenImperativeRef.current) {
+        if (scrollAfterOpenManual && !scrollAfterOpenAuto && isOpenImperativeRef.current) {
           headerRef.current?.scrollIntoView({
             behavior: 'smooth',
             block: 'start',
@@ -90,8 +90,8 @@ export const Accordion: FC<AccordionProps> = memo(
         isOpen,
         isOpenImperativeRef,
         onTransitionEndHandler,
-        scrollOnOpenEnd,
-        scrollOnOpenEndImperative
+        scrollAfterOpenAuto,
+        scrollAfterOpenManual
       ]
     );
 
