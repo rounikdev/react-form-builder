@@ -54,6 +54,7 @@ export const useAccordion = ({
         return;
       }
 
+      // Use to trigger scroll after manual open
       if (openAuto !== 'auto') {
         isOpenImperativeRef.current = true;
       }
