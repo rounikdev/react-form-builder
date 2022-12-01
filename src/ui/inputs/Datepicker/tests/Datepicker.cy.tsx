@@ -300,7 +300,7 @@ describe('Datepicker', () => {
     cy.get('[data-test="from-datepicker-next-month"]').click();
     cy.get('[data-test="from-datepicker-month"]').should(
       'contain',
-      monthNames[today.getMonth() + 1]
+      monthNames[today.getMonth() === 11 ? 0 : today.getMonth()]
     );
     cy.get('[data-test="from-datepicker-previous-month"]').click();
     cy.get('[data-test="from-datepicker-month"]').should('contain', monthNames[today.getMonth()]);
