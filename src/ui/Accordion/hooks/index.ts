@@ -28,10 +28,14 @@ export const useAccordion = ({
 
   const hiddenContent = useRef<HTMLDivElement>(null);
 
+  const isOpenImperativeRef = useRef(false);
+
   const close = useCallback(() => {
     if (disabled) {
       return;
     }
+
+    isOpenImperativeRef.current = false;
 
     setHeight(contentWrapperRef.current?.offsetHeight || 0);
 
@@ -44,21 +48,28 @@ export const useAccordion = ({
     });
   }, [closeInGroup, disabled, excludeFromGroup, id]);
 
-  const open = useCallback(() => {
-    if (disabled) {
-      return;
-    }
+  const open = useCallback(
+    (omitImperativeIsOpen?: boolean) => {
+      if (disabled) {
+        return;
+      }
 
-    setHeight(0);
+      if (!omitImperativeIsOpen) {
+        isOpenImperativeRef.current = true;
+      }
 
-    if (!excludeFromGroup) {
-      openInGroup(id);
-    }
+      setHeight(0);
 
-    requestAnimationFrame(() => {
-      setIsOpen(true);
-    });
-  }, [excludeFromGroup, disabled, id, openInGroup]);
+      if (!excludeFromGroup) {
+        openInGroup(id);
+      }
+
+      requestAnimationFrame(() => {
+        setIsOpen(true);
+      });
+    },
+    [excludeFromGroup, disabled, id, openInGroup]
+  );
 
   const onTransitionEndHandler = useCallback(() => {
     if (!isOpen && !keepMounted) {
@@ -103,7 +114,7 @@ export const useAccordion = ({
     }
 
     if (opened) {
-      open();
+      open(true);
     } else {
       close();
     }
@@ -130,6 +141,7 @@ export const useAccordion = ({
     height,
     hiddenContent,
     isOpen,
+    isOpenImperativeRef,
     onTransitionEndHandler,
     open
   };

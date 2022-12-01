@@ -31,7 +31,8 @@ export interface AccordionProps extends UseAccordionArgs, Stylable, Testable {
   classNameOnContentOpen?: string;
   onChange?: UseAccordionArgs['onChange'];
   renderHeader: (params: RenderHeaderArgs) => ReactNode;
-  scrollOnOpenEnd?: boolean;
+  scrollAfterOpenAuto?: boolean;
+  scrollAfterOpenManual?: boolean;
 }
 
 export interface AccordionGroupProps {
