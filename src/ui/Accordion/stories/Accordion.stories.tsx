@@ -131,7 +131,11 @@ const renderHeader =
 
 const Template: Story<FC> = () => {
   const [mountBears, setMountBears] = useState(true);
-  const [openedCats, setOpenedCats] = useState(true);
+  const [openedCats, setOpenedCats] = useState(false);
+
+  useMount(() => {
+    setTimeout(() => setOpenedCats(true), 200);
+  });
 
   return (
     <StrictMode>
@@ -170,10 +174,18 @@ const Template: Story<FC> = () => {
               }}
               opened={openedCats}
               renderHeader={renderHeader('Cats')}
+              scrollOnOpenEnd
             >
               <Content id="cats-content" />
             </Accordion>
-            <Accordion dataTest="dogs" id="dogs" keepMounted renderHeader={renderHeader('Dogs')}>
+            <Accordion
+              dataTest="dogs"
+              id="dogs"
+              keepMounted
+              opened={openedCats}
+              renderHeader={renderHeader('Dogs')}
+              scrollOnOpenEndImperative
+            >
               <Content id="dogs-content" />
             </Accordion>
             {mountBears ? (
@@ -187,7 +199,7 @@ const Template: Story<FC> = () => {
               excludeFromGroup
               id="dolphins"
               renderHeader={renderHeader('Dolphins')}
-              scrollOnOpenEnd
+              scrollOnOpenEndImperative
             >
               <Content id="dolphins-content" />
             </Accordion>
