@@ -28,4 +28,11 @@
   &.Warn {
     background-color: var(--color-error);
   }
+
+  &:disabled {
+    color: var(--color-button);
+
+    background-color: var(--color-button-primary-background-disabled);
+    cursor: default;
+  }
 }

@@ -31,9 +31,14 @@ export const ConditionalFields: FC<ConditionalFieldsProps> = memo(
 
     const shouldRenderChildren = useMemo(() => condition(formData), [condition, formData]);
 
+    const shouldHide = useMemo(
+      () => (typeof hidden === 'function' ? hidden(formData) : hidden),
+      [formData, hidden]
+    );
+
     const childrenToRender = useMemo(() => {
       if (!shouldRenderChildren) {
-        if (hidden) {
+        if (shouldHide) {
           styleRef.current = { display: 'none' };
         } else {
           return null;
@@ -43,7 +48,7 @@ export const ConditionalFields: FC<ConditionalFieldsProps> = memo(
       }
 
       return children;
-    }, [children, hidden, shouldRenderChildren]);
+    }, [children, shouldHide, shouldRenderChildren]);
 
     useEffect(() => {
       const enableScrollRafIdInfo = GlobalModel.setRAFTimeout(() => {

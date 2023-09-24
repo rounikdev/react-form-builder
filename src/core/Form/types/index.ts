@@ -298,7 +298,7 @@ export type FieldRenderCondition = (formData: FormStateEntryValue) => boolean;
 export interface ConditionalFieldsProps extends Animatable, Stylable {
   children: ReactNode | ReactNode[];
   condition: FieldRenderCondition;
-  hidden?: boolean;
+  hidden?: boolean | ((formData: FormStateEntryValue) => boolean);
   noScroll?: boolean;
   scrollTimeout?: number;
 }
